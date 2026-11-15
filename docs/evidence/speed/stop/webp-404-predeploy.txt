@@ -1,0 +1,19 @@
+HTTP/2 404 
+date: Sun, 15 Nov 2026 22:15:41 GMT
+content-type: application/json
+content-length: 22
+referrer-policy: strict-origin-when-cross-origin
+vary: Origin
+via: 1.1 Caddy
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-request-id: 7556cf6e-5548-4bff-9f5c-4b03084f21dc
+age: 35
+cache-control: max-age=14400
+cf-cache-status: HIT
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2UJJEWAO21oQiXquv86vTqsRjES7aePOFbv22DG7OCcniiSy8e4t9Hi26wLUS1Zz1jMTEZ3fK7Sqr%2BsjJ%2FYzMMIug6sXrJ10QIuvZs71%2BmHUtsqUFMPwXfgOe8Yhln%2B9PteBGx40vw8EvuXz"}]}
+server: cloudflare
+cf-ray: a5b19db48978d8d9-YYZ
+alt-svc: h3=":443"; ma=86400
+

@@ -1,0 +1,4636 @@
+{
+  "tool": "scripts/speed/measure.py",
+  "version": 1,
+  "label": "live-predeploy",
+  "base": "https://courtlens.calebhabesh.com",
+  "api_base": "https://courtlens.calebhabesh.com",
+  "scope": {
+    "releaseId": "9da7c0b8-4dcc-486f-a906-a91d25215cc9",
+    "season": "2026-27",
+    "beforeDate": "2026-11-15"
+  },
+  "runs_per_url": 5,
+  "started_at": "2026-11-15T22:13:12+00:00",
+  "finished_at": "2026-11-15T22:15:06+00:00",
+  "client": {
+    "curl": "curl 8.23.0 (x86_64-pc-linux-gnu) libcurl/8.23.0 OpenSSL/4.1.0 zlib/1.4 brotli/1.2.1 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 nghttp2/1.71.0 ngtcp2/1.26.0 nghttp3/1.19.0 mit-krb5/1.22.2",
+    "python": "3.14.10"
+  },
+  "results": [
+    {
+      "kind": "page",
+      "name": "home",
+      "url": "https://courtlens.calebhabesh.com/",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0671,
+          "total": 0.0679,
+          "connect": 0.0077,
+          "tls": 0.0181,
+          "wire_bytes": 7744,
+          "http_version": "2",
+          "decoded_bytes": 49411,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0513,
+          "total": 0.0516,
+          "connect": 0.0066,
+          "tls": 0.0167,
+          "wire_bytes": 7744,
+          "http_version": "2",
+          "decoded_bytes": 49411,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0538,
+          "total": 0.054,
+          "connect": 0.0065,
+          "tls": 0.0195,
+          "wire_bytes": 7744,
+          "http_version": "2",
+          "decoded_bytes": 49411,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0401,
+          "total": 0.0403,
+          "connect": 0.0067,
+          "tls": 0.0158,
+          "wire_bytes": 7744,
+          "http_version": "2",
+          "decoded_bytes": 49411,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0495,
+          "total": 0.0502,
+          "connect": 0.0067,
+          "tls": 0.0158,
+          "wire_bytes": 7744,
+          "http_version": "2",
+          "decoded_bytes": 49411,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0513,
+        "total": 0.0516,
+        "total_min": 0.0403,
+        "total_max": 0.0679,
+        "wire_bytes": 7744,
+        "decoded_bytes": 49411,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "stats",
+      "url": "https://courtlens.calebhabesh.com/stats",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0573,
+          "total": 6.9131,
+          "connect": 0.0071,
+          "tls": 0.0162,
+          "wire_bytes": 118026,
+          "http_version": "2",
+          "decoded_bytes": 2217987,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0582,
+          "total": 0.7094,
+          "connect": 0.0079,
+          "tls": 0.0168,
+          "wire_bytes": 118159,
+          "http_version": "2",
+          "decoded_bytes": 2217987,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0585,
+          "total": 1.0796,
+          "connect": 0.0064,
+          "tls": 0.0173,
+          "wire_bytes": 118026,
+          "http_version": "2",
+          "decoded_bytes": 2217987,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0469,
+          "total": 0.6178,
+          "connect": 0.0072,
+          "tls": 0.0181,
+          "wire_bytes": 118377,
+          "http_version": "2",
+          "decoded_bytes": 2217987,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.053,
+          "total": 0.613,
+          "connect": 0.0071,
+          "tls": 0.0179,
+          "wire_bytes": 118139,
+          "http_version": "2",
+          "decoded_bytes": 2217987,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0573,
+        "total": 0.7094,
+        "total_min": 0.613,
+        "total_max": 6.9131,
+        "wire_bytes": 118139,
+        "decoded_bytes": 2217987,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "players",
+      "url": "https://courtlens.calebhabesh.com/players",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0808,
+          "total": 3.7353,
+          "connect": 0.015,
+          "tls": 0.0335,
+          "wire_bytes": 102489,
+          "http_version": "2",
+          "decoded_bytes": 793476,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0799,
+          "total": 0.6963,
+          "connect": 0.0068,
+          "tls": 0.0165,
+          "wire_bytes": 102356,
+          "http_version": "2",
+          "decoded_bytes": 793476,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0443,
+          "total": 0.7825,
+          "connect": 0.0072,
+          "tls": 0.0171,
+          "wire_bytes": 102648,
+          "http_version": "2",
+          "decoded_bytes": 793476,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0646,
+          "total": 0.4845,
+          "connect": 0.0069,
+          "tls": 0.0178,
+          "wire_bytes": 102489,
+          "http_version": "2",
+          "decoded_bytes": 793476,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0542,
+          "total": 0.4936,
+          "connect": 0.0072,
+          "tls": 0.0166,
+          "wire_bytes": 102328,
+          "http_version": "2",
+          "decoded_bytes": 793476,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0646,
+        "total": 0.6963,
+        "total_min": 0.4845,
+        "total_max": 3.7353,
+        "wire_bytes": 102489,
+        "decoded_bytes": 793476,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "teams",
+      "url": "https://courtlens.calebhabesh.com/teams",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0678,
+          "total": 0.2556,
+          "connect": 0.0069,
+          "tls": 0.0203,
+          "wire_bytes": 20109,
+          "http_version": "2",
+          "decoded_bytes": 158578,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0524,
+          "total": 0.271,
+          "connect": 0.0074,
+          "tls": 0.0185,
+          "wire_bytes": 20088,
+          "http_version": "2",
+          "decoded_bytes": 158578,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0512,
+          "total": 0.2444,
+          "connect": 0.007,
+          "tls": 0.0179,
+          "wire_bytes": 20088,
+          "http_version": "2",
+          "decoded_bytes": 158578,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0559,
+          "total": 0.5929,
+          "connect": 0.0082,
+          "tls": 0.0215,
+          "wire_bytes": 20088,
+          "http_version": "2",
+          "decoded_bytes": 158578,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0512,
+          "total": 0.2667,
+          "connect": 0.0072,
+          "tls": 0.0182,
+          "wire_bytes": 20109,
+          "http_version": "2",
+          "decoded_bytes": 158578,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0524,
+        "total": 0.2667,
+        "total_min": 0.2444,
+        "total_max": 0.5929,
+        "wire_bytes": 20088,
+        "decoded_bytes": 158578,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "standings",
+      "url": "https://courtlens.calebhabesh.com/standings",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0663,
+          "total": 0.0671,
+          "connect": 0.0076,
+          "tls": 0.0188,
+          "wire_bytes": 9037,
+          "http_version": "2",
+          "decoded_bytes": 57594,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.067,
+          "total": 0.0673,
+          "connect": 0.0074,
+          "tls": 0.0178,
+          "wire_bytes": 9037,
+          "http_version": "2",
+          "decoded_bytes": 57594,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0575,
+          "total": 0.0577,
+          "connect": 0.0075,
+          "tls": 0.0144,
+          "wire_bytes": 9037,
+          "http_version": "2",
+          "decoded_bytes": 57594,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0544,
+          "total": 0.0548,
+          "connect": 0.0074,
+          "tls": 0.0184,
+          "wire_bytes": 9037,
+          "http_version": "2",
+          "decoded_bytes": 57594,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0533,
+          "total": 0.0543,
+          "connect": 0.0077,
+          "tls": 0.0198,
+          "wire_bytes": 9037,
+          "http_version": "2",
+          "decoded_bytes": 57594,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0575,
+        "total": 0.0577,
+        "total_min": 0.0543,
+        "total_max": 0.0673,
+        "wire_bytes": 9037,
+        "decoded_bytes": 57594,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "compare",
+      "url": "https://courtlens.calebhabesh.com/compare?playerA=2544&playerB=203999",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0478,
+          "total": 4.1756,
+          "connect": 0.0067,
+          "tls": 0.0166,
+          "wire_bytes": 54231,
+          "http_version": "2",
+          "decoded_bytes": 534956,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0586,
+          "total": 1.6114,
+          "connect": 0.0062,
+          "tls": 0.0152,
+          "wire_bytes": 53915,
+          "http_version": "2",
+          "decoded_bytes": 534956,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1481,
+          "total": 1.7047,
+          "connect": 0.0067,
+          "tls": 0.0187,
+          "wire_bytes": 54110,
+          "http_version": "2",
+          "decoded_bytes": 534956,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0552,
+          "total": 1.596,
+          "connect": 0.0072,
+          "tls": 0.0171,
+          "wire_bytes": 54124,
+          "http_version": "2",
+          "decoded_bytes": 534956,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0713,
+          "total": 1.631,
+          "connect": 0.0072,
+          "tls": 0.0161,
+          "wire_bytes": 54239,
+          "http_version": "2",
+          "decoded_bytes": 534956,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0586,
+        "total": 1.631,
+        "total_min": 1.596,
+        "total_max": 4.1756,
+        "wire_bytes": 54124,
+        "decoded_bytes": 534956,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-star",
+      "url": "https://courtlens.calebhabesh.com/players/2544",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0702,
+          "total": 1.6715,
+          "connect": 0.0069,
+          "tls": 0.0199,
+          "wire_bytes": 100460,
+          "http_version": "2",
+          "decoded_bytes": 1122140,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0601,
+          "total": 4.3343,
+          "connect": 0.0076,
+          "tls": 0.0201,
+          "wire_bytes": 100305,
+          "http_version": "2",
+          "decoded_bytes": 1122140,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0533,
+          "total": 1.4656,
+          "connect": 0.0068,
+          "tls": 0.0153,
+          "wire_bytes": 100281,
+          "http_version": "2",
+          "decoded_bytes": 1122140,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0662,
+          "total": 1.1735,
+          "connect": 0.0072,
+          "tls": 0.0176,
+          "wire_bytes": 100460,
+          "http_version": "2",
+          "decoded_bytes": 1122140,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0414,
+          "total": 1.4414,
+          "connect": 0.007,
+          "tls": 0.0155,
+          "wire_bytes": 100438,
+          "http_version": "2",
+          "decoded_bytes": 1122140,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0601,
+        "total": 1.4656,
+        "total_min": 1.1735,
+        "total_max": 4.3343,
+        "wire_bytes": 100438,
+        "decoded_bytes": 1122140,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-rookie",
+      "url": "https://courtlens.calebhabesh.com/players/1643411",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0688,
+          "total": 0.7532,
+          "connect": 0.007,
+          "tls": 0.0191,
+          "wire_bytes": 39977,
+          "http_version": "2",
+          "decoded_bytes": 362190,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0615,
+          "total": 1.0175,
+          "connect": 0.0071,
+          "tls": 0.0163,
+          "wire_bytes": 39958,
+          "http_version": "2",
+          "decoded_bytes": 362190,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0808,
+          "total": 0.7411,
+          "connect": 0.0077,
+          "tls": 0.0247,
+          "wire_bytes": 39958,
+          "http_version": "2",
+          "decoded_bytes": 362190,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0672,
+          "total": 0.702,
+          "connect": 0.0063,
+          "tls": 0.0167,
+          "wire_bytes": 39958,
+          "http_version": "2",
+          "decoded_bytes": 362190,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0693,
+          "total": 1.0495,
+          "connect": 0.0078,
+          "tls": 0.0182,
+          "wire_bytes": 39949,
+          "http_version": "2",
+          "decoded_bytes": 362190,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0688,
+        "total": 0.7532,
+        "total_min": 0.702,
+        "total_max": 1.0495,
+        "wire_bytes": 39958,
+        "decoded_bytes": 362190,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-pre2000",
+      "url": "https://courtlens.calebhabesh.com/players/1449",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0554,
+          "total": 9.0169,
+          "connect": 0.0067,
+          "tls": 0.0161,
+          "wire_bytes": 50559,
+          "http_version": "2",
+          "decoded_bytes": 597902,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1153,
+          "total": 3.1016,
+          "connect": 0.0071,
+          "tls": 0.0176,
+          "wire_bytes": 62346,
+          "http_version": "2",
+          "decoded_bytes": 743107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.071,
+          "total": 0.8977,
+          "connect": 0.0078,
+          "tls": 0.0192,
+          "wire_bytes": 62226,
+          "http_version": "2",
+          "decoded_bytes": 743107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.044,
+          "total": 0.8842,
+          "connect": 0.0069,
+          "tls": 0.0162,
+          "wire_bytes": 62352,
+          "http_version": "2",
+          "decoded_bytes": 743107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0542,
+          "total": 0.8815,
+          "connect": 0.0069,
+          "tls": 0.0168,
+          "wire_bytes": 62401,
+          "http_version": "2",
+          "decoded_bytes": 743107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0554,
+        "total": 0.8977,
+        "total_min": 0.8815,
+        "total_max": 9.0169,
+        "wire_bytes": 62346,
+        "decoded_bytes": 743107,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "team-lal",
+      "url": "https://courtlens.calebhabesh.com/teams/1610612747",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0421,
+          "total": 4.1303,
+          "connect": 0.0074,
+          "tls": 0.0172,
+          "wire_bytes": 77395,
+          "http_version": "2",
+          "decoded_bytes": 1195324,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0521,
+          "total": 1.6569,
+          "connect": 0.0075,
+          "tls": 0.0174,
+          "wire_bytes": 77285,
+          "http_version": "2",
+          "decoded_bytes": 1195324,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0447,
+          "total": 1.3295,
+          "connect": 0.0067,
+          "tls": 0.0187,
+          "wire_bytes": 77331,
+          "http_version": "2",
+          "decoded_bytes": 1195324,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0623,
+          "total": 1.3166,
+          "connect": 0.0066,
+          "tls": 0.0164,
+          "wire_bytes": 77162,
+          "http_version": "2",
+          "decoded_bytes": 1195324,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0741,
+          "total": 1.6056,
+          "connect": 0.0075,
+          "tls": 0.021,
+          "wire_bytes": 77260,
+          "http_version": "2",
+          "decoded_bytes": 1195324,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0521,
+        "total": 1.6056,
+        "total_min": 1.3166,
+        "total_max": 4.1303,
+        "wire_bytes": 77285,
+        "decoded_bytes": 1195324,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "team-bos",
+      "url": "https://courtlens.calebhabesh.com/teams/1610612738",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0419,
+          "total": 4.705,
+          "connect": 0.0073,
+          "tls": 0.0188,
+          "wire_bytes": 73688,
+          "http_version": "2",
+          "decoded_bytes": 1080917,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0609,
+          "total": 1.5128,
+          "connect": 0.0068,
+          "tls": 0.0184,
+          "wire_bytes": 73628,
+          "http_version": "2",
+          "decoded_bytes": 1080917,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0556,
+          "total": 1.1545,
+          "connect": 0.0074,
+          "tls": 0.0201,
+          "wire_bytes": 73695,
+          "http_version": "2",
+          "decoded_bytes": 1080917,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0478,
+          "total": 1.1156,
+          "connect": 0.0066,
+          "tls": 0.0181,
+          "wire_bytes": 73547,
+          "http_version": "2",
+          "decoded_bytes": 1080917,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.043,
+          "total": 1.4595,
+          "connect": 0.0078,
+          "tls": 0.0171,
+          "wire_bytes": 73695,
+          "http_version": "2",
+          "decoded_bytes": 1080917,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0478,
+        "total": 1.4595,
+        "total_min": 1.1156,
+        "total_max": 4.705,
+        "wire_bytes": 73688,
+        "decoded_bytes": 1080917,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "research-rapm",
+      "url": "https://courtlens.calebhabesh.com/research/rapm",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0466,
+          "total": 0.1546,
+          "connect": 0.0075,
+          "tls": 0.0193,
+          "wire_bytes": 58019,
+          "http_version": "2",
+          "decoded_bytes": 644724,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.065,
+          "total": 0.1673,
+          "connect": 0.0071,
+          "tls": 0.0195,
+          "wire_bytes": 57869,
+          "http_version": "2",
+          "decoded_bytes": 644724,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0527,
+          "total": 0.256,
+          "connect": 0.0075,
+          "tls": 0.0182,
+          "wire_bytes": 58105,
+          "http_version": "2",
+          "decoded_bytes": 644724,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0648,
+          "total": 0.1677,
+          "connect": 0.0079,
+          "tls": 0.0198,
+          "wire_bytes": 58105,
+          "http_version": "2",
+          "decoded_bytes": 644724,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0548,
+          "total": 0.1567,
+          "connect": 0.0067,
+          "tls": 0.0193,
+          "wire_bytes": 58055,
+          "http_version": "2",
+          "decoded_bytes": 644724,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "cf-cache-status": "DYNAMIC",
+            "content-encoding": "zstd"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0548,
+        "total": 0.1673,
+        "total_min": 0.1546,
+        "total_max": 0.256,
+        "wire_bytes": 58055,
+        "decoded_bytes": 644724,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-catalog",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/catalog",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.2494,
+          "total": 0.2501,
+          "connect": 0.0077,
+          "tls": 0.0194,
+          "wire_bytes": 9372,
+          "http_version": "2",
+          "decoded_bytes": 65706,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2649,
+          "total": 0.2652,
+          "connect": 0.0075,
+          "tls": 0.0189,
+          "wire_bytes": 9372,
+          "http_version": "2",
+          "decoded_bytes": 65706,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2204,
+          "total": 0.2206,
+          "connect": 0.0073,
+          "tls": 0.0172,
+          "wire_bytes": 9372,
+          "http_version": "2",
+          "decoded_bytes": 65706,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2277,
+          "total": 0.2283,
+          "connect": 0.0067,
+          "tls": 0.0151,
+          "wire_bytes": 9372,
+          "http_version": "2",
+          "decoded_bytes": 65706,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.234,
+          "total": 0.2342,
+          "connect": 0.0068,
+          "tls": 0.0171,
+          "wire_bytes": 9372,
+          "http_version": "2",
+          "decoded_bytes": 65706,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.234,
+        "total": 0.2342,
+        "total_min": 0.2206,
+        "total_max": 0.2652,
+        "wire_bytes": 9372,
+        "decoded_bytes": 65706,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-2544",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544/career?phase=regular_season&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 1.2152,
+          "total": 1.2165,
+          "connect": 0.0076,
+          "tls": 0.0196,
+          "wire_bytes": 43101,
+          "http_version": "2",
+          "decoded_bytes": 234779,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.304,
+          "total": 0.3061,
+          "connect": 0.0125,
+          "tls": 0.0231,
+          "wire_bytes": 43101,
+          "http_version": "2",
+          "decoded_bytes": 234779,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.275,
+          "total": 0.2761,
+          "connect": 0.0074,
+          "tls": 0.0179,
+          "wire_bytes": 43101,
+          "http_version": "2",
+          "decoded_bytes": 234779,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2845,
+          "total": 0.2861,
+          "connect": 0.0084,
+          "tls": 0.0191,
+          "wire_bytes": 43101,
+          "http_version": "2",
+          "decoded_bytes": 234779,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.3104,
+          "total": 0.3113,
+          "connect": 0.0066,
+          "tls": 0.0226,
+          "wire_bytes": 43101,
+          "http_version": "2",
+          "decoded_bytes": 234779,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.304,
+        "total": 0.3061,
+        "total_min": 0.2761,
+        "total_max": 1.2165,
+        "wire_bytes": 43101,
+        "decoded_bytes": 234779,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-2544",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544?season=2026-27&phase=regular_season&beforeDate=2026-11-15&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1754,
+          "total": 0.1756,
+          "connect": 0.0072,
+          "tls": 0.0165,
+          "wire_bytes": 1462,
+          "http_version": "2",
+          "decoded_bytes": 5509,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.4913,
+          "total": 0.4914,
+          "connect": 0.0074,
+          "tls": 0.0203,
+          "wire_bytes": 1462,
+          "http_version": "2",
+          "decoded_bytes": 5509,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1462,
+          "total": 0.1466,
+          "connect": 0.0078,
+          "tls": 0.0177,
+          "wire_bytes": 1462,
+          "http_version": "2",
+          "decoded_bytes": 5509,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1544,
+          "total": 0.1553,
+          "connect": 0.0075,
+          "tls": 0.02,
+          "wire_bytes": 1462,
+          "http_version": "2",
+          "decoded_bytes": 5509,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1642,
+          "total": 0.1644,
+          "connect": 0.0075,
+          "tls": 0.017,
+          "wire_bytes": 1462,
+          "http_version": "2",
+          "decoded_bytes": 5509,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1642,
+        "total": 0.1644,
+        "total_min": 0.1466,
+        "total_max": 0.4914,
+        "wire_bytes": 1462,
+        "decoded_bytes": 5509,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-2544",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544/games?season=2026-27&phase=regular_season&beforeDate=2026-11-15&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1724,
+          "total": 0.1725,
+          "connect": 0.007,
+          "tls": 0.0169,
+          "wire_bytes": 1533,
+          "http_version": "2",
+          "decoded_bytes": 8565,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1665,
+          "total": 0.1673,
+          "connect": 0.0092,
+          "tls": 0.0241,
+          "wire_bytes": 1533,
+          "http_version": "2",
+          "decoded_bytes": 8565,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1509,
+          "total": 0.1511,
+          "connect": 0.0069,
+          "tls": 0.0173,
+          "wire_bytes": 1533,
+          "http_version": "2",
+          "decoded_bytes": 8565,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1638,
+          "total": 0.1643,
+          "connect": 0.0082,
+          "tls": 0.0214,
+          "wire_bytes": 1533,
+          "http_version": "2",
+          "decoded_bytes": 8565,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1659,
+          "total": 0.1661,
+          "connect": 0.0068,
+          "tls": 0.0223,
+          "wire_bytes": 1533,
+          "http_version": "2",
+          "decoded_bytes": 8565,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1659,
+        "total": 0.1661,
+        "total_min": 0.1511,
+        "total_max": 0.1725,
+        "wire_bytes": 1533,
+        "decoded_bytes": 8565,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-metrics",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/metrics?version=courtlens-stats-v4",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.045,
+          "total": 0.0458,
+          "connect": 0.0069,
+          "tls": 0.0168,
+          "wire_bytes": 8743,
+          "http_version": "2",
+          "decoded_bytes": 106801,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0521,
+          "total": 0.0524,
+          "connect": 0.0072,
+          "tls": 0.0196,
+          "wire_bytes": 8743,
+          "http_version": "2",
+          "decoded_bytes": 106801,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0369,
+          "total": 0.0372,
+          "connect": 0.0076,
+          "tls": 0.0182,
+          "wire_bytes": 8743,
+          "http_version": "2",
+          "decoded_bytes": 106801,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0369,
+          "total": 0.0373,
+          "connect": 0.0071,
+          "tls": 0.0187,
+          "wire_bytes": 8743,
+          "http_version": "2",
+          "decoded_bytes": 106801,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0373,
+          "total": 0.0375,
+          "connect": 0.0066,
+          "tls": 0.0183,
+          "wire_bytes": 8743,
+          "http_version": "2",
+          "decoded_bytes": 106801,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0373,
+        "total": 0.0375,
+        "total_min": 0.0372,
+        "total_max": 0.0524,
+        "wire_bytes": 8743,
+        "decoded_bytes": 106801,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-2544",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-15&window=season&playerId=2544",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0852,
+          "total": 0.086,
+          "connect": 0.0068,
+          "tls": 0.0192,
+          "wire_bytes": 3888,
+          "http_version": "2",
+          "decoded_bytes": 24632,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0558,
+          "total": 0.056,
+          "connect": 0.0066,
+          "tls": 0.0145,
+          "wire_bytes": 3888,
+          "http_version": "2",
+          "decoded_bytes": 24632,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0785,
+          "total": 0.0786,
+          "connect": 0.0067,
+          "tls": 0.0167,
+          "wire_bytes": 3888,
+          "http_version": "2",
+          "decoded_bytes": 24632,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.07,
+          "total": 0.0707,
+          "connect": 0.0081,
+          "tls": 0.0188,
+          "wire_bytes": 3888,
+          "http_version": "2",
+          "decoded_bytes": 24632,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0734,
+          "total": 0.0738,
+          "connect": 0.0071,
+          "tls": 0.0176,
+          "wire_bytes": 3888,
+          "http_version": "2",
+          "decoded_bytes": 24632,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0734,
+        "total": 0.0738,
+        "total_min": 0.056,
+        "total_max": 0.086,
+        "wire_bytes": 3888,
+        "decoded_bytes": 24632,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-2544-2025-26",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0834,
+          "total": 0.0838,
+          "connect": 0.0069,
+          "tls": 0.0167,
+          "wire_bytes": 4127,
+          "http_version": "2",
+          "decoded_bytes": 24710,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0852,
+          "total": 0.0854,
+          "connect": 0.0067,
+          "tls": 0.0173,
+          "wire_bytes": 4127,
+          "http_version": "2",
+          "decoded_bytes": 24710,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.075,
+          "total": 0.0752,
+          "connect": 0.0067,
+          "tls": 0.017,
+          "wire_bytes": 4127,
+          "http_version": "2",
+          "decoded_bytes": 24710,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0808,
+          "total": 0.0813,
+          "connect": 0.0059,
+          "tls": 0.0157,
+          "wire_bytes": 4127,
+          "http_version": "2",
+          "decoded_bytes": 24710,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0808,
+          "total": 0.081,
+          "connect": 0.0065,
+          "tls": 0.0163,
+          "wire_bytes": 4127,
+          "http_version": "2",
+          "decoded_bytes": 24710,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0808,
+        "total": 0.0813,
+        "total_min": 0.0752,
+        "total_max": 0.0854,
+        "wire_bytes": 4127,
+        "decoded_bytes": 24710,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-2544",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.9774,
+          "total": 0.9776,
+          "connect": 0.0066,
+          "tls": 0.0171,
+          "wire_bytes": 10326,
+          "http_version": "2",
+          "decoded_bytes": 92051,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.3344,
+          "total": 0.3346,
+          "connect": 0.0074,
+          "tls": 0.0201,
+          "wire_bytes": 10326,
+          "http_version": "2",
+          "decoded_bytes": 92051,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.3712,
+          "total": 0.3715,
+          "connect": 0.0071,
+          "tls": 0.0186,
+          "wire_bytes": 10326,
+          "http_version": "2",
+          "decoded_bytes": 92051,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.6466,
+          "total": 0.6471,
+          "connect": 0.0073,
+          "tls": 0.0249,
+          "wire_bytes": 10326,
+          "http_version": "2",
+          "decoded_bytes": 92051,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.34,
+          "total": 0.3407,
+          "connect": 0.0084,
+          "tls": 0.0196,
+          "wire_bytes": 10326,
+          "http_version": "2",
+          "decoded_bytes": 92051,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.3712,
+        "total": 0.3715,
+        "total_min": 0.3346,
+        "total_max": 0.9776,
+        "wire_bytes": 10326,
+        "decoded_bytes": 92051,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-1643411",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1643411/career?phase=regular_season&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1923,
+          "total": 0.1928,
+          "connect": 0.0068,
+          "tls": 0.0169,
+          "wire_bytes": 2918,
+          "http_version": "2",
+          "decoded_bytes": 14585,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1801,
+          "total": 0.1808,
+          "connect": 0.0072,
+          "tls": 0.0184,
+          "wire_bytes": 2918,
+          "http_version": "2",
+          "decoded_bytes": 14585,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1801,
+          "total": 0.1802,
+          "connect": 0.0069,
+          "tls": 0.0152,
+          "wire_bytes": 2918,
+          "http_version": "2",
+          "decoded_bytes": 14585,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.172,
+          "total": 0.1728,
+          "connect": 0.0069,
+          "tls": 0.0189,
+          "wire_bytes": 2918,
+          "http_version": "2",
+          "decoded_bytes": 14585,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1791,
+          "total": 0.1793,
+          "connect": 0.0075,
+          "tls": 0.0168,
+          "wire_bytes": 2918,
+          "http_version": "2",
+          "decoded_bytes": 14585,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1801,
+        "total": 0.1802,
+        "total_min": 0.1728,
+        "total_max": 0.1928,
+        "wire_bytes": 2918,
+        "decoded_bytes": 14585,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-1643411",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1643411?season=2026-27&phase=regular_season&beforeDate=2026-11-15&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1218,
+          "total": 0.1226,
+          "connect": 0.0084,
+          "tls": 0.0182,
+          "wire_bytes": 1758,
+          "http_version": "2",
+          "decoded_bytes": 5526,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0936,
+          "total": 0.0938,
+          "connect": 0.0065,
+          "tls": 0.017,
+          "wire_bytes": 1758,
+          "http_version": "2",
+          "decoded_bytes": 5526,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1184,
+          "total": 0.119,
+          "connect": 0.0076,
+          "tls": 0.0196,
+          "wire_bytes": 1758,
+          "http_version": "2",
+          "decoded_bytes": 5526,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0989,
+          "total": 0.0995,
+          "connect": 0.0063,
+          "tls": 0.0163,
+          "wire_bytes": 1758,
+          "http_version": "2",
+          "decoded_bytes": 5526,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0907,
+          "total": 0.0912,
+          "connect": 0.0066,
+          "tls": 0.0151,
+          "wire_bytes": 1758,
+          "http_version": "2",
+          "decoded_bytes": 5526,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0989,
+        "total": 0.0995,
+        "total_min": 0.0912,
+        "total_max": 0.1226,
+        "wire_bytes": 1758,
+        "decoded_bytes": 5526,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-1643411",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1643411/games?season=2026-27&phase=regular_season&beforeDate=2026-11-15&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1674,
+          "total": 0.1675,
+          "connect": 0.0072,
+          "tls": 0.0182,
+          "wire_bytes": 1564,
+          "http_version": "2",
+          "decoded_bytes": 9322,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1469,
+          "total": 0.1474,
+          "connect": 0.0064,
+          "tls": 0.0142,
+          "wire_bytes": 1564,
+          "http_version": "2",
+          "decoded_bytes": 9322,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1605,
+          "total": 0.1609,
+          "connect": 0.0077,
+          "tls": 0.0191,
+          "wire_bytes": 1564,
+          "http_version": "2",
+          "decoded_bytes": 9322,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1608,
+          "total": 0.1615,
+          "connect": 0.0097,
+          "tls": 0.0183,
+          "wire_bytes": 1564,
+          "http_version": "2",
+          "decoded_bytes": 9322,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1522,
+          "total": 0.153,
+          "connect": 0.0081,
+          "tls": 0.0214,
+          "wire_bytes": 1564,
+          "http_version": "2",
+          "decoded_bytes": 9322,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1605,
+        "total": 0.1609,
+        "total_min": 0.1474,
+        "total_max": 0.1675,
+        "wire_bytes": 1564,
+        "decoded_bytes": 9322,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1643411",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-15&window=season&playerId=1643411",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0846,
+          "total": 0.0852,
+          "connect": 0.0076,
+          "tls": 0.0196,
+          "wire_bytes": 3695,
+          "http_version": "2",
+          "decoded_bytes": 24370,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0551,
+          "total": 0.0554,
+          "connect": 0.0068,
+          "tls": 0.0146,
+          "wire_bytes": 3695,
+          "http_version": "2",
+          "decoded_bytes": 24370,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0787,
+          "total": 0.0789,
+          "connect": 0.0068,
+          "tls": 0.0183,
+          "wire_bytes": 3695,
+          "http_version": "2",
+          "decoded_bytes": 24370,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0838,
+          "total": 0.0844,
+          "connect": 0.0075,
+          "tls": 0.017,
+          "wire_bytes": 3695,
+          "http_version": "2",
+          "decoded_bytes": 24370,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0626,
+          "total": 0.0627,
+          "connect": 0.0075,
+          "tls": 0.0189,
+          "wire_bytes": 3695,
+          "http_version": "2",
+          "decoded_bytes": 24370,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0787,
+        "total": 0.0789,
+        "total_min": 0.0554,
+        "total_max": 0.0852,
+        "wire_bytes": 3695,
+        "decoded_bytes": 24370,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-1643411",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1643411/bio?season=2026-27&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0853,
+          "total": 0.0854,
+          "connect": 0.0063,
+          "tls": 0.017,
+          "wire_bytes": 671,
+          "http_version": "2",
+          "decoded_bytes": 1273,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0857,
+          "total": 0.0859,
+          "connect": 0.0069,
+          "tls": 0.0192,
+          "wire_bytes": 671,
+          "http_version": "2",
+          "decoded_bytes": 1273,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0777,
+          "total": 0.0778,
+          "connect": 0.0068,
+          "tls": 0.0216,
+          "wire_bytes": 671,
+          "http_version": "2",
+          "decoded_bytes": 1273,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0717,
+          "total": 0.0718,
+          "connect": 0.0082,
+          "tls": 0.0219,
+          "wire_bytes": 671,
+          "http_version": "2",
+          "decoded_bytes": 1273,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0641,
+          "total": 0.0642,
+          "connect": 0.0076,
+          "tls": 0.017,
+          "wire_bytes": 671,
+          "http_version": "2",
+          "decoded_bytes": 1273,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0777,
+        "total": 0.0778,
+        "total_min": 0.0642,
+        "total_max": 0.0859,
+        "wire_bytes": 671,
+        "decoded_bytes": 1273,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-1449",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1449/career?phase=regular_season&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.3266,
+          "total": 0.3272,
+          "connect": 0.0066,
+          "tls": 0.0174,
+          "wire_bytes": 15962,
+          "http_version": "2",
+          "decoded_bytes": 112898,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2351,
+          "total": 0.2354,
+          "connect": 0.0076,
+          "tls": 0.0194,
+          "wire_bytes": 15962,
+          "http_version": "2",
+          "decoded_bytes": 112898,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2239,
+          "total": 0.225,
+          "connect": 0.0066,
+          "tls": 0.0206,
+          "wire_bytes": 15962,
+          "http_version": "2",
+          "decoded_bytes": 112898,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2071,
+          "total": 0.2075,
+          "connect": 0.0085,
+          "tls": 0.016,
+          "wire_bytes": 15962,
+          "http_version": "2",
+          "decoded_bytes": 112898,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2219,
+          "total": 0.2228,
+          "connect": 0.0071,
+          "tls": 0.0176,
+          "wire_bytes": 15962,
+          "http_version": "2",
+          "decoded_bytes": 112898,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.2239,
+        "total": 0.225,
+        "total_min": 0.2075,
+        "total_max": 0.3272,
+        "wire_bytes": 15962,
+        "decoded_bytes": 112898,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-1449-1991-92",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1324,
+          "total": 0.1332,
+          "connect": 0.0075,
+          "tls": 0.0164,
+          "wire_bytes": 3277,
+          "http_version": "2",
+          "decoded_bytes": 32592,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1253,
+          "total": 0.1257,
+          "connect": 0.0066,
+          "tls": 0.0175,
+          "wire_bytes": 3277,
+          "http_version": "2",
+          "decoded_bytes": 32592,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1154,
+          "total": 0.1155,
+          "connect": 0.0075,
+          "tls": 0.0206,
+          "wire_bytes": 3277,
+          "http_version": "2",
+          "decoded_bytes": 32592,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1169,
+          "total": 0.1171,
+          "connect": 0.0075,
+          "tls": 0.0186,
+          "wire_bytes": 3277,
+          "http_version": "2",
+          "decoded_bytes": 32592,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1124,
+          "total": 0.1131,
+          "connect": 0.0067,
+          "tls": 0.0179,
+          "wire_bytes": 3277,
+          "http_version": "2",
+          "decoded_bytes": 32592,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1169,
+        "total": 0.1171,
+        "total_min": 0.1131,
+        "total_max": 0.1332,
+        "wire_bytes": 3277,
+        "decoded_bytes": 32592,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-1449-1991-92",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1339,
+          "total": 0.1346,
+          "connect": 0.007,
+          "tls": 0.0191,
+          "wire_bytes": 1792,
+          "http_version": "2",
+          "decoded_bytes": 5540,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.116,
+          "total": 0.1163,
+          "connect": 0.0066,
+          "tls": 0.0191,
+          "wire_bytes": 1792,
+          "http_version": "2",
+          "decoded_bytes": 5540,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1106,
+          "total": 0.1114,
+          "connect": 0.0065,
+          "tls": 0.0175,
+          "wire_bytes": 1792,
+          "http_version": "2",
+          "decoded_bytes": 5540,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.125,
+          "total": 0.1257,
+          "connect": 0.0069,
+          "tls": 0.0189,
+          "wire_bytes": 1792,
+          "http_version": "2",
+          "decoded_bytes": 5540,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1274,
+          "total": 0.1282,
+          "connect": 0.0069,
+          "tls": 0.0194,
+          "wire_bytes": 1792,
+          "http_version": "2",
+          "decoded_bytes": 5540,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.125,
+        "total": 0.1257,
+        "total_min": 0.1114,
+        "total_max": 0.1346,
+        "wire_bytes": 1792,
+        "decoded_bytes": 5540,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1991-92",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0353,
+          "total": 0.0354,
+          "connect": 0.0063,
+          "tls": 0.0162,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0578,
+          "total": 0.0579,
+          "connect": 0.0066,
+          "tls": 0.0191,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0406,
+          "total": 0.0407,
+          "connect": 0.0072,
+          "tls": 0.0221,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0345,
+          "total": 0.0354,
+          "connect": 0.0071,
+          "tls": 0.0181,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0431,
+          "total": 0.0432,
+          "connect": 0.0065,
+          "tls": 0.016,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0406,
+        "total": 0.0407,
+        "total_min": 0.0354,
+        "total_max": 0.0579,
+        "wire_bytes": 872,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1990-91",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0435,
+          "total": 0.0436,
+          "connect": 0.0064,
+          "tls": 0.0188,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0351,
+          "total": 0.0352,
+          "connect": 0.0066,
+          "tls": 0.0161,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.055,
+          "total": 0.0551,
+          "connect": 0.0077,
+          "tls": 0.0202,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0562,
+          "total": 0.0563,
+          "connect": 0.0068,
+          "tls": 0.0191,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0432,
+          "total": 0.0433,
+          "connect": 0.0068,
+          "tls": 0.0154,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0435,
+        "total": 0.0436,
+        "total_min": 0.0352,
+        "total_max": 0.0563,
+        "wire_bytes": 872,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1989-90",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0436,
+          "total": 0.0437,
+          "connect": 0.007,
+          "tls": 0.0155,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.037,
+          "total": 0.0371,
+          "connect": 0.0073,
+          "tls": 0.0168,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0384,
+          "total": 0.0385,
+          "connect": 0.0071,
+          "tls": 0.02,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0527,
+          "total": 0.0529,
+          "connect": 0.0069,
+          "tls": 0.0188,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.04,
+          "total": 0.0401,
+          "connect": 0.0071,
+          "tls": 0.0196,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.04,
+        "total": 0.0401,
+        "total_min": 0.0371,
+        "total_max": 0.0529,
+        "wire_bytes": 872,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1988-89",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0454,
+          "total": 0.0462,
+          "connect": 0.0072,
+          "tls": 0.0167,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0424,
+          "total": 0.0425,
+          "connect": 0.0071,
+          "tls": 0.017,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0392,
+          "total": 0.0393,
+          "connect": 0.0071,
+          "tls": 0.0176,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0383,
+          "total": 0.0384,
+          "connect": 0.0069,
+          "tls": 0.0195,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0507,
+          "total": 0.0508,
+          "connect": 0.0069,
+          "tls": 0.0198,
+          "wire_bytes": 872,
+          "http_version": "2",
+          "decoded_bytes": 1561,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0424,
+        "total": 0.0425,
+        "total_min": 0.0384,
+        "total_max": 0.0508,
+        "wire_bytes": 872,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-1449-1991-92",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 5.469,
+          "total": 5.4697,
+          "connect": 0.0072,
+          "tls": 0.0186,
+          "wire_bytes": 6042,
+          "http_version": "2",
+          "decoded_bytes": 53769,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 3.1896,
+          "total": 3.1901,
+          "connect": 0.0068,
+          "tls": 0.0187,
+          "wire_bytes": 6042,
+          "http_version": "2",
+          "decoded_bytes": 53769,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2325,
+          "total": 0.2333,
+          "connect": 0.0069,
+          "tls": 0.0153,
+          "wire_bytes": 6042,
+          "http_version": "2",
+          "decoded_bytes": 53769,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2479,
+          "total": 0.2483,
+          "connect": 0.0067,
+          "tls": 0.0162,
+          "wire_bytes": 6042,
+          "http_version": "2",
+          "decoded_bytes": 53769,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2379,
+          "total": 0.2384,
+          "connect": 0.0077,
+          "tls": 0.0197,
+          "wire_bytes": 6042,
+          "http_version": "2",
+          "decoded_bytes": 53769,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.2479,
+        "total": 0.2483,
+        "total_min": 0.2333,
+        "total_max": 5.4697,
+        "wire_bytes": 6042,
+        "decoded_bytes": 53769,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-schedule-1610612747",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612747/schedule?releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1154,
+          "total": 0.1157,
+          "connect": 0.0077,
+          "tls": 0.0247,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6466,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1006,
+          "total": 0.1013,
+          "connect": 0.0068,
+          "tls": 0.0151,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6466,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.09,
+          "total": 0.0905,
+          "connect": 0.0067,
+          "tls": 0.0156,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6466,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1074,
+          "total": 0.1075,
+          "connect": 0.0068,
+          "tls": 0.0176,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6466,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.148,
+          "total": 0.1484,
+          "connect": 0.0067,
+          "tls": 0.0317,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6466,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1074,
+        "total": 0.1075,
+        "total_min": 0.0905,
+        "total_max": 0.1484,
+        "wire_bytes": 1568,
+        "decoded_bytes": 6466,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-detail-1610612747",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612747?releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1222,
+          "total": 0.1223,
+          "connect": 0.0065,
+          "tls": 0.016,
+          "wire_bytes": 1671,
+          "http_version": "2",
+          "decoded_bytes": 5930,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1194,
+          "total": 0.12,
+          "connect": 0.0061,
+          "tls": 0.0142,
+          "wire_bytes": 1671,
+          "http_version": "2",
+          "decoded_bytes": 5930,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1149,
+          "total": 0.1156,
+          "connect": 0.0068,
+          "tls": 0.0163,
+          "wire_bytes": 1671,
+          "http_version": "2",
+          "decoded_bytes": 5930,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.116,
+          "total": 0.1164,
+          "connect": 0.0074,
+          "tls": 0.0154,
+          "wire_bytes": 1671,
+          "http_version": "2",
+          "decoded_bytes": 5930,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.124,
+          "total": 0.1249,
+          "connect": 0.0069,
+          "tls": 0.0183,
+          "wire_bytes": 1671,
+          "http_version": "2",
+          "decoded_bytes": 5930,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1194,
+        "total": 0.12,
+        "total_min": 0.1156,
+        "total_max": 0.1249,
+        "wire_bytes": 1671,
+        "decoded_bytes": 5930,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-peers-1610612747",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612747/peers?limit=6&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1505,
+          "total": 0.1511,
+          "connect": 0.007,
+          "tls": 0.0159,
+          "wire_bytes": 1868,
+          "http_version": "2",
+          "decoded_bytes": 9152,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1444,
+          "total": 0.1451,
+          "connect": 0.0076,
+          "tls": 0.0205,
+          "wire_bytes": 1868,
+          "http_version": "2",
+          "decoded_bytes": 9152,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1602,
+          "total": 0.1605,
+          "connect": 0.0069,
+          "tls": 0.0184,
+          "wire_bytes": 1868,
+          "http_version": "2",
+          "decoded_bytes": 9152,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1372,
+          "total": 0.1375,
+          "connect": 0.0069,
+          "tls": 0.0169,
+          "wire_bytes": 1868,
+          "http_version": "2",
+          "decoded_bytes": 9152,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1902,
+          "total": 0.1906,
+          "connect": 0.0067,
+          "tls": 0.0167,
+          "wire_bytes": 1868,
+          "http_version": "2",
+          "decoded_bytes": 9152,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1505,
+        "total": 0.1511,
+        "total_min": 0.1375,
+        "total_max": 0.1906,
+        "wire_bytes": 1868,
+        "decoded_bytes": 9152,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/six-factors?releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1828,
+          "total": 0.1831,
+          "connect": 0.007,
+          "tls": 0.0179,
+          "wire_bytes": 15675,
+          "http_version": "2",
+          "decoded_bytes": 50228,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1962,
+          "total": 0.197,
+          "connect": 0.0072,
+          "tls": 0.0196,
+          "wire_bytes": 15675,
+          "http_version": "2",
+          "decoded_bytes": 50228,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1688,
+          "total": 0.1694,
+          "connect": 0.0075,
+          "tls": 0.0158,
+          "wire_bytes": 15675,
+          "http_version": "2",
+          "decoded_bytes": 50228,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1709,
+          "total": 0.1719,
+          "connect": 0.0074,
+          "tls": 0.0183,
+          "wire_bytes": 15675,
+          "http_version": "2",
+          "decoded_bytes": 50228,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2307,
+          "total": 0.2316,
+          "connect": 0.0068,
+          "tls": 0.0169,
+          "wire_bytes": 15675,
+          "http_version": "2",
+          "decoded_bytes": 50228,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1828,
+        "total": 0.1831,
+        "total_min": 0.1694,
+        "total_max": 0.2316,
+        "wire_bytes": 15675,
+        "decoded_bytes": 50228,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors-away",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/six-factors?venue=away&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.4748,
+          "total": 0.4751,
+          "connect": 0.0069,
+          "tls": 0.0157,
+          "wire_bytes": 13876,
+          "http_version": "2",
+          "decoded_bytes": 43708,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1698,
+          "total": 0.1705,
+          "connect": 0.0071,
+          "tls": 0.0196,
+          "wire_bytes": 13876,
+          "http_version": "2",
+          "decoded_bytes": 43708,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1799,
+          "total": 0.1804,
+          "connect": 0.008,
+          "tls": 0.0189,
+          "wire_bytes": 13876,
+          "http_version": "2",
+          "decoded_bytes": 43708,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1992,
+          "total": 0.1995,
+          "connect": 0.0069,
+          "tls": 0.0259,
+          "wire_bytes": 13876,
+          "http_version": "2",
+          "decoded_bytes": 43708,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.5034,
+          "total": 0.5041,
+          "connect": 0.0076,
+          "tls": 0.0166,
+          "wire_bytes": 13876,
+          "http_version": "2",
+          "decoded_bytes": 43708,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1992,
+        "total": 0.1995,
+        "total_min": 0.1705,
+        "total_max": 0.5041,
+        "wire_bytes": 13876,
+        "decoded_bytes": 43708,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors-home",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/six-factors?venue=home&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1708,
+          "total": 0.1718,
+          "connect": 0.0075,
+          "tls": 0.0202,
+          "wire_bytes": 13925,
+          "http_version": "2",
+          "decoded_bytes": 43826,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1653,
+          "total": 0.1656,
+          "connect": 0.0069,
+          "tls": 0.0178,
+          "wire_bytes": 13925,
+          "http_version": "2",
+          "decoded_bytes": 43826,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1908,
+          "total": 0.1911,
+          "connect": 0.0066,
+          "tls": 0.0171,
+          "wire_bytes": 13925,
+          "http_version": "2",
+          "decoded_bytes": 43826,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1741,
+          "total": 0.1746,
+          "connect": 0.007,
+          "tls": 0.027,
+          "wire_bytes": 13925,
+          "http_version": "2",
+          "decoded_bytes": 43826,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.2522,
+          "total": 0.2525,
+          "connect": 0.0068,
+          "tls": 0.0216,
+          "wire_bytes": 13925,
+          "http_version": "2",
+          "decoded_bytes": 43826,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1741,
+        "total": 0.1746,
+        "total_min": 0.1656,
+        "total_max": 0.2525,
+        "wire_bytes": 13925,
+        "decoded_bytes": 43826,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-workspace",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/workspace?workspaceId=default",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0582,
+          "total": 0.0583,
+          "connect": 0.0071,
+          "tls": 0.0165,
+          "wire_bytes": 534,
+          "http_version": "2",
+          "decoded_bytes": 1062,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1842,
+          "total": 0.1843,
+          "connect": 0.0073,
+          "tls": 0.0167,
+          "wire_bytes": 534,
+          "http_version": "2",
+          "decoded_bytes": 1062,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0365,
+          "total": 0.0365,
+          "connect": 0.0067,
+          "tls": 0.0158,
+          "wire_bytes": 534,
+          "http_version": "2",
+          "decoded_bytes": 1062,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0314,
+          "total": 0.0316,
+          "connect": 0.0064,
+          "tls": 0.0155,
+          "wire_bytes": 534,
+          "http_version": "2",
+          "decoded_bytes": 1062,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0415,
+          "total": 0.0416,
+          "connect": 0.0076,
+          "tls": 0.0216,
+          "wire_bytes": 534,
+          "http_version": "2",
+          "decoded_bytes": 1062,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0415,
+        "total": 0.0416,
+        "total_min": 0.0316,
+        "total_max": 0.1843,
+        "wire_bytes": 534,
+        "decoded_bytes": 1062,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-draft-classes",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/draft-classes",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0359,
+          "total": 0.036,
+          "connect": 0.0074,
+          "tls": 0.0174,
+          "wire_bytes": 222,
+          "http_version": "2",
+          "decoded_bytes": 818,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0332,
+          "total": 0.0333,
+          "connect": 0.0073,
+          "tls": 0.0147,
+          "wire_bytes": 222,
+          "http_version": "2",
+          "decoded_bytes": 818,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0368,
+          "total": 0.0369,
+          "connect": 0.0071,
+          "tls": 0.0179,
+          "wire_bytes": 222,
+          "http_version": "2",
+          "decoded_bytes": 818,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0353,
+          "total": 0.0354,
+          "connect": 0.0069,
+          "tls": 0.0167,
+          "wire_bytes": 222,
+          "http_version": "2",
+          "decoded_bytes": 818,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0552,
+          "total": 0.0553,
+          "connect": 0.0075,
+          "tls": 0.0163,
+          "wire_bytes": 222,
+          "http_version": "2",
+          "decoded_bytes": 818,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0359,
+        "total": 0.036,
+        "total_min": 0.0333,
+        "total_max": 0.0553,
+        "wire_bytes": 222,
+        "decoded_bytes": 818,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-schedule-1610612738",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612738/schedule?releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0924,
+          "total": 0.0931,
+          "connect": 0.0067,
+          "tls": 0.0151,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6109,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.124,
+          "total": 0.1249,
+          "connect": 0.0075,
+          "tls": 0.0199,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6109,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1192,
+          "total": 0.1199,
+          "connect": 0.008,
+          "tls": 0.0193,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6109,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0882,
+          "total": 0.0887,
+          "connect": 0.0068,
+          "tls": 0.0144,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6109,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1092,
+          "total": 0.1097,
+          "connect": 0.0078,
+          "tls": 0.0173,
+          "wire_bytes": 1568,
+          "http_version": "2",
+          "decoded_bytes": 6109,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1092,
+        "total": 0.1097,
+        "total_min": 0.0887,
+        "total_max": 0.1249,
+        "wire_bytes": 1568,
+        "decoded_bytes": 6109,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-peers-1610612738",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612738/peers?limit=6&releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1604,
+          "total": 0.161,
+          "connect": 0.0069,
+          "tls": 0.0194,
+          "wire_bytes": 1863,
+          "http_version": "2",
+          "decoded_bytes": 9203,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1648,
+          "total": 0.1651,
+          "connect": 0.0076,
+          "tls": 0.0216,
+          "wire_bytes": 1863,
+          "http_version": "2",
+          "decoded_bytes": 9203,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1421,
+          "total": 0.1424,
+          "connect": 0.0066,
+          "tls": 0.0175,
+          "wire_bytes": 1863,
+          "http_version": "2",
+          "decoded_bytes": 9203,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1391,
+          "total": 0.1399,
+          "connect": 0.0074,
+          "tls": 0.0163,
+          "wire_bytes": 1863,
+          "http_version": "2",
+          "decoded_bytes": 9203,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1731,
+          "total": 0.1735,
+          "connect": 0.0067,
+          "tls": 0.0191,
+          "wire_bytes": 1863,
+          "http_version": "2",
+          "decoded_bytes": 9203,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1604,
+        "total": 0.161,
+        "total_min": 0.1399,
+        "total_max": 0.1735,
+        "wire_bytes": 1863,
+        "decoded_bytes": 9203,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-detail-1610612738",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/teams/1610612738?releaseId=9da7c0b8-4dcc-486f-a906-a91d25215cc9&season=2026-27&phase=regular_season&beforeDate=2026-11-15",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.1081,
+          "total": 0.1083,
+          "connect": 0.0075,
+          "tls": 0.0189,
+          "wire_bytes": 1604,
+          "http_version": "2",
+          "decoded_bytes": 5461,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1081,
+          "total": 0.1089,
+          "connect": 0.0084,
+          "tls": 0.0193,
+          "wire_bytes": 1604,
+          "http_version": "2",
+          "decoded_bytes": 5461,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1069,
+          "total": 0.1074,
+          "connect": 0.0071,
+          "tls": 0.0166,
+          "wire_bytes": 1604,
+          "http_version": "2",
+          "decoded_bytes": 5461,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.1097,
+          "total": 0.1098,
+          "connect": 0.0075,
+          "tls": 0.0175,
+          "wire_bytes": 1604,
+          "http_version": "2",
+          "decoded_bytes": 5461,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.122,
+          "total": 0.1225,
+          "connect": 0.0076,
+          "tls": 0.0165,
+          "wire_bytes": 1604,
+          "http_version": "2",
+          "decoded_bytes": 5461,
+          "headers": {
+            "content-encoding": "gzip",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.1081,
+        "total": 0.1089,
+        "total_min": 0.1074,
+        "total_max": 0.1225,
+        "wire_bytes": 1604,
+        "decoded_bytes": 5461,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-2544-288",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait?size=288&crop=face-v6",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0688,
+          "total": 0.0701,
+          "connect": 0.0078,
+          "tls": 0.018,
+          "wire_bytes": 20626,
+          "http_version": "2",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0348,
+          "total": 0.0352,
+          "connect": 0.0076,
+          "tls": 0.0174,
+          "wire_bytes": 20626,
+          "http_version": "2",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0404,
+          "total": 0.0409,
+          "connect": 0.0079,
+          "tls": 0.0208,
+          "wire_bytes": 20626,
+          "http_version": "2",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0422,
+          "total": 0.0428,
+          "connect": 0.008,
+          "tls": 0.021,
+          "wire_bytes": 20626,
+          "http_version": "2",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "cf-cache-status": "DYNAMIC"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0455,
+          "total": 0.0461,
+          "connect": 0.0071,
+          "tls": 0.016,
+          "wire_bytes": 20626,
+          "http_version": "2",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "cf-cache-status": "DYNAMIC"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0422,
+        "total": 0.0428,
+        "total_min": 0.0352,
+        "total_max": 0.0701,
+        "wire_bytes": 20626,
+        "decoded_bytes": 20626,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-2544-288-webp",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6",
+      "runs": [
+        {
+          "status": 404,
+          "ttfb": 0.0972,
+          "total": 0.0973,
+          "connect": 0.007,
+          "tls": 0.0174,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "MISS"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.046,
+          "total": 0.0461,
+          "connect": 0.0075,
+          "tls": 0.0174,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.0267,
+          "total": 0.0267,
+          "connect": 0.0076,
+          "tls": 0.0184,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.0227,
+          "total": 0.0227,
+          "connect": 0.0069,
+          "tls": 0.0163,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.0343,
+          "total": 0.0343,
+          "connect": 0.0066,
+          "tls": 0.0146,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0343,
+        "total": 0.0343,
+        "total_min": 0.0227,
+        "total_max": 0.0973,
+        "wire_bytes": 22,
+        "decoded_bytes": 22,
+        "statuses": [
+          404
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-1449-192-season-webp",
+      "url": "https://courtlens.calebhabesh.com/api/workbench/players/1449/portrait.webp?size=192&season=1991-92&team=BOS&crop=face-v6",
+      "runs": [
+        {
+          "status": 404,
+          "ttfb": 0.0666,
+          "total": 0.0667,
+          "connect": 0.0073,
+          "tls": 0.0202,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "MISS"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.0277,
+          "total": 0.0277,
+          "connect": 0.0069,
+          "tls": 0.0179,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.0393,
+          "total": 0.0393,
+          "connect": 0.0067,
+          "tls": 0.015,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.033,
+          "total": 0.0331,
+          "connect": 0.0072,
+          "tls": 0.0232,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        },
+        {
+          "status": 404,
+          "ttfb": 0.026,
+          "total": 0.0261,
+          "connect": 0.0068,
+          "tls": 0.0167,
+          "wire_bytes": 22,
+          "http_version": "2",
+          "decoded_bytes": 22,
+          "headers": {
+            "cache-control": "max-age=14400",
+            "cf-cache-status": "HIT"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.033,
+        "total": 0.0331,
+        "total_min": 0.0261,
+        "total_max": 0.0667,
+        "wire_bytes": 22,
+        "decoded_bytes": 22,
+        "statuses": [
+          404
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "team-logo-lal-svg",
+      "url": "https://courtlens.calebhabesh.com/team-logos/1610612747-5b68f7b92ba7d058.svg",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0497,
+          "total": 0.0504,
+          "connect": 0.0064,
+          "tls": 0.0215,
+          "wire_bytes": 4425,
+          "http_version": "2",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "content-encoding": "gzip",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0532,
+          "total": 0.0538,
+          "connect": 0.0062,
+          "tls": 0.0166,
+          "wire_bytes": 4425,
+          "http_version": "2",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "content-encoding": "gzip",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0637,
+          "total": 0.0638,
+          "connect": 0.0079,
+          "tls": 0.0194,
+          "wire_bytes": 4425,
+          "http_version": "2",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "content-encoding": "gzip",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0328,
+          "total": 0.033,
+          "connect": 0.0074,
+          "tls": 0.0165,
+          "wire_bytes": 4425,
+          "http_version": "2",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "content-encoding": "gzip",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0314,
+          "total": 0.0319,
+          "connect": 0.0072,
+          "tls": 0.0168,
+          "wire_bytes": 4425,
+          "http_version": "2",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "content-encoding": "gzip",
+            "cf-cache-status": "REVALIDATED"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0497,
+        "total": 0.0504,
+        "total_min": 0.0319,
+        "total_max": 0.0638,
+        "wire_bytes": 4425,
+        "decoded_bytes": 12296,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "team-logo-bos-1977-png",
+      "url": "https://courtlens.calebhabesh.com/team-logos/bos-1977-4571e077bce6b1e7.png",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0407,
+          "total": 0.0413,
+          "connect": 0.007,
+          "tls": 0.0149,
+          "wire_bytes": 18731,
+          "http_version": "2",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "MISS"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0338,
+          "total": 0.0341,
+          "connect": 0.0078,
+          "tls": 0.021,
+          "wire_bytes": 18731,
+          "http_version": "2",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0459,
+          "total": 0.0462,
+          "connect": 0.0062,
+          "tls": 0.0177,
+          "wire_bytes": 18731,
+          "http_version": "2",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0422,
+          "total": 0.0431,
+          "connect": 0.0072,
+          "tls": 0.0189,
+          "wire_bytes": 18731,
+          "http_version": "2",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0432,
+          "total": 0.0439,
+          "connect": 0.0074,
+          "tls": 0.0174,
+          "wire_bytes": 18731,
+          "http_version": "2",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0422,
+        "total": 0.0431,
+        "total_min": 0.0341,
+        "total_max": 0.0462,
+        "wire_bytes": 18731,
+        "decoded_bytes": 18731,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "flag-us",
+      "url": "https://courtlens.calebhabesh.com/flags/us.png",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0522,
+          "total": 0.0522,
+          "connect": 0.0061,
+          "tls": 0.0197,
+          "wire_bytes": 773,
+          "http_version": "2",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.046,
+          "total": 0.0461,
+          "connect": 0.0068,
+          "tls": 0.0209,
+          "wire_bytes": 773,
+          "http_version": "2",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.045,
+          "total": 0.045,
+          "connect": 0.0076,
+          "tls": 0.0292,
+          "wire_bytes": 773,
+          "http_version": "2",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0544,
+          "total": 0.0545,
+          "connect": 0.007,
+          "tls": 0.0172,
+          "wire_bytes": 773,
+          "http_version": "2",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0349,
+          "total": 0.0349,
+          "connect": 0.0068,
+          "tls": 0.0148,
+          "wire_bytes": 773,
+          "http_version": "2",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=14400",
+            "cf-cache-status": "REVALIDATED"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.046,
+        "total": 0.0461,
+        "total_min": 0.0349,
+        "total_max": 0.0545,
+        "wire_bytes": 773,
+        "decoded_bytes": 773,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    }
+  ]
+}
