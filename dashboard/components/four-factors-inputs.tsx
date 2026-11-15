@@ -11,6 +11,7 @@ import {
   type FactorInput, type FactorRow, type FourFactorsSeason, type FourFactorsSummary, type MissKind, type Rebounds
 } from "@/lib/research-r10";
 import { teamArtwork } from "@/lib/team-era";
+import { TeamLink } from "@/components/entity-link";
 
 /**
  * R10's observed four-factor inputs (courtlens-four-factors-inputs-v2) under the ORTG lab (RD02): the league and team
@@ -89,7 +90,7 @@ function TeamsTable({ season }: { season: FourFactorsSeason }) {
   type T = FourFactorsSeason["teams"][number];
   const pctCol = (key: string, label: string, get: (t: T) => number | null): GridColumn<T> => ({ key, label, cell: t => <GridValue text={percent(get(t), 1)} />, data: t => ({ field: key, value: get(t) ?? "" }) });
   return <StatsGrid label={`Team inputs ${season.season}`} name="teams" density="compact" height="auto" leadWidth="sm" minWidth="wide" rows={teams} rowKey={t => t.team}
-    lead={{ label: "Team", cell: t => <span className="ol-team-cell"><TeamLogo team={t.team} season={season.season} size={20} />{teamArtwork(t.team, season.season)?.tricode ?? t.team}</span> }}
+    lead={{ label: "Team", cell: t => <TeamLink team={t.team} scope={{ season: season.season }} variant="block" className="ol-team-cell"><TeamLogo team={t.team} season={season.season} size={20} /><span className="entity-link-text">{teamArtwork(t.team, season.season)?.tricode ?? t.team}</span></TeamLink> }}
     columns={[
       { key: "ortg", label: "ORTG", cell: t => <GridValue text={fixed(t.ortg_factors, 1)} />, data: t => ({ field: "ortg", value: t.ortg_factors ?? "" }) },
       ...INPUTS.map(k => pctCol(k, INPUT_LABELS[k], t => t.inputs[k])),

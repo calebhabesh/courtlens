@@ -22,6 +22,9 @@ import { PORTRAIT_CROP_VERSION, seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
 import { teamAccent } from "@/lib/team-colors";
 import type { LookupItem } from "@/lib/types";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 /**
  * Research → Models → Lineup Model (R14, designed in RD12). Every number is the frozen courtlens-lineup-model-v1 or courtlens-lineup-backtest-v1 results' or the lineup tool's;
@@ -122,8 +125,8 @@ function Slot({ player, others, items, onPick }: { player: ToolPlayer; others: r
       <LookupInput label={`Replace ${name}`} placeholder="Search players" value={text} onChange={setText} candidates={[...items]} excludedIds={[...others, player.player_id]} limit={12} groupLabel="Players in this fit" portalDropdown dropdownMinWidth={280} autoFocus openOnFocus={false} clearable={false}
         onSelect={item => { close(); onPick(item.canonical_id); }} />
     </div> : <span className="lm-slot-copy">
-      <a className="lm-slot-name" href={`/players/${player.player_id}${player.photo_season ? `?season=${player.photo_season}` : ""}`}>{name}</a>
-      {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} />{team}</span>}
+      <Link className="lm-slot-name entity-link" href={playerHref(player.player_id, { season: player.photo_season })} prefetch={false}>{name}</Link>
+      {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLink team={team} scope={{ season: player.photo_season }} variant="block"><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} /><span className="entity-link-text">{team}</span></TeamLink></span>}
       {player.status && <span className="lm-slot-status" data-field="status" data-status={player.status}>{STATUS_LABEL[player.status]}</span>}
     </span>}
     <span className="lm-slot-rating">
@@ -166,7 +169,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
   const items = useMemo(() => (roster?.players ?? []).map((p): LookupItem => ({
     id: p.player_id, canonical_id: p.player_id, kind: "player", display_name: p.name ?? p.player_id, match_basis: "suggestion", match_score: 1,
     portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
-    availability: { has_current_season: true, status: "available", seasons: [serving.season] }, destination_url: `/players/${p.player_id}`,
+    availability: { has_current_season: true, status: "available", seasons: [serving.season] }, destination_url: playerHref(p.player_id),
     team_association: p.tricode ? { basis: "last_observed", teams: [p.tricode], observed_through: null, season: p.photo_season } : null,
     metadata: { caption: `${p.tricode ?? "No team"} · ${p.status ? STATUS_LABEL[p.status] : "Unknown"}` },
   } as LookupItem)), [roster, serving.season]);

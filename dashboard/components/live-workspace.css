@@ -89,6 +89,9 @@
 
   .live-card-team { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto auto; align-items: center; gap: var(--space-3); min-height: 40px; }
   .live-card-team-text { display: grid; min-width: 0; }
+  /* Site links D2: each team's logo and code is a link above the card's stretched game link, at
+     least 44px tall for touch (a block link: only the code takes the hover). */
+  .live-card-team-link { grid-column: 1 / 3; display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: var(--space-3); min-width: 0; min-height: 44px; }
   .live-card-team-line { display: flex; align-items: baseline; gap: var(--space-1); min-width: 0; }
   .live-card-code { font-size: var(--text-md); font-weight: 700; }
   /* Follow-up 19: Switzer's round 3, 5, 6, 8, 9 overshoot and render a pixel taller than 2 at 12px; mono digits share one height. */

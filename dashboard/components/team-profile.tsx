@@ -10,6 +10,7 @@ import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, standingGroup, type 
 import { NetTrend } from "./team-trend";
 import { RosterAllocationView, type RosterAllocationViewProps } from "./roster-allocation-view";
 import type { TeamPeersResponse, TeamScheduleGameItem } from "@/lib/types";
+import { gameHref as buildGameHref, scopeFromQuery, teamHref } from "@/lib/entity-links";
 
 const column = (key: string) => ALL_COLUMNS.find(entry => entry.key === key)!;
 const tone = (key: string, value: number | null) => !column(key).signed || value == null || Math.abs(value) < 0.05 ? undefined : value > 0 ? "up" : "down";
@@ -225,7 +226,7 @@ export function TeamSixFactorsSection({ data, team }: { data: SixFactorsResponse
 /** Results, most recent first; earlier games fold under a disclosure. */
 export function TeamGameLogSection({ games, season, scopeParams, teamId, tricode, empty = "No games in this scope.", embedded = false }: { games: TeamScheduleGameItem[]; season: string; scopeParams: string; /** The season's own id and code, to find each game on ESPN's slate. */ teamId: string; tricode: string; /** Why there are no games. */ empty?: string; /** Inside the Schedule section: the tables only. */ embedded?: boolean }) {
   // Live game pages are keyed by ESPN's id; /live/open finds it from the date and our ids.
-  const gameHref = (game: TeamScheduleGameItem) => `/live/open?${new URLSearchParams({ date: game.game_date.slice(0, 10), game: game.game_id, teams: `${teamId}:${tricode},${game.opponent_id ?? ""}:${game.opponent_tricode}` })}`;
+  const gameHref = (game: TeamScheduleGameItem) => buildGameHref({ gameId: game.game_id, date: game.game_date, teams: [{ id: teamId, tricode }, { id: game.opponent_id, tricode: game.opponent_tricode }] })!;
   const ordered = [...games].sort((a, b) => b.game_date.localeCompare(a.game_date) || b.game_id.localeCompare(a.game_id));
   const table = (rows: TeamScheduleGameItem[], label: string) => <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label={label} tabIndex={0}>
@@ -239,7 +240,7 @@ export function TeamGameLogSection({ games, season, scopeParams, teamId, tricode
           return <tr key={game.game_id}>
             <th scope="row" className="player-ref-grid-lead">{formatDate(game.game_date)}</th>
             <td className="group-start"><span className="team-games-opponent-cell">{game.side === "away" ? "@" : "vs"}<TeamLogo team={game.opponent_tricode} season={season} size={18} />
-              {game.opponent_id ? <Link href={`/teams/${game.opponent_id}?${scopeParams}`}>{game.opponent_tricode}</Link> : game.opponent_tricode}</span></td>
+              {game.opponent_id ? <Link className="entity-link" href={teamHref(game.opponent_id, scopeFromQuery(scopeParams))} prefetch={false}>{game.opponent_tricode}</Link> : game.opponent_tricode}</span></td>
             <td data-tone={game.is_win == null ? undefined : game.is_win ? "up" : "down"}>{game.is_win == null ? "—" : game.is_win ? "W" : "L"}</td>
             <td>{known ? <Link className="team-games-score" href={gameHref(game)} prefetch={false} title="Open the game page: box score, play-by-play and shot chart">{game.team_points}–{game.opponent_points}</Link> : "—"}</td>
             <td data-tone={game.differential == null || game.differential === 0 ? undefined : game.differential > 0 ? "up" : "down"}>{game.differential == null ? "—" : formatValue(game.differential, "signed", "totals")}</td>
@@ -274,7 +275,7 @@ export function TeamPeersSection({ peers, season, scopeParams }: { peers: TeamPe
     <header className="player-open-heading"><h2><Icon name="users" size={20} />Similar Teams</h2><span>Nearest statistical profiles this season</span></header>
     <ol className="team-peers">
       {peers.peers.map(peer => <li key={peer.team_id}>
-        <Link href={`/teams/${peer.team_id}?${scopeParams}`} className="team-peer" title={`${peer.name}: similarity ${(peer.similarity_score * 100).toFixed(1)}%, distance ${peer.distance.toFixed(3)}`}>
+        <Link href={teamHref(peer.team_id, scopeFromQuery(scopeParams))} prefetch={false} className="team-peer" title={`${peer.name}: similarity ${(peer.similarity_score * 100).toFixed(1)}%, distance ${peer.distance.toFixed(3)}`}>
           <TeamLogo team={peer.tricode} season={season} size={32} />
           <span><strong>{peer.name}</strong><small>{(peer.similarity_score * 100).toFixed(1)}% similar</small></span>
         </Link>

@@ -20,6 +20,8 @@ import {
   getDefensiveCards, getDefensiveSummary, type DefenseBoard, type DefenseCard, type DefenseSort, type DefenseSummary, type KeyMatchup, type ShotKind, type UnknownSeason
 } from "@/lib/shot-decomposition";
 import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } from "@/lib/shot-quality";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 /*
  * Research → Defensive Shot Quality (R06 analysis; RD05 design after the reference site's D-ShotQuality page). The reference site's centred hero,
@@ -118,8 +120,8 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
     <header className="dq-card-head">
       <PlayerAvatar playerId={card.player_id} name={card.player_name} team={card.tricode} size="lg" era={seasonEra(season, card.tricode)} className="dq-avatar" />
       <div className="dq-card-titles">
-        <Link className="dq-card-name" href={`/players/${card.player_id}?season=${season}`}>{card.player_name}</Link>
-        <span className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}{card.tricode ?? "—"}</span>
+        <Link className="dq-card-name entity-link" href={playerHref(card.player_id, { season })} prefetch={false}>{card.player_name}</Link>
+        <TeamLink team={card.tricode} scope={{ season }} variant="block" className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}<span className="entity-link-text">{card.tricode ?? "—"}</span></TeamLink>
         <RapmChip card={card} />
       </div>
       <span className="dq-badge" data-field="position" data-value={position}>#{position}</span>

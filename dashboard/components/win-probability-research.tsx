@@ -18,6 +18,8 @@ import {
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
 import { WinProbabilityV4 } from "./win-probability-v4";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /**
  * Research → Win Probability (R15b model, designed in F03 / RD14). Presentation only: every number is the frozen card's, the nightly
@@ -191,7 +193,7 @@ function LedgerGrid({ games }: { games: RecentGame[] }) {
   return <StatsGrid<RecentGame> label="Scored games" name="ledger" density="compact" height="auto" leadWidth="lg" className={phone ? "wp-grid wp-ledger wp-phone" : "wp-grid wp-ledger"} rows={games} rowKey={g => g.game_id}
     rowData={g => ({ game: g.game_id, prospective: g.prospective })}
     lead={{ label: "Game", cell: g => <>
-      <span className="wp-matchup" data-field="matchup"><span className="wp-team"><TeamLogo team={g.away} season={season} size={16} />{g.away}</span><span className="wp-at">at</span><span className="wp-team"><TeamLogo team={g.home} season={season} size={16} />{g.home}</span></span>
+      <span className="wp-matchup" data-field="matchup"><TeamLink team={g.away} scope={{ season }} variant="block" className="wp-team"><TeamLogo team={g.away} season={season} size={16} /><span className="entity-link-text">{g.away}</span></TeamLink><span className="wp-at">at</span><TeamLink team={g.home} scope={{ season }} variant="block" className="wp-team"><TeamLogo team={g.home} season={season} size={16} /><span className="entity-link-text">{g.home}</span></TeamLink></span>
       <span className="wp-name-sub">{formatDate(g.date)}{phone ? ` · ${g.away_score}–${g.home_score}${g.prospective ? "" : " · replay"}` : ""}</span>
     </> }}
     columns={columns} />;
@@ -395,7 +397,7 @@ function WpaGrid({ table }: { table: WinProbabilityAdded }) {
       columns={columns} leadWidth="lg" minWidth="narrow" height="scroll" empty="No player matches this search."
       rowData={r => ({ player: r.player_id ?? r.player })} sort={{ key: sort.key, direction: sort.direction, onSort }}
       lead={{ group: "Player", label: <GridSearch value={query} onChange={setQuery} />, cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={table.season} era={seasonEra(table.season, r.team)} subtitle={phone ? `${r.team ?? ""} · ${whole(r.games)} GP` : r.team ?? undefined}
-        href={r.player_id ? `/players/${r.player_id}?season=${table.season}` : undefined} /> }} />
+        href={playerHref(r.player_id, { season: table.season }) ?? undefined} /> }} />
   </div>;
 }
 

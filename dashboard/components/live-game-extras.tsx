@@ -6,6 +6,7 @@ import { logoTeam, Panel } from "./live-panel";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { Segmented } from "./ui/kit";
+import { TeamLink } from "./entity-link";
 
 const vars = (values: Record<`--${string}`, string>) => values as CSSProperties;
 
@@ -87,7 +88,7 @@ function SwingList({ swings, away, home, season }: { swings: WinProbabilitySwing
       <span className="live-swing-when">{s.period ? periodLabel(s.period) : ""} {s.clock}</span>
       <span className="live-swing-text">{s.text}</span>
       <span className="live-swing-score">{s.away_score}–{s.home_score}</span>
-      <span className="live-swing-move"><TeamLogo team={logoTeam(favoured)} season={season} size={16} />{teamCode(favoured)} +{Math.abs(s.delta_home * 100).toFixed(1)}</span>
+      <span className="live-swing-move"><TeamLink team={favoured.canonical_id} scope={{ season }} variant="block"><TeamLogo team={logoTeam(favoured)} season={season} size={16} /><span className="entity-link-text">{teamCode(favoured)}</span></TeamLink> +{Math.abs(s.delta_home * 100).toFixed(1)}</span>
     </li>;
   })}</ol>;
 }
@@ -139,8 +140,8 @@ export function GameFlow({ data, className = "" }: { data: LiveGameData; classNa
   const changes = leadChanges(plays);
   const ticks = Array.from({ length: periods }, (_, i) => ({ label: i < 4 ? ["1st", "2nd", "3rd", "4th"][i] : periodLabel(i + 1), at: x(periodStart(i + 1)) / W * 100 }));
   const team = (t: LiveTeam, value: string, note?: string) => <span className="live-flow-team" data-side={t.side}>
-    <TeamLogo team={logoTeam(t)} season={season} size={20} />
-    <span className="live-flow-code">{teamCode(t)}<span className="live-flow-key" aria-hidden="true" /></span>
+    <TeamLink team={t.canonical_id} scope={{ season }} variant="block" className="live-flow-team-link"><TeamLogo team={logoTeam(t)} season={season} size={20} />
+    <span className="live-flow-code"><span className="entity-link-text">{teamCode(t)}</span><span className="live-flow-key" aria-hidden="true" /></span></TeamLink>
     <strong className="live-flow-value">{value}</strong>{note && <span className="live-flow-note">{note}</span>}
   </span>;
   const percent = (value: number) => `${Math.round(value * 100)}%`;
@@ -205,9 +206,9 @@ export function Matchups({ data, className = "" }: { data: LiveGameData; classNa
   const byId = new Map(data.game.teams.map(t => [t.source_id, t]));
   return <Panel title="Matchups" icon="swords" className={className}>
     <div className="live-series-head">
-      <span className="live-series-team"><TeamLogo team={logoTeam(away)} season={season} size={32} />{teamCode(away)}</span>
+      <TeamLink team={away.canonical_id} scope={{ season }} variant="block" className="live-series-team"><TeamLogo team={logoTeam(away)} season={season} size={32} /><span className="entity-link-text">{teamCode(away)}</span></TeamLink>
       <span className="live-series-lead"><span>{series.short_summary ?? "Season series"}</span><strong>{series.score ?? "0-0"}</strong></span>
-      <span className="live-series-team"><TeamLogo team={logoTeam(home)} season={season} size={32} />{teamCode(home)}</span>
+      <TeamLink team={home.canonical_id} scope={{ season }} variant="block" className="live-series-team"><TeamLogo team={logoTeam(home)} season={season} size={32} /><span className="entity-link-text">{teamCode(home)}</span></TeamLink>
     </div>
     <ol className="live-series-games">{series.games.map((g, i) => {
       const host = byId.get(g.teams.find(t => t.side === "home")?.source_id ?? "");

@@ -529,6 +529,46 @@ the main result except at most one one-line `GatedNote`.
   acquire-bbref-portraits`; owner, 2026-10-20). Either photo is from his playing career, not
   necessarily that team or season.
 
+### Links (site links plan, owner 2026-11-14)
+
+Every player, team, game and playoff series named on a page links to its page, carrying the
+season it was shown in ([site links plan](../site-links-plan.md)).
+
+- **Two styles, no blue.** Blue is `--color-identity-b` (Subject B on Compare and WOWY).
+  - *Entity links* in tables, cards and headers keep the surrounding text colour and take the
+    accent colour and an underline on hover and keyboard focus (`.entity-link`). Every name being
+    a link is the affordance.
+  - *Prose links* in Methodology, Learning, Ask answers and page copy are accent and always
+    underlined (`.entity-link.is-prose`, the `.ui-article-section` style), first mention per
+    block only.
+- **Build hrefs with `dashboard/lib/entity-links.ts`** (`playerHref`, `teamHref`, `gameHref`,
+  `seriesHref`) or render `PlayerLink`, `TeamLink`, `GameLink`, `SeriesLink` from
+  `components/entity-link.tsx`. ESLint rejects a literal that starts with `/players/`, `/teams/`,
+  `/live/games/`, `/live/open` or `/playoffs/` anywhere else.
+- **What a link carries.** The season always; the phase only for the playoffs; `beforeDate` and
+  `releaseId` only where the source page is pinned to them. Table filters, sort and paging stay
+  behind. Team links name the franchise id; the team page resolves the era (a 2005-06 Thunder
+  link opens the Sonics); a folded team keeps its code.
+- **Ids only.** A name links when its row carries the id; otherwise it is plain text. Names are
+  never matched to ids by similarity. A link to the page it sits on renders as text.
+- **Real anchors, never nested.** Links are `next/link` anchors with `prefetch={false}` (no
+  viewport or hover prefetch). Inside a clickable card or row, the card's primary link is
+  `variant="stretched"` in a `.has-stretched-link` container; entity links sit above it.
+- **These stay plain:** picker options, search suggestions, segmented controls, compare slots and
+  tray chips, chart tooltips (link the legend or the click panel instead), exported images, and
+  the subject in its own page header.
+- **Tap targets.** At least 24 px tall in tables; 44 px for the team targets on Live cards at
+  390 px. Below 768 px the site's link rule (`main a`: 40 px, inline-flex) applies to entity links
+  too, except a name inside a heading or an identity subtitle, which keeps the text's flow.
+- **Variants** (`PlayerLink`/`TeamLink`/… `variant`): `entity` (default), `prose`, `block` (a logo
+  or photo beside a name: the whole block is the target and only `.entity-link-text` takes the
+  hover), `stretched` (a card's primary link). The resting colour lives in the components layer, so
+  a page keeps its own; hover and focus live in the foundation layer, so one look wins everywhere.
+- **Shared cells link by default.** `PlayerIdentity`, `TeamIdentity`, `GridPlayer` and the series
+  `TeamCode` link from the id and season they receive; pass `href={null}` (or `link={false}`) inside
+  a control or a card that is already a link.
+- **A logo-only badge beside a name that links stays plain** (one target per mention).
+
 ### Dates and numbers (D11, D20)
 
 - One display format through `formatDate`: "Apr 12, 2026"; compact "Apr 12" in date strips.

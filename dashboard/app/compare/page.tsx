@@ -21,6 +21,8 @@ import { comparePlayers, WorkbenchApiError } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, ComparisonGroupPlayer, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
 import type { BestSeason } from "@/lib/landing-season";
+import { TeamLink } from "@/components/entity-link";
+import { seasonOf } from "@/lib/live";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Comparison · CourtLens" };
@@ -321,7 +323,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
     ["Last 10 · minutes / game", (p) => summaryValue(p.summaries.last_10, "minutes_per_game")],
     ["Season · minutes / game", (p) => summaryValue(p.summaries.season, "minutes_per_game")],
     ["Last 10 sample", (p) => p.summaries.last_10 == null ? "Unavailable" : String(p.summaries.last_10.n)],
-    ["Next team game", (p) => p.target ? <>{formatDate(p.target.date)} · <TeamLogo team={p.target.team ?? p.target.team_id} size={20} />{p.target.team ?? p.target.team_id} {p.target.side === "home" ? "vs" : "at"} <TeamLogo team={p.target.opponent ?? p.target.opponent_id} size={20} />{p.target.opponent ?? p.target.opponent_id}</> : "No reconstructed target"],
+    ["Next team game", (p) => p.target ? <>{formatDate(p.target.date)} · <TeamLink team={p.target.team_id ?? p.target.team} scope={{ season: seasonOf(p.target.date) }} variant="block"><TeamLogo team={p.target.team ?? p.target.team_id} size={20} /><span className="entity-link-text">{p.target.team ?? p.target.team_id}</span></TeamLink> {p.target.side === "home" ? "vs" : "at"} <TeamLink team={p.target.opponent_id ?? p.target.opponent} scope={{ season: seasonOf(p.target.date) }} variant="block"><TeamLogo team={p.target.opponent ?? p.target.opponent_id} size={20} /><span className="entity-link-text">{p.target.opponent ?? p.target.opponent_id}</span></TeamLink></> : "No reconstructed target"],
     ["Rest before game", (p) => p.target?.rest_days == null ? "Unavailable" : `${p.target.rest_days} days`],
     ["Opponent context", (p) => p.opponent_context && p.opponent_context.eligible_games >= 5 ? `${p.opponent_context.eligible_games} prior games` : "Insufficient opponent coverage"],
     ["Next-game estimate", (p) => p.estimate.point == null ? estimateReason(p.estimate.status) : `${p.estimate.point.toFixed(1)} points`],

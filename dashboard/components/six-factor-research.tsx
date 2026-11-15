@@ -25,6 +25,7 @@ import {
   FACTORS, FACTOR_COPY, NODE_LABELS, UNKNOWN, factorMeta, getImpactTree, getSixFactorPage, intervalDomain, intervalText, sortPlayers, unknownReason,
   type FactorKey, type ImpactNode, type ImpactTreeData, type NodeKey, type Reconstruction, type SixFactorPage, type SixFactorPhase, type SixFactorPlayer,
 } from "@/lib/six-factor-research";
+import { playerHref } from "@/lib/entity-links";
 
 const r2 = (value: number | null | undefined) => value == null ? "—" : value.toFixed(3);
 const phaseLabel = (phase: SixFactorPhase) => phase === "playoffs" ? "Playoffs" : "Regular Season";
@@ -303,7 +304,7 @@ function TreeBody({ page, playerId, onPlayer }: { page: SixFactorPage; playerId:
   return <>
     <div className="sf-tree-head">
       <div className="sf-tree-picker"><EntityField label="Player" value={playerId} season={page.season} phase={page.phase} initialName={data?.player_name} onChange={value => onPlayer(value || null)} /></div>
-      {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={`/players/${data.player_id}?season=${page.season}`}
+      {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={playerHref(data.player_id, { season: page.season })}
         subtitle={data.in_fit ? <>{data.games ?? "—"} GP · {data.minutes == null ? "—" : count(Math.round(data.minutes))} MIN</> : `Not in the ${page.season} fit`} />}
     </div>
     {error && <FeedFailure error={error} retry={retry} what="Impact Tree" />}
@@ -369,7 +370,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
 
     <ResearchSection id="ratings" icon="table" title="All Ratings">
       <ResearchTable label="Six-factor ratings with intervals" rows={players} rowKey={p => p.player_id} name={p => p.player_name} team={p => p.team} season={page.season}
-        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} team={p.team} era={seasonEra(page.season, p.team)} size="sm" href={`/players/${p.player_id}?season=${page.season}`} />}
+        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} team={p.team} era={seasonEra(page.season, p.team)} size="sm" href={playerHref(p.player_id, { season: page.season })} />}
         views={views} trailingColumns={trailing} defaultSort="rapm" noun="players"
         minimum={{ label: "Min MIN", value: p => p.minutes, initial: 0, step: 100 }}
         csv={{ filename: `courtlens-six-factor-${page.season}-${page.phase}.csv`, columns: csvColumns }}

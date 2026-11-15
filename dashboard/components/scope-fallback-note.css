@@ -1,0 +1,4 @@
+@layer components {
+/* Same voice as the impact card's "Showing … not …" line: quiet, on the page background. */
+.scope-fallback-note { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+}

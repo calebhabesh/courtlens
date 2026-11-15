@@ -21,6 +21,9 @@
 @import "../components/save-operation.css";
 @import "./styles/shared-overrides.css";
 @import "../components/team-logo.css";
+@import "../components/entity-link.css";
+@import "../components/scope-fallback-note.css";
+@import "../components/related-row.css";
 @import "../components/entity-picker.css";
 @import "../components/threaded-assistant.css";
 @import "../components/agent-answer.css";

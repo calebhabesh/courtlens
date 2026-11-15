@@ -4,6 +4,7 @@ import { CountChip } from "@/components/ui/filter-bar";
 import { getMetricCatalog, getPortraitCredits, type PortraitCredits } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
 import { DarkoSourceLink } from "@/components/darko-source-link";
+import { playerHref } from "@/lib/entity-links";
 
 export const dynamic = "force-dynamic";
 
@@ -129,7 +130,7 @@ export default async function MethodologyPage() {
               <thead><tr><th scope="col">Player</th><th scope="col">Season</th><th scope="col">Credit</th></tr></thead>
               <tbody>
                 {credits.commons.map(row => <tr key={`${row.player_id}-${row.season}-${row.team}`}>
-                  <th scope="row"><Link href={row.season ? `/players/${row.player_id}?season=${row.season}` : `/players/${row.player_id}`}>{row.name}</Link></th>
+                  <th scope="row"><Link className="entity-link" href={playerHref(row.player_id, { season: row.season })} prefetch={false}>{row.name}</Link></th>
                   <td>{row.season ? `${row.season} · ${row.team ?? ""}` : "Career photo"}</td>
                   <td>{row.source_url ? <a href={row.source_url} target="_blank" rel="noreferrer">{row.credit}</a> : row.credit}</td>
                 </tr>)}

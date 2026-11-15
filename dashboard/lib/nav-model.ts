@@ -3,6 +3,7 @@
 // page title; its tabs are reached on the page and through search.
 
 import type { IconName } from "@/components/ui/icon";
+import { ENTITY_ROUTES } from "@/lib/entity-links";
 
 export interface NavItem {
   label: string;
@@ -160,8 +161,8 @@ export function activeNavSection(pathname: string): string {
     }
   }
   if (pathname.startsWith("/live") || pathname.startsWith("/playoffs")) return "live";
-  if (pathname.startsWith("/players/")) return "players";
-  if (pathname.startsWith("/teams/") || pathname.startsWith("/contracts/")) return "teams";
+  if (pathname.startsWith(ENTITY_ROUTES.player)) return "players";
+  if (pathname.startsWith(ENTITY_ROUTES.team) || pathname.startsWith("/contracts/")) return "teams";
   if (pathname.startsWith("/research") || pathname.startsWith("/investigations") || pathname.startsWith("/evaluation")) return "research";
   return "";
 }
