@@ -324,7 +324,8 @@ def test_summary_carries_credit_definitions_and_validation() -> None:
     body = service.summary()
     assert body is not None
     assert (
-        "The reference site" in body["credit"] and "not the reference site's" in body["definitions"]["play_type_ts"]
+        "the reference site" in body["credit"]
+        and "not the reference site's" in body["definitions"]["play_type_ts"]
     )
     assert set(body["validation"]) == {"predictive", "tracking"}
     assert body["seasons"][0] == "2015-16" and body["seasons"][-1] == "2025-26"

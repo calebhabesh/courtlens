@@ -35,8 +35,8 @@ SOURCES = [
     {"name": "NBA game logs", "detail": "Regular-season minutes 2000-01 to 2025-26 (NBA.com)."},
 ]
 CREDITS = [
-    "Design reference: the reference site's Wingspan page (the reference site), replicated with its owner's "
-    "approval for a non-commercial portfolio.",
+    "Design reference: the reference site's Wingspan page, replicated with its owner's approval "
+    "for a non-commercial portfolio.",
     "D-DPM: DARKO by Kostya Medvedovsky.",
     "Measurements: NBA Draft Combine (NBA.com), through hoopR (sportsdataverse).",
 ]

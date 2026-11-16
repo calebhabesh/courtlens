@@ -79,13 +79,14 @@ DEFINITIONS = {
     ),
 }
 CREDIT = (
-    "ShotQuality and the shot-quality / shot-making split are ShotQuality's and the reference site's "
-    "concepts (the reference site ShotQuality RAPM page, the design reference). CourtLens does not use "
+    "ShotQuality and the shot-quality / shot-making split are ShotQuality's and the reference "
+    "site's concepts (its ShotQuality RAPM page, the design reference). CourtLens does not use "
     "the paid ShotQuality feed, which reads player tracking: this model reads free NBA shot and "
     "play-by-play data (via shufinskiy/nba_data), and its numbers are its own."
 )
 REFERENCE_NOTE = (
-    "Design reference: a saved copy of the reference site's ShotQuality RAPM page (header, filters, ranked "
+    "Design reference: a saved copy of the reference site's ShotQuality RAPM page (header, "
+    "filters, ranked "
     "table in points per 100 shots, how-to-read and methodology panels). That page shows a RAPM "
     "decomposition (oTS, oSQ, oMake, oFT), which is this page's Decomposition tab. It has no "
     "model card, calibration curve or per-player shot-making view, so those parts of this page "

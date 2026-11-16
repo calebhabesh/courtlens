@@ -1,4 +1,5 @@
-"""Run `courtlens-shot-aftermath-v1` (Research R17): the reference site's Shot Aftermath, sealed possessions.
+"""Run `courtlens-shot-aftermath-v1` (Research R17): the reference site's Shot Aftermath, sealed
+possessions.
 
 For every first-chance field-goal attempt of the 2024-25 and 2025-26 regular seasons: its made
 points, the shooting team's later points in the same possession after a miss, and the points the

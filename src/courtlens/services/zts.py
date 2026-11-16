@@ -75,18 +75,18 @@ DEFINITIONS = {
     ),
 }
 CREDIT = (
-    "zTS, Expected TS and Playtype Difficulty are the reference site's concepts and names "
-    "(the reference site); the reference site is the design and method reference for this page. CourtLens' "
+    "zTS, Expected TS and Playtype Difficulty are the reference site's concepts and names; "
+    "the reference site is the design and method reference for this page. CourtLens' "
     "play-type TS definition, coverage rules and numbers are its own and do not reproduce "
-    "The reference site's. Play-type data: NBA Stats (Synergy Sports) via hoopR / sportsdataverse."
+    "the reference site's. Play-type data: NBA Stats (Synergy Sports) via hoopR / sportsdataverse."
 )
 VOLUME_NOTE = (
     "Minutes, scoring usage and TS add come from the served impact bundle (the Stats table's "
     "source), not from the frozen zTS results. Scoring usage = 100 x TSA / offensive "
     "possessions. TS add = 2 x scoring usage x rTS (the Stats table's TS add/100); zTS add = "
     "2 x scoring usage x zTS, both points per 100 offensive possessions. zTS add follows the TS "
-    "add arithmetic the reference site describes; it is not the reference site's SV/100, whose formula is not "
-    "published."
+    "add arithmetic the reference site describes; it is not the reference site's SV/100, "
+    "whose formula is not published."
 )
 NO_INTERVAL = (
     "zTS is built from season totals, which have no resampling unit below the season, so it is "

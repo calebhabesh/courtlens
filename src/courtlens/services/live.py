@@ -323,7 +323,7 @@ def read(
 
 
 def with_injury_counts(slate_read: dict[str, Any], injuries: dict[str, Any]) -> dict[str, Any]:
-    """Upcoming games get each team's count of players reported Out (the reference site's "2 OUT")."""
+    """Upcoming games get each team's count of players reported Out (the reference "2 OUT")."""
     report = (injuries.get("data") or {}).get("teams")
     data = slate_read.get("data")
     if not report or not data:

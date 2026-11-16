@@ -1961,7 +1961,7 @@
       "sha256": "a9413ff5ae8aa3e2b226f4c830fd46fe132922be71750d65635c5b3be47d2171"
     }
   ],
-  "policy_sha256": "bdb6d9796961a6aef3a762ba186bb08c9bcbf2ac2f44abe3f6669665d725768a",
+  "policy_sha256": "4f86d147da5da279dbf91005c855bb2000afa4257d0fbdafad29fb2a5c66dc79",
   "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b",
   "schedule_denominators": {
     "2023": {

@@ -58,7 +58,8 @@ CREDITS = [
     "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app).",
     "Draft lists 1966-95: Wikipedia (CC BY-SA 4.0); 1996-2026: NBA Stats via sportsdataverse "
     "hoopR. Combine: NBA Draft Combine via hoopR.",
-    "Page reference: the reference site's draft site, refactored as Draft Classes; no prospect model.",
+    "Page reference: the reference site's draft site, refactored as Draft Classes; no prospect "
+    "model.",
 ]
 
 CAVEATS = [

@@ -33,7 +33,7 @@ CREDITS = [
     "Method: Poropudas and Halme, 'Decomposing Basketball Team Efficiency Using the Four Factors "
     "and Shapley Values' (arXiv:2305.13032; v1 titled 'Dean Oliver's Four Factors Revisited').",
     "Four factors: Dean Oliver, Basketball on Paper (2004).",
-    "Design reference: the reference site's ORTG Lab (the reference site), which credits the same paper.",
+    "Design reference: the reference site's ORTG Lab, which credits the same paper.",
     "Play-by-play: NBA PlayByPlayV3 via shufinskiy/nba_data.",
 ]
 CAVEATS = [

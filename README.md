@@ -5,9 +5,10 @@
 
 CourtLens is a self-hosted NBA analytics site. It's a versioned PostgreSQL and
 dbt warehouse, player impact ratings computed from public play-by-play,
-out-of-time forecast evaluation, and a Next.js dashboard modeled on
-the reference site. A tool-calling assistant answers questions
-from the warehouse, and its numbers are checked against real query results.
+out-of-time forecast evaluation, and a Next.js dashboard whose design draws
+heavily on [Databallr](https://databallr.com) ([credits](#credits)). A
+tool-calling assistant answers questions from the warehouse, and its numbers
+are checked against real query results.
 
 <p align="center">
   <img src="docs/assets/stats.png" alt="CourtLens Stats page: a player table with impact, counting and percentile columns" width="900">
@@ -20,7 +21,7 @@ a public demo at <https://courtlens.calebhabesh.com>: read-only pages, Ask with
 a few free questions a day, and a shared demo account. The demo runs on one
 free-tier VPS that also runs every scheduled data job, the nightly win
 probability seals and their grading ([deployment guide](docs/deployment.md)).
-Every page is aligned with the reference site ([catalog](docs/alignment-catalog.md)).
+Every page was designed against its Databallr counterpart ([catalog](docs/alignment-catalog.md)).
 The assistant's held-out evaluation (Research R16) was cut by the owner before
 it finished, so no holdout accuracy is claimed.
 
@@ -107,6 +108,20 @@ The assistant works without an API key in a limited rule-based mode. To use a
 model, set a Gemini, Anthropic or OpenAI key in `.env`. Keys stay on the
 server. `make test`, `make lint` and `make typecheck` run the checks. The
 [runbook](docs/operations/runbook.md) covers everything else.
+
+## Credits
+
+CourtLens takes heavy inspiration from [Databallr](https://databallr.com) and
+the work of its creator. Databallr's pages were the visual reference for nearly
+every CourtLens page, and several Research pages rebuild ideas first published
+there (the Six-Factor RAPM framework, zTS, the ShotQuality RAPM decomposition,
+Shot Aftermath and Roster Shapes) on CourtLens's own data. Wherever the code,
+docs or pages say "the reference site" they mean Databallr, and "the draft
+site" means its companion site, Draftballr.
+
+CourtLens computes its own numbers from free public data. The only Databallr
+figures it shows are the published first-chance attempt counts that Shot
+Aftermath compares its own counts against.
 
 ## License
 

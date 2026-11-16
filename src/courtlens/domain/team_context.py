@@ -1,6 +1,7 @@
 """Team context beyond the six factors: schedule strength, expected wins, standings and trend.
 
-Alignment row 4 adds what the reference site's Teams page does not show, from the same admitted team box
+Alignment row 4 adds what the reference site's Teams page does not show, from the same admitted
+team box
 scores (`courtlens-team-context-v1`):
 
 * Schedule-adjusted net rating. Every team's strength is solved jointly as its own net rating

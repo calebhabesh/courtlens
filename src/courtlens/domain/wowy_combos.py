@@ -192,7 +192,7 @@ class Teammate(BaseModel):
 
 
 class TeammateHelp(BaseModel):
-    """Minutes-weighted average DARKO of the other teammates on the floor (the reference site's help)."""
+    """Minutes-weighted average DARKO of the other teammates on the floor (reference help)."""
 
     players: int
     net: float | None

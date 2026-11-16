@@ -1,4 +1,5 @@
-"""courtlens-stats-v4: the reference site's Overview additions on top of the unchanged v3 serving catalog.
+"""courtlens-stats-v4: the reference site's Overview additions on top of the unchanged v3 serving
+catalog.
 
 Three families, each with its own availability rule:
 

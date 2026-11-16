@@ -53,7 +53,8 @@ LIMITATIONS = [
     "season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
     "Historical ratings are published retrospectively; original publication-time model "
     "versions are unavailable. Never used as CourtLens forecasting features.",
-    "Different dates or model revisions can differ from the reference site. Percentiles are CourtLens "
+    "Different dates or model revisions can differ from the reference site. Percentiles are "
+    "CourtLens "
     "league ranks, not DARKO or reference percentiles.",
     "During a season in progress, Stats shows DARKO's latest daily board, dated by the games its "
     "ratings include; early-season ratings lean on DARKO's priors and are not season-end values.",

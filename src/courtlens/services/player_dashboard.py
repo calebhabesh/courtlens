@@ -107,7 +107,8 @@ LIMITATIONS = [
     SEASON_TOTALS_NOTE,
     "NBA optical tracking aggregates as published; CourtLens does not have frame-level data.",
     "Per 36 values divide by the tracking feed's minutes; per game values by its games.",
-    "Play-type families group NBA Synergy play types as the reference site does: Creation = isolation, "
+    "Play-type families group NBA Synergy play types as the reference site does: Creation = "
+    "isolation, "
     "pick-and-roll ball handler and post-up; Spacing = spot-up, off-screen and handoff; "
     "Finishing = cut, roll man and putbacks. rPPP is points per 100 possessions above the "
     "league's rate for the same family.",

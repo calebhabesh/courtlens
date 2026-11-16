@@ -1,6 +1,7 @@
 """Rules for `courtlens-shot-aftermath-v1` (Research R17): zones, cell values, status and tone.
 
-Registration: evaluation/research/registrations/courtlens-shot-aftermath-v1.json. The reference site's Shot
+Registration: evaluation/research/registrations/courtlens-shot-aftermath-v1.json. The reference
+site's Shot
 Aftermath page defines the views, the zones and the opponent-cost formula; CourtLens computes them
 from its own sealed possessions. Every function here is pure: the runner sums counts per game and
 cell, and these turn sums (one row per bootstrap replicate) into the served values.

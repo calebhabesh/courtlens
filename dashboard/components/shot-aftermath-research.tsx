@@ -404,7 +404,7 @@ function CompareSection({ summary, season }: { summary: Summary; season: string 
           lead={{ label: "Shot", cell: r => <span className="sa-name">{ZONE_LABEL[r.zone]}</span> }}
           columns={[
             { key: "courtlens", label: "CourtLens", width: "sm", data: r => ({ field: "courtlens", value: r.courtlens }), cell: r => <GridValue text={whole(r.courtlens)} /> },
-            { key: "reference", label: "The reference site", width: "sm", data: r => ({ field: "reference", value: r.reference }), cell: r => <GridValue text={whole(r.reference)} /> },
+            { key: "reference", label: "Reference", width: "sm", data: r => ({ field: "reference", value: r.reference }), cell: r => <GridValue text={whole(r.reference)} /> },
             { key: "difference", label: "Difference", width: "sm", data: r => ({ field: "difference", value: r.difference }), cell: r => <GridValue text={signed(r.difference, 0)} /> },
           ]} />
       </div>

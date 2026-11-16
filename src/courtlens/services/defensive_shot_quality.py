@@ -57,7 +57,8 @@ DEFINITIONS = {
     ),
 }
 REFERENCE_NOTE = (
-    "Design reference: a saved copy of the reference site's D-ShotQuality page. Reproduced: the ranked "
+    "Design reference: a saved copy of the reference site's D-ShotQuality page. Reproduced: the "
+    "ranked "
     "player cards, the All / 2PT / 3PT switch, shots defended, an expected and an actual PPS with "
     "ranks, the RAPM headline, Key Matchups and next-six paging. Different: expected PPS is what "
     "the shooters' own shooting predicts, not ShotQuality's tracking value. Not reproduced: the "
@@ -68,7 +69,8 @@ REFERENCE_NOTE = (
     "closest-defender numbers remain on the Tracking page."
 )
 CREDIT = (
-    "The card layout and the concept are the reference site's D-ShotQuality page; ShotQuality owns the "
+    "The card layout and the concept are the reference site's D-ShotQuality page; ShotQuality "
+    "owns the "
     "tracking values, which are not used here. Data: NBA Stats matchups via shufinskiy/nba_data."
 )
 

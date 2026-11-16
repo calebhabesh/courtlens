@@ -75,14 +75,7 @@ class OpenAIProvider:
             for tool in tools
         ]
         if remaining_web_searches:
-            declarations.append(
-                {
-                    "type": "web_search",
-                    "filters": {
-                        "blocked_domains": [],
-                    },
-                }
-            )
+            declarations.append({"type": "web_search"})
         request: dict[str, Any] = {
             "model": self.model,
             "instructions": system_prompt,

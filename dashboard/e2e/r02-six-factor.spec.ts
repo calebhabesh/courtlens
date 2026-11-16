@@ -42,7 +42,7 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     const methods = page.getByRole("region", { name: "Caveats & Methodology" });
     await expect(methods).toContainText("not the commonly quoted 0.985");
     await methods.locator("summary").click();
-    await expect(methods.getByRole("link", { name: "The reference site" })).toBeVisible();
+    await expect(methods).toContainText("Six-Factor RAPM explainer and ShotQuality RAPM table");
     await expect(methods).toContainText("Rosenbaum (2004) and Sill (2010)");
     await expect(page.getByRole("navigation", { name: "Six-Factor RAPM sections" }).locator('[aria-current="page"]')).toHaveText("Six-Factor");
   });

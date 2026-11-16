@@ -57,7 +57,8 @@ _EDGE_PIXELS = 2
 _MIN_EDGE_ALPHA = 0.08
 # NBA.com player IDs (Basketball-Reference IDs as values, for reading) whose only NBA.com photo
 # shows them later as a coach or staff member, not in a jersey. Owner, 2026-10-20 (alignment row 9,
-# follow-up 16): NBA.com's sharper photo comes first, like the reference site, except for these. Found by
+# follow-up 16): NBA.com's sharper photo comes first, like the reference site, except for these.
+# Found by
 # reviewing every NBA.com photo of the 617 players who also have a career photo; review players
 # who gain a career photo the same way.
 POST_CAREER_NBA_PHOTOS: dict[str, str] = {
