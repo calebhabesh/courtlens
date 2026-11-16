@@ -85,3 +85,43 @@ def test_downgrade_restores_the_old_table(connection: Connection, migration: Mod
         migration.downgrade()
     columns = {c["name"] for c in sa.inspect(connection).get_columns("users")}
     assert columns == {"id", "email", "password_hash", "created_at"}
+
+
+def _load(name: str) -> ModuleType:
+    path = Path(__file__).resolve().parents[2] / "migrations/versions" / name
+    spec = importlib.util.spec_from_file_location(name.removesuffix(".py"), path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_sign_up_migration_confirms_only_enabled_accounts(
+    connection: Connection, migration: ModuleType
+) -> None:
+    """Accounts plan: operator-enabled accounts count as confirmed; seed users stay unconfirmed."""
+    sign_up = _load("5e6f7a8b9c03_accounts_sign_up_google.py")
+    with Operations.context(MigrationContext.configure(connection)):
+        migration.upgrade()
+        connection.exec_driver_sql(
+            "INSERT INTO users (id, email, password_hash, created_at, account_enabled) "
+            "VALUES ('u2', 'owner@example.com', 'x', now(), true)"
+        )
+        sign_up.upgrade()
+        rows = dict(
+            connection.exec_driver_sql("SELECT id, email_verified_at IS NOT NULL FROM users").all()
+        )
+        assert rows == {"u1": False, "u2": True}
+        connection.exec_driver_sql(
+            "INSERT INTO users (id, email, created_at) VALUES ('u3', 'g@example.com', now())"
+        )
+        connection.exec_driver_sql(
+            "INSERT INTO user_identities VALUES ('i1', 'u3', 'google', 'sub', null, now())"
+        )
+        with pytest.raises(sa.exc.IntegrityError), connection.begin_nested():
+            connection.exec_driver_sql(
+                "INSERT INTO user_identities VALUES ('i2', 'u2', 'google', 'sub', null, now())"
+            )
+        sign_up.downgrade()
+    password = connection.exec_driver_sql("SELECT password_hash FROM users WHERE id = 'u3'")
+    assert password.scalar() == "!"

@@ -666,7 +666,9 @@ const mockAccounts = {
   "owner@example.com": { id: "u-owner", name: "Owner", email: "owner@example.com", is_demo: false, password: "correct horse battery", favorites: [] },
   demo: { id: "u-demo", name: "Demo account", email: null, is_demo: true, favorites: ["23"] },
 };
-const mockSessions = new Map();
+// Accounts plan: Ask needs a session, so Ask specs start with this one (e2e/ask-session.ts).
+const ASK_SESSION = "mock.u-demo.ask";
+const mockSessions = new Map([[ASK_SESSION, mockAccounts.demo]]);
 let mockSignInFailures = 0;
 function mockSession(account) {
   const token = `mock.${account.id}.${mockSessions.size + 1}`;
@@ -693,10 +695,15 @@ async function mockAccountRoute(request, response, url) {
     return json(response, 200, mockSession(account));
   }
   if (url.pathname === "/api/auth/demo-session" && request.method === "POST") return json(response, 200, mockSession(mockAccounts.demo));
+  if (url.pathname === "/api/auth/options" && request.method === "GET") return json(response, 200, { google: true, sign_up: true, demo: true });
+  if ((url.pathname === "/api/auth/sign-up" || url.pathname === "/api/auth/forgot-password") && request.method === "POST") {
+    return json(response, 202, { status: "check_email", message: "Check your email for a link to finish. It can take a minute to arrive." });
+  }
   if (url.pathname === "/api/__accounts/reset" && request.method === "POST") {
     mockAccounts["owner@example.com"].favorites = [];
     mockAccounts.demo.favorites = ["23"];
     mockSessions.clear();
+    mockSessions.set(ASK_SESSION, mockAccounts.demo);
     mockSignInFailures = 0;
     return json(response, 200, { reset: true });
   }

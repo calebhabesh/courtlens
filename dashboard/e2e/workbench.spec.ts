@@ -103,7 +103,7 @@ test.describe("Workbench Dark Research Interface", () => {
   test("Ask drawer offers manual research and links to optional configuration", async ({ page }) => {
     await openWorkbench(page, "/players/23?experience=manual");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
-    const dialog = page.getByRole("dialog", { name: "Research conversation" });
+    const dialog = page.getByRole("dialog", { name: "Ask", exact: true });
     await expect(dialog.getByRole("heading", { name: "Ask CourtLens" })).toBeVisible();
     await expect(dialog.getByLabel("Research operation", { exact: true })).toBeVisible();
     const textarea = dialog.getByLabel("Research question (optional label)", { exact: true });

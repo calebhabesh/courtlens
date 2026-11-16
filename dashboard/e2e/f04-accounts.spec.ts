@@ -199,3 +199,34 @@ test("the sign-in dialog fits a phone", async ({ page }) => {
   expect(box!.x + box!.width).toBeLessThanOrEqual(390);
   await shot(page, "f04-sign-in-dialog-390");
 });
+
+// Accounts plan: Google and password sign-up beside sign-in and the demo; Ask needs an account.
+test("the dialog offers Google, sign-up and the demo, and sign-up says to check email", async ({ page }) => {
+  await openWorkbench(page, "/stats");
+  await header(page).getByRole("button", { name: "Sign in" }).click();
+  await expect(dialog(page).getByRole("button", { name: "Continue with Google" })).toBeVisible();
+  await expect(dialog(page).getByRole("button", { name: "Use the demo account" })).toBeVisible();
+  await expect(dialog(page)).not.toContainText("invitation");
+  await expect(dialog(page)).not.toContainText("reset each night");
+  await shot(page, "sign-in-dialog");
+  await dialog(page).getByRole("button", { name: "Create an account" }).click();
+  const create = page.getByRole("dialog", { name: "Create account" });
+  await create.getByLabel("Email").fill("new@example.com");
+  await create.getByLabel("Password").fill("a long enough password");
+  await shot(page, "create-account");
+  await create.getByRole("button", { name: "Create account" }).click();
+  const sent = page.getByRole("dialog", { name: "Check your email" });
+  await expect(sent).toContainText("new@example.com");
+  await expect(header(page).getByRole("button", { name: "Sign in" })).toBeVisible();
+});
+
+test("signed out, Ask shows the way in instead of the composer", async ({ page }) => {
+  await openWorkbench(page, "/research/ask");
+  const prompt = page.locator("[data-field=ask-sign-in]");
+  await expect(prompt).toContainText("Sign in, or use the demo account, to ask questions.");
+  await expect(page.locator(".ask-composer textarea")).toHaveCount(0);
+  await shot(page, "ask-signed-out");
+  await prompt.getByRole("button", { name: "Use the demo account" }).click();
+  await expect(page.locator(".ask-composer textarea")).toBeVisible();
+  await expect(header(page).getByRole("button", { name: "Demo account" })).toBeVisible();
+});

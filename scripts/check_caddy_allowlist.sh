@@ -57,6 +57,18 @@ expect POST /api/account/favorites/203999 200 dashboard
 expect DELETE /api/account/favorites/203999 200 dashboard
 expect GET /api/account/me 200 dashboard
 expect GET /api/account/favorites 200 dashboard
+# Accounts plan: sign-up, email links, Google (GETs) and deleting your own account.
+expect POST /api/account/sign-up 200 dashboard
+expect POST /api/account/confirm 200 dashboard
+expect POST /api/account/forgot-password 200 dashboard
+expect POST /api/account/reset-password 200 dashboard
+expect DELETE /api/account/me 200 dashboard
+expect GET /api/account/options 200 dashboard
+expect GET /api/account/google/start 200 dashboard
+expect GET /api/account/google/callback 200 dashboard
+expect POST /api/account/me 403 ""
+expect DELETE /api/account/sign-up 403 ""
+expect POST /api/account/google/callback 403 ""
 # Everything else stays refused.
 expect PUT /api/account/favorites/203999 403 ""
 expect POST /api/account/favorites 403 ""

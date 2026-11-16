@@ -14,6 +14,8 @@ from courtlens.assistant_history_models import AssistantThread
 from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.security import create_session_token
+from courtlens.services import accounts
 from courtlens.services.assistant.public_ask import PUBLIC_ASK
 
 postgres_conversation = _postgres_fixture
@@ -52,6 +54,33 @@ def public(postgres_conversation, monkeypatch):
         yield client, operator
     PUBLIC_ASK.reset()
     get_settings.cache_clear()
+
+
+def public_session(client):
+    return client.app.dependency_overrides[get_db]()
+
+
+def account_session(session, email="frank@example.com"):
+    user = accounts.find_user(session, email) or accounts.create_user(
+        session, email, "correct horse battery"
+    )
+    return {"Authorization": f"Bearer {create_session_token(user.id, user.session_version)}"}
+
+
+def test_a_real_account_owns_its_conversations_across_browsers(public, monkeypatch):
+    client, _operator = public
+    monkeypatch.setenv("COURTLENS_PUBLIC_ASK_TOKEN", "ask-only-token")
+    get_settings.cache_clear()
+    token = {"X-CourtLens-Ask-Token": "ask-only-token"}
+    grace = account_session(public_session(client), "grace@example.com")
+    body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
+    answer = client.post(TURN, json=body, headers={**token, **who("laptop"), **grace})
+    assert answer.status_code == 200, answer.text
+    # Another browser (another visitor cookie), same account: the same conversations.
+    phone = client.get(THREADS, headers={**who("phone"), **grace}).json()["threads"]
+    assert [t["thread_id"] for t in phone] == [answer.json()["thread_id"]]
+    # The browser without the account sees none of them.
+    assert client.get(THREADS, headers=who("laptop")).json()["threads"] == []
 
 
 def ask(client, operator, visitor, message="Explain spacing on offense."):
@@ -148,7 +177,11 @@ def test_the_ask_token_starts_turns_only_in_public_mode(public, monkeypatch):
     get_settings.cache_clear()
     token = {"X-CourtLens-Ask-Token": "ask-only-token"}
     body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
-    assert client.post(TURN, json=body, headers={**token, **who("frank")}).status_code == 200
+    # Accounts plan: the Ask token alone no longer asks; an account session must come with it.
+    refused = client.post(TURN, json=body, headers={**token, **who("frank")})
+    assert refused.status_code == 401 and "demo account" in refused.json()["detail"]
+    signed = {**token, **who("frank"), **account_session(public_session(client))}
+    assert client.post(TURN, json=body, headers=signed).status_code == 200
     wrong = {"X-CourtLens-Ask-Token": "guess"}
     body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
     assert client.post(TURN, json=body, headers={**wrong, **who("frank")}).status_code == 401

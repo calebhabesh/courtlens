@@ -41,6 +41,7 @@ from courtlens.services.assistant.public_ask import (
     AskIdentity,
     ask_identity,
     public_ask_writer,
+    require_ask_account,
 )
 from courtlens.services.assistant.saved import (
     export_saved,
@@ -57,10 +58,13 @@ router = APIRouter(prefix="/workbench/assistant", tags=["conversational analytic
 def verify_ask_write_access(
     request: Request,
     public_writer: bool = Depends(public_ask_writer),
+    identity: AskIdentity | None = Depends(ask_identity),
     x_operator_token: str | None = Header(None, alias="X-Operator-Token"),
 ) -> None:
-    """Ask turns and threads: the operator, or in public mode the dashboard's Ask-only token."""
+    """Ask turns and threads: the operator, or in public mode the dashboard's Ask-only token
+    with a signed-in account (accounts plan)."""
     if public_writer:
+        require_ask_account(identity)
         return
     verify_workspace_operator_access(request, x_operator_token)
 

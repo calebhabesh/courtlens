@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import type { AccountUser, FavoritePlayer, FavoritesResponse } from "./account-types";
+import type { AccountOptions, AccountUser, FavoritePlayer, FavoritesResponse } from "./account-types";
 
 /**
  * Accounts and favourite players (finish plan F04). The session is an HttpOnly cookie that only
@@ -31,6 +31,17 @@ export interface AccountContextValue {
   signIn: (email: string, password: string) => Promise<void>;
   signInDemo: () => Promise<void>;
   signOut: () => Promise<void>;
+  /** Ways in this server offers; null until loaded (the dialog loads them when it opens). */
+  options: AccountOptions | null;
+  loadOptions: () => Promise<void>;
+  /** Starts a password sign-up; resolves with the "check your email" message. */
+  signUp: (email: string, password: string, name?: string) => Promise<string>;
+  forgotPassword: (email: string) => Promise<string>;
+  confirmEmail: (token: string) => Promise<void>;
+  resetPassword: (token: string, password: string) => Promise<void>;
+  deleteAccount: () => Promise<void>;
+  /** The URL that starts Google sign-in and returns to the current page. */
+  googleHref: () => string;
   signInOpen: boolean;
   /** Why the dialog opened ("Sign in to save favourites"), shown above the form. */
   signInReason: string | null;
@@ -59,6 +70,24 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
 
 const EMPTY: FavoritesResponse = { player_ids: [], players: [], limit: 100, shared: false };
 
+/** Why Google sent the visitor back without a session (codes from the account proxy). */
+export const GOOGLE_REASONS: Record<string, string> = {
+  "google-cancelled": "Google sign-in was cancelled.",
+  "google-expired": "Google sign-in took too long or was started elsewhere. Try again.",
+  "google-failed": "Google sign-in didn't finish. Try again.",
+  "google-off": "Google sign-in isn't available right now.",
+  "google-busy": "Too many sign-in attempts. Try again later.",
+  "google-unverified": "Your Google account's email isn't verified, so it can't sign in here.",
+  "google-off-account": "This account is turned off.",
+};
+
+function currentPath(): string {
+  if (typeof window === "undefined") return "/";
+  const url = new URL(window.location.href);
+  url.searchParams.delete("signin");
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
 export function AccountProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [status, setStatus] = useState<AccountStatus>("loading");
@@ -66,6 +95,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<FavoritesResponse>(EMPTY);
   const [signInOpen, setSignInOpen] = useState(false);
   const [signInReason, setSignInReason] = useState<string | null>(null);
+  const [options, setOptions] = useState<AccountOptions | null>(null);
   // The toggle being written per player, so a double click cannot send two writes.
   const pending = useRef(new Set<string>());
 
@@ -100,6 +130,16 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     setSignInReason(reason ?? null);
     setSignInOpen(true);
   }, []);
+
+  // ?signin=1 (from an email) opens the dialog; ?signin=google-… explains a failed Google sign-in.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("signin");
+    if (!code) return;
+    url.searchParams.delete("signin");
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    if (code === "1" || GOOGLE_REASONS[code]) queueMicrotask(() => openSignIn(GOOGLE_REASONS[code]));
+  }, [openSignIn]);
   const closeSignIn = useCallback(() => setSignInOpen(false), []);
 
   const finishSignIn = useCallback(async (next: AccountUser) => {
@@ -118,6 +158,42 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     const body = await call<{ user: AccountUser }>("demo", { method: "POST" });
     await finishSignIn(body.user);
   }, [finishSignIn]);
+
+  const loadOptions = useCallback(async () => {
+    try {
+      setOptions(await call<AccountOptions>("options"));
+    } catch {
+      setOptions({ google: false, sign_up: false, demo: true });
+    }
+  }, []);
+
+  const signUp = useCallback(async (email: string, password: string, name?: string) => {
+    const body = await call<{ message: string }>("sign-up", { method: "POST", body: JSON.stringify({ email, password, ...(name ? { name } : {}) }) });
+    return body.message;
+  }, []);
+
+  const forgotPassword = useCallback(async (email: string) => {
+    const body = await call<{ message: string }>("forgot-password", { method: "POST", body: JSON.stringify({ email }) });
+    return body.message;
+  }, []);
+
+  const confirmEmail = useCallback(async (token: string) => {
+    const body = await call<{ user: AccountUser }>("confirm", { method: "POST", body: JSON.stringify({ token }) });
+    await finishSignIn(body.user);
+  }, [finishSignIn]);
+
+  const resetPassword = useCallback(async (token: string, password: string) => {
+    const body = await call<{ user: AccountUser }>("reset-password", { method: "POST", body: JSON.stringify({ token, password }) });
+    await finishSignIn(body.user);
+  }, [finishSignIn]);
+
+  const deleteAccount = useCallback(async () => {
+    await call("me", { method: "DELETE" });
+    await adopt(null);
+    router.refresh();
+  }, [adopt, router]);
+
+  const googleHref = useCallback(() => `${BASE}/google/start?next=${encodeURIComponent(currentPath())}`, []);
 
   const signOut = useCallback(async () => {
     await call("sign-out", { method: "POST" }).catch(() => undefined);
@@ -163,8 +239,9 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     sharedFavorites: favorites.shared,
     favoritesLimit: favorites.limit,
     isFavorite, toggleFavorite, signIn, signInDemo, signOut,
+    options, loadOptions, signUp, forgotPassword, confirmEmail, resetPassword, deleteAccount, googleHref,
     signInOpen, signInReason, openSignIn, closeSignIn,
-  }), [status, user, favorites, isFavorite, toggleFavorite, signIn, signInDemo, signOut, signInOpen, signInReason, openSignIn, closeSignIn]);
+  }), [status, user, favorites, isFavorite, toggleFavorite, signIn, signInDemo, signOut, options, loadOptions, signUp, forgotPassword, confirmEmail, resetPassword, deleteAccount, googleHref, signInOpen, signInReason, openSignIn, closeSignIn]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
@@ -173,7 +250,10 @@ export function AccountProvider({ children }: { children: ReactNode }) {
 const SIGNED_OUT: AccountContextValue = {
   status: "signed-out", user: null, favorites: [], favoritePlayers: [], sharedFavorites: false, favoritesLimit: 100,
   isFavorite: () => false, toggleFavorite: async () => undefined, signIn: async () => undefined,
-  signInDemo: async () => undefined, signOut: async () => undefined, signInOpen: false, signInReason: null,
+  signInDemo: async () => undefined, signOut: async () => undefined,
+  options: null, loadOptions: async () => undefined, signUp: async () => "", forgotPassword: async () => "",
+  confirmEmail: async () => undefined, resetPassword: async () => undefined, deleteAccount: async () => undefined,
+  googleHref: () => "/api/account/google/start", signInOpen: false, signInReason: null,
   openSignIn: () => undefined, closeSignIn: () => undefined,
 };
 

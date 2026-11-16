@@ -18,7 +18,7 @@ export function cx(...parts: Array<string | false | null | undefined>) {
 
 /** Shared by every pressable kit control: geometry, motion, focus, disabled and phone hit area. */
 const pressable =
-  "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justify-center kit:whitespace-nowrap kit:rounded-sm kit:border-0 kit:p-0 " +
+  "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justify-center kit:whitespace-nowrap kit:border-0 kit:p-0 " +
   "kit:no-underline kit:select-none kit:cursor-pointer kit:transition-[background-color,color,box-shadow,scale] " +
   "kit:duration-[var(--dur-fast),var(--dur-fast),var(--dur-fast),var(--dur-instant)] kit:ease-out " +
   "kit:active:not-disabled:scale-98 kit:focus-visible:outline-none kit:focus-visible:shadow-(--focus-ring) " +
@@ -96,11 +96,13 @@ export interface ControlClassOptions {
   /** An action inside a text field's box (a search clear ×): a 24 px square, below `xs`, so its
    *  hover fill clears the field's border. Square controls only; phone keeps the 40 px hit area. */
   inField?: boolean;
+  /** A circle instead of the 6 px corner: an action seated inside a pill (the Ask composer's send). Square controls only. */
+  round?: boolean;
 }
 
 const inFieldSquare = "kit:h-6 kit:text-xs kit:w-6 kit:phone:min-w-control-lg";
 
-export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false, identity, beckon = false, inField = false }: ControlClassOptions) {
+export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false, identity, beckon = false, inField = false, round = false }: ControlClassOptions) {
   const field = inField && square;
   return cx(
     pressable,
@@ -109,6 +111,7 @@ export function controlClasses({ size, variant, tone = "default", square = false
     field ? false : square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
     beckon ? beckonClasses[identity ?? "accent"] : tone === "default" ? variants[variant] : tones[tone],
     variant !== "primary" && (identity ? identitySelected[identity] : selectedClasses),
+    round && square ? "kit:rounded-full" : "kit:rounded-sm",
   );
 }
 

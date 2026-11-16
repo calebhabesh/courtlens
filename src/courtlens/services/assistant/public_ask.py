@@ -22,9 +22,15 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import Header, HTTPException, Request
+import jwt
+from fastapi import Depends, Header, HTTPException, Request
+from sqlalchemy.orm import Session
 
 from courtlens.config import Settings, get_settings
+from courtlens.database import get_db
+from courtlens.models import User
+from courtlens.security import decode_session_token
+from courtlens.services import accounts
 from courtlens.services.assistant.agent.providers.pool import (
     LEDGER,
     PACIFIC,
@@ -35,23 +41,52 @@ from courtlens.services.assistant.agent.providers.pool import (
 _HASH = re.compile(r"^[0-9a-f]{64}$")
 
 
+SIGN_IN_TO_ASK = "Sign in, or use the demo account, to ask questions."
+
+
 @dataclass(frozen=True)
 class AskIdentity:
     """Who is asking, as the dashboard proxy reports it: never a raw address or cookie."""
 
-    visitor: str  # the browser, for conversation ownership
+    visitor: str  # conversation owner: the account, or the browser on the demo account
     client: str  # the network address, for the question limit
+    signed_in: bool = False
 
 
-def ask_identity(request: Request) -> AskIdentity | None:
-    """None locally; in public mode both hashed identities are required."""
+def ask_account(request: Request, session: Session = Depends(get_db)) -> User | None:
+    """The account whose session the Ask proxy forwarded, if any (accounts plan)."""
+    header = request.headers.get("Authorization", "")
+    if not header.lower().startswith("bearer "):
+        return None
+    try:
+        user_id, version = decode_session_token(header[7:].strip())
+    except jwt.PyJWTError:
+        return None
+    return accounts.session_user(session, user_id, version)
+
+
+def ask_identity(
+    request: Request, account: User | None = Depends(ask_account)
+) -> AskIdentity | None:
+    """None locally; in public mode both hashed identities are required.
+
+    A real account owns its conversations wherever it signs in; the shared demo account keeps
+    them per browser, so demo visitors never see each other's.
+    """
     if not get_settings().public_ask:
         return None
     visitor = request.headers.get("X-CourtLens-Visitor", "")
     client = request.headers.get("X-CourtLens-Client", "")
     if not (_HASH.match(visitor) and _HASH.match(client)):
         raise HTTPException(403, "Ask is only available through the CourtLens site.")
-    return AskIdentity(visitor=visitor, client=client)
+    owner = accounts.ask_owner(account) if account is not None else None
+    return AskIdentity(visitor=owner or visitor, client=client, signed_in=account is not None)
+
+
+def require_ask_account(identity: AskIdentity | None) -> None:
+    """Public mode: Ask writes need an account or the demo account."""
+    if identity is not None and not identity.signed_in:
+        raise HTTPException(401, SIGN_IN_TO_ASK)
 
 
 def public_ask_writer(

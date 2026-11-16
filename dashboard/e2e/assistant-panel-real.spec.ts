@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import type { AgentTurnResponse } from "../lib/assistant-v3.generated";
 import { waitForStreamedPage } from "./workbench-navigation";
+import { signInForAsk } from "./ask-session";
+
+test.beforeEach(async ({ context, baseURL }) => { await signInForAsk(context, baseURL); });
 
 // Launched by the isolated PostgreSQL/FastAPI pytest harness, with a scripted V3 tool provider.
 const release = process.env.COURTLENS_AR07_RELEASE_ID;
@@ -17,8 +20,8 @@ for (const width of [1440, 375]) {
       await page.getByRole("button",{name:"Ask",exact:true}).click();
       const panel = page.getByRole("dialog");
       await expect(panel.getByLabel("Attached page context")).toContainText(field === "player_id" ? "Scottie Barnes" : "Toronto Raptors");
-      await expect(panel.getByRole("button",{name:"New chat",exact:true})).toBeEnabled();
-      await panel.getByRole("button",{name:"New chat",exact:true}).click();
+      await expect(panel.getByRole("button",{name:"New Chat",exact:true})).toBeEnabled();
+      await panel.getByRole("button",{name:"New Chat",exact:true}).click();
       await panel.getByLabel("Your question",{exact:true}).fill(question);
       const final = page.waitForResponse(response => response.url().endsWith("/turn/stream"));
       await panel.getByRole("button",{name:"Send question",exact:true}).click();

@@ -294,6 +294,8 @@ ROUTE_CLASSES: dict[str, CacheClass] = {
         GET /api/live/teams/{team}/schedule
         GET /api/live/historical
         GET /api/auth/me
+        GET /api/auth/options
+        GET /api/auth/google/start
         GET /api/me
         GET /api/me/favorites
         GET /api/fantasy/leagues
