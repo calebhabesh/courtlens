@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { seasonEra } from "@/lib/portrait-source";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
@@ -18,6 +18,7 @@ import { Icon } from "./ui/icon";
 import { teamStyle } from "./ui/identity";
 import { PageHeader } from "./ui/panel";
 import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelFilterBar, SkelHeader, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { Button, Segmented, Select } from "./ui/kit";
 import { formatDate } from "@/lib/format-date";
 import { exportSvgAsPng } from "@/lib/image-export";
@@ -27,6 +28,7 @@ import {
   getRosterShapeHistory, playerSize, sandboxRoster, shapeKind, signed, sortTeams,
   type RosterShapes, type ShapeMode, type ShapeSort, type ShapeTeam
 } from "@/lib/roster-shapes";
+import { playerHref } from "@/lib/entity-links";
 
 /** Pins the resolved player index in the URL (C3) so a shared link reproduces the same rosters. */
 function useShapes(season: string | null) {
@@ -71,7 +73,7 @@ function TeamCard({ team, entries, rank, mode, data, href, large = false, action
     <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large={large} era={data.projected ? null : seasonEra(data.season, team.team_id)} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn, ${Math.round(fill * 100)}% of the box filled`} />
   </span>;
   return <li className={`shapes-card ${large ? "is-large" : ""}`}>
-    {href ? <Link href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</Link> : <div className="shapes-card-link">{head}{box}</div>}
+    {href ? <IntentLink href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</IntentLink> : <div className="shapes-card-link">{head}{box}</div>}
     <Missing entries={entries} data={data} detailed={large} />
     {actions}
   </li>;
@@ -121,7 +123,7 @@ function RosterTable({ team, data, mode }: { team: ShapeTeam; data: RosterShapes
         <tbody>{team.roster.map(p => {
           const size = playerSize(p, mode);
           return <tr key={p.player_id} title={p.unknown_reasons.join(" ") || undefined}>
-            <th scope="row" className="player-ref-grid-lead"><Link href={`/players/${p.player_id}`}>{p.player_name}</Link></th>
+            <th scope="row" className="player-ref-grid-lead"><IntentLink className="entity-link" href={playerHref(p.player_id)} prefetch={false}>{p.player_name}</IntentLink></th>
             <td className="shapes-style-cell">{p.archetype ? <span className="shapes-style"><span className="shapes-swatch" style={chartVars({ "--chart-tone": tone(p.archetype.primary) })} aria-hidden="true" />{p.archetype.primary_name}</span> : "—"}</td>
             <td title={p.continuity === "unknown" ? `No ${data.projected ? data.reference_season : "prior-season"} games` : undefined}>{CONTINUITY_LABELS[p.continuity]}{p.continuity === "new" && p.previous_teams.length > 0 && <small>{p.previous_teams.join(", ")}</small>}</td>
             <td className="group-start" data-tone={p.dpm === null || Math.abs(p.dpm) < 0.05 ? undefined : p.dpm > 0 ? "up" : "down"}>{signed(p.dpm)}</td>
@@ -161,6 +163,31 @@ const BLURB = "Every roster is a box to fill. Bigger shapes are better players, 
 const ids = (value: string | null) => value ? value.split(",").filter(Boolean) : [];
 
 /** Roster Shapes (alignment row 12): Databallr's 2D Wyman diagrams, one white box per roster. */
+/** The body while the rosters load: note, legend, the sort row, then the grid of boxes (or one team's large box beside its panel). */
+function ShapesBodySkeleton({ team }: { team: boolean }) {
+  return <div className="feed-loading" role="status" aria-busy="true" aria-label="Loading roster shapes">
+    <SkelLines lines={2} size="sm" last="40%" className="shapes-note" />
+    <div className="shapes-legend" aria-hidden="true"><SkelText size="md" width={253} /><SkelText size="md" width={510} /><SkelText size="md" width={849} /><SkelText size="md" width={248} /></div>
+    <div className="shapes-summary" aria-hidden="true"><SkelText size="md" width={286} />{team ? <SkelControl width={120} size="md" /> : <SkelSegmented options={[64, 60, 48]} size="md" />}</div>
+    {team
+      ? <div className="shapes-team" aria-hidden="true"><div className="shapes-team-main"><Skeleton className="ui-skel-box" /></div><div className="feed-loading"><SkelText size="xl" width={200} />{Array.from({ length: 10 }, (_, index) => <SkelText key={index} size="md" width={`${90 - (index * 7) % 30}%`} />)}</div></div>
+      : <ul className="shapes-grid" aria-hidden="true">{Array.from({ length: 8 }, (_, index) => <li key={index} className="shapes-card">
+        <span className="shapes-card-head"><SkelText size="md" width={16} /><Skeleton variant="circle" width={20} height={20} /><SkelText size="md" width={130} /><span className="ui-skel-push" /><SkelText size="md" width={32} /></span>
+        <Skeleton className="ui-skel-box" />
+      </li>)}</ul>}
+  </div>;
+}
+
+/** The whole page while the route loads: centred header, credit line and scope bar, then the body. */
+export function RosterShapesPageSkeleton() {
+  return <div className="shapes-page">
+    <SkelHeader align="center" title={242} subtitle={504} />
+    <SkelText size="sm" width={420} className="shapes-credit ui-skel-center" />
+    <div className="shapes-console"><SkelFilterBar fields={[120, 96]} modes={[[112, 112]]} meta={[108]} /></div>
+    <ShapesBodySkeleton team={false} />
+  </div>;
+}
+
 export function RosterShapesView() {
   const { get, set } = useUrlState();
   const season = get("season");
@@ -222,7 +249,7 @@ export function RosterShapesView() {
       </>}
       details={data ? <DataDetailsButton rows={details(data)}><ul className="shapes-limitations">{data.limitations.map(item => <li key={item}>{item}</li>)}</ul></DataDetailsButton> : undefined} /></div>
     {error && <div role="alert"><GatedNote why={error} action={<Button size="lg" onClick={retry}>Retry</Button>}>Roster Shapes are unavailable right now.</GatedNote></div>}
-    {!data && !error && <div role="status" aria-busy="true" aria-label="Loading roster shapes" className="shapes-loading"><Skeleton height={64} /><Skeleton height={480} /></div>}
+    {!data && !error && <ShapesBodySkeleton team={Boolean(selected)} />}
     {data && <>
       <Note data={data} />
       <Legend data={data} />

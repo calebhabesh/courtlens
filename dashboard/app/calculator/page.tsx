@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { OrtgLabView } from "@/components/ortg-lab-view";
-import { FeedSkeleton } from "@/components/stats-feed-ui";
+import { OrtgLabPageSkeleton, OrtgLabView } from "@/components/ortg-lab-view";
 
 export const metadata: Metadata = {
   title: "Offensive Rating Calculator",
@@ -9,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Suspense fallback={<FeedSkeleton label="Loading the ORTG lab" />}><OrtgLabView /></Suspense>;
+  return <Suspense fallback={<OrtgLabPageSkeleton />}><OrtgLabView /></Suspense>;
 }

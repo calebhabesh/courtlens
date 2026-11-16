@@ -25,6 +25,18 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "same-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" }
         ]
+      },
+      // Speed plan SP06. Team logos are named `<slug>-<first 16 hex of their SHA-256>.<ext>`
+      // (scripts/team_branding_assets.py), so a changed file gets a new name: cache it for good.
+      // Only names of that shape match; any other file there keeps the default.
+      {
+        source: "/team-logos/:file([a-z0-9-]+-[0-9a-f]{16}\\.(?:svg|png))",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }]
+      },
+      // Flags keep their names when redrawn, so 30 days rather than immutable.
+      {
+        source: "/flags/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=2592000" }]
       }
     ];
   },

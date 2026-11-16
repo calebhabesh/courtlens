@@ -1,0 +1,5 @@
+server HTML: 300 portrait <img>, 265574 bytes; 250 not primary, 220395 bytes
+DPR 1 first view {"in_dom":50,"primary":50,"visible":50,"requests":8,"bytes":18804,"widths":{"64":8}}
+DPR 1 after scroll {"in_dom":50,"primary":50,"visible":50,"requests":39,"bytes":90380,"widths":{"64":39}}
+DPR 2 first view {"in_dom":50,"primary":50,"visible":50,"requests":8,"bytes":30574,"widths":{"96":8}}
+DPR 2 after scroll {"in_dom":50,"primary":50,"visible":50,"requests":39,"bytes":147988,"widths":{"96":39}}

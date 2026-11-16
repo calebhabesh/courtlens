@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import "../stats-explorer.css";
 import { PlayerPortrait } from "../player-portrait";
@@ -8,6 +7,8 @@ import { SortHeader } from "../table-ui";
 import { TeamLogo } from "../team-logo";
 import { Icon } from "../ui/icon";
 import type { PortraitEra } from "@/lib/portrait-source";
+import { EntityAnchor } from "@/components/entity-link";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * The site's one table look (owner, RD01 round 3): the Stats page's NBA Player Statistics table. Renders the
@@ -59,13 +60,15 @@ export interface StatsGridProps<T> {
 /** The Stats player card: logo, season photo, name over a subtitle, then any row tools. */
 export function GridPlayer({ playerId, name, team, season, era, subtitle, href, tools }: {
   playerId?: string | null; name: string; team?: string | null; season?: string | null; era?: PortraitEra | null;
-  subtitle?: ReactNode; href?: string; tools?: ReactNode;
+  /** Defaults to the player's page in `season` (site links SL04); `null` keeps the name plain. */
+  subtitle?: ReactNode; href?: string | null; tools?: ReactNode;
 }) {
-  const body = <><span className="player-cell-name font-semibold">{name}</span>{subtitle && <span className="player-cell-teams">{subtitle}</span>}</>;
+  const target = href === undefined ? playerHref(playerId, { season }) : href;
+  const body = <><span className="player-cell-name font-semibold entity-link-text">{name}</span>{subtitle && <span className="player-cell-teams">{subtitle}</span>}</>;
   return <span className="player-cell">
     {team ? <TeamLogo team={team} season={season ?? undefined} size={20} /> : <span className="rs-grid-unknown" aria-hidden="true">—</span>}
     <PlayerPortrait playerId={playerId ?? undefined} name={name} size="sm" era={era} className="stats-primary-portrait" />
-    <span className="stats-identity-copy">{href ? <Link className="stats-player-link" href={href} title={name}>{body}</Link> : <span className="stats-player-link">{body}</span>}</span>
+    <span className="stats-identity-copy"><EntityAnchor href={target} variant="block" className="stats-player-link" title={name}>{body}</EntityAnchor></span>
     {tools && <span className="rs-grid-tools">{tools}</span>}
   </span>;
 }

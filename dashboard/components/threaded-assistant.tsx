@@ -3,7 +3,7 @@
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { pageContextLabel } from "@/lib/assistant-page-context";
 import type { AssistantPageContext, ConversationContext, DurableThreadHeader, HybridTurnRequest } from "@/lib/assistant-v2.generated";
 import type { StoredTurnRecord as DurableTurnRecord } from "@/lib/assistant-v3.generated";
@@ -322,7 +322,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         {threads.length === 0 && <p className="text-muted">No saved conversations yet.</p>}
         {threadCursor && <Button size="sm" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load more conversations</Button>}
       </nav>
-      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link>{!isPublicAsk && <Link href="/settings#history">History and privacy settings</Link>}</div>
+      <div className="ask-sidebar-foot"><IntentLink href="/research/ask?experience=manual">Open manual research</IntentLink>{!isPublicAsk && <IntentLink href="/settings#history">History and privacy settings</IntentLink>}</div>
     </aside>
     <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">

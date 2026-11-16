@@ -1,0 +1,5 @@
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 52 reads; 16 without a release pin
+  workbench-teams-six-factors: equal at 12 significant digits (last digits differ)
+  workbench-teams-six-factors-home: equal at 12 significant digits (last digits differ)
+1 difference(s):
+  workbench-teams-six-factors-away: canonical body differs

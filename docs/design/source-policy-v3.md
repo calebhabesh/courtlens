@@ -37,12 +37,17 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. Source
 | nba_data archive | `github.com/shufinskiy/nba_data` | play types, matchups, shots, on/off | 1 s |
 | pbpstats API | `api.pbpstats.com` | on/off, lineups | 5 s |
 | Basketball-Reference | `www.basketball-reference.com` | contracts, draft, player bios and honours (`courtlens acquire-bbref-bios`, 4 s) | 3 s |
+| Sports-Reference college schools | `www.sports-reference.com` | one page, `/cbb/schools/`: every college's name and "City, State" for the player header (`courtlens refresh-college-schools`, weekly) | 4 s |
+| ESPN college basketball teams | `site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball` | one request: Division I teams and their logo IDs, joined to the schools index by full name | 5 s |
+| ESPN college logos | `a.espncdn.com` | dark-background team logos (`/i/teamlogos/ncaa/500-dark/<id>.png`), each fetched once and kept at 96 px | 1 s |
 | Spotrac | `www.spotrac.com` | contracts, free agency, cap | 5 s |
 | NBA.com free-agent tracker | `www.nba.com` | free agency (`courtlens refresh-free-agency` / `import-free-agency`) | 3 s |
 | HoopsHype salaries | `hoopshype.com` | contracts | 5 s |
 | ESPN injuries | `site.api.espn.com` | injuries | 5 s |
 | ESPN team rosters | `site.api.espn.com` | current rosters for the free-agency roster check (`courtlens refresh-espn-rosters`, every 6 h) | 5 s |
 | Wikipedia NBA season transactions | `en.wikipedia.org` | dated signings, two-way deals, waivers, camp cuts, signings abroad and retirements for Free Agency's current status (`courtlens refresh-wikipedia-transactions`, daily); CC BY-SA 4.0, attributed | 5 s |
+| Wikipedia player articles | `en.wikipedia.org/wiki/<player>` | contract lengths and signings Basketball-Reference leaves out, stated in the article's prose, for the player page's Contracts table (`courtlens acquire-wikipedia-contracts`); CC BY-SA 4.0, attributed beside each term | 5 s |
+| Wikidata Basketball-Reference IDs | `query.wikidata.org` | one SPARQL query per run tying each Basketball-Reference player ID (P2685) to his English Wikipedia article, so articles are matched by ID, never by name; CC0 | 5 s |
 | Wikipedia NBA draft articles | `en.wikipedia.org/wiki/<year>_NBA_draft` | full pick lists for the 1966 to 1995 drafts, read once for Draft Classes (`courtlens acquire-draft-history`, R09; the 1996 to 1999 lists come from the hoopR mirror); CC BY-SA 4.0, attributed | 5 s |
 | Official league cap release | `nba.com` | cap thresholds | entered by hand |
 | DARKO (darko.app) | `www.darko.app` | DPM, ODPM, DDPM (Kostya Medvedovsky's model) | 5 s |
@@ -120,6 +125,20 @@ unchanged run adds under 4 KB on disk and about 23 KB of receipts, so steady sta
 roughly 3 MB of receipts plus about 2.8 MB per roster change within the window. This is a deliberate
 exception to indefinite raw retention for this operational source only: the bundles feed no
 sealed statistic, forecast or evaluation.
+
+## College schools
+
+`courtlens refresh-college-schools` gives the player header its College fact: the school, its
+"City, State" and its logo. The college is the last one the player's retained
+Basketball-Reference page lists (no fetch). Basketball-Reference's college slugs are its own
+(`unc`), so a college joins Sports-Reference's schools index (`/cbb/schools/`, one page) by the
+same slug, then its name, then a short alias table; anything else stays unknown. Logos are ESPN's
+dark-background Division I logos, joined to the index on the full school name both sources use
+("North Carolina Tar Heels"): Sports-Reference serves its own logos only from `cdn.ssref.net`,
+whose robots.txt disallows every robot, while ESPN's CDN allows them. Each logo is fetched once
+and kept as a 96 px PNG; older and smaller schools keep a location without a logo. A run that
+cannot read either index writes nothing, so the last `colleges.json` keeps serving. The two index
+responses are retained (an unchanged page is stored once).
 
 ## Wikipedia NBA season transactions
 

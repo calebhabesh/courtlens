@@ -1,0 +1,1 @@
+{"command": "courtlens warm-site", "base_url": "http://localhost:3180", "api_url": "http://localhost:8180", "started": "2026-11-15T06:25:02+00:00", "outcome": "skipped", "finished": "2026-11-15T06:25:08+00:00", "reason": "generation already warmed", "generation": "00c2217be7bb2880", "seconds": 6.0}

@@ -13,6 +13,8 @@ import {
 import { formatDate } from "@/lib/format-date";
 import { teamBrandColor } from "@/lib/team-colors";
 import { copyCanonicalQueryUrl } from "@/lib/image-export";
+import { SkelControl, SkelGrid, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, ExampleNote } from "./stats-feed-ui";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
@@ -31,6 +33,8 @@ import { DatePicker } from "./ui/date-picker";
 import { ControlScope } from "./ui/control-scope";
 import { Icon } from "./ui/icon";
 import { Button, IconButton, RemovableChip, Segmented, Select } from "./ui/kit";
+import { TeamLink } from "@/components/entity-link";
+import { PlayerLink } from "./entity-link";
 
 export type LastGamesScope = { season: string; phase: string; beforeDate: string };
 type Phase = "all" | "regular_season" | "playoffs";
@@ -237,8 +241,8 @@ function WindowCard({ playerId, name, team, season, size, played, onSize, onPick
  * adds or removes its stat on the chart, and plotted rows show their line's colour. Follow-up 28:
  * a Context band compares opponents' defence and the record.
  */
-function Comparison({ name, who, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
-  name: string; who?: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
+function Comparison({ playerId, season, name, who, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
+  playerId: string; season: string; name: string; who?: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
   plotted: string[]; onPlot: (key: string) => void; context: Record<string, GameContext>; defence: (game: PlayerGameLogItem) => OpponentDefence | null;
 }) {
   const a = totals(first), b = totals(last);
@@ -254,7 +258,7 @@ function Comparison({ name, who, games, first, last, stats, mode, plotted, onPlo
   const rank = (value: number | null) => value === null ? "—" : value.toFixed(1);
   const record = (s: typeof now) => s.wins + s.losses ? `${s.wins}–${s.losses}` : "—";
   return <section className="lg-compare player-glass" aria-label={`${name}: first ${first.length} against last ${last.length} games`}>
-    <h2>{name}{who && <small className="lg-compare-who" title="Team and estimated position this season">{who}</small>}</h2>
+    <h2><PlayerLink id={playerId} scope={{ season }}>{name}</PlayerLink>{who && <small className="lg-compare-who" title="Team and estimated position this season">{who}</small>}</h2>
     <div className="lg-compare-frame">
     <table className="lg-compare-table">
       <thead><tr>
@@ -374,7 +378,7 @@ function GameLogTable({ games, stats, mode, sort, onSort, windowIds, expanded = 
           <th scope="row" className="player-ref-grid-lead">
             {formatDate(game.game_date)}
           </th>
-          <td className="group-start"><span className="lg-opp">{side === "away" ? "@" : side === "home" ? "vs" : ""}<TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} />{game.opponent_tricode}</span></td>
+          <td className="group-start"><span className="lg-opp">{side === "away" ? "@" : side === "home" ? "vs" : ""}<TeamLink team={game.opponent_id || game.opponent_tricode} scope={{ season: game.season }} variant="block"><TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} /><span className="entity-link-text">{game.opponent_tricode}</span></TeamLink></span></td>
           <td><span className="lg-result" data-result={c?.result ?? undefined}>{resultText(c)}</span></td>
           <td><span className="lg-rest" data-b2b={c?.backToBack || undefined}>{restText(c)}</span></td>
           <td title={d ? `Defensive rating ${d.rating.toFixed(1)}, ${ordinal(d.rank)} of 30` : "Not rated"}>{d ? ordinal(d.rank) : "—"}</td>
@@ -391,10 +395,32 @@ function GameCards({ games, stats, mode, context }: { games: PlayerGameLogItem[]
     const t = totals([game]);
     return <li key={game.game_id} className="lg-card">
       <header><span>{formatDate(game.game_date)}<small className="lg-result" data-result={context[game.game_id]?.result ?? undefined}>{resultText(context[game.game_id])}</small></span>
-        <span className="lg-opp">{game.side === "away" ? "@" : game.side === "home" ? "vs" : ""}<TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} />{game.opponent_tricode}</span></header>
+        <span className="lg-opp">{game.side === "away" ? "@" : game.side === "home" ? "vs" : ""}<TeamLink team={game.opponent_id || game.opponent_tricode} scope={{ season: game.season }} variant="block"><TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} /><span className="entity-link-text">{game.opponent_tricode}</span></TeamLink></span></header>
       <dl>{stats.map(stat => <div key={stat.key}><dt title={stat.title}>{stat.label}</dt><dd>{formatStat(stat, stat.value(t, mode), mode === "per_game")}</dd></div>)}</dl>
     </li>;
   })}</ol>;
+}
+
+/** The page body's loading state: photo and window chooser over the first/last comparison, beside the game log. */
+export function LastGamesSkeleton() {
+  return <div className="lg-grid" aria-hidden="true">
+    <div className="lg-side">
+      <div className="lg-window">
+        <div className="lg-photo-frame"><Skeleton className="ui-skel-box ui-skel-card" /></div>
+        <div className="lg-chooser"><SkelControl width="100%" size="lg" /><SkelControl width="100%" size="lg" /><SkelSegmented options={[1]} stretch /><SkelControl width="100%" size="sm" /></div>
+      </div>
+      <section className="lg-compare player-glass">
+        <div className="ui-skel-header-center"><SkelText size="xl" width={120} /><SkelText size="xs" width={56} /></div>
+        <SkelGrid label="First and last games" rows={16} columns={2} lead="text" density="compact" leadWidth="sm" />
+        <SkelLines lines={1} size="xs" />
+      </section>
+    </div>
+    <section className="lg-logs player-glass">
+      <header className="lg-logs-head"><div><SkelText size="lg" width={96} /><SkelText size="sm" width={88} /></div><div className="lg-logs-actions"><SkelControl width={32} /><SkelControl width={129} /></div></header>
+      <div className="lg-chips"><SkelControl width={176} size="xs" /></div>
+      <SkelGrid label="Game logs" rows={12} groupSizes={[4, 5]} lead="text" density="compact" leadWidth="sm" />
+    </section>
+  </div>;
 }
 
 export function LastGamesView({ scopes, defaultSeason, example }: {
@@ -524,7 +550,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
 
     {!player && <p className="lg-empty">Choose a player to begin.</p>}
     {main.error && <FeedFailure error={main.error} retry={main.retry} what="the game log" />}
-    {player && main.loading && <FeedSkeleton label="Loading the game log" />}
+    {player && main.loading && <FeedSkeleton label="Loading the game log"><LastGamesSkeleton /></FeedSkeleton>}
     {data && games.length === 0 && <p className="lg-empty">{name} has no games in {season} {phaseLabel(phase)}.</p>}
     {data && games.length > 0 && <>
       <div className="lg-grid">
@@ -532,7 +558,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
           <WindowCard playerId={player} name={name} team={team} season={season} size={size} played={games.length}
             onSize={n => set({ window: n === DEFAULT_WINDOW ? null : String(n), since: null })} onPick={pick}
             anchors={anchors} since={since} dates={dates} onSince={date => set({ since: date, window: null })} />
-          <Comparison name={name} who={[team, data?.position].filter(Boolean).join(" · ") || undefined} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
+          <Comparison playerId={player} season={season} name={name} who={[team, data?.position].filter(Boolean).join(" · ") || undefined} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
         </div>
         <section className="lg-logs player-glass" aria-label="Game Logs">
           <header className="lg-logs-head">

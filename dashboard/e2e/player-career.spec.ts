@@ -88,7 +88,9 @@ test("the header summarises the player and the summary card has no accent edge",
   await expect(facts).toContainText("BornFeb 10, 1998 (28)");
   await expect(facts).toContainText("6′8″ · 220 lb");
   await expect(facts).toContainText("7th season");
-  await expect(facts).toContainText("2018 · R1 #9 · TOR");
+  // The pick, then the drafting team by its full name (c9f0c676), not its code.
+  await expect(facts).toContainText("2018 · R1 #9");
+  await expect(facts).toContainText("Toronto Raptors");
   await expect(facts).toContainText("Fixtureland");
   // No combine record: no combine line, never a row of dashes.
   await expect(page.locator(".player-bio-combine")).toHaveCount(0);

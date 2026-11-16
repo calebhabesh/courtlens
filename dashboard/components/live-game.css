@@ -264,6 +264,9 @@
   .live-flow-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
   .live-flow-team { display: inline-flex; align-items: center; gap: var(--space-2); }
   .live-flow-team[data-side="home"] { flex-direction: row-reverse; }
+  /* Site links: the legend's logo and code link to the team, laid out as the legend row was. */
+  .live-flow-team-link { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .live-flow-team[data-side="home"] .live-flow-team-link { flex-direction: row-reverse; }
   .live-flow-code { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 700; }
   .live-flow-key { width: 14px; height: 0; border-top: 2px solid var(--live-home); }
   .live-flow-team[data-side="away"] .live-flow-key { border-top: 2px dashed var(--live-away); }

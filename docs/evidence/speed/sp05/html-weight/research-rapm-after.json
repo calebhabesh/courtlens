@@ -1,0 +1,271 @@
+{
+ "url": "http://localhost:3180/research/rapm",
+ "total": 666800,
+ "markup": 197019,
+ "rsc_scripts": 466716,
+ "other_scripts": 3065,
+ "rsc_payload_chars": 426363,
+ "markup_style_attrs": 9808,
+ "markup_class_attrs": 76763,
+ "markup_svg": 22320,
+ "rows_by_tag": {
+  "json": 423256,
+  "I": 2275,
+  "C": 0,
+  "n": 3
+ },
+ "client_components": [
+  {
+   "component": "RapmRatingsTable",
+   "count": 1,
+   "prop_bytes": 398214
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "count": 2,
+   "prop_bytes": 1638
+  },
+  {
+   "component": "default",
+   "count": 8,
+   "prop_bytes": 1569
+  },
+  {
+   "component": "ContextBar",
+   "count": 1,
+   "prop_bytes": 995
+  },
+  {
+   "component": "PlayerIdentity",
+   "count": 5,
+   "prop_bytes": 504
+  },
+  {
+   "component": "ResearchIntro",
+   "count": 1,
+   "prop_bytes": 361
+  },
+  {
+   "component": "RouteTabs",
+   "count": 1,
+   "prop_bytes": 146
+  },
+  {
+   "component": "ResearchCard",
+   "count": 4,
+   "prop_bytes": 116
+  },
+  {
+   "component": "ResearchSection",
+   "count": 3,
+   "prop_bytes": 81
+  },
+  {
+   "component": "ResearchResultsView",
+   "count": 1,
+   "prop_bytes": 53
+  },
+  {
+   "component": "SkelFilterBar",
+   "count": 1,
+   "prop_bytes": 27
+  },
+  {
+   "component": "SkelText",
+   "count": 3,
+   "prop_bytes": 21
+  },
+  {
+   "component": "IntentLink",
+   "count": 1,
+   "prop_bytes": 21
+  },
+  {
+   "component": "SkelLines",
+   "count": 3,
+   "prop_bytes": 15
+  },
+  {
+   "component": "FeedSkeleton",
+   "count": 1,
+   "prop_bytes": 14
+  },
+  {
+   "component": "ResearchCards",
+   "count": 1,
+   "prop_bytes": 14
+  },
+  {
+   "component": "SkelIntro",
+   "count": 1,
+   "prop_bytes": 12
+  },
+  {
+   "component": "SkelResearchArticle",
+   "count": 1,
+   "prop_bytes": 12
+  },
+  {
+   "component": "SkelHeader",
+   "count": 1,
+   "prop_bytes": 11
+  },
+  {
+   "component": "ButtonLink",
+   "count": 1,
+   "prop_bytes": 7
+  }
+ ],
+ "props": [
+  {
+   "component": "RapmRatingsTable",
+   "prop": "players",
+   "bytes": 391248
+  },
+  {
+   "component": "RapmRatingsTable",
+   "prop": "teams",
+   "bytes": 6845
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "prop": "loading",
+   "bytes": 1638
+  },
+  {
+   "component": "ContextBar",
+   "prop": "detailRows",
+   "bytes": 941
+  },
+  {
+   "component": "default",
+   "prop": "notFound",
+   "bytes": 644
+  },
+  {
+   "component": "default",
+   "prop": "icon",
+   "bytes": 427
+  },
+  {
+   "component": "ResearchIntro",
+   "prop": "links",
+   "bytes": 263
+  },
+  {
+   "component": "PlayerIdentity",
+   "prop": "era",
+   "bytes": 165
+  },
+  {
+   "component": "PlayerIdentity",
+   "prop": "href",
+   "bytes": 163
+  },
+  {
+   "component": "default",
+   "prop": "template",
+   "bytes": 116
+  },
+  {
+   "component": "RouteTabs",
+   "prop": "tabs",
+   "bytes": 108
+  },
+  {
+   "component": "ResearchIntro",
+   "prop": "tagline",
+   "bytes": 98
+  },
+  {
+   "component": "RapmRatingsTable",
+   "prop": "statsHref",
+   "bytes": 96
+  },
+  {
+   "component": "PlayerIdentity",
+   "prop": "name",
+   "bytes": 88
+  },
+  {
+   "component": "default",
+   "prop": "className",
+   "bytes": 62
+  },
+  {
+   "component": "ResearchCard",
+   "prop": "kicker",
+   "bytes": 60
+  },
+  {
+   "component": "ResearchSection",
+   "prop": "title",
+   "bytes": 45
+  },
+  {
+   "component": "PlayerIdentity",
+   "prop": "playerId",
+   "bytes": 43
+  },
+  {
+   "component": "ResearchCard",
+   "prop": "title",
+   "bytes": 40
+  },
+  {
+   "component": "default",
+   "prop": "error",
+   "bytes": 36
+  },
+  {
+   "component": "default",
+   "prop": "errorStyles",
+   "bytes": 36
+  },
+  {
+   "component": "default",
+   "prop": "errorScripts",
+   "bytes": 36
+  },
+  {
+   "component": "default",
+   "prop": "forbidden",
+   "bytes": 36
+  },
+  {
+   "component": "default",
+   "prop": "unauthorized",
+   "bytes": 36
+  },
+  {
+   "component": "default",
+   "prop": "parallelRouterKey",
+   "bytes": 30
+  },
+  {
+   "component": "ResearchResultsView",
+   "prop": "title",
+   "bytes": 30
+  },
+  {
+   "component": "default",
+   "prop": "templateScripts",
+   "bytes": 28
+  },
+  {
+   "component": "SkelFilterBar",
+   "prop": "fields",
+   "bytes": 27
+  },
+  {
+   "component": "ResearchSection",
+   "prop": "icon",
+   "bytes": 27
+  },
+  {
+   "component": "default",
+   "prop": "templateStyles",
+   "bytes": 26
+  }
+ ]
+}

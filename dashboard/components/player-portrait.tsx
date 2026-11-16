@@ -24,6 +24,11 @@ interface PlayerPortraitProps {
   alt?: string;
   /** Prefer the headshot from this season and team (compare cards). */
   era?: PortraitEra | null;
+  /**
+   * The page's hero (the player page header): loaded eagerly at high fetch priority, since it is
+   * the largest contentful paint. Every other portrait is lazy (speed plan SP06).
+   */
+  priority?: boolean;
 }
 
 export function PlayerPortrait({
@@ -33,7 +38,8 @@ export function PlayerPortrait({
   size = "sm",
   className = "",
   alt,
-  era
+  era,
+  priority = false
 }: PlayerPortraitProps) {
   const [error, setError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -78,7 +84,8 @@ export function PlayerPortrait({
       alt={alt ?? `${name} portrait`}
       width={box}
       height={box}
-      loading={size === "lg" || size === "xl" ? "eager" : "lazy"}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : undefined}
       onError={() => setError(true)}
       className={`player-portrait ${sizeClass} ${className}`}
     />

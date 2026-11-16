@@ -1,0 +1,6 @@
+cache on, cold:
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 52 reads; 16 without a release pin
+no differences
+cache on, warm:
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 52 reads; 16 without a release pin
+no differences

@@ -69,7 +69,7 @@ test("the demo account is one click, shows the shared list and keeps the session
   expect(await page.evaluate(() => document.cookie)).not.toContain("courtlens-session");
 
   // The latest season's photo, with that team (the mock may not serve the image itself).
-  const portrait = page.waitForRequest(request => /\/api\/workbench\/players\/23\/portrait\?/.test(request.url()));
+  const portrait = page.waitForRequest(request => /\/api\/workbench\/players\/23\/portrait\.webp\?/.test(request.url()));
   await header(page).getByRole("button", { name: "Favorite players (1)" }).click();
   expect((await portrait).url()).toMatch(/season=2025-26&team=TOR/);
   const panel = page.getByRole("dialog", { name: "Favorite players" });

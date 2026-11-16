@@ -11,6 +11,7 @@ import {
   type FactorInput, type FactorRow, type FourFactorsSeason, type FourFactorsSummary, type MissKind, type Rebounds
 } from "@/lib/research-r10";
 import { teamArtwork } from "@/lib/team-era";
+import { TeamLink } from "@/components/entity-link";
 
 /**
  * R10's observed four-factor inputs (courtlens-four-factors-inputs-v2) under the ORTG lab (RD02): the league and team
@@ -89,7 +90,7 @@ function TeamsTable({ season }: { season: FourFactorsSeason }) {
   type T = FourFactorsSeason["teams"][number];
   const pctCol = (key: string, label: string, get: (t: T) => number | null): GridColumn<T> => ({ key, label, cell: t => <GridValue text={percent(get(t), 1)} />, data: t => ({ field: key, value: get(t) ?? "" }) });
   return <StatsGrid label={`Team inputs ${season.season}`} name="teams" density="compact" height="auto" leadWidth="sm" minWidth="wide" rows={teams} rowKey={t => t.team}
-    lead={{ label: "Team", cell: t => <span className="ol-team-cell"><TeamLogo team={t.team} season={season.season} size={20} />{teamArtwork(t.team, season.season)?.tricode ?? t.team}</span> }}
+    lead={{ label: "Team", cell: t => <TeamLink team={t.team} scope={{ season: season.season }} variant="block" className="ol-team-cell"><TeamLogo team={t.team} season={season.season} size={20} /><span className="entity-link-text">{teamArtwork(t.team, season.season)?.tricode ?? t.team}</span></TeamLink> }}
     columns={[
       { key: "ortg", label: "ORTG", cell: t => <GridValue text={fixed(t.ortg_factors, 1)} />, data: t => ({ field: "ortg", value: t.ortg_factors ?? "" }) },
       ...INPUTS.map(k => pctCol(k, INPUT_LABELS[k], t => t.inputs[k])),
@@ -113,7 +114,7 @@ export function ObservedInputs({ data, season, seasonData, seasonError, retry, d
     </div>
     <MethodBlock title="Offensive rebounds by miss"><p className="rs-note">The share of rebounds the shooting team took after each kind of miss (team rebounds included). A miss followed by a shot, foul shot, turnover or period end before any rebound is unrebounded and left out of the rate.</p><ReboundTable row={head.league} /></MethodBlock>
     <MethodBlock title={`Teams, ${head.season}`}>
-      {seasonError ? <FeedFailure error={seasonError} retry={retry} what="Team inputs" /> : !seasonData ? <FeedSkeleton label="Loading team inputs" /> : <><p className="rs-note">Each team&apos;s own inputs with the league&apos;s μ ({fixed(seasonData.mu, 4)}); highest rating first.</p><TeamsTable season={seasonData} /></>}
+      {seasonError ? <FeedFailure error={seasonError} retry={retry} what="Team inputs" /> : !seasonData ? <FeedSkeleton label="Loading team inputs" shape="grid" rows={10} lead="team" density="compact" /> : <><p className="rs-note">Each team&apos;s own inputs with the league&apos;s μ ({fixed(seasonData.mu, 4)}); highest rating first.</p><TeamsTable season={seasonData} /></>}
     </MethodBlock>
     <MethodBlock title="μ by season"><p className="rs-note">The last of a two- or three-shot trip, or a lone free throw that is not an and-one.</p><MuTable data={data} /></MethodBlock>
     <MethodBlock title="Caveats"><ul className="ol-list">{data.caveats.map(c => <li key={c}>{c}</li>)}</ul></MethodBlock>

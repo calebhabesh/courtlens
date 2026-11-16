@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "../intent-link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { motion, AnimatePresence, popoverVariants } from "../../lib/motion";
@@ -8,18 +8,25 @@ import { Icon } from "./icon";
 import { Button, IconButton } from "./kit";
 import { Drawer } from "./drawer";
 import { Accordion, AccordionItem } from "./accordion";
-import { GlobalCommandPalette } from "./command-palette";
 import { Brand } from "../brand";
 import { useAssistantPage } from "@/lib/assistant-page-context";
-import { AskDrawer } from "../ask-drawer";
 import { AccountMenu, DrawerAccount, FavoritesPopover } from "../account/account-controls";
 import { FavoritePlayersList } from "../account/favorite-players";
-import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, type NavGroup } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
 import { askAvailable } from "@/lib/hosted";
+import { useOpenedOnce } from "@/lib/use-opened-once";
+import dynamic from "next/dynamic";
+
+// Overlays load on first opening, not with the page (speed plan SP05): the search palette, the
+// Ask panel and the shortcuts sheet are not on screen at first paint. `loading` gives each its own
+// Suspense boundary; without one, a loading overlay suspends the layout's boundary around the
+// header, which blanks the header and takes focus from the button that opened it.
+const GlobalCommandPalette = dynamic(() => import("./command-palette").then(mod => mod.GlobalCommandPalette), { loading: () => null });
+const AskDrawer = dynamic(() => import("../ask-drawer").then(mod => mod.AskDrawer), { loading: () => null });
+const HotkeysModal = dynamic(() => import("../hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
 
 export function Header() {
   const pathname = usePathname();
@@ -37,6 +44,8 @@ export function Header() {
   const [askOpen, setAskOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const paletteMounted = useOpenedOnce(paletteOpen);
+  const hotkeysMounted = useOpenedOnce(hotkeysOpen);
 
   // Catalog and route availability
   const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? undefined;
@@ -274,13 +283,13 @@ export function Header() {
         <nav className="courtlens-nav" aria-label="Workspace Navigation">
           {DIRECT_LINKS.map(({ id, item }) => (
             <div key={id} className="courtlens-nav-item">
-              <Link
+              <IntentLink
                 href={item.href}
                 className={`courtlens-nav-link ${activeSection === id ? "active" : ""}`}
               >
                 {item.label}
                 {activeSection === id && indicator}
-              </Link>
+              </IntentLink>
             </div>
           ))}
 
@@ -328,7 +337,7 @@ export function Header() {
                             <span className="courtlens-dropdown-section-title">{group.title}</span>
                           )}
                           {group.items.map(item => (
-                            <Link
+                            <IntentLink
                               key={item.href}
                               href={item.href}
                               role="menuitem"
@@ -340,7 +349,7 @@ export function Header() {
                                 <span className="courtlens-dropdown-icon" aria-hidden="true"><Icon name={item.icon} size={20} /></span>
                                 <span className="courtlens-dropdown-text"><span>{item.label}</span>{item.description && <small>{item.description}</small>}</span>
                               </> : <span>{item.label}</span>}
-                            </Link>
+                            </IntentLink>
                           ))}
                         </div>
                         ));
@@ -367,7 +376,7 @@ export function Header() {
           onClick={() => setPaletteOpen(true)}
         >
           <Icon name="search" size={16} className="courtlens-search-pill-icon" />
-          <span className="courtlens-search-pill-label">Search players, teams…</span>
+          <span className="courtlens-search-pill-label">Search pages, players…</span>
           <kbd className="courtlens-search-pill-kbd">⌘K</kbd>
         </button>
       </div>
@@ -427,7 +436,7 @@ export function Header() {
                 onKeyDown={handleDropdownKeyDown}
               >
                 {MORE_LINKS.map(item => (
-                  <Link
+                  <IntentLink
                     key={item.href}
                     href={item.href}
                     role="menuitem"
@@ -436,7 +445,7 @@ export function Header() {
                     onClick={() => setMoreMenuOpen(false)}
                   >
                     <span>{item.label}</span>
-                  </Link>
+                  </IntentLink>
                 ))}
 
                 <div className="courtlens-dropdown-divider" />
@@ -458,7 +467,7 @@ export function Header() {
                     {availabilitySubmenuOpen && (
                       <div className="availability-menu" role="menu">
                         {unavailableItems.map(item => (
-                          <Link
+                          <IntentLink
                             key={item.href}
                             href={item.href}
                             role="menuitem"
@@ -471,7 +480,7 @@ export function Header() {
                                 {availability(item.href).reason}
                               </small>
                             </span>
-                          </Link>
+                          </IntentLink>
                         ))}
                       </div>
                     )}
@@ -528,7 +537,7 @@ export function Header() {
 
           <div className="courtlens-mobile-direct-links">
             {DIRECT_LINKS.map(({ id, item }) => (
-              <Link
+              <IntentLink
                 key={id}
                 href={item.href}
                 aria-current={activeSection === id ? "page" : undefined}
@@ -536,7 +545,7 @@ export function Header() {
                 onClick={closeDrawer}
               >
                 {item.label}
-              </Link>
+              </IntentLink>
             ))}
           </div>
 
@@ -552,7 +561,7 @@ export function Header() {
                     <div key={group.title ?? index} className="courtlens-mobile-group">
                       {group.title && <span className="courtlens-mobile-group-title">{group.title}</span>}
                       {group.items.map(item => (
-                        <Link
+                        <IntentLink
                           key={item.href}
                           href={item.href}
                           aria-current={isCurrent(item.href) ? "page" : undefined}
@@ -560,7 +569,7 @@ export function Header() {
                           onClick={closeDrawer}
                         >
                           {item.icon ? <span className="courtlens-mobile-sublink-label"><Icon name={item.icon} size={16} />{item.label}</span> : item.label}
-                        </Link>
+                        </IntentLink>
                       ))}
                     </div>
                   ))}
@@ -573,7 +582,7 @@ export function Header() {
                 <div className="courtlens-mobile-section-links replica-mobile-section">
                   <span className="replica-dropdown-section-title sr-only">Availability</span>
                   {unavailableItems.map(item => (
-                    <Link
+                    <IntentLink
                       key={item.href}
                       href={item.href}
                       className="courtlens-mobile-sublink"
@@ -585,7 +594,7 @@ export function Header() {
                           {availability(item.href).reason}
                         </small>
                       </span>
-                    </Link>
+                    </IntentLink>
                   ))}
                 </div>
               </AccordionItem>
@@ -596,7 +605,7 @@ export function Header() {
 
           <div className="courtlens-mobile-direct-links">
             {MORE_LINKS.map(item => (
-              <Link
+              <IntentLink
                 key={item.href}
                 href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
@@ -604,7 +613,7 @@ export function Header() {
                 onClick={closeDrawer}
               >
                 {item.label}
-              </Link>
+              </IntentLink>
             ))}
             <button
               type="button"
@@ -623,11 +632,11 @@ export function Header() {
         </nav>
       </Drawer>
 
-      <GlobalCommandPalette
+      {paletteMounted && <GlobalCommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
         triggerRef={searchPillRef}
-      />
+      />}
 
       {askOpen && assistantPage && (
         <AskDrawer
@@ -637,7 +646,7 @@ export function Header() {
         />
       )}
 
-      <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />}
     </header>
   );
 }

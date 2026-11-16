@@ -9,6 +9,7 @@ import {
   type ButtonHTMLAttributes,
   type Ref,
 } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence, popoverVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
 
@@ -18,6 +19,8 @@ export interface MenuItemProps {
   shortcut?: string;
   disabled?: boolean;
   onClick?: () => void;
+  /** A destination: the item renders as a real link (middle-click, new tab, copy link). */
+  href?: string;
   className?: string;
 }
 
@@ -27,8 +30,17 @@ export function MenuItem({
   shortcut,
   disabled = false,
   onClick,
+  href,
   className = "",
 }: MenuItemProps) {
+  const content = <>
+    {icon && <Icon name={icon} size={14} />}
+    <span className="ui-menu-item-label">{label}</span>
+    {shortcut && <kbd className="ui-menu-item-shortcut">{shortcut}</kbd>}
+  </>;
+  if (href && !disabled) {
+    return <Link href={href} prefetch={false} role="menuitem" onClick={onClick} className={`ui-menu-item ${className}`}>{content}</Link>;
+  }
   return (
     <button
       type="button"

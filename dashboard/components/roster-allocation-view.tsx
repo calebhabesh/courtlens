@@ -16,10 +16,9 @@ import { Modal } from "./ui/modal";
 import { PageHeader } from "./ui/panel";
 import { BoardLayout, PageShell } from "./ui/page-shell";
 import { Select } from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelText } from "./ui/content-skeletons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { downloadResearch } from "@/lib/advanced-research";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 import {
   ALLOCATION_EXPORT_FILENAME, LANES, POSITION_LANES, REGULATION_TEAM_MINUTES, allocationExport, buildAllocations,
   gaugeStatus, isValidMinutes, summarize, type Allocation, type AllocationMode, type Lane
@@ -28,6 +27,7 @@ import { teamAccent } from "@/lib/team-colors";
 import { getTeamDetail } from "@/lib/workbench-api";
 import type { TeamDetailResponse, WorkbenchCatalog } from "@/lib/types";
 import { Button, IconButton, Segmented } from "./ui/kit";
+import { playerHref as buildPlayerHref } from "@/lib/entity-links";
 
 export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
@@ -35,6 +35,12 @@ export interface RosterAllocationViewProps {
   scope: { releaseId?: string; season?: string; phase?: string; beforeDate?: string };
   /** Rendered as a section inside another page (the team profile since alignment row 12). */
   embedded?: boolean;
+  /**
+   * The same team read for the same scope, already made by the server (the team profile's
+   * header). The board shows it at once instead of reading it again after mount (speed plan SP04);
+   * a retry or a scope change reads as before.
+   */
+  initial?: TeamDetailResponse | null;
 }
 
 type Result = { key: string } & ({ status: "error"; message: string } | { status: "ready"; data: TeamDetailResponse });
@@ -48,7 +54,7 @@ const wholeMinutes = (value: number | null) => (value === null ? "—" : value.t
 const tenthMinutes = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
 const percent = (share: number | null) => (share === null ? "—" : `${(share * 100).toFixed(1)}%`);
 
-export function RosterAllocationView({ catalog, teamId, scope, embedded = false }: RosterAllocationViewProps) {
+export function RosterAllocationView({ catalog, teamId, scope, embedded = false, initial = null }: RosterAllocationViewProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -65,15 +71,18 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
   // Loads as soon as a team and scope are known (D6: no Load button). The page remounts per team,
   // so assignments reset with the team but survive scope changes for the same team.
   const requestKey = JSON.stringify([teamId, scope.releaseId, scope.season, scope.phase, scope.beforeDate, attempt]);
+  // The server's read covers these props until the reader asks again (attempt > 0).
+  const seeded = initial && attempt === 0 ? initial : null;
   useEffect(() => {
-    if (!teamId) return;
+    if (!teamId || seeded) return;
     let active = true;
     getTeamDetail(teamId, scope)
       .then((data) => { if (active) setResult({ key: requestKey, status: "ready", data }); })
       .catch((error: unknown) => { if (active) setResult({ key: requestKey, status: "error", message: error instanceof Error ? error.message : String(error) }); });
     return () => { active = false; };
   }, [requestKey]); // eslint-disable-line react-hooks/exhaustive-deps
-  const load: Load = !teamId ? { status: "idle" } : result?.key === requestKey ? result : { status: "loading" };
+  const load: Load = !teamId ? { status: "idle" } : result?.key === requestKey ? result
+    : seeded ? { key: requestKey, status: "ready", data: seeded } : { status: "loading" };
 
   const data = load.status === "ready" ? load.data : null;
   const rows = useMemo(() => data?.player_cohort ?? [], [data]);
@@ -115,12 +124,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     if (playerId) move(playerId, lane);
   };
 
-  const playerHref = (playerId: string) => buildPreservedContextUrl(`/players/${playerId}`, new URLSearchParams({
-    ...(scope.releaseId ? { releaseId: scope.releaseId } : {}),
-    ...(scope.season ? { season: scope.season } : {}),
-    ...(scope.phase ? { phase: scope.phase } : {}),
-    ...(scope.beforeDate ? { beforeDate: scope.beforeDate } : {})
-  }));
+  const playerHref = (playerId: string) => buildPlayerHref(playerId, { season: scope.season, phase: scope.phase });
 
   const chip = (row: Allocation) => {
     const minutesInvalid = !isValidMinutes(row.allocation_minutes);
@@ -262,8 +266,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
               why={<p>{load.message}</p>}>Couldn’t load {teamName} minutes.</GatedNote>
           ) : load.status !== "ready" ? (
             <BoardLayout className="roster-board" main={<div className="roster-skeleton" role="status" aria-busy="true" aria-label="Loading minutes">
-              <Skeleton height={168} />
-              <div className="roster-lanes">{POSITION_LANES.map((name) => <Skeleton key={name} height={200} />)}</div>
+              <div className="roster-lane roster-lane-pool" aria-hidden="true"><div className="roster-lane-head"><SkelText size="md" width={96} /><SkelText size="xs" width={72} /></div><div className="ui-skel-controls">{Array.from({ length: 6 }, (_, index) => <SkelControl key={index} width={132} size="md" />)}</div></div>
+              <div className="roster-lanes" aria-hidden="true">{POSITION_LANES.map((name) => <div key={name} className="roster-lane roster-lane-position"><div className="roster-lane-head"><SkelText size="md" width={40} /><SkelText size="xs" width={72} /></div>{[0, 1, 2].map(index => <SkelControl key={index} width="100%" size="md" />)}</div>)}</div>
             </div>} />
           ) : !rows.length ? (
             <GatedNote why={caveats} action={<Button size="xs" variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>}>
@@ -293,7 +297,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
                   <TableBody>
                     {allocations.map((row) => (
                       <TableRow key={row.player_id}>
-                        <TableCell><Link href={playerHref(row.player_id)}>{row.player_name}</Link></TableCell>
+                        <TableCell><Link className="entity-link" href={playerHref(row.player_id)} prefetch={false}>{row.player_name}</Link></TableCell>
                         <TableCell numeric>{row.games_played}</TableCell>
                         <TableCell numeric>{tenthMinutes(row.total_minutes)}</TableCell>
                         <TableCell>

@@ -22,6 +22,8 @@ import { PageHeader } from "./ui/panel";
 import { SearchField } from "./ui/input";
 import { ButtonLink, Segmented } from "./ui/kit";
 import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 export type GameTab = "summary" | "box" | "plays" | "pregame";
 export const GAME_TABS: { value: GameTab; label: string }[] = [
@@ -82,8 +84,8 @@ export function GameBanner({ game, index, backHref }: { game: LiveGame; index: n
     return <div className="live-banner-team" data-side={team.side} data-lost={lost(team) || undefined}>
       <span className="live-banner-logo"><TeamLogo team={logoTeam(team)} season={season} size={64} /></span>
       <span className="live-banner-name">
-        <span className="live-banner-full">{team.name}</span>
-        <span className="live-banner-code">{teamCode(team)}</span>
+        <TeamLink team={team.canonical_id} scope={{ season }} className="live-banner-full">{team.name}</TeamLink>
+        <TeamLink team={team.canonical_id} scope={{ season }} className="live-banner-code" title={team.name}>{teamCode(team)}</TeamLink>
         <span className="live-banner-meta">
           {team.record && <span className="live-banner-record"><span className="sr-only">Record </span>{formatRecord(team.record)}</span>}
           {team.record && <span aria-hidden="true">, </span>}
@@ -149,7 +151,7 @@ function LeaderLine({ leader, season, team, top, player }: { leader?: LiveLeader
   const meta = [teamCode(team), leader?.position, player?.jersey && `#${player.jersey}`].filter(Boolean).join(" · ");
   const line = leader ? leaderLine(leader.category, player?.statistics) : null;
   if (!leader) return <li className="live-leader"><span className="live-leader-photo"><TeamLogo team={logoTeam(team)} season={season} size={20} /></span><span className="live-leader-text"><span className="live-leader-name live-muted">No leader listed</span><span className="live-leader-meta">{teamCode(team)}</span></span><span className="live-leader-value live-muted">—</span></li>;
-  const name = leader.canonical_id ? <Link href={`/players/${leader.canonical_id}?season=${season}`}>{leader.name}</Link> : leader.name;
+  const name = leader.canonical_id ? <Link className="entity-link" href={playerHref(leader.canonical_id, { season })} prefetch={false}>{leader.name}</Link> : leader.name;
   return <li className="live-leader" data-top={top || undefined}>
     <RingPhoto playerId={leader.canonical_id ?? undefined} name={leader.name} team={team} season={season} />
     <span className="live-leader-text">
@@ -267,7 +269,7 @@ function GameInfo({ data, className = "" }: { data: LiveGameData; className?: st
     { label: "Where", icon: "map-pin", wide: true, value: info?.venue ? <span className="live-info-venue">
       <span className="live-info-team"><TeamLogo team={logoTeam(home)} season={season} size={20} />{info.venue}{place && <span className="live-muted"> · {place}</span>}</span>
       {info.venue_image && /* eslint-disable-next-line @next/next/no-img-element -- ESPN's venue photo */
-        <img className="live-info-photo" src={info.venue_image} alt={`${info.venue}`} loading="lazy" />}
+        <img className="live-info-photo" src={info.venue_image} alt={`${info.venue}`} width={640} height={360} loading="lazy" />}
     </span> : null },
     { label: "Away", icon: "users", value: away ? team(away) : null },
     { label: "Home", icon: "home", value: home ? team(home) : null },
@@ -357,7 +359,7 @@ function PlayerRow({ player, season }: { player: LivePlayer; season: string }) {
   return <tr data-dnp={dnp || undefined}>
     <th scope="row" title={player.name}>
       <span className="live-box-player">
-        {player.canonical_id ? <Link href={`/players/${player.canonical_id}?season=${season}`}>{name}</Link> : <span>{name}</span>}
+        {player.canonical_id ? <Link className="entity-link" href={playerHref(player.canonical_id, { season })} prefetch={false}>{name}</Link> : <span>{name}</span>}
         {player.position && <span className="live-box-position">{player.position}</span>}
       </span>
     </th>
@@ -387,7 +389,7 @@ function TeamBox({ data, team, hotkey, rows: target }: { data: LiveGameData; tea
     <FillerRows count={pad - rows.length} />
   </tbody> : null;
   return <section className="live-box-team" aria-label={`${team.name} box score`} id={`live-box-${team.side}`} tabIndex={-1}>
-    <h2 className="live-box-title"><TeamLogo team={logoTeam(team)} season={season} size={20} />{team.name.toUpperCase()}<span className="live-box-press">Press <kbd>{hotkey}</kbd></span></h2>
+    <h2 className="live-box-title"><TeamLogo team={logoTeam(team)} season={season} size={20} /><TeamLink team={team.canonical_id} scope={{ season }}>{team.name.toUpperCase()}</TeamLink><span className="live-box-press">Press <kbd>{hotkey}</kbd></span></h2>
     {players.length ? <div className="live-table-scroll" role="region" aria-label={`${team.name} player box table`} tabIndex={0}>
       <table className="live-box">
         <colgroup><col className="live-box-col-player" />{BOX_COLUMNS.map(c => <col key={c.key} className={`live-box-col-${c.key}`} />)}</colgroup>
@@ -462,10 +464,10 @@ export function PlaysTab({ data }: { data: LiveGameData }) {
 function InjuryList({ team, players, season }: { team: LiveTeam; players: LiveInjury[] | null; season: string }) {
   // Round 3: logo, full name and each player's photo (the season's headshot for that team).
   return <div className="live-injury-team" data-side={team.side}>
-    <h3><TeamLogo team={logoTeam(team)} season={season} size={32} />{teamFullName(team, season)}<span className="live-muted">({players?.length ?? "?"})</span></h3>
+    <h3><TeamLogo team={logoTeam(team)} season={season} size={32} /><TeamLink team={team.canonical_id} scope={{ season }}>{teamFullName(team, season)}</TeamLink><span className="live-muted">({players?.length ?? "?"})</span></h3>
     {players == null ? <p className="live-muted">Injury report unknown.</p> : players.length ? <ul>{players.map(p => <li key={p.source_id}>
       <PlayerPortrait playerId={p.canonical_id ?? undefined} name={p.name} size="sm" era={seasonEra(season, logoTeam(team))} />
-      <span className="live-injury-name">{p.canonical_id ? <Link href={`/players/${p.canonical_id}?season=${season}`}>{p.name}</Link> : p.name}
+      <span className="live-injury-name">{p.canonical_id ? <Link className="entity-link" href={playerHref(p.canonical_id, { season })} prefetch={false}>{p.name}</Link> : p.name}
         <span className="live-muted live-injury-detail">{[p.position, p.detail].filter(Boolean).join(" · ")}</span></span>
       <span className="live-injury-status" data-status={p.status?.toLowerCase().replace(/\s+/g, "-")}>{p.status ?? "Unknown"}</span>
     </li>)}</ul> : <p className="live-muted live-italic">No injuries reported</p>}

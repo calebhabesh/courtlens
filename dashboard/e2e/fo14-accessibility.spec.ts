@@ -52,18 +52,18 @@ test("Article loading contents match the horizontal phone pill strip", async ({ 
   await page.setViewportSize({ width: 390, height: 844 });
   await openWorkbench(page, "/design");
   await page.getByRole("radio", { name: "Article", exact: true }).click();
-  const toc = page.locator(".ui-skeleton-article-toc");
-  await expect(toc).toBeVisible();
-  const geometry = await toc.locator(".ui-skeleton").evaluateAll(elements => elements.map(e => {
-    const r = e.getBoundingClientRect();
-    return { top: r.top, height: r.height };
-  }));
+  // The skeleton uses the real contents list, so on a phone its items sit in the same one-row pill strip.
+  const frame = page.locator(".ui-design-skeleton-frame");
+  const links = frame.locator(".ui-article-toc .ui-article-toc-link");
+  await expect(links.first()).toBeVisible();
+  const geometry = await links.evaluateAll(elements => elements.map(e => e.getBoundingClientRect().top));
   expect(geometry).toHaveLength(5);
-  expect(geometry.every(g => g.height === 40 && g.top === geometry[0].top)).toBe(true);
-  expect(await toc.locator(".ui-skeleton").first().evaluate(e => {
+  expect(geometry.every(top => Math.abs(top - geometry[0]) <= 1)).toBe(true);
+  // Placeholders are a faint white over the surface beneath, and hold still under reduced motion.
+  expect(await links.first().locator(".ui-skeleton").evaluate(e => {
     const s = getComputedStyle(e);
     return { fill: s.backgroundColor, animation: s.animationName, image: s.backgroundImage };
-  })).toEqual({ fill: "rgb(28, 31, 36)", animation: "none", image: "none" });
+  })).toEqual({ fill: expect.stringMatching(/^(color\(srgb 1 1 1 \/ 0\.1\)|rgba\(255, 255, 255, 0\.1\))$/), animation: "none", image: "none" });
   await expect(page.getByRole("status", { name: "Loading", exact: true })).toHaveAttribute("aria-busy", "true");
 });
 

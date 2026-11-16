@@ -32,14 +32,16 @@ test("board: centred date strip, four-across final cards, hotkeys open a game", 
   const strip = page.getByRole("navigation", { name: "Live dates" });
   await expect(strip.locator('[aria-current="date"]')).toContainText("26");
   await expect(strip.getByRole("link")).toHaveCount(9);
-  await expect(slate(page).getByRole("link")).toHaveCount(9);
-  const card = slate(page).getByRole("link").nth(1);
+  // Site links D2: each card is an article with a stretched game link and a link per team.
+  await expect(slate(page).locator(".live-card")).toHaveCount(9);
+  await expect(slate(page).getByRole("link")).toHaveCount(27);
+  const card = slate(page).locator(".live-card").nth(1);
   await expect(card).toContainText("Final/OT");
   await expect(card).toContainText("MIN");
   await expect(card).toContainText("125");
   await expect(card).toContainText("127");
   await expect(card.locator(".live-card-team[data-lost]")).toContainText("MIN");
-  const tops = await slate(page).getByRole("link").evaluateAll(cards => cards.slice(0, 5).map(c => Math.round(c.getBoundingClientRect().top)));
+  const tops = await slate(page).locator(".live-card").evaluateAll(cards => cards.slice(0, 5).map(c => Math.round(c.getBoundingClientRect().top)));
   expect(new Set(tops.slice(0, 4)).size).toBe(1);
   expect(tops[4]).toBeGreaterThan(tops[0]);
   await page.keyboard.press("2");
@@ -49,7 +51,7 @@ test("board: centred date strip, four-across final cards, hotkeys open a game", 
 test("upcoming cards carry the free line and injury counts", async ({ page }) => {
   await mock(page);
   await page.goto("/live/2026-10-27");
-  const card = slate(page).getByRole("link").first();
+  const card = slate(page).locator(".live-card").first();
   await expect(card).toContainText("PM ED");
   await expect(card).toContainText("BOS by 12.5");
   await expect(card.getByText("BOS by 12.5")).toHaveAttribute("title", "Spread (DraftKings): Boston Celtics favored by 12.5 points");
@@ -61,7 +63,7 @@ test("upcoming cards carry the free line and injury counts", async ({ page }) =>
 test("the shortcut is a key cap, not HK; an upcoming game opens on Pre-Game", async ({ page }) => {
   await mock(page);
   await page.goto("/live/2026-10-27");
-  const card = slate(page).getByRole("link").first();
+  const card = slate(page).locator(".live-card").first();
   await expect(card).not.toContainText("HK");
   await expect(card.locator("kbd.live-card-key")).toHaveAttribute("title", "Press 1 to open this game");
   await page.keyboard.press("1");
@@ -83,7 +85,8 @@ test("summary: line score, leaders, shot chart and team stats", async ({ page })
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/live/games/401909869?date=2026-10-26");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Minnesota Timberwolves at Cleveland Cavaliers");
-  const banner = page.locator(".live-banner");
+  // The loading skeleton reuses .live-banner inside an aria-hidden .live-game while the page streams in.
+  const banner = page.locator(".live-game:not([aria-hidden]) .live-banner");
   await expect(banner).toContainText("Final/OT");
   await expect(banner.locator("[data-lost]")).toContainText("125");
   // The line score lives in the banner now (follow-up 23).
@@ -191,7 +194,7 @@ test("game hotkeys and the All Games rail", async ({ page }) => {
   expect(Math.round(box!.y + box!.height)).toBe(900);
   await page.keyboard.press("3");
   await expect(page).toHaveURL(/games\/401909870/);
-  await expect(page.locator(".live-banner")).toContainText("BOS");
+  await expect(page.locator(".live-game:not([aria-hidden]) .live-banner")).toContainText("BOS");
   await page.keyboard.press("Tab");
   await expect(page).toHaveURL(/tab=box/);
   await page.keyboard.press("Shift+Tab");

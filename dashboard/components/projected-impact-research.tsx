@@ -25,6 +25,9 @@ import {
 import { evidenceUrl } from "@/lib/research-facts";
 import { teamAccent } from "@/lib/team-colors";
 import type { LookupItem } from "@/lib/types";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /**
  * Research → Models → Projected Impact (R07, designed in RD11). Every number is the frozen courtlens-projected-impact-v1 files' or the
@@ -140,7 +143,7 @@ function Projections({ page, chosen, onChoose }: { page: ProjectedImpactPage; ch
     <StatsGrid<ProjectedPlayer> label="Projected impact" name="projections" className="pi-board" rows={rows} rowKey={p => p.player_id} leadWidth="lg" columns={columns}
       sort={{ key: column.key, direction: sort.direction, onSort }} empty="No players match these filters." rowData={p => ({ group: p.group, roster: p.on_roster ? "true" : "false" })}
       lead={{ span: true, label: <GridSearch value={query} onChange={setQuery} />,
-        cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={teamOf(p)} season={teamSeason(p)} era={seasonEra(teamSeason(p), teamOf(p))} subtitle={subtitleOf(p)} href={`/players/${p.player_id}`}
+        cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={teamOf(p)} season={teamSeason(p)} era={seasonEra(teamSeason(p), teamOf(p))} subtitle={subtitleOf(p)} href={playerHref(p.player_id)}
           tools={<IconButton size="sm" icon="arrow-right" label={`Why ${p.name} is projected here`} pressed={chosen === p.player_id} onClick={() => onChoose(p.player_id)} />} /> }} />
   </ResearchSection>;
 }
@@ -167,7 +170,7 @@ function Why({ page, id, fallback, onChoose, onClear, onReset }: { page: Project
   const { data, error, loading, retry } = useFeed([row?.player_id ?? null], signal => row ? getProjectedImpactPlayer(row.player_id, signal) : Promise.resolve(null));
   const items = useMemo(() => players.map((p): LookupItem => ({
     id: p.player_id, canonical_id: p.player_id, kind: "player", display_name: p.name, match_basis: "suggestion", match_score: 1,
-    availability: { has_current_season: true, status: "available", seasons: [SEASON] }, destination_url: `/players/${p.player_id}`,
+    availability: { has_current_season: true, status: "available", seasons: [SEASON] }, destination_url: playerHref(p.player_id),
     metadata: { caption: `${subtitleOf(p)} · ${signed(p.projection)}` },
   } as LookupItem)), [players]);
   const team = row ? teamOf(row) : null;
@@ -181,13 +184,13 @@ function Why({ page, id, fallback, onChoose, onClear, onReset }: { page: Project
     {id === NO_PLAYER && <GatedNote action={fallback ? <Button size="lg" variant="secondary" onClick={onReset}>Open the default player</Button> : undefined}>No player chosen. Search for one above, or open the default: the highest projection on a roster.</GatedNote>}
     {id !== NO_PLAYER && !row && <GatedNote>No contributions for this player.</GatedNote>}
     {row && error && <FeedFailure error={error} retry={retry} what="The player's contributions" />}
-    {row && loading && <FeedSkeleton label="Loading the player's contributions" />}
+    {row && loading && <FeedSkeleton label="Loading the player's contributions" shape="profile" rows={6} />}
     {row && data && <article className="pi-card" data-player={row.player_id} style={tint ? vars({ "--pi-team": tint }) : undefined}>
       <header className="pi-card-head">
         <PlayerAvatar playerId={row.player_id} name={row.name} team={team} size="lg" era={seasonEra(teamSeason(row), team)} />
         <span className="pi-card-titles">
-          <a className="pi-card-name" href={`/players/${row.player_id}`}>{row.name}</a>
-          <span className="pi-card-team">{team && <TeamLogo team={team} season={teamSeason(row)} size={16} />}{subtitleOf(row)}{row.age == null ? "" : ` · Age ${Math.floor(row.age)}`}</span>
+          <Link className="pi-card-name entity-link" href={playerHref(row.player_id)} prefetch={false}>{row.name}</Link>
+          <span className="pi-card-team">{team && <TeamLink team={team} scope={{ season: teamSeason(row) }} variant="block"><TeamLogo team={team} season={teamSeason(row)} size={16} /></TeamLink>}{subtitleOf(row)}{row.age == null ? "" : ` · Age ${Math.floor(row.age)}`}</span>
         </span>
         <span className="pi-card-value" data-field="card-projection" data-value={row.projection} data-low={row.low} data-high={row.high}>
           <strong data-tone={intervalTone(row)} data-identity={intervalTone(row) ? undefined : signTone(row.projection)}>{signed(row.projection)}</strong>

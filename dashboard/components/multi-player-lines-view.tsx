@@ -12,6 +12,7 @@ import {
   exportSvgFile,
   copyCanonicalQueryUrl
 } from "@/lib/image-export";
+import { PlayerLink } from "./entity-link";
 
 interface MultiPlayerLinesViewProps {
   /** `embedded`: inside the Compare card's drawer, without its own frame, legend box or footnote. */
@@ -710,7 +711,7 @@ export function MultiPlayerLinesView({
             style={{ "--series-color": series.color } as React.CSSProperties}
           >
             <span className="lines-symbol">{series.symbol}</span>
-            <span className="lines-player-name">{series.playerName}</span>
+            <PlayerLink id={series.playerId} className="lines-player-name">{series.playerName}</PlayerLink>
             <span className="text-xs font-mono text-muted">({series.games.length}G)</span>
             <button
               type="button"

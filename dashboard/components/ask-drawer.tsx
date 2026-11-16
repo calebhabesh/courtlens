@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useSearchParams } from "next/navigation";
 import { AskCourtLens } from "./ask-courtlens";
 import { useEffect, useRef } from "react";
@@ -22,7 +22,7 @@ export function AskDrawer({ onClose, pageContext, pageLabel }: {onClose: () => v
     node?.showModal();
   }, []);
   return <dialog ref={dialog} className="conversation-dialog" aria-labelledby="ask-drawer-title" onClose={onClose}>
-    <div className="conversation-row"><h2 id="ask-drawer-title">Research conversation</h2><Button size="lg" onClick={() => dialog.current?.close()}>Close research conversation</Button><Link href={fullPageUrl} onClick={() => dialog.current?.close()}>Open full research page</Link></div>
+    <div className="conversation-row"><h2 id="ask-drawer-title">Research conversation</h2><Button size="lg" onClick={() => dialog.current?.close()}>Close research conversation</Button><IntentLink href={fullPageUrl} onClick={() => dialog.current?.close()}>Open full research page</IntentLink></div>
     {manual ? <AskCourtLens variant="panel" initialReleaseId={pageContext.selections.release_id ?? undefined} initialSeason={pageContext.selections.season ?? undefined} initialPhase={pageContext.selections.phase} initialBeforeDate={pageContext.selections.before_date ?? undefined} initialWindow={pageContext.selections.window} /> : <ThreadedAssistant variant="panel" initialContext={pageContext.selections} pageContext={pageContext} pageLabel={pageLabel} />}
   </dialog>;
 }

@@ -12,6 +12,7 @@ import { formatStatValue } from "@/lib/stats-presets";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
 import { ButtonLink } from "@/components/ui/kit";
+import { playerHref } from "@/lib/entity-links";
 
 export const dynamic = "force-dynamic";
 
@@ -58,14 +59,14 @@ export default async function Page({ searchParams }: {
         <section className="rapm-headline" aria-label="Headline result">
           <LeaderBars title="Qualified 1Y RAPM leaders, points per 100 counted controls" source="CourtLens lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
             measure="points per 100 counted controls" zeroMeans="an average player"
-            items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} team={teams[p.player_id] ?? null} era={seasonEra(season, teams[p.player_id])} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
+            items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} team={teams[p.player_id] ?? null} era={seasonEra(season, teams[p.player_id])} href={playerHref(p.player_id, { season, phase })} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
         </section>
         <ResearchCards columns={4} label="Fit summary">
           {facts.map(fact => <ResearchCard key={fact.label} listItem kicker={fact.label} title={fact.value}>{fact.note && <p className="rs-card-text">{fact.note}</p>}</ResearchCard>)}
         </ResearchCards>
       </ResearchSection>}
       <ResearchSection id="ratings" icon="table" title="All Ratings">
-        {data.players.length ? <RapmRatingsTable players={data.players} teams={teams} season={season} phase={phase} scope={scope.toString()} statsHref={statsHref} />
+        {data.players.length ? <RapmRatingsTable players={data.players} teams={teams} season={season} phase={phase} statsHref={statsHref} />
           : <GatedNote>No qualified rating sample for this scope.</GatedNote>}
       </ResearchSection>
     </>}

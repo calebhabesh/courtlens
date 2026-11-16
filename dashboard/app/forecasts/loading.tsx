@@ -1,3 +1,3 @@
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { ForecastsSkeleton } from "@/components/points-forecasts-research";
 
-export default function ForecastsLoading() { return <TemplateSkeleton template="research" />; }
+export default function ForecastsLoading() { return <ForecastsSkeleton label="Loading Points Forecasts" />; }

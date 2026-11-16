@@ -185,6 +185,30 @@ docker compose --env-file secrets.env --env-file release.env exec api \
   python -m courtlens.evaluation.win_probability_platform_check check
 ```
 
+### Player contract terms (Wikipedia)
+
+The player page's Contracts table fills lengths Basketball-Reference leaves out, and signings it
+does not list, from the player's Wikipedia article (`services/contract_spans.py`). The API reads the
+newest bundle in `data/derived/wikipedia-contracts-v1` (mounted read-only); without one the table
+falls back to Basketball-Reference alone. The bundle is filled by an operator run in the `jobs`
+container, which owns `data/` read-write:
+
+```bash
+docker compose --env-file secrets.env --env-file release.env exec jobs \
+  courtlens acquire-wikipedia-contracts --scope all
+docker compose --env-file secrets.env --env-file release.env exec jobs courtlens bump-data-stamp
+```
+
+`bump-data-stamp` empties the API's read cache (speed plan SP01) after any write run by hand; a
+scheduled job does it on its own. Run it in `jobs`, whose `data/` is writable.
+
+One Wikidata query maps Basketball-Reference IDs to articles, then each article is read serially at
+5 s: `--scope all` is the 3,297 players with a reported salary, about 4.6 hours the first time. It
+seals every 100 players and skips players read within `--max-age-days` (300), so an interrupted run
+resumes where it stopped; `--scope active` rereads only players with a current contract. Raw pages
+go to `data/raw/wikipedia-contracts` only when an article's revision changed, about 1.5 GB for a
+full first run. `--reparse` re-reads them with a newer parser and no network.
+
 ### Disk budget
 
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance
@@ -238,6 +262,54 @@ finance books are sealed and never pruned, so they grow only on days the data ch
 worst case, every day, about 5 GB a year, roughly 3% of the free disk. Egress is
 unaffected because refreshes only download.
 
+## Speed
+
+The [speed plan](speed-plan.md) (2026-11-14 to 2026-11-15) made warm pages render in tens of
+milliseconds. Its parts, as they run on the VPS:
+
+- **Read cache** (`src/courtlens/api/read_cache.py`, `COURTLENS_READ_CACHE: "true"` on `api` in
+  `compose.prod.yml`). An in-memory LRU of API read responses, capped at 128 MiB
+  (`COURTLENS_READ_CACHE_MAX_BYTES`). Every response from a classified route carries
+  `X-Cache: hit`, `miss` or `bypass`, and every response a `Server-Timing` header (handler time,
+  database time, query count).
+- **Classes.** Every GET route and every read-only POST Caddy allows has one, in `ROUTE_CLASSES`;
+  `tests/unit/test_read_cache.py` fails on a route without one, so a new endpoint must be
+  classified before it ships:
+  - `stamp`: published or job-written data, kept until the data stamp changes (at most 6 hours);
+  - `short`: data that moves between jobs (Win Probability, data and job status), 30 seconds;
+  - `never`: per-viewer, live, written through the API, binary, or unsure.
+
+  A request with `Authorization`, `Cookie` or `X-Operator-Token` (and the other headers in
+  `CREDENTIAL_HEADERS`) is never served from the cache or stored.
+- **Data stamp.** A SHA-256 over the publication pointers, the bundles' `.current` pointers, each
+  scheduled job's start and finish in `data/derived/job-health/`, the manual bump file and today's
+  date. The API reads it at most every 5 seconds and empties the cache when it changes, so no job
+  has to notify anything. While a job runs, `stamp` reads are not stored.
+- **`bump-data-stamp`.** A write run by hand (an operator command in `jobs`, such as
+  `acquire-wikipedia-contracts`) does not touch a job record, so follow it with
+  `courtlens bump-data-stamp` in `jobs` (whose `data/` is writable). Scheduled jobs need nothing.
+- **Status.** `GET /api/cache/status`: entries, bytes, hits, misses, the stamp and a generation id
+  that changes with the stamp and with each API start.
+- **Warm start** (`COURTLENS_WARM_START: "true"` on `api`). The API loads the catalog's bundles,
+  the tracking fingerprint and the finance book in the background as it starts, so the first
+  visitor after a deploy does not wait for them.
+- **Warm crawl** (`courtlens warm-site`, in the `jobs` loop after each `run-jobs`). When the
+  generation at `/api/cache/status` differs from its last run, it requests the top-level pages,
+  all 30 team pages and every current roster player's page from `http://dashboard:3000`, two at a
+  time, so the cache is filled by the same code visitors use. It stops after 5 consecutive 5xx
+  responses, is bounded by `timeout 1500`, and its time comes off the loop's sleep. Its record is
+  `data/derived/job-health/warm-site.json`. A failed or skipped crawl only leaves pages cold.
+- **Memory.** The cache cap is part of the API's 3 GB limit, beside the impact bundle (about
+  2.3 GB at its peak). No container limit was raised.
+- **Turning it off.** Set `COURTLENS_READ_CACHE: "false"` (and, if wanted,
+  `COURTLENS_WARM_START: "false"`) on `api` in `compose.prod.yml` on the VPS and recreate `api`
+  with `--no-deps`. The crawl then only renders pages; it is harmless and can stay.
+- **Browser and Cloudflare.** Links prefetch their page on intent (pointer resting 80 ms, focus,
+  touch start), never on entering the viewport. Portraits are served at `/portrait.webp` so
+  Cloudflare caches them; hashed team logos are `immutable` for a year and flags 30 days. HTML and
+  API responses are not cached at Cloudflare (D6, kept closed at G2). Zone settings (SP07): Smart
+  Tiered Cache and Early Hints on, 0-RTT off, browser cache TTL 4 hours.
+
 ## Scheduled jobs
 
 The `jobs` service (`deploy/compose.prod.yml`) is the API image running
@@ -245,7 +317,7 @@ The `jobs` service (`deploy/compose.prod.yml`) is the API image running
 own process with a timeout, then sleeps until the next scheduled time. Cap 4 GiB and two CPUs. A
 job seen for the first time (after a deploy that adds it) records a baseline and waits for its
 next scheduled time; `courtlens run-jobs --run <job>` runs one now. Schedules
-(`services/scheduled_jobs.py`) are the PC's old timers:
+(`services/scheduled_jobs.py`) are the PC's old timers plus the jobs added on the VPS:
 
 | Job | Command | When | Stale after | Measured on the VPS |
 | --- | --- | --- | --- | --- |
@@ -254,6 +326,8 @@ next scheduled time; `courtlens run-jobs --run <job>` runs one now. Schedules
 | lineups | `refresh-season-lineups` | 14:05 UTC | 30 h | 52 s, 412 MiB peak, output identical to the PC's; over an hour (timed out) before the `stint_id` index (W7c) |
 | season-impact | `refresh-season-impact` | Mondays 14:30 UTC | 8 days | waits until every team has 10 games; first fit expected 2026-11-16 |
 | metric-backtest | `refresh-metric-backtest` | 15:00 UTC (scores every 7 days) | 30 h | scoring 174 games takes about 2 s |
+| player-pages | `acquire-bbref-bios --active-only --max-age-days 6` | Tuesdays 16:00 UTC | 8 days | Basketball-Reference pages (contracts, transactions, career highs) for every rostered player at about 4 s a page: about 26 index pages plus ~530 players, so ~40 min; not yet run on the VPS. A 403/429 ends the run and records a failure |
+| college-schools | `refresh-college-schools` | Tuesdays 17:00 UTC | 8 days | each player's college, "City, State" and logo for the player header: two index requests, then only logos not yet kept (about 260 at 1 s on the first run); writes `data/derived/college-schools-v1` |
 
 Each attempt writes `data/derived/job-health/<job>.json` (last success, last failure, seconds,
 exit code, output tail). `GET /api/job-health` returns them all with `stale` set when the last

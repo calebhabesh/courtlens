@@ -8,6 +8,7 @@ import { StatTile } from "./ui/stat-tile";
 import { GatedNote } from "./ui/gated-note";
 import { ValueBar } from "./charts";
 import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelText } from "./ui/content-skeletons";
 import { Button } from "./ui/kit";
 
 export function useExampleSubject(parameter: string, aliases: string[] = [], kind: ExampleKind = "player", enabled = true) {
@@ -63,9 +64,9 @@ export function ExampleSubjectCard({ example, error, loading = false, loadingKin
   const rule = example?.team || loadingKind !== "player" ? "Season minutes rule / observed team’s top duo." : "Season minutes rule.";
   const provenance = <p className="chart-provenance">{rule} These box-score values are separate from the operation below.</p>;
   if (loading) return <section className="pc04-example" role="status" aria-label="Loading observed example">
-    <div className="pc04-example-heading"><Skeleton height={40} /></div>
+    <div className="pc04-example-heading"><SkelText size="md" width={220} /><SkelControl width={88} size="lg" /></div>
     <div className="pc04-example-players">{Array.from({length:loadingKind === "player" ? 1 : 2},(_,index)=><div key={index}>
-      <Skeleton height={48} /><div className="pc04-example-stats" aria-hidden="true"><StatTile label="Points / Game" value={null} /><StatTile label="Rebounds / Game" value={null} /><StatTile label="Assists / Game" value={null} /></div>
+      <span className="ui-skel-labeled"><Skeleton variant="circle" width={40} height={40} /><span className="ui-skel-identity"><SkelText size="md" width={140} /><SkelText size="xs" width={180} /></span></span><div className="pc04-example-stats" aria-hidden="true"><StatTile label="Points / Game" value={null} /><StatTile label="Rebounds / Game" value={null} /><StatTile label="Assists / Game" value={null} /></div>
       <ValueBar title={`Subject ${index === 0 ? "A" : "B"} · Points / Game`} value={null} domain={[0,40]} source="Published box scores" sample="Resolving" state="loading" />
     </div>)}</div>{provenance}
   </section>;

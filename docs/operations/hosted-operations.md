@@ -14,10 +14,11 @@ backup lines, which are in the `ubuntu` user's crontab. Times are Eastern unless
 | --- | --- | --- |
 | Win Probability seals and grading | 9:00 AM (catch-up grading); every 30 minutes at :25 and :55 from 12:25 PM until the day's last tip; then every 30 minutes until every game that tipped in the last six hours is graded | `win-probability-seal` |
 | ESPN rosters | every 6 hours (midnight, 6 AM, noon, 6 PM) | `jobs` |
-| Daily refresh: player index, contracts, DARKO, Wikipedia transactions, season statistics, rating snapshots, Projected Impact's weekly score | 13:30 UTC | `jobs` |
+| Daily refresh: player index, contracts, player reference tables (salaries with cap shares, awards, honours, transactions), DARKO, Wikipedia transactions, season statistics, rating snapshots, Projected Impact's weekly score | 13:30 UTC | `jobs` |
 | Lineups (WOWY, Stat Line Shift, on/off for 2026-27) | 14:05 UTC | `jobs` |
 | Season impact (2026-27 RAPM and the bundle the rating snapshots read) | Mondays 14:30 UTC | `jobs` |
 | Metric Backtest's weekly score | 15:00 UTC (scores once every 7 days) | `jobs` |
+| Warm crawl: refills the API read cache by requesting the most-opened pages (speed plan) | after each job run that changed the data, and after each deploy | `jobs` |
 | Demo account favourites reset | 08:00 UTC | `demo-reset` |
 | Database dump to the VPS disk, two kept | Sundays 07:20 UTC | crontab |
 | Records copied to the private `courtlens-records` repository | 15:10 UTC | crontab |
@@ -26,6 +27,8 @@ The `jobs` service runs one job at a time, each as its own process, so a failure
 never stops the loop. After a deploy, a job seen for the first time waits for its next scheduled
 time. Run one by hand with
 `docker compose --env-file secrets.env --env-file release.env exec jobs courtlens run-jobs --run <job>`.
+After any write you run by hand (not a scheduled job), run `courtlens bump-data-stamp` in `jobs` the
+same way, or pages keep serving cached data until the next job finishes.
 
 ## How to tell it is healthy
 

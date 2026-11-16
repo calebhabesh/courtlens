@@ -1,0 +1,49 @@
+page home                                   0.003 s
+page stats                                  0.043 s
+page players                                0.024 s
+page teams                                  0.007 s
+page standings                              0.006 s
+page compare                                0.016 s
+page player-star                            0.033 s
+page player-rookie                          0.013 s
+page player-pre2000                         0.024 s
+page team-lal                               0.035 s
+page team-bos                               0.032 s
+page research-rapm                          0.020 s
+SPEED_NAV_SUMMARY {"stats-row-to-player":{"runs":5,"median_ms":152,"min_ms":142,"max_ms":167},"player-header-to-team":{"runs":5,"median_ms":142,"min_ms":110,"max_ms":147},"nav-to-stats":{"runs":5,"median_ms":194,"min_ms":179,"max_ms":219},"back-to-team":{"runs":5,"median_ms":141,"min_ms":131,"max_ms":148},"stats-row-to-player-prefetched":{"runs":5,"median_ms":74,"min_ms":71,"max_ms":75},"player-header-to-team-prefetched":{"runs":5,"median_ms":121,"min_ms":112,"max_ms":124},"nav-to-stats-prefetched":{"runs":5,"median_ms":175,"min_ms":164,"max_ms":201}}
+  1 passed (26.7s)
+page home                                   0.003 s
+page stats                                  0.033 s
+page players                                0.009 s
+page teams                                  0.007 s
+page standings                              0.006 s
+page compare                                0.013 s
+page player-star                            0.028 s
+page player-rookie                          0.014 s
+page player-pre2000                         0.023 s
+page team-lal                               0.030 s
+page team-bos                               0.028 s
+page research-rapm                          0.021 s
+/players/2544: html-named JS 293190 + CSS 113755 = 406945; later JS 0 CSS 0; all 406945 (21 files)
+/stats: html-named JS 283144 + CSS 111674 = 394818; later JS 0 CSS 0; all 394818 (19 files)
+/teams/1610612747: html-named JS 326511 + CSS 111674 = 438185; later JS 0 CSS 0; all 438185 (23 files)
+/players: html-named JS 278046 + CSS 111674 = 389720; later JS 0 CSS 0; all 389720 (18 files)
+compare         total   397,645  markup   108,193  rsc   286,795  | PlayerCompareView.metricDefinitions 106,758; PlayerCompareView.workbenchCatalog 58,399; PlayerCompareView.bios 29,919
+home            total    34,347  markup    21,567  rsc    10,695  | LoadingBoundaryProvider.loading 993; default.notFound 620; default.template 76
+player-pre2000  total   624,342  markup   353,023  rsc   268,592  | WorkbenchPlayerProfile.career 71,482; WorkbenchPlayerProfile.catalog 58,399; WorkbenchPlayerProfile.games 31,675
+player-rookie   total   332,774  markup   163,651  rsc   166,396  | WorkbenchPlayerProfile.catalog 58,399; WorkbenchPlayerProfile.metricHints 20,190; WorkbenchPlayerProfile.hero 10,177
+player-star     total   924,091  markup   555,629  rsc   365,735  | WorkbenchPlayerProfile.career 150,049; WorkbenchPlayerProfile.catalog 58,399; WorkbenchPlayerProfile.impact 24,562
+players         total   280,081  markup   148,902  rsc   128,522  | PlayerDashboardView.catalog 58,399; PlayerDashboardView.carousel 34,526; LoadingBoundaryProvider.loading 2,506
+research-rapm   total   666,800  markup   197,019  rsc   466,716  | RapmRatingsTable.players 391,248; RapmRatingsTable.teams 6,845; LoadingBoundaryProvider.loading 1,638
+standings       total   188,163  markup   125,512  rsc    60,430  | SkelText.className 6,144; LoadingBoundaryProvider.loading 2,681; SkelText.size 1,820
+stats           total 1,631,968  markup 1,308,761  rsc   320,480  | WorkbenchPlayerExplorer.data 182,115; ContextBar.catalog 58,399; WorkbenchPlayerExplorer.metricHints 20,190
+team-bos        total 1,036,875  markup   766,311  rsc   266,356  | WorkbenchPlayerExplorer.data 65,323; RosterAllocationView.catalog 58,399; WorkbenchPlayerExplorer.metricHints 20,190
+team-lal        total 1,130,813  markup   847,223  rsc   279,802  | WorkbenchPlayerExplorer.data 75,870; RosterAllocationView.catalog 58,399; WorkbenchPlayerExplorer.metricHints 20,190
+teams           total   246,310  markup   157,333  rsc    86,460  | TeamsSixFactorView.catalog 58,399; LoadingBoundaryProvider.loading 1,501; default.notFound 632
+12 pages; 0 difference(s)
+SPEED_NAV_SUMMARY {"stats-row-to-player":{"runs":5,"median_ms":139,"min_ms":130,"max_ms":148},"player-header-to-team":{"runs":5,"median_ms":130,"min_ms":103,"max_ms":373},"nav-to-stats":{"runs":5,"median_ms":173,"min_ms":158,"max_ms":209},"back-to-team":{"runs":5,"median_ms":126,"min_ms":123,"max_ms":128},"stats-row-to-player-prefetched":{"runs":5,"median_ms":70,"min_ms":69,"max_ms":72},"player-header-to-team-prefetched":{"runs":5,"median_ms":138,"min_ms":108,"max_ms":167},"nav-to-stats-prefetched":{"runs":5,"median_ms":160,"min_ms":157,"max_ms":164}}
+  1 passed (25.9s)
+SPEED_NAV_SUMMARY {"stats-row-to-player":{"runs":5,"median_ms":154,"min_ms":146,"max_ms":187},"player-header-to-team":{"runs":5,"median_ms":142,"min_ms":139,"max_ms":197},"nav-to-stats":{"runs":5,"median_ms":189,"min_ms":183,"max_ms":196},"back-to-team":{"runs":5,"median_ms":136,"min_ms":132,"max_ms":156},"stats-row-to-player-prefetched":{"runs":5,"median_ms":74,"min_ms":72,"max_ms":78},"player-header-to-team-prefetched":{"runs":5,"median_ms":118,"min_ms":111,"max_ms":133},"nav-to-stats-prefetched":{"runs":5,"median_ms":168,"min_ms":165,"max_ms":170}}
+  1 passed (27.0s)
+SPEED_NAV_SUMMARY {"stats-row-to-player":{"runs":5,"median_ms":135,"min_ms":133,"max_ms":151},"player-header-to-team":{"runs":5,"median_ms":131,"min_ms":104,"max_ms":144},"nav-to-stats":{"runs":5,"median_ms":169,"min_ms":163,"max_ms":177},"back-to-team":{"runs":5,"median_ms":135,"min_ms":99,"max_ms":140},"stats-row-to-player-prefetched":{"runs":5,"median_ms":74,"min_ms":68,"max_ms":82},"player-header-to-team-prefetched":{"runs":5,"median_ms":113,"min_ms":108,"max_ms":138},"nav-to-stats-prefetched":{"runs":5,"median_ms":157,"min_ms":149,"max_ms":195}}
+  1 passed (25.4s)

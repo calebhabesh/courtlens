@@ -21,6 +21,7 @@ import { ACCOLADE_KINDS, honorMarks, honorRows, playerAccolades, type PlayerAcco
 import { availabilityShare, cardLabel, compareMetricKey, formatCardValue, isPercentUnit, isWholeCount, overallGroupStart, type CompareCountingMode } from "@/lib/comparison-metrics";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { ComparisonGroupPlayer, MetricDefinition, PlayerBio } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
 
 /** One grid column: the player's row under their season, with what the tile and rows need. */
 export type GridColumn = {
@@ -153,7 +154,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
               requestAnimationFrame(() => photoRef.current?.focus({ preventScroll: true })); } }} />
         </div>
       : <div className="pvp-who">
-          <Link className="pvp-name" href={`/players/${player.player_id}`}>{player.name}</Link>
+          <Link className="pvp-name" href={playerHref(player.player_id)} prefetch={false}>{player.name}</Link>
           {inactive && <span className="pvp-dnp">No Games in {season}</span>}
           {!inactive && teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
             <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}

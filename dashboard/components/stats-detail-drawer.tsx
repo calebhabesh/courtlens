@@ -9,6 +9,7 @@ import { OverlayPortal } from "./ui/overlay-portal";
 import { PlayerPortrait } from "./player-portrait";
 import { formatStatValue, formatIntValue, formatPctValue } from "@/lib/stats-presets";
 import type { PlayerResearchItem } from "@/lib/types";
+import { playerHref, scopeFromQuery } from "@/lib/entity-links";
 
 interface StatsDetailDrawerProps {
   player: PlayerResearchItem | null;
@@ -136,7 +137,7 @@ export function StatsDetailDrawer({
         {/* Action Buttons */}
         <div className="stats-drawer-actions">
           <ButtonLink size="lg" variant="primary" icon="person" className="stats-drawer-action-primary"
-            href={`/players/${player.player_id}?${queryString}`}>Full profile</ButtonLink>
+            href={playerHref(player.player_id, scopeFromQuery(queryString))} prefetch={false}>Full profile</ButtonLink>
           <ButtonLink size="lg" icon="users" href={`/compare?playerA=${player.player_id}&${queryString}`}>Compare</ButtonLink>
           {onToggleCompare && (
             <Button size="lg" icon={isCompared ? "check" : "plus"} onClick={() => onToggleCompare(player)} pressed={isCompared}

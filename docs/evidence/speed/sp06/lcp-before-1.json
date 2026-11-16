@@ -1,0 +1,1468 @@
+{
+ "tool": "lcp-cls.mjs (PerformanceObserver in Playwright Chromium)",
+ "label": "before",
+ "base": "http://localhost:3180",
+ "runs": 5,
+ "viewport": [
+  1440,
+  900
+ ],
+ "taken_at": "2026-11-15T21:08:22.217Z",
+ "pages": [
+  {
+   "path": "/players/2544",
+   "median_lcp_ms": 424,
+   "max_cls": 0,
+   "runs": [
+    {
+     "run": 1,
+     "lcp": {
+      "time": 468,
+      "render": 468,
+      "load": 195,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 248,
+       "render": 248,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 468,
+       "render": 468,
+       "load": 195,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 10
+    },
+    {
+     "run": 2,
+     "lcp": {
+      "time": 424,
+      "render": 424,
+      "load": 164,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 212,
+       "render": 212,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 260,
+       "render": 260,
+       "load": 0,
+       "size": 2205,
+       "url": null,
+       "el": {
+        "tag": "button",
+        "cls": "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justi",
+        "src": null,
+        "box": [
+         219,
+         28
+        ],
+        "text": "Back to Player DashboardEsc"
+       }
+      },
+      {
+       "time": 424,
+       "render": 424,
+       "load": 164,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 10
+    },
+    {
+     "run": 3,
+     "lcp": {
+      "time": 420,
+      "render": 420,
+      "load": 160,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 208,
+       "render": 208,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 420,
+       "render": 420,
+       "load": 160,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 10
+    },
+    {
+     "run": 4,
+     "lcp": {
+      "time": 416,
+      "render": 416,
+      "load": 157,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 204,
+       "render": 204,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 260,
+       "render": 260,
+       "load": 0,
+       "size": 2205,
+       "url": null,
+       "el": {
+        "tag": "button",
+        "cls": "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justi",
+        "src": null,
+        "box": [
+         219,
+         28
+        ],
+        "text": "Back to Player DashboardEsc"
+       }
+      },
+      {
+       "time": 416,
+       "render": 416,
+       "load": 157,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 10
+    },
+    {
+     "run": 5,
+     "lcp": {
+      "time": 432,
+      "render": 432,
+      "load": 160,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 224,
+       "render": 224,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 268,
+       "render": 268,
+       "load": 0,
+       "size": 2205,
+       "url": null,
+       "el": {
+        "tag": "button",
+        "cls": "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justi",
+        "src": null,
+        "box": [
+         219,
+         28
+        ],
+        "text": "Back to Player DashboardEsc"
+       }
+      },
+      {
+       "time": 432,
+       "render": 432,
+       "load": 160,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 10
+    }
+   ]
+  },
+  {
+   "path": "/players/1449",
+   "median_lcp_ms": 400,
+   "max_cls": 0.00021,
+   "runs": [
+    {
+     "run": 1,
+     "lcp": {
+      "time": 400,
+      "render": 400,
+      "load": 143,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 176,
+       "render": 176,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 212,
+       "render": 212,
+       "load": 0,
+       "size": 2205,
+       "url": null,
+       "el": {
+        "tag": "button",
+        "cls": "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justi",
+        "src": null,
+        "box": [
+         219,
+         28
+        ],
+        "text": "Back to Player DashboardEsc"
+       }
+      },
+      {
+       "time": 400,
+       "render": 400,
+       "load": 143,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 5
+    },
+    {
+     "run": 2,
+     "lcp": {
+      "time": 340,
+      "render": 340,
+      "load": 79,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 116,
+       "render": 116,
+       "load": 0,
+       "size": 2772,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         168,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 340,
+       "render": 340,
+       "load": 79,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0.00021,
+     "shifts": [
+      {
+       "time": 187,
+       "value": 0.00020941358024691357,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "courtlens-header-right replica-nav-right",
+         "src": null,
+         "box": [
+          206,
+          36
+         ],
+         "text": "AskSign in",
+         "from": [
+          1258,
+          14,
+          158,
+          36
+         ],
+         "to": [
+          1210,
+          14,
+          206,
+          36
+         ]
+        },
+        {
+         "tag": "kbd",
+         "cls": "courtlens-search-pill-kbd",
+         "src": null,
+         "box": [
+          24,
+          22
+         ],
+         "text": "⌘K",
+         "from": [
+          1201,
+          21,
+          24,
+          22
+         ],
+         "to": [
+          1153,
+          21,
+          24,
+          22
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 5
+    },
+    {
+     "run": 3,
+     "lcp": {
+      "time": 404,
+      "render": 404,
+      "load": 154,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 184,
+       "render": 184,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 212,
+       "render": 212,
+       "load": 0,
+       "size": 2205,
+       "url": null,
+       "el": {
+        "tag": "button",
+        "cls": "kit:relative kit:inline-flex kit:shrink-0 kit:min-h-0 kit:items-center kit:justi",
+        "src": null,
+        "box": [
+         219,
+         28
+        ],
+        "text": "Back to Player DashboardEsc"
+       }
+      },
+      {
+       "time": 404,
+       "render": 404,
+       "load": 154,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 5
+    },
+    {
+     "run": 4,
+     "lcp": {
+      "time": 400,
+      "render": 400,
+      "load": 150,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 180,
+       "render": 180,
+       "load": 0,
+       "size": 2124,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         120,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 400,
+       "render": 400,
+       "load": 150,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0,
+     "shifts": [],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 5
+    },
+    {
+     "run": 5,
+     "lcp": {
+      "time": 340,
+      "render": 340,
+      "load": 57,
+      "size": 27556,
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+      "el": {
+       "tag": "img",
+       "cls": "player-portrait player-portrait-xl player-bio-portrait",
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "box": [
+        168,
+        168
+       ],
+       "text": null
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 108,
+       "render": 108,
+       "load": 0,
+       "size": 2772,
+       "url": null,
+       "el": {
+        "tag": "span",
+        "cls": "courtlens-search-pill-label",
+        "src": null,
+        "box": [
+         168,
+         21
+        ],
+        "text": "Search pages, players…"
+       }
+      },
+      {
+       "time": 340,
+       "render": 340,
+       "load": 57,
+       "size": 27556,
+       "url": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "el": {
+        "tag": "img",
+        "cls": "player-portrait player-portrait-xl player-bio-portrait",
+        "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+        "box": [
+         168,
+         168
+        ],
+        "text": null
+       }
+      }
+     ],
+     "cls": 0.00021,
+     "shifts": [
+      {
+       "time": 203,
+       "value": 0.00020941358024691357,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "courtlens-header-right replica-nav-right",
+         "src": null,
+         "box": [
+          206,
+          36
+         ],
+         "text": "AskSign in",
+         "from": [
+          1258,
+          14,
+          158,
+          36
+         ],
+         "to": [
+          1210,
+          14,
+          206,
+          36
+         ]
+        },
+        {
+         "tag": "kbd",
+         "cls": "courtlens-search-pill-kbd",
+         "src": null,
+         "box": [
+          24,
+          22
+         ],
+         "text": "⌘K",
+         "from": [
+          1201,
+          21,
+          24,
+          22
+         ],
+         "to": [
+          1153,
+          21,
+          24,
+          22
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [
+      {
+       "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6",
+       "loading": "eager",
+       "fetchPriority": "auto"
+      }
+     ],
+     "image_requests": 5
+    }
+   ]
+  },
+  {
+   "path": "/teams/1610612747",
+   "median_lcp_ms": 232,
+   "max_cls": 0.00374,
+   "runs": [
+    {
+     "run": 1,
+     "lcp": {
+      "time": 248,
+      "render": 248,
+      "load": 0,
+      "size": 6390,
+      "url": null,
+      "el": {
+       "tag": "h1",
+       "cls": "ui-page-header-title",
+       "src": null,
+       "box": [
+        212,
+        32
+       ],
+       "text": "Los Angeles Lakers"
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 248,
+       "render": 248,
+       "load": 0,
+       "size": 6390,
+       "url": null,
+       "el": {
+        "tag": "h1",
+        "cls": "ui-page-header-title",
+        "src": null,
+        "box": [
+         212,
+         32
+        ],
+        "text": "Los Angeles Lakers"
+       }
+      }
+     ],
+     "cls": 0.00374,
+     "shifts": [
+      {
+       "time": 289,
+       "value": 0.0037355152606310016,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "stats-preview-shortcuts",
+         "src": null,
+         "box": [
+          232,
+          202
+         ],
+         "text": "Quick hotkeysT Expand tableW / E Row densityA / D Scroll tab",
+         "from": [
+          1144,
+          691,
+          232,
+          202
+         ],
+         "to": [
+          1144,
+          591,
+          232,
+          202
+         ]
+        },
+        {
+         "tag": "p",
+         "cls": "",
+         "src": null,
+         "box": [
+          172,
+          40
+         ],
+         "text": "Hover over a playeror focus a row to see their stats",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1174,
+          853,
+          172,
+          40
+         ]
+        },
+        {
+         "tag": "svg",
+         "cls": "[object SVGAnimatedString]",
+         "src": null,
+         "box": [
+          20,
+          20
+         ],
+         "text": "",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1250,
+          821,
+          20,
+          20
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [],
+     "image_requests": 46
+    },
+    {
+     "run": 2,
+     "lcp": {
+      "time": 232,
+      "render": 232,
+      "load": 0,
+      "size": 6390,
+      "url": null,
+      "el": {
+       "tag": "h1",
+       "cls": "ui-page-header-title",
+       "src": null,
+       "box": [
+        212,
+        32
+       ],
+       "text": "Los Angeles Lakers"
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 232,
+       "render": 232,
+       "load": 0,
+       "size": 6390,
+       "url": null,
+       "el": {
+        "tag": "h1",
+        "cls": "ui-page-header-title",
+        "src": null,
+        "box": [
+         212,
+         32
+        ],
+        "text": "Los Angeles Lakers"
+       }
+      }
+     ],
+     "cls": 0.00374,
+     "shifts": [
+      {
+       "time": 272,
+       "value": 0.0037355152606310016,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "stats-preview-shortcuts",
+         "src": null,
+         "box": [
+          232,
+          202
+         ],
+         "text": "Quick hotkeysT Expand tableW / E Row densityA / D Scroll tab",
+         "from": [
+          1144,
+          691,
+          232,
+          202
+         ],
+         "to": [
+          1144,
+          591,
+          232,
+          202
+         ]
+        },
+        {
+         "tag": "p",
+         "cls": "",
+         "src": null,
+         "box": [
+          172,
+          40
+         ],
+         "text": "Hover over a playeror focus a row to see their stats",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1174,
+          853,
+          172,
+          40
+         ]
+        },
+        {
+         "tag": "svg",
+         "cls": "[object SVGAnimatedString]",
+         "src": null,
+         "box": [
+          20,
+          20
+         ],
+         "text": "",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1250,
+          821,
+          20,
+          20
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [],
+     "image_requests": 46
+    },
+    {
+     "run": 3,
+     "lcp": {
+      "time": 220,
+      "render": 220,
+      "load": 0,
+      "size": 6390,
+      "url": null,
+      "el": {
+       "tag": "h1",
+       "cls": "ui-page-header-title",
+       "src": null,
+       "box": [
+        212,
+        32
+       ],
+       "text": "Los Angeles Lakers"
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 220,
+       "render": 220,
+       "load": 0,
+       "size": 6390,
+       "url": null,
+       "el": {
+        "tag": "h1",
+        "cls": "ui-page-header-title",
+        "src": null,
+        "box": [
+         212,
+         32
+        ],
+        "text": "Los Angeles Lakers"
+       }
+      }
+     ],
+     "cls": 0.00374,
+     "shifts": [
+      {
+       "time": 261,
+       "value": 0.0037355152606310016,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "stats-preview-shortcuts",
+         "src": null,
+         "box": [
+          232,
+          202
+         ],
+         "text": "Quick hotkeysT Expand tableW / E Row densityA / D Scroll tab",
+         "from": [
+          1144,
+          691,
+          232,
+          202
+         ],
+         "to": [
+          1144,
+          591,
+          232,
+          202
+         ]
+        },
+        {
+         "tag": "p",
+         "cls": "",
+         "src": null,
+         "box": [
+          172,
+          40
+         ],
+         "text": "Hover over a playeror focus a row to see their stats",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1174,
+          853,
+          172,
+          40
+         ]
+        },
+        {
+         "tag": "svg",
+         "cls": "[object SVGAnimatedString]",
+         "src": null,
+         "box": [
+          20,
+          20
+         ],
+         "text": "",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1250,
+          821,
+          20,
+          20
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [],
+     "image_requests": 46
+    },
+    {
+     "run": 4,
+     "lcp": {
+      "time": 236,
+      "render": 236,
+      "load": 0,
+      "size": 6390,
+      "url": null,
+      "el": {
+       "tag": "h1",
+       "cls": "ui-page-header-title",
+       "src": null,
+       "box": [
+        212,
+        32
+       ],
+       "text": "Los Angeles Lakers"
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 236,
+       "render": 236,
+       "load": 0,
+       "size": 6390,
+       "url": null,
+       "el": {
+        "tag": "h1",
+        "cls": "ui-page-header-title",
+        "src": null,
+        "box": [
+         212,
+         32
+        ],
+        "text": "Los Angeles Lakers"
+       }
+      }
+     ],
+     "cls": 0.00374,
+     "shifts": [
+      {
+       "time": 274,
+       "value": 0.0037355152606310016,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "stats-preview-shortcuts",
+         "src": null,
+         "box": [
+          232,
+          202
+         ],
+         "text": "Quick hotkeysT Expand tableW / E Row densityA / D Scroll tab",
+         "from": [
+          1144,
+          691,
+          232,
+          202
+         ],
+         "to": [
+          1144,
+          591,
+          232,
+          202
+         ]
+        },
+        {
+         "tag": "p",
+         "cls": "",
+         "src": null,
+         "box": [
+          172,
+          40
+         ],
+         "text": "Hover over a playeror focus a row to see their stats",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1174,
+          853,
+          172,
+          40
+         ]
+        },
+        {
+         "tag": "svg",
+         "cls": "[object SVGAnimatedString]",
+         "src": null,
+         "box": [
+          20,
+          20
+         ],
+         "text": "",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1250,
+          821,
+          20,
+          20
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [],
+     "image_requests": 46
+    },
+    {
+     "run": 5,
+     "lcp": {
+      "time": 216,
+      "render": 216,
+      "load": 0,
+      "size": 6390,
+      "url": null,
+      "el": {
+       "tag": "h1",
+       "cls": "ui-page-header-title",
+       "src": null,
+       "box": [
+        212,
+        32
+       ],
+       "text": "Los Angeles Lakers"
+      }
+     },
+     "lcp_candidates": [
+      {
+       "time": 216,
+       "render": 216,
+       "load": 0,
+       "size": 6390,
+       "url": null,
+       "el": {
+        "tag": "h1",
+        "cls": "ui-page-header-title",
+        "src": null,
+        "box": [
+         212,
+         32
+        ],
+        "text": "Los Angeles Lakers"
+       }
+      }
+     ],
+     "cls": 0.00374,
+     "shifts": [
+      {
+       "time": 267,
+       "value": 0.0037355152606310016,
+       "hadRecentInput": false,
+       "sources": [
+        {
+         "tag": "div",
+         "cls": "stats-preview-shortcuts",
+         "src": null,
+         "box": [
+          232,
+          202
+         ],
+         "text": "Quick hotkeysT Expand tableW / E Row densityA / D Scroll tab",
+         "from": [
+          1144,
+          691,
+          232,
+          202
+         ],
+         "to": [
+          1144,
+          591,
+          232,
+          202
+         ]
+        },
+        {
+         "tag": "p",
+         "cls": "",
+         "src": null,
+         "box": [
+          172,
+          40
+         ],
+         "text": "Hover over a playeror focus a row to see their stats",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1174,
+          853,
+          172,
+          40
+         ]
+        },
+        {
+         "tag": "svg",
+         "cls": "[object SVGAnimatedString]",
+         "src": null,
+         "box": [
+          20,
+          20
+         ],
+         "text": "",
+         "from": [
+          0,
+          0,
+          0,
+          0
+         ],
+         "to": [
+          1250,
+          821,
+          20,
+          20
+         ]
+        }
+       ]
+      }
+     ],
+     "eager_or_high": [],
+     "image_requests": 46
+    }
+   ]
+  }
+ ]
+}

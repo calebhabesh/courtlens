@@ -14,10 +14,10 @@ import { FIRST_GAME_LOG_SEASON, isTotalsSeason } from "@/lib/season-basis";
 import { teamNameAt } from "@/lib/team-era";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { CourtLensWordmark } from "./courtlens-wordmark";
-import { ImpactPlayerCard } from "./impact-player-card";
+import { ImpactPlayerCard, type PlayerImpactView } from "./impact-player-card";
 
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formatDate } from "@/lib/format-date";
 import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
@@ -27,9 +27,7 @@ import { PlayerReferenceSections } from "./player-reference-sections";
 import { PlayerBioHeader } from "./player-bio-header";
 import { PlayerCareerTable } from "./player-career-table";
 import { ResearchTrendCharts } from "./research-trend-charts";
-import { LineageDrawer } from "./lineage-drawer";
 import { useWorkspace } from "@/lib/workspace-context";
-import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import { formatPercent, scaleToPer36, type CountingExposureMode } from "@/lib/player-pages";
 import { HERO_METRICS } from "@/lib/player-hero";
 import type {
@@ -41,7 +39,14 @@ import type {
   PlayerProfile,
   WorkbenchCatalog
 } from "@/lib/types";
-import type { ImpactResponse } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
+import { RelatedRow } from "./related-row";
+import { playerRelated } from "@/lib/related-links";
+import dynamic from "next/dynamic";
+
+// Opens from a game row; loads then, not with the page (speed plan SP05).
+const LineageDrawer = dynamic(() => import("./lineage-drawer").then(mod => mod.LineageDrawer), { loading: () => null });
 
 type ProfileTab = "overview" | "games" | "tracking" | "combine";
 const PROFILE_TABS: ProfileTab[] = ["overview", "games", "tracking", "combine"];
@@ -100,12 +105,14 @@ interface WorkbenchPlayerProfileProps {
   games: PlayerGameLogItem[];
   catalog?: WorkbenchCatalog | null;
   bio?: PlayerBio | null;
-  impact?: ImpactResponse | null;
+  impact?: PlayerImpactView | null;
   hero?: ProfileHeroStats | null;
   /** The career table's rows, read with the page; null fetches them in the browser. */
   career?: PlayerCareerResponse | null;
   /** The shared filter bar, placed directly under the page header. */
   filterBar?: ReactNode;
+  /** One line under the filter bar, e.g. that a link asked for a season the player did not play. */
+  notice?: ReactNode;
   /** Stats header hover text, for the career table's trend dialog. */
   metricHints?: Record<string, MetricHint>;
 }
@@ -119,6 +126,7 @@ export function WorkbenchPlayerProfile({
   hero = null,
   career = null,
   filterBar,
+  notice,
   metricHints = {}
 }: WorkbenchPlayerProfileProps) {
   const router = useRouter();
@@ -171,6 +179,8 @@ export function WorkbenchPlayerProfile({
     if (!cardSvgRef.current) return;
     setExporting(true);
     try {
+      // Image export loads when asked for, not with the page (speed plan SP05).
+      const { exportSvgAsPng } = await import("@/lib/image-export");
       await exportSvgAsPng(cardSvgRef.current, {
         title: `${player.name} — Research Profile Summary`,
         subtitle: `${context.season} ${context.phase.replace("_", " ")} · ${latest_team?.tricode ?? "NBA"} · Cutoff: ${context.before_date}`,
@@ -187,10 +197,12 @@ export function WorkbenchPlayerProfile({
     }
   };
 
-  const handleExportSvg = () => {
-    if (!cardSvgRef.current) return;
+  const handleExportSvg = async () => {
+    const svg = cardSvgRef.current;
+    if (!svg) return;
+    const { exportSvgFile } = await import("@/lib/image-export");
     exportSvgFile(
-      cardSvgRef.current,
+      svg,
       `${player.name.toLowerCase().replace(/\s+/g, "_")}-profile-card.svg`,
       {
         title: `${player.name} — Profile Summary`,
@@ -224,10 +236,10 @@ export function WorkbenchPlayerProfile({
 
   return (
     <PageShell template="profile" className="player-detail-container motion-stagger">
-      <AssistantPageSelection route={`/players/${player.id}`} playerIds={[player.id]} scope={context} label={player.name} />
+      <AssistantPageSelection route={playerHref(player.id)} playerIds={[player.id]} scope={context} label={player.name} />
       <PlayerBioHeader name={player.name} playerId={player.id} portraitUrl={player.portrait_url}
         team={latest_team ? { id: latest_team.id, tricode: latest_team.tricode, name: latest_team.name } : null}
-        bio={bio} currentSeason={catalog?.default_season ?? null}
+        bio={bio} currentSeason={catalog?.default_season ?? null} positionEstimate={profile.position_estimate}
         actions={<>
           <IconButton size="sm" variant="secondary" icon="star" filled={isFavorite} pressed={isFavorite}
             label={isFavorite ? "Remove from favorites" : "Add to favorites"} onClick={() => toggleFavorite(player.id)} />
@@ -239,12 +251,13 @@ export function WorkbenchPlayerProfile({
             <MenuItem icon="page" label="Export SVG" disabled={exporting} onClick={handleExportSvg} />
           </Menu>
           <Menu align="right" renderTrigger={props => <MenuTrigger {...props} size="sm">Explore</MenuTrigger>}>
-            {explore.map(item => <MenuItem key={item.href} icon={item.icon} label={item.label} onClick={() => router.push(item.href)} />)}
+            {explore.map(item => <MenuItem key={item.href} icon={item.icon} label={item.label} href={item.href} />)}
           </Menu>
         </>}
       />
       {/* Scope controls take the console grey of the table's view tabs, as on Stats (row 2, 37). */}
       <ControlScope tone="console">{filterBar}</ControlScope>
+      {notice}
 
       <Tabs value={tab} onChange={selectTab}>
       <ProfileLayout
@@ -257,7 +270,7 @@ export function WorkbenchPlayerProfile({
             {showSeasonTeam && <span className="player-season-team">
               {totalsSeason && hero?.item ? `${hero.item.metrics.gp} games with` : seasonSummary?.gp != null ? `${seasonSummary.gp} games with` : "Played for"}
               <TeamLogoStack teams={seasonTeams} size={18} decorative season={context.season} />
-              {seasonTeams.map(team => teamName(team, context.season)).join(" / ")}
+              {seasonTeams.map((team, i) => <Fragment key={team}>{i ? " / " : ""}<TeamLink team={team} scope={{ season: context.season, phase: context.phase }}>{teamName(team, context.season)}</TeamLink></Fragment>)}
             </span>}
           </div>
           <dl className="player-summary-strip" role="group" aria-label="Season summary">
@@ -288,7 +301,7 @@ export function WorkbenchPlayerProfile({
         awards={bio?.reference ? { bySeason: bio.reference.awards, allStarSeasons: bio.reference.all_star_seasons, source: bio.reference.source } : null}
         trendQuery={hero?.query ?? null} hints={metricHints} />}
       <div className="player-overview-duo">
-        <ImpactPlayerCard data={impact} compact />
+        <ImpactPlayerCard data={impact?.data ?? null} season={impact?.season} requestedSeason={impact?.requestedSeason} currentSeason={catalog?.default_season} compact />
         <section className="player-open-section player-glass" aria-label="Recent form">
           <header className="player-open-heading"><h2><Icon name="trend" size={20} />Recent Form</h2><span>Last 10 and last 5 against the season</span></header>
           <div className="player-form-table" role="region" aria-label="Recent form table" tabIndex={0}>
@@ -413,6 +426,12 @@ export function WorkbenchPlayerProfile({
         </TabsContent>}
       </ProfileLayout>
       </Tabs>
+
+      {/* Site links SL05: the hub's Related row, from data this page already has. */}
+      <RelatedRow catalog={catalog} links={playerRelated({
+        playerId: player.id, season: context.season, phase: context.phase, beforeDate: context.before_date,
+        seasonTeams, draftYear: bio?.draft?.year ?? null, currentTeam: bio?.current_team?.team_tricode ?? null,
+      })} />
 
       {/* Hidden Renderable SVG Card for Export */}
       <div className="hidden">

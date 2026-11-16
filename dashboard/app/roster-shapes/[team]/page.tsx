@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { FINANCE_TEAMS } from "@/lib/finance-teams";
+import { teamHref } from "@/lib/entity-links";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function RosterShapesTeamPage({ params, searchParams }: Ros
   const info = FINANCE_TEAMS.find(t => t.tricode === code.toUpperCase() || t.id === code);
   const next = new URLSearchParams();
   for (const [key, value] of Object.entries(query)) if (key !== "view" && key !== "team" && typeof value === "string") next.set(key, value);
-  if (query.view === "depth") redirect(`/teams/${info?.id ?? code}${next.size ? `?${next}` : ""}#depth-chart`);
+  if (query.view === "depth") redirect(`${teamHref(info?.id ?? code)}${next.size ? `?${next}` : ""}#depth-chart`);
   if (info) next.set("team", info.tricode);
   redirect(`/roster-shapes${next.size ? `?${next}` : ""}`);
 }

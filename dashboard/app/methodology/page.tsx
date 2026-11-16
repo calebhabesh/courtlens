@@ -1,9 +1,10 @@
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
 import { CountChip } from "@/components/ui/filter-bar";
 import { getMetricCatalog, getPortraitCredits, type PortraitCredits } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
 import { DarkoSourceLink } from "@/components/darko-source-link";
+import { playerHref } from "@/lib/entity-links";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +62,7 @@ export default async function MethodologyPage() {
         <p>Deflections, potential assists, OnBall%, tracking DFGA, individual rim points saved, STOP%, D-SQI and complete forced-turnover attribution remain unavailable.</p>
         <p>Coverage and patch rates accompany every fit. Reconstruction retains source disagreement, minute and plus-minus limitations. The unchanged box-estimate ±2 distribution is a diagnostic under the event acceptance contract. RAPM omits zero-control observations; on/off retains their scoring. No impact output enters forecasting features, and descriptive serving leaves B26 experiment status unchanged.</p>
         <p>Inputs: NBA public play-by-play, shots and matchups via the admitted Apache-licensed shufinskiy archive, with SportsDataverse independent boxes and schedule. Exclusive cutoffs and SHA-256 artifact identities retain reproducibility.</p>
-        <p><Link href="/research/rapm">Served ratings and registered experiment status</Link></p>
+        <p><IntentLink href="/research/rapm">Served ratings and registered experiment status</IntentLink></p>
       </ArticleSection>
 
       <ArticleSection id="value-archetypes" title="Value and derived archetypes" label="Value and archetype methodology">
@@ -129,7 +130,7 @@ export default async function MethodologyPage() {
               <thead><tr><th scope="col">Player</th><th scope="col">Season</th><th scope="col">Credit</th></tr></thead>
               <tbody>
                 {credits.commons.map(row => <tr key={`${row.player_id}-${row.season}-${row.team}`}>
-                  <th scope="row"><Link href={row.season ? `/players/${row.player_id}?season=${row.season}` : `/players/${row.player_id}`}>{row.name}</Link></th>
+                  <th scope="row"><IntentLink className="entity-link" href={playerHref(row.player_id, { season: row.season })} prefetch={false}>{row.name}</IntentLink></th>
                   <td>{row.season ? `${row.season} · ${row.team ?? ""}` : "Career photo"}</td>
                   <td>{row.source_url ? <a href={row.source_url} target="_blank" rel="noreferrer">{row.credit}</a> : row.credit}</td>
                 </tr>)}
@@ -140,11 +141,11 @@ export default async function MethodologyPage() {
 
       <ArticleSection id="related" title="Related pages">
         <ul>
-          <li><Link href="/forecasts">Points Forecasts</Link>: the forecast protocol and ledger.</li>
-          <li><Link href="/evaluation">Evaluation Archive</Link>: out-of-time model evaluation.</li>
-          <li><Link href="/investigations">Saved Investigations</Link>: retained, reproducible results.</li>
-          <li><Link href="/research/case-studies">Case Studies</Link>: reproducible investigations of stints and forecasts.</li>
-          <li><Link href="/data-status">Data Status</Link>: source coverage and lineage.</li>
+          <li><IntentLink href="/forecasts">Points Forecasts</IntentLink>: the forecast protocol and ledger.</li>
+          <li><IntentLink href="/evaluation">Evaluation Archive</IntentLink>: out-of-time model evaluation.</li>
+          <li><IntentLink href="/investigations">Saved Investigations</IntentLink>: retained, reproducible results.</li>
+          <li><IntentLink href="/research/case-studies">Case Studies</IntentLink>: reproducible investigations of stints and forecasts.</li>
+          <li><IntentLink href="/data-status">Data Status</IntentLink>: source coverage and lineage.</li>
         </ul>
       </ArticleSection>
     </ArticleLayout>

@@ -1,0 +1,9 @@
+# Zone settings read with the cf CLI, 2026-11-15T22:15:34Z, read-only (no change made)
+early_hints: {"id":"early_hints","value":"off","modified_on":null,"editable":true}
+0rtt: {"id":"0rtt","value":"off","modified_on":null,"editable":true}
+browser_cache_ttl: {"id":"browser_cache_ttl","value":14400,"editable":true}
+http3: {"id":"http3","value":"on","modified_on":null,"editable":true}
+brotli: {"id":"brotli","value":"on","editable":true}
+cache_level: {"id":"cache_level","value":"aggressive","editable":true}
+smart_tiered_cache: {"editable":true,"id":"tiered_cache_smart_topology_enable","value":"off"}
+argo tiered_caching: {"id":"tiered_caching","value":"off","modified_on":null,"editable":false}

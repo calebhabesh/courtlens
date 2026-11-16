@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { COMPARE_PRESETS, CUSTOM_DEFAULT, isWholeCount, cardLabel, customMetricKeys, comparisonRows, formatCardValue, isPercentUnit, overallGroupStart, pillStrength, availabilityShare, type CompareCountingMode, type ComparePresetId, type PillStrength } from "@/lib/comparison-metrics";
@@ -312,7 +312,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
 
         {a && b && <CompareTrendTray playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />}
       </div>
-      {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <Link href="/investigations">Open saved investigations</Link>}</p>}
+      {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <IntentLink href="/investigations">Open saved investigations</IntentLink>}</p>}
       {a && b && active === "sixfactor" && <GatedNote why="These are descriptive box-score proxies, not six-factor RAPM coefficients or defensive impact.">Box-score factor proxies.</GatedNote>}
     </div>
 

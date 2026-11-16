@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, type CSSProperties, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelGrid, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
 import { PlayerAvatar } from "./ui/identity";
@@ -20,6 +22,8 @@ import {
   getDefensiveCards, getDefensiveSummary, type DefenseBoard, type DefenseCard, type DefenseSort, type DefenseSummary, type KeyMatchup, type ShotKind, type UnknownSeason
 } from "@/lib/shot-decomposition";
 import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } from "@/lib/shot-quality";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 /*
  * Research → Defensive Shot Quality (R06 analysis; RD05 design after Databallr's D-ShotQuality page). Databallr's centred hero,
@@ -118,8 +122,8 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
     <header className="dq-card-head">
       <PlayerAvatar playerId={card.player_id} name={card.player_name} team={card.tricode} size="lg" era={seasonEra(season, card.tricode)} className="dq-avatar" />
       <div className="dq-card-titles">
-        <Link className="dq-card-name" href={`/players/${card.player_id}?season=${season}`}>{card.player_name}</Link>
-        <span className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}{card.tricode ?? "—"}</span>
+        <IntentLink className="dq-card-name entity-link" href={playerHref(card.player_id, { season })} prefetch={false}>{card.player_name}</IntentLink>
+        <TeamLink team={card.tricode} scope={{ season }} variant="block" className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}<span className="entity-link-text">{card.tricode ?? "—"}</span></TeamLink>
         <RapmChip card={card} />
       </div>
       <span className="dq-badge" data-field="position" data-value={position}>#{position}</span>
@@ -134,6 +138,26 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
       <Stat field="pps" label="Actual PPS" rank={rank?.pps} text={<span data-field="pps" data-value={v?.pps ?? ""}>{formatFixed(v?.pps, 2)}</span>} />
     </div>
     <Matchups rows={matchups} season={season} name={card.player_name} defender={card.player_id} />
+  </article>;
+}
+
+/** A defender card's loading state: the card's own head, kind tabs, value tiles and Key Matchups table. */
+function CardSkeleton() {
+  return <article className="dq-card" aria-hidden="true">
+    <header className="dq-card-head">
+      <Skeleton variant="circle" width={80} height={80} />
+      <div className="dq-card-titles"><SkelText size="lg" width={120} /><SkelText size="xs" width={48} /><Skeleton width={125} height={20} /><SkelText size="2xs" width={88} /></div>
+      <Skeleton className="dq-badge" width={36} height={28} />
+    </header>
+    <SkelSegmented options={[1, 1, 1]} stretch />
+    <div className="dq-stats">
+      <div className="dq-stat" data-wide><SkelText size="2xs" width={96} /><SkelText size="xl" width={56} /><SkelText size="2xs" width={84} /></div>
+      {[0, 1, 2].map(index => <div key={index} className="dq-stat"><SkelText size="2xs" width="80%" /><SkelText size="lg" width={36} /></div>)}
+    </div>
+    <div className="dq-matchups-block">
+      <div className="dq-matchups-head"><SkelText size="md" width={96} /><SkelText size="sm" width={84} /></div>
+      <SkelGrid label="Key matchups" rows={5} labels={["FGA", "xPPS", "PPS"]} leadLabel="Shooter" density="compact" leadWidth="sm" className="dq-matchups" />
+    </div>
   </article>;
 }
 
@@ -248,8 +272,8 @@ function Methodology({ summary }: { summary: DefenseSummary }) {
         ]} />
     </MethodBlock>
     <MethodBlock title="Tracking">
-      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.
-        Every card links to <Link href="/matchups">Player Matchups</Link>, NBA tracking&apos;s season matchups (who guarded whom, every season these cards cover): the
+      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <IntentLink href="/research/defensive-matchups/tracking">Tracking page</IntentLink>.
+        Every card links to <IntentLink href="/matchups">Player Matchups</IntentLink>, NBA tracking&apos;s season matchups (who guarded whom, every season these cards cover): the
         All matchups link lists everyone the defender guarded, and a Key Matchups name opens that head-to-head. Its counts come from tracking, not from the
         matchup rows behind D-SQ, and it has no expected PPS, so the two pages&apos; numbers differ.</p>
     </MethodBlock>
@@ -262,6 +286,17 @@ function Methodology({ summary }: { summary: DefenseSummary }) {
 }
 
 // ---- Page ------------------------------------------------------------------------------------------
+
+/** The whole page before the view mounts (Suspense): the hero, the card filters, then three defender cards. */
+export function DefensiveShotQualityPageSkeleton() {
+  return <PageShell template="research" className="dq-shell"><div className="rs-column dq-page" role="status" aria-busy="true" aria-label="Loading Defensive Shot Quality">
+    <SkelHeader align="hero" title={280} subtitle={620} />
+    <section className="dq-board-section" aria-hidden="true">
+      <div className="ui-skel-chart-card"><div className="ui-skel-controls"><SkelControl width={178} /><span className="ui-skel-push" /><SkelControl width={88} size="md" /><SkelControl width={110} size="md" /><SkelControl width={110} size="md" /><SkelSegmented options={[36, 40, 40]} size="md" /></div></div>
+      <div className="dq-grid">{[0, 1, 2].map(index => <CardSkeleton key={index} />)}</div>
+    </section>
+  </div></PageShell>;
+}
 
 export function DefensiveShotQualityView() {
   const { get, set } = useUrlState();
@@ -295,7 +330,7 @@ export function DefensiveShotQualityView() {
           {available && <div className="dq-toolbar-foot"><ToneLegend level={95} className="dq-legend" /><CountChip>{formatWhole(available.board.rows.length)} defenders</CountChip></div>}
         </SqPanel>
         {error && <FeedFailure error={error} retry={retry} what="The defender cards" />}
-        {loading && <FeedSkeleton label="Loading the defender cards" />}
+        {loading && <FeedSkeleton label="Loading the defender cards"><div className="dq-grid">{[0, 1, 2].map(index => <CardSkeleton key={index} />)}</div></FeedSkeleton>}
         {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
         {available && <Board key={`${season}:${kind}:${sort}:${team}`} data={available} query={query} kind={kind} />}
       </section>

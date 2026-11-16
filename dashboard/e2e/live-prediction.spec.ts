@@ -32,7 +32,7 @@ async function shot(page: Page, name: string, region?: string) {
   else await page.screenshot({ path: `${evidence}/${name}.png`, style });
 }
 
-const cards = (page: Page) => page.getByRole("region", { name: "Game slate" }).getByRole("link");
+const cards = (page: Page) => page.getByRole("region", { name: "Game slate" }).locator(".live-card");
 
 test("cards carry the own read's sealed call above the book's chips, the call with the line beside it", async ({ page }) => {
   await mock(page);

@@ -5,7 +5,7 @@ import { seasonEra } from "@/lib/portrait-source";
 import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
 import { STATS_SCOPE_PENDING } from "./stats-page-controls";
@@ -19,17 +19,13 @@ import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
 import { Button, ButtonLink, IconButton, Segmented } from "./ui/kit";
+import { Pager } from "./ui/pager";
 import { SHRUNK_PARAM, ShrunkNote, ShrunkToggle, isShrunkColumn, useShrunkOverlay, withShrunkColumns, withShrunkMetrics } from "./stats-shrunk";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
-import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
-import { HotkeysModal } from "./hotkeys-modal";
-import { ManageViewsModal } from "./manage-views-modal";
 import { Menu, MenuItem } from "./ui/menu";
-import { ScatterPlotView } from "./scatter-plot-view";
-import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { useAccount } from "@/lib/account-context";
 import { saveInvestigation } from "@/lib/workbench-api";
@@ -53,8 +49,21 @@ import { formatDate } from "@/lib/format-date";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { StatsHeaderTip, type HeaderTip } from "./stats-header-tip";
 import { DarkoSourceLink } from "./darko-source-link";
-import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
+import type { TrendTarget } from "./stats-trend-dialog";
+import dynamic from "next/dynamic";
+import { useOpenedOnce } from "@/lib/use-opened-once";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
+import { positionTitle } from "@/lib/position-estimates";
+import { playerHref } from "@/lib/entity-links";
+
+// Not on screen at first paint, so not in the page's first load (speed plan SP05): dialogs and
+// drawers load on first opening, the scatter and lines views when chosen.
+const StatsDetailDrawer = dynamic(() => import("./stats-detail-drawer").then(mod => mod.StatsDetailDrawer), { loading: () => null });
+const HotkeysModal = dynamic(() => import("./hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
+const ManageViewsModal = dynamic(() => import("./manage-views-modal").then(mod => mod.ManageViewsModal), { loading: () => null });
+const ScatterPlotView = dynamic(() => import("./scatter-plot-view").then(mod => mod.ScatterPlotView), { loading: () => null });
+const MultiPlayerLinesView = dynamic(() => import("./multi-player-lines-view").then(mod => mod.MultiPlayerLinesView), { loading: () => null });
+const StatsTrendDialog = dynamic(() => import("./stats-trend-dialog").then(mod => mod.StatsTrendDialog), { loading: () => null });
 
 interface WorkbenchPlayerExplorerProps {
   data: PlayerResearchResponse;
@@ -490,6 +499,7 @@ export function WorkbenchPlayerExplorer({
   };
   useEffect(() => () => { if (headerTipTimer.current) clearTimeout(headerTipTimer.current); }, []);
   const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
+  const trendMounted = useOpenedOnce(trendTarget !== null);
   const showHeaderTip = (event: React.SyntheticEvent<HTMLTableRowElement>) => {
     keepHeaderTip();
     const cell = (event.target as HTMLElement).closest<HTMLElement>("th[data-column]");
@@ -514,6 +524,16 @@ export function WorkbenchPlayerExplorer({
     router.push(`/compare?${params}`);
   };
 
+  // Numbered paging: the API sends one opaque cursor per page (page 1 has none). The current page
+  // is the one whose cursor is in the URL; an older cursor that is not in the list falls back to
+  // the row offset.
+  const pageCursors = data.page_cursors && data.page_cursors.length > 0 ? data.page_cursors : null;
+  const urlCursor = searchParams?.get("cursor") ?? null;
+  const cursorPage = pageCursors ? pageCursors.indexOf(urlCursor) : -1;
+  const currentPage = cursorPage >= 0 ? cursorPage + 1
+    : Math.floor((data.output_offset ?? 0) / Math.max(1, querySpec?.page?.limit ?? 50)) + 1;
+  const goToPage = (page: number) => updateParam({ cursor: pageCursors?.[page - 1] ?? null });
+
   // One handler in the focused table region; editable/modified/IME events keep native behavior.
   const handleTableKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -526,12 +546,19 @@ export function WorkbenchPlayerExplorer({
     else if (key === "?") { e.preventDefault(); setIsHotkeysOpen(true); }
     else if (key === "t") { e.preventDefault(); setIsExpanded(value => !value); }
     else if (key === "w" || key === "e") { e.preventDefault(); handleDensityChange(key === "w" ? "compact" : "standard"); }
+    else if ((key === "[" || key === "]") && pageCursors) {
+      const target = currentPage + (key === "[" ? -1 : 1);
+      if (target >= 1 && target <= pageCursors.length) { e.preventDefault(); goToPage(target); }
+    }
     else if (key === "a" || key === "d") { e.preventDefault(); e.currentTarget.scrollBy({ left: key === "a" ? -240 : 240 }); }
     else if (key === "f") { e.preventDefault(); setFiltersOpen(value => !value); }
     else if (key === "z" && comparedPlayers.length >= 2) { e.preventDefault(); openComparison(); }
   };
 
   const closeDetailDrawer = useCallback(() => setSelectedPlayerForDrawer(null), []);
+  const drawerMounted = useOpenedOnce(selectedPlayerForDrawer !== null);
+  const hotkeysMounted = useOpenedOnce(isHotkeysOpen);
+  const manageViewsMounted = useOpenedOnce(isManageViewsOpen);
 
   const legacySaveAvailable = !querySpec?.predicates && (querySpec?.sort?.length ?? 1) <= 1 &&
     !querySpec?.sample_filters?.min_possessions && !querySpec?.sample_filters?.min_attempts;
@@ -855,9 +882,9 @@ export function WorkbenchPlayerExplorer({
       {saveSuccess && (
         <div className="notice-box notice-box-success">
           <strong>Saved:</strong> {saveSuccess}. Inspect under{" "}
-          <Link href="/investigations" className="text-accent underline">
+          <IntentLink href="/investigations" className="text-accent underline">
             Saved Investigations
-          </Link>.
+          </IntentLink>.
         </div>
       )}
 
@@ -1065,7 +1092,7 @@ export function WorkbenchPlayerExplorer({
                         if (event.key === "Enter") { event.preventDefault(); if (typedName !== lastName) pushName(typedName); }
                         else if (event.key === "Escape" && localName) { event.preventDefault(); setLocalName(""); }
                       }} />
-                    {localName && <IconButton size="sm" icon="close" label="Clear player search"
+                    {localName && <IconButton size="xs" inField icon="close" label="Clear player search"
                       onClick={() => { setLocalName(""); pushName(""); nameInputRef.current?.focus(); }} />}
                   </div>
                 </div>
@@ -1172,19 +1199,15 @@ export function WorkbenchPlayerExplorer({
                         <TeamLogoStack teams={player.teams ?? []} />
                         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
                           portraitUrl={player.portrait_url} size="sm" era={seasonEra(rowSeason, player.teams)} className="stats-primary-portrait" />
-                        <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
-                          season: query.season, phase: query.phase, beforeDate: query.before_date,
-                          window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),
-                          [STATS_RETURN_PARAM]: "stats"
-                        })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
+                        <div className="stats-identity-copy"><IntentLink href={playerHref(player.player_id, { season: query.season, phase: query.phase, params: { [STATS_RETURN_PARAM]: "stats" } })} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link entity-link is-block"
                           onClick={rememberTablePosition}>
-                          <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`} title={player.teams?.join(" / ")}><span>{teamsCaption(player.teams)}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
+                          <span className="player-cell-name font-semibold entity-link-text">{player.player_name}</span>
+                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`} title={player.teams?.join(" / ")}><span>{teamsCaption(player.teams)}{player.position && <span className="player-cell-position"> · <abbr title={`${positionTitle(player.position, player.position_listed, player.position_provisional)}${querySpec?.season_scope?.seasons?.length ? " · latest season in the range" : ""}`}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
                           shares the season; the chip's title names it); a multi-team row keeps its season and puts
                           the chip on a line of its own, so it is never truncated. */}
                           {inlineMove ? moveChip : seasonLabel}</span>
                         {move && !inlineMove && <span className="player-cell-move-line">{moveChip}</span>}
-                        </Link>
+                        </IntentLink>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
                         {/* A split season's expand arrow sits flush with the details button, so the
@@ -1257,15 +1280,14 @@ export function WorkbenchPlayerExplorer({
           </DarkoSourceLink>}
         </div>
         <div className="stats-footer-controls">
-          <div className="stats-footer-group" role="group" aria-label="Row density">
-            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("compact")}
-              pressed={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></Button>
-            <span className="stats-density-meter" role="img" aria-label={tableDensity === "compact" ? "Compact density" : "Standard density"}>
-              <span className="is-on" /><span className={tableDensity === "standard" ? "is-on" : ""} />
-            </span>
-            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("standard")}
-              pressed={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></Button>
-          </div>
+          {/* Row height in words (was a cryptic −W ▮▯ E+); the W and E keys are in each tooltip. */}
+          <Segmented label="Row height" size="xs" dense value={tableDensity} onChange={handleDensityChange}
+            options={[
+              { value: "compact", title: "Compact rows: more players on screen (W)",
+                label: "Compact" },
+              { value: "standard", title: "Standard rows: taller and easier to read (E)",
+                label: "Standard" }
+            ]} />
           <div className="stats-footer-group" role="group" aria-label="View">
             <IconButton size="xs" icon="left" label="Previous view" onClick={() => stepView(-1)} />
             <span className="stats-footer-label" aria-hidden="true">View</span>
@@ -1282,26 +1304,23 @@ export function WorkbenchPlayerExplorer({
           </div>
           <div className="stats-footer-group is-single">
             <Button size="xs" variant="ghost" dense icon={isExpanded ? "collapse" : "expand"} onClick={() => setIsExpanded(value => !value)}
-              pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><kbd aria-hidden="true">T</kbd></Button>
+              pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><span aria-hidden="true">{isExpanded ? "Shrink" : "Expand"}</span><kbd aria-hidden="true">T</kbd></Button>
           </div>
         </div>
         <div className="stats-pagination-actions">
-          <Button size="xs" icon="left"
-            onClick={() => {
-              const params = new URLSearchParams(searchParams?.toString() ?? "");
-              params.delete("cursor");
-              router.push(`${pathname}?${params.toString()}`);
-            }}
-            disabled={!searchParams?.get("cursor")}
-          >
-            First Page
-          </Button>
-
-          {data.has_more && data.next_cursor && (
-            <Button size="xs" variant="primary" iconAfter="right" onClick={() => updateParam({ cursor: data.next_cursor })}>
-              Next Page
-            </Button>
-          )}
+          {pageCursors
+            ? <Pager label="Stats pages" page={currentPage} pageCount={pageCursors.length} onPage={goToPage} />
+            : <>
+                {/* Queries without a presentation have no page list: first and next only. */}
+                <Button size="xs" icon="first" onClick={() => updateParam({ cursor: null })} disabled={!searchParams?.get("cursor")}>
+                  First page
+                </Button>
+                {data.has_more && data.next_cursor && (
+                  <Button size="xs" variant="primary" iconAfter="right" onClick={() => updateParam({ cursor: data.next_cursor })}>
+                    Next page
+                  </Button>
+                )}
+              </>}
         </div>
 
       </div>
@@ -1327,7 +1346,7 @@ export function WorkbenchPlayerExplorer({
       </div>
 
       {/* Detail Slide-out Drawer */}
-      <StatsDetailDrawer
+      {drawerMounted && <StatsDetailDrawer
         player={selectedPlayerForDrawer}
         isOpen={Boolean(selectedPlayerForDrawer)}
         onClose={closeDetailDrawer}
@@ -1347,18 +1366,18 @@ export function WorkbenchPlayerExplorer({
             ? isFavorite(selectedPlayerForDrawer.player_id)
             : false
         }
-      />
+      />}
 
 
       <StatsHeaderTip tip={headerTip} onEnter={keepHeaderTip} onLeave={hideHeaderTip} onClose={() => { keepHeaderTip(); setHeaderTip(null); }} />
-      {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
+      {querySpec && trendMounted && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
         hints={metricHints} onClose={() => setTrendTarget(null)} />}
 
       {/* Keyboard Shortcuts Modal */}
-      <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />}
 
       {/* Manage Custom Views Modal (F04) */}
-      <ManageViewsModal
+      {manageViewsMounted && <ManageViewsModal
         isOpen={isManageViewsOpen}
         onClose={() => setIsManageViewsOpen(false)}
         activeViewId={activePresetId}
@@ -1366,7 +1385,7 @@ export function WorkbenchPlayerExplorer({
         onSelectView={(viewId) => {
           handlePresetSelect(viewId as PresetId);
         }}
-      />
+      />}
     </div>
   );
 }

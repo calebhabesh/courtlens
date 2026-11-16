@@ -16,11 +16,14 @@ import { CourtLensWordmark } from "./courtlens-wordmark";
 import { SortHeader } from "./table-ui";
 import { FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { FilterBar } from "./ui/filter-bar";
+import { SkelControl, SkelFilterBar, SkelGrid, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { Icon } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
 import { teamBrandColor } from "@/lib/team-colors";
 import { fmt, getSeasonMatchups, pct, type FeedPhase, type MatchupDetail, type MatchupPair, type MatchupRow } from "@/lib/stats-feeds";
+import { playerHref, scopeFromQuery } from "@/lib/entity-links";
 
 /** Every opponent, so the table sorts the whole season rather than a top slice. */
 const ROW_LIMIT = 500;
@@ -68,6 +71,39 @@ const PAIR_ROWS: PairRow[] = COLUMNS.map(({ label, title, value, text }) =>
  * second player whose direct matchup reads both ways, then every opponent in a Stats-style table.
  * Matchups are NBA tracking's estimate of who guarded whom; an absent pairing is unobserved.
  */
+/** One portrait slot on the matchup card: photo, name, team and the scoring line. */
+function SlotSkeleton() {
+  return <div className="pvp-slot">
+    <div className="pvp-photo-frame"><Skeleton className="pvp-photo ui-skel-fill" /></div>
+    <div className="pvp-who"><SkelText size="md" width={120} className="ui-skel-center" /><SkelText size="xs" width={118} className="ui-skel-center" /><SkelText size="xs" width={170} className="ui-skel-center" /></div>
+  </div>;
+}
+
+/** The matchup card while it loads: both slots, the table head with its presets, then the defenders table. */
+export function MatchupsSkeleton({ console = false }: { console?: boolean }) {
+  return <>
+    {console && <div className="mu-console"><SkelFilterBar fields={[[44, 64], [40, 104]]} modes={[[84, 76]]} meta={[108]} /></div>}
+    <div className="pvp-column" aria-hidden="true">
+      <section className="pvp-card mu-card">
+        <div className="pvp-players"><SlotSkeleton /><div className="pvp-pair-actions"><SkelControl width={32} /></div><SlotSkeleton /></div>
+        <SkelText size="xs" width={260} className="mu-default ui-skel-center" />
+        <div className="mu-table">
+          <div className="mu-table-head"><SkelText size="lg" width={360} /><span className="ui-skel-controls"><SkelSegmented options={[100, 80, 84]} /><SkelControl width={92} /></span></div>
+          <SkelGrid label="Matchups" rows={10} search groupSizes={[3, 2, 4, 2]} />
+        </div>
+      </section>
+    </div>
+  </>;
+}
+
+/** The page while the route loads: centred header, the scope bar, then the card. */
+export function MatchupsPageSkeleton() {
+  return <div className="pvp mu" role="status" aria-busy="true" aria-label="Loading Player Matchups">
+    <SkelHeader align="center" title={275} subtitle={241} />
+    <MatchupsSkeleton console />
+  </div>;
+}
+
 export function SeasonMatchupsView() {
   const { get, set } = useUrlState();
   const season = get("season"), phase = get("phase"), playerId = get("playerId"), opponentId = get("opponentId");
@@ -116,7 +152,7 @@ export function SeasonMatchupsView() {
         options={[{ value: "offense", label: "Guarded By", title: "Defenders who guarded this player" }, { value: "defense", label: "Guarding", title: "Players this player guarded" }]} />}
       details={<FeedDetails envelope={data} />} /></div>}
     {error && <FeedFailure error={error} retry={retry} what="Player Matchups" />}
-    {loading && !data && <FeedSkeleton label="Loading matchups" />}
+    {loading && !data && <FeedSkeleton label="Loading matchups"><MatchupsSkeleton console /></FeedSkeleton>}
     {data && detail && <div className="pvp-column" data-paired>
       <section className="pvp-card mu-card" aria-label="Matchup card" aria-busy={loading || undefined}>
         <div className="pvp-players">
@@ -169,7 +205,7 @@ export function SeasonMatchupsView() {
                             placeholder={guardedBy ? "Search defenders…" : "Search players…"} autoComplete="off" spellCheck={false} value={searchText}
                             onChange={event => setSearch({ key: tableKey, text: event.target.value })}
                             onKeyDown={event => { if (event.key === "Escape" && searchText) { event.preventDefault(); setSearch({ key: tableKey, text: "" }); } }} />
-                          {searchText && <IconButton size="sm" icon="close" label="Clear name search" onClick={() => setSearch({ key: tableKey, text: "" })} />}
+                          {searchText && <IconButton size="xs" inField icon="close" label="Clear name search" onClick={() => setSearch({ key: tableKey, text: "" })} />}
                         </div>
                       </div>
                     </th>
@@ -186,7 +222,7 @@ export function SeasonMatchupsView() {
                     <th scope="row" className="pinned-col mu-name">
                       <span className="mu-identity">
                         <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" era={data.season && row.team_tricode ? { season: data.season, team: row.team_tricode } : null} />
-                        <Link href={`/players/${row.player_id}?${scope}`}>{row.player_name}</Link>
+                        <Link className="entity-link" href={playerHref(row.player_id, scopeFromQuery(scope))} prefetch={false}>{row.player_name}</Link>
                         {row.team_tricode && <TeamLogo team={row.team_tricode} season={data.season} size={16} />}
                       </span>
                     </th>
@@ -267,7 +303,7 @@ function MatchupSlot({ side, detail, pair, guardedBy = true, excludedIds, onPick
             onChange={(next, items) => { if (next && items[0]) { setSearching(false); onPick(next); } }} />
         </div>
       : <div className="pvp-who">
-          <Link className="pvp-name" href={`/players/${id}`}>{name}</Link>
+          <Link className="pvp-name" href={playerHref(id)} prefetch={false}>{name}</Link>
           {team && <span className="pvp-team"><span className="pvp-team-entry"><TeamLogo team={team} season={season} size={16} />{record?.artwork_name ?? team}</span></span>}
           {detail && <span className="pvp-bio mu-bio">{guardedBy ? "Scored" : "Allowed"} {fmt(detail.points_per_100)} pts/100 · {pct(detail.fg_pct)} FG<span>{guardedBy ? "against all defenders" : "guarding all players"}</span></span>}
         </div>}

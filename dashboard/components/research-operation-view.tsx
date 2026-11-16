@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { clearConversation, readResearchDestination, sendTurn, statusLabels, type Turn } from "@/lib/conversation";
 import { humanLabel } from "@/lib/route-availability";
 import { SaveOperation } from "./save-operation";
@@ -65,7 +65,7 @@ export function ResearchOperationView() {
   const current = state?.url === serialized ? state : null;
   const turn = current?.turn;
   if (!params.get("operation")) return <PageShell template="research"><PageHeader title="Research Operation" subtitle="Choose an operation to explore published observations." actions={<ButtonLink size="lg" href="/investigations">Saved Investigations</ButtonLink>} />
-    <section className="pc04-operation-gallery" aria-label="Available research operations">{OPERATION_PAGES.map(operation => <Link className="pc04-operation-card" href={operation.href} key={operation.href}><Icon name={operation.icon} size={20} /><h2>{operation.title}</h2><p>{operation.description}</p></Link>)}</section>
+    <section className="pc04-operation-gallery" aria-label="Available research operations">{OPERATION_PAGES.map(operation => <IntentLink className="pc04-operation-card" href={operation.href} key={operation.href}><Icon name={operation.icon} size={20} /><h2>{operation.title}</h2><p>{operation.description}</p></IntentLink>)}</section>
   </PageShell>;
   return <PageShell template="research" className="research-view conversation research-operation">
     <PageHeader title="Research Operation" subtitle="One exact manual operation, rerun against its retained release without AI." actions={<ButtonLink size="lg" href="/investigations">Saved Investigations</ButtonLink>} />

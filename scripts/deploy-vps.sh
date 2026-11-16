@@ -59,6 +59,8 @@ SERVING_DIRS=(
   derived/darko-dpm-v2
   derived/espn-rosters-v1
   derived/wikipedia-transactions-v1
+  derived/wikipedia-contracts-v1
+  derived/college-schools-v1
   derived/free-agency-v1
   derived/shot-zones-v1
   derived/position-estimates-v1
@@ -69,7 +71,7 @@ SERVING_DIRS=(
   cache/portraits
   raw/bbref_history_sealed
 )
-VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health)
+VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health derived/position-estimates-provisional-v1)
 
 echo "Deploying $sha to $SSH_HOST:$REMOTE_DIR"
 remote_dirs=("$REMOTE_DIR/infra")

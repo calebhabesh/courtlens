@@ -21,6 +21,22 @@ describe("impact serving presentation", () => {
     expect(screen.getByText(/exclusive fit cutoff 2026-07-01/)).toBeTruthy();
     expect(screen.getByRole("link", { name: "Methodology and definitions" }).getAttribute("href")).toBe("/methodology#impact");
   });
+  it("says which season the player page shows when its own season has no fit yet", () => {
+    render(<ImpactPlayerCard data={fixture} compact season="2025-26" requestedSeason="2026-27" currentSeason="2026-27" />);
+    expect(screen.getByText("2025-26 Ratings")).toBeTruthy();
+    expect(screen.getByRole("note").textContent).toMatch(/^Showing 2025-26 ratings, not 2026-27\. 2026-27 ratings appear once/);
+    expect(screen.getAllByText("2025-26")).toHaveLength(4);
+    cleanup();
+    render(<ImpactPlayerCard data={fixture} compact season="2025-26" requestedSeason="2025-26" currentSeason="2026-27" />);
+    expect(screen.queryByText(/ratings yet|latest earlier season|Showing/)).toBeNull();
+  });
+  it("says a value is missing because the sample is too small, not unknown", () => {
+    const [player] = fixture.players;
+    const early = { ...fixture, players: [{ ...player, metrics: { ...player.metrics, rapm: null },
+      support: { ...player.support, rapm: { ...player.support.rapm, qualified: false, games: 7 } } }] };
+    render(<ImpactPlayerCard data={early} compact />);
+    expect(screen.getByText("7 games · below sample")).toBeTruthy();
+  });
   it("labels an in-season weekly fit as provisional", () => {
     const note = "Provisional in-season fit, refreshed weekly from one play-by-play source.";
     render(<ImpactDisclosure data={{ ...fixture, provisional: { last_included_date: "2026-11-16", note } }} />);

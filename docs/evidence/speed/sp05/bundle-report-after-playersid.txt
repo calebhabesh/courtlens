@@ -1,0 +1,42 @@
+route /players/[id]: initial client JS 16 files, 376,194 B compressed (analyzer); CSS 112,307 B
+ by package:
+    172,295  next
+    118,111  app code
+     42,943  motion-dom
+     20,742  lucide-react
+     15,480  framer-motion
+      2,156  [turbopack]/shared/runtime/runtime-utils.ts
+      1,348  motion-utils
+      1,082  [turbopack]/browser/runtime/dom/runtime-backend-dom.ts
+      1,032  [turbopack]/browser/runtime/base/runtime-base.ts
+        395  @swc/helpers
+        333  [turbopack]/browser/runtime/base/build-base.ts
+        261  [client-fs]/_next/static/chunks/2zrjwuzrptot9.js
+         16  motion
+ largest modules:
+     63,930  node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js
+      7,774  node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js
+      7,212  lib/team-branding.client.json.[json].cjs
+      6,401  node_modules/next/dist/client/components/segment-cache/cache.js
+      6,346  node_modules/motion-dom/dist/es/projection/node/create-projection-node.mjs
+      6,128  lib/stats-presets.ts
+      5,590  components/workbench-player-profile.tsx
+      5,110  components/player-reference-sections.tsx
+      4,979  components/ui/content-skeletons.tsx
+      3,999  node_modules/next/dist/client/components/render-tree.js
+      3,970  node_modules/next/dist/client/components/segment-cache/scheduler.js
+      3,755  components/player-career-table.tsx
+      3,744  components/research/stats-grid.tsx
+      3,599  components/ui/header.tsx
+      3,550  components/lookup-input.tsx
+      2,972  node_modules/next/dist/compiled/react/cjs/react.production.js
+      2,718  components/player-bio-header.tsx
+      2,679  lib/impact-metrics.json.[json].cjs
+      2,433  lib/nav-model.ts
+      2,368  node_modules/framer-motion/dist/es/gestures/drag/VisualElementDragControls.mjs
+      2,328  components/context-bar.tsx
+      2,299  node_modules/next/dist/lib/constants.js
+      2,229  components/player-feed-panels.tsx
+      2,176  node_modules/next/dist/client/components/router-reducer/reducers/server-action-reducer.js
+      2,156  [turbopack]/shared/runtime/runtime-utils.ts
+ loaded on demand (next/dynamic, import()): 9 files, 63,224 B; app modules: components/account/sign-in-dialog.tsx, components/agent-answer.tsx, components/ask-courtlens.tsx, components/ask-drawer.tsx, components/catalog-scope-fields.tsx, components/charts/chart-frame.tsx, components/charts/observed-samples.tsx, components/charts/value-dot.tsx, components/conversation-result.tsx, components/darko-source-link.tsx, components/entity-picker.tsx, components/hotkeys-modal.tsx, components/hybrid-answer.tsx, components/lineage-drawer.tsx, components/lookup-input.tsx, components/save-operation.tsx, components/stats-trend-dialog.tsx, components/threaded-assistant.tsx, components/ui/command-palette.tsx, components/ui/control-scope.tsx, components/ui/data-details.tsx, components/ui/date-picker.tsx, components/ui/field.tsx, components/ui/input.tsx, components/ui/modal.tsx, components/ui/select.tsx, components/ui/skeleton.tsx, lib/agent-answer.ts, lib/assistant-chat.ts, lib/assistant-history.ts, lib/assistant-stream.ts, lib/conversation.ts, lib/format-date.ts, lib/image-export.ts, lib/lookup-cache.ts, lib/lookup-caption.ts, lib/markdown.ts, lib/public-ask.ts, lib/recent-searches.ts, lib/saved-operations.ts ...

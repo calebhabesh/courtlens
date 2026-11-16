@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import {
   CLOCK_OPTIONS, FILTER_KEYS, MAX_COMBO, TAB_COLUMNS, activeFilters, assignRole, fmt, getWowyCombos, readState, requestParams, roleOf, shortName, signed, tone,
@@ -11,6 +11,8 @@ import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui
 import { AccordionItem } from "./ui/accordion";
 import { TeamGrid, teamDisplayName } from "./team-grid";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { DataDetailsButton } from "./ui/data-details";
 import { DatePicker } from "./ui/date-picker";
 import { FilterBar } from "./ui/filter-bar";
@@ -23,6 +25,7 @@ import { PageHeader } from "./ui/panel";
 import { Switch } from "./ui/switch";
 import { Tooltip } from "./ui/tooltip";
 import { Button, IconButton, RemovableChip, Segmented, Select } from "./ui/kit";
+import { PlayerLink } from "./entity-link";
 
 const BLURB = "A team's on/off combinations by date, game clock, opponent and matchup";
 const TEAM_CATALOG = branding.teams;
@@ -374,7 +377,7 @@ function Composition({ data, cell, order, split, season }: { data: WowyCombosRes
         {mates.map(m => <li key={m.player_id} className="wowy-mate">
           <span className="wowy-mate-share">{Math.round(m.share)}%</span>
           <PlayerAvatar playerId={m.player_id} name={name(m.player_id)} team={team} era={era} size="md" className="wowy-mate-photo" />
-          <span className="wowy-mate-name">{name(m.player_id)}</span>
+          <PlayerLink id={m.player_id} scope={{ season }} className="wowy-mate-name">{name(m.player_id)}</PlayerLink>
           <span className="wowy-mate-dpm" data-tone={tone(m.dpm, "up")}>{signed(m.dpm)}</span>
         </li>)}
       </ul>
@@ -402,6 +405,37 @@ function heldParts(data: WowyCombosResponse, state: WowyState): string[] {
     state.tierMetric ? `vs ${state.tier} 10 ${state.tierMetric === "net" ? "net" : state.tierMetric}s` : null,
     state.opponents.length ? `vs ${state.opponents.join(", ")}` : null,
   ].filter((part): part is string => Boolean(part));
+}
+
+/** WOWY's loading state in its three columns: players and roster, the lineup table, then the filters. */
+export function WowySkeleton() {
+  return <div className="wowy-layout" aria-hidden="true">
+    <aside className="wowy-rail wowy-rail-players"><section className="wowy-panel wowy-players">
+      <div className="wowy-panel-head"><SkelText size="md" width={56} /></div>
+      <div className="wowy-setup">{[0, 1, 2].map(index => <div key={index} className="wowy-setup-group">
+        <div className="wowy-setup-head"><SkelText size="md" width={index ? 72 : 88} /><SkelText size="xs" width="88%" /></div>
+        <SkelText size="sm" width="62%" />
+      </div>)}</div>
+      <SkelControl width="100%" size="lg" />
+      <ul className="wowy-roster">{Array.from({ length: 8 }, (_, index) => <li key={index} className="wowy-roster-row">
+        <Skeleton variant="circle" width={56} height={56} />
+        <span className="wowy-roster-text"><SkelText size="md" width={80 + (index * 13) % 40} /><SkelText size="sm" width={104} /></span>
+        <span className="wowy-roster-action"><SkelControl width={72} size="sm" /></span>
+      </li>)}</ul>
+    </section></aside>
+    <section className="wowy-main">
+      <div className="wowy-toolbar"><SkelSegmented options={[76, 60, 64, 82]} /><SkelText size="xs" width={104} /></div>
+      <div className="wowy-empty"><Skeleton variant="circle" width={20} height={20} /><SkelText size="md" width={360} /></div>
+    </section>
+    <aside className="wowy-rail wowy-rail-filters"><section className="wowy-panel wowy-filters">
+      <div className="wowy-panel-head"><SkelText size="md" width={52} /></div>
+      {[2, 3, 2, 1, 2].map((lines, index) => <div key={index} className="wowy-filter">
+        <SkelText size="sm" width={72} />
+        <SkelLines lines={lines} size="sm" />
+        <SkelControl width={index === 1 ? "100%" : 160} size="sm" />
+      </div>)}
+    </section></aside>
+  </div>;
 }
 
 export function WowyView() {
@@ -454,7 +488,7 @@ export function WowyView() {
       {team && <Button size="md" stretch className="wowy-team-clear" onClick={() => { set({ team: null, ...resetPlayers }); setPicker(false); }}>Clear Team</Button>}
     </Modal>
     {feed.error && <FeedFailure error={feed.error} retry={feed.retry} what="WOWY" />}
-    {!data && feed.loading && <FeedSkeleton label="Loading WOWY" />}
+    {!data && feed.loading && <FeedSkeleton label="Loading WOWY"><WowySkeleton /></FeedSkeleton>}
     {data && !team && <div className="wowy-empty"><p>Select a team to begin</p><Button size="md" variant="primary" onClick={() => setPicker(true)}>Select Team</Button></div>}
     {data && team && !covered && <GatedNote why="WOWY reads accepted play-by-play stints, which cover the seasons listed in the season menu.">No stints for {team} in {season} {PHASES[state.phase] ?? state.phase}.</GatedNote>}
     {data && covered && <div className="wowy-layout" aria-busy={feed.loading || undefined}>

@@ -543,16 +543,6 @@
 
   .ui-stat-tile-footnote { font-size: var(--text-xs); color: var(--color-text-tertiary); }
 
-  /* ---------- Template skeletons (D11) ---------- */
-  .ui-skeleton-header, .ui-skeleton-stack { display: flex; flex-direction: column; gap: var(--space-2); }
-  .ui-skeleton-header .ui-skeleton { max-width: 100%; }
-  .ui-skeleton-header .ui-skeleton:first-child { max-width: 60%; }
-  .ui-skeleton-filters { display: flex; gap: var(--space-3); }
-  .ui-skeleton-filters .ui-skeleton { width: 160px; }
-  .ui-skeleton-table { display: flex; flex-direction: column; gap: var(--space-0-5); }
-  .ui-skeleton-hero { display: flex; align-items: center; gap: var(--space-4); }
-  .ui-skeleton-hero .ui-skeleton-stack { flex: 1; }
-  .ui-skeleton-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
 
   /* ---------- Lookup field structure ----------
    * The icon and clear button sit in the flow beside the input inside one styled box, so no
@@ -726,9 +716,6 @@
     .ui-page-header-actions { width: 100%; flex-wrap: wrap; margin-left: 0; }
     .ui-identity-xl { --identity-media: 96px; }
     .ui-data-details-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-0-5); }
-    /* Skeletons mirror the collapsed phone filter bar: one full-width "Filters" control. */
-    .ui-skeleton-filters .ui-skeleton:not(:first-child) { display: none; }
-    .ui-skeleton-filters .ui-skeleton:first-child { width: 100%; }
   }
 }
 
@@ -776,7 +763,6 @@
     align-items: start;
   }
   .ui-article-no-toc { grid-template-columns: minmax(0, 1fr); }
-  .ui-skeleton-article-toc { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
   .ui-article-body { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
   .ui-article-toc {
     position: sticky;
@@ -864,8 +850,6 @@
 
   @media (max-width: 1023px) {
     .ui-article { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
-    .ui-skeleton-article-toc { flex-direction: row; overflow: hidden; }
-    .ui-skeleton-article-toc .ui-skeleton { flex: 0 0 120px; border-radius: var(--radius-pill); }
     .ui-article-toc { position: static; flex-direction: row; align-items: center; overflow-x: auto; scrollbar-width: none; }
     .ui-article-toc::-webkit-scrollbar { display: none; }
     .ui-article-toc-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

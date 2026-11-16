@@ -178,3 +178,9 @@ def test_endpoint_serves_the_season_headshot_and_falls_back_to_current(
     assert fallback.content == current.read_bytes()
     bad = api_client.get("/api/workbench/players/201142/portrait", params={"season": "2015"})
     assert bad.status_code == 422
+    # SP06: the `.webp` path takes the same season and team and serves the same photo.
+    webp = api_client.get(
+        "/api/workbench/players/201142/portrait.webp", params={"season": "2007-08", "team": "SEA"}
+    )
+    assert webp.status_code == 200 and webp.headers["x-portrait-season"] == "2015-16"
+    assert webp.content == nearest.content

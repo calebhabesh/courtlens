@@ -123,7 +123,12 @@ from courtlens.domain.metrics import (
     list_metric_definitions,
 )
 from courtlens.domain.personal_state import CANONICAL_BUILTIN_VIEWS
-from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, QuerySpec, WindowKind
+from courtlens.domain.query_spec import (
+    ALLOWED_METADATA_FIELDS,
+    MAX_PAGE_SIZE,
+    QuerySpec,
+    WindowKind,
+)
 from courtlens.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
 from courtlens.domain.source_policy import pending_capabilities
 from courtlens.services.analytical_ops import (
@@ -195,7 +200,9 @@ from courtlens.services.portrait_derivatives import (
 from courtlens.services.position_estimates import (
     draft_class_player_ids,
     draft_classes,
+    position_coverage,
     position_player_ids,
+    season_estimates,
     season_positions,
 )
 from courtlens.services.roster_shapes import roster_shape_history, roster_shapes
@@ -206,6 +213,7 @@ from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
     darko_query_fields,
     decode_cursor,
+    encode_cursor,
     execute_stats_query,
     stats_cohort_summary,
     stats_presentation_hash,
@@ -394,6 +402,7 @@ def get_catalog(
         capabilities=capabilities,
         impact=impact_catalog_scope(),
         darko=darko_catalog_scope(),
+        position_estimates=position_coverage(),
     )
 
 
@@ -1028,7 +1037,7 @@ def execute_query_endpoint(
                 )
             }
         )
-    positions = season_positions(position_scope)
+    positions = season_estimates(position_scope)
     view_impact = impact_query_fields(spec)
 
     # Presentation queries page through a cached whole cohort: display filters never re-run
@@ -1064,6 +1073,18 @@ def execute_query_endpoint(
         [r["player_id"] for r in items_raw],
         {r["player_id"]: r["player_name"] for r in items_raw},
     )
+    # presentation.metrics == "sort": every per-item metric map keeps only the sort fields.
+    sort_fields = (
+        {sort.field for sort in spec.sort}
+        if payload.presentation is not None and payload.presentation.metrics == "sort"
+        else None
+    )
+
+    def sort_only[V](values: dict[str, V] | None) -> dict[str, V] | None:
+        if values is None or sort_fields is None:
+            return values
+        return {key: value for key, value in values.items() if key in sort_fields}
+
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -1072,27 +1093,42 @@ def execute_query_endpoint(
             stints_count=r["stints_count"],
             games_played=r["games_played"],
             total_minutes=r["total_minutes"],
-            metrics=r["metrics"],
-            sample_sizes=r["sample_sizes"],
-            percentiles=r.get("percentiles"),
-            cohort_sample_sizes=r.get("cohort_sample_sizes"),
+            metrics=sort_only(r["metrics"]) or {},
+            sample_sizes=sort_only(r["sample_sizes"]) or {},
+            percentiles=sort_only(r.get("percentiles")),
+            cohort_sample_sizes=sort_only(r.get("cohort_sample_sizes")),
             # Support for the view's own impact columns, not every sealed metric (~26 KB a row).
-            impact_support={
-                key: value
-                for key, value in (r.get("impact_support") or {}).items()
-                if key in view_impact
-            }
+            impact_support=sort_only(
+                {
+                    key: value
+                    for key, value in (r.get("impact_support") or {}).items()
+                    if key in view_impact
+                }
+            )
             if r.get("impact_support") is not None
             else None,
             table_qualified=r.get("table_qualified"),
-            table_percentiles=r.get("table_percentiles"),
-            table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
-            position=positions.get(r["player_id"]),
+            table_percentiles=sort_only(r.get("table_percentiles")),
+            table_cohort_sample_sizes=sort_only(r.get("table_cohort_sample_sizes")),
+            position=positions.get(r["player_id"], {}).get("position"),
+            position_listed=positions.get(r["player_id"], {}).get("listed"),
+            position_provisional=positions.get(r["player_id"], {}).get("provisional"),
             current_team=listings.get(r["player_id"]),
             current_status=statuses.get(r["player_id"]),
         )
         for r in items_raw
     ]
+
+    # Numbered paging: the same opaque cursors the query issues, one per page, so the pager can
+    # jump to any page (first, previous, a number, last) without a new contract or spec field.
+    page_cursors: list[str | None] | None = None
+    if payload.presentation is not None:
+        page_hash = stats_presentation_hash(context, spec, payload.presentation)
+        page_size = min(max(1, spec.page.limit), MAX_PAGE_SIZE)
+        page_cursors = [
+            encode_cursor(page_hash, start) if start else None
+            for start in range(0, max(total_count, 1), page_size)
+        ]
 
     return WorkbenchQueryResponse(
         context=context.to_dict(),
@@ -1110,6 +1146,7 @@ def execute_query_endpoint(
         table_cohort=table_cohort,
         items=items,
         next_cursor=next_cursor,
+        page_cursors=page_cursors,
         has_more=has_more,
         warnings=context.warnings,
         impact={
@@ -1319,6 +1356,7 @@ def get_player(
         last_observed_date=profile["last_observed_date"],
         forecast_status=profile["forecast_status"],
         warnings=profile["warnings"],
+        position_estimate=season_estimates(context.season).get(id),
     )
 
 
@@ -1951,6 +1989,19 @@ def get_player_portrait_media(hash: str, session: Session = Depends(get_db)) -> 
     return FileResponse(path, media_type=portrait.mime_type)
 
 
+@router.get("/college-logos/{espn_id}")
+def get_college_logo(espn_id: str) -> FileResponse:
+    """A college's 96 px dark-background logo kept by `courtlens refresh-college-schools`."""
+    from courtlens.services.college_schools import logo_path
+
+    path = logo_path(espn_id)
+    if path is None:
+        raise HTTPException(status_code=404, detail="College logo not found")
+    return FileResponse(
+        path, media_type="image/png", headers={"Cache-Control": "public, max-age=86400"}
+    )
+
+
 @router.get("/portrait-credits")
 def get_portrait_credits(session: Session = Depends(get_db)) -> dict[str, Any]:
     """Wikimedia Commons photos in use, with author, licence and file page (their licences
@@ -2018,6 +2069,7 @@ def get_portrait_credits(session: Session = Depends(get_db)) -> dict[str, Any]:
     }
 
 
+@router.get("/players/{id}/portrait.webp", response_model=None)
 @router.get("/players/{id}/portrait", response_model=None)
 def get_player_portrait(
     id: str,
@@ -2047,6 +2099,10 @@ def get_player_portrait(
     first for players whose NBA.com photo is from after their career (a coaching photo), so a
     player is never shown out of uniform (alignment row 9, follow-ups 15 and 16). A Wikimedia
     Commons career photo found through Wikidata is the last resort.
+
+    ``/portrait.webp`` is the same handler with the same parameters and bytes (speed plan SP06):
+    Cloudflare caches by file extension, so the dashboard asks for that path. ``/portrait``
+    stays for the ``portrait_url`` values the API returns and for older links.
     """
     if size is not None and size not in PORTRAIT_SIZES:
         raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")

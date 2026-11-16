@@ -24,6 +24,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchField } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Button, IconButton, Select, Segmented } from "@/components/ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 type StarterEvidence = TeamStarterEvidence;
 
@@ -314,7 +316,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
   const playerCell = (player: PlayerResearchItem | undefined, side: TeamSide, key: "a" | "b", leading: boolean, gap: number | null) => <td className="tc-player-cell" data-side={key} data-leading={leading || undefined}>
     {player ? <div className="tc-player">
       <PlayerPortrait playerId={player.player_id} name={player.player_name} portraitUrl={player.portrait_url} era={{ season: side.season, team: tricode(side) }} size="md" />
-      <div className="tc-player-name"><Link href={`/players/${player.player_id}?season=${side.season}&phase=${phase}&beforeDate=${side.beforeDate}`} title={player.player_name}><span className="tc-player-label">{player.player_name}</span></Link>
+      <div className="tc-player-name"><Link className="entity-link" href={playerHref(player.player_id, { season: side.season, phase, beforeDate: side.beforeDate })} prefetch={false} title={player.player_name}><span className="tc-player-label">{player.player_name}</span></Link>
         <span><span title="Estimated position">{player.position ?? "Position unknown"}</span><span className="tc-games"> · {player.games_played} GP</span><span className="tc-starts" title="Verified starts in games with a complete starting five. A plus means additional appearances have unknown start status.">{startsLabel(side, player)}</span></span>
         {leading && gap != null && <span className="sr-only">{activeSpec.lowBetter ? "Lower" : "Higher"} {metricLabel} in this pair by {gap.toFixed(1)}.</span>}</div>
       <strong className="tc-rating" title={`${player.player_name}: ${metricLabel}`}>{formatPlayerMetric(activeSpec, player.metrics[metric])}</strong>
@@ -578,7 +580,7 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, gamelessNote = nu
     <table className="tc-history-box-table" aria-label={`${teamName(side)} game box score`}>
       <thead>
         <tr>
-          <th scope="col"><span className="tc-history-box-team"><TeamLogo team={tricode(side)} season={side.season} size={16} /><span>{tricode(side)}</span></span></th>
+          <th scope="col"><TeamLink team={tricode(side)} scope={{ season: side.season }} variant="block" className="tc-history-box-team"><TeamLogo team={tricode(side)} season={side.season} size={16} /><span className="entity-link-text">{tricode(side)}</span></TeamLink></th>
           <th scope="col">MIN</th>
           <th scope="col">PTS</th>
           <th scope="col">REB</th>
@@ -593,7 +595,7 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, gamelessNote = nu
           return <tr key={p.source_id}>
             <th scope="row">
               {p.canonical_id
-                ? <Link href={`/players/${p.canonical_id}?season=${side.season}&phase=${phase}&beforeDate=${side.beforeDate}`} title={p.name}>{p.name}</Link>
+                ? <Link className="entity-link" href={playerHref(p.canonical_id, { season: side.season, phase, beforeDate: side.beforeDate })} prefetch={false} title={p.name}>{p.name}</Link>
                 : <span title={p.name}>{p.name}</span>}
             </th>
             <td>{mins}</td>
@@ -627,11 +629,11 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, gamelessNote = nu
                           {winA && margin != null && <span className="tc-history-margin" data-side="a">+{margin}</span>}
                           <strong className="tc-history-pts-val">{g.team_points ?? "—"}</strong>
                         </span>
-                        <span className="tc-history-team-tag"><TeamLogo team={codeA} season={a.season} size={18} /><span>{codeA}</span></span>
+                        <TeamLink team={codeA} scope={{ season: a.season }} variant="block" className="tc-history-team-tag"><TeamLogo team={codeA} season={a.season} size={18} /><span className="entity-link-text">{codeA}</span></TeamLink>
                       </span>
                       <span className="tc-history-game-meta"><span>G{idx + 1} · {formatDate(g.game_date)}</span><span>{venue}{g.is_win === null ? " · Unknown" : ""}</span></span>
                       <span className="tc-history-score-side" data-side="b" data-leading={winB || undefined}>
-                        <span className="tc-history-team-tag"><TeamLogo team={codeB} season={b.season} size={18} /><span>{codeB}</span></span>
+                        <TeamLink team={codeB} scope={{ season: b.season }} variant="block" className="tc-history-team-tag"><TeamLogo team={codeB} season={b.season} size={18} /><span className="entity-link-text">{codeB}</span></TeamLink>
                         <span className="tc-history-score-result">
                           <strong className="tc-history-pts-val">{g.opponent_points ?? "—"}</strong>
                           {winB && margin != null && <span className="tc-history-margin" data-side="b">+{margin}</span>}

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { HybridTurnResponse } from "@/lib/assistant-v2.generated";
 import { cellText, compactResult, generalKnowledgeParts } from "@/lib/assistant-chat";
 import { researchDestination, type Result } from "@/lib/conversation";
@@ -51,8 +51,8 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
     })}
     {(actions.length > 0 || evidenceSteps.length > 0 || retryable || answer.scope) && <div className="ask-chips">
       {answer.scope && <span className="ask-scope-tag" title={`Resolved on ${answer.scope.as_of}`}>{answer.scope.label}</span>}
-      {actions.map((action, index) => action.href.startsWith("/") ? <Link className="ask-chip" key={index} href={action.href}>{action.label}</Link> : <a className="ask-chip" key={index} href={action.href} target="_blank" rel="noopener noreferrer">{action.label}</a>)}
-      {evidenceSteps.map(result => <Link className="ask-chip" key={result.step_id} href={researchDestination({step_id: result.step_id, operation: result.operation, arguments: result.arguments}, answer.scope!.selections)}>Review and save {result.operation.replaceAll("_", " ")}</Link>)}
+      {actions.map((action, index) => action.href.startsWith("/") ? <IntentLink className="ask-chip" key={index} href={action.href}>{action.label}</IntentLink> : <a className="ask-chip" key={index} href={action.href} target="_blank" rel="noopener noreferrer">{action.label}</a>)}
+      {evidenceSteps.map(result => <IntentLink className="ask-chip" key={result.step_id} href={researchDestination({step_id: result.step_id, operation: result.operation, arguments: result.arguments}, answer.scope!.selections)}>Review and save {result.operation.replaceAll("_", " ")}</IntentLink>)}
       {retryable && <button type="button" className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</button>}
     </div>}
     {(answer.sources?.length ?? 0) > 0 && <details className="ask-disclosure"><summary>Sources ({answer.sources!.length})</summary><ul className="hybrid-sources">{answer.sources!.map(source => {

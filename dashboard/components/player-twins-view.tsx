@@ -1,13 +1,15 @@
 "use client";
 
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 // The Stats table look, as Player Matchups borrows it.
 import "./stats-explorer.css";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { CourtLensWordmark } from "./courtlens-wordmark";
+import { SkelControl, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { ControlScope } from "./ui/control-scope";
 import { Icon } from "./ui/icon";
@@ -23,6 +25,7 @@ import {
   ordinal, relativeText, signed, tone, valueText, weightsParam,
   type CareerSeason, type TwinCard, type TwinDimension, type TwinMatch, type TwinNext, type TwinProfile, type TwinsMode, type TwinsPool, type TwinsView,
 } from "@/lib/player-twins";
+import { playerHref } from "@/lib/entity-links";
 
 const one = (value: number | null | undefined, digits = 1) =>
   value == null || !Number.isFinite(value) ? "—" : value.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
@@ -33,6 +36,38 @@ const whole = (value: number) => Math.round(value).toLocaleString("en-US");
  * player-season beside its twin, four groups of league-relative volume and efficiency, then the
  * closest player-seasons. Box Score mode applies the same method to box rates.
  */
+/** One twin card: kicker, the photo and name block, then four measure groups of volume and efficiency bars. */
+function TwinCardSkeleton() {
+  return <article className="tw-card" aria-hidden="true">
+    <SkelText size="2xs" width={140} />
+    <div className="tw-who"><Skeleton variant="circle" width={56} height={56} /><span className="ui-skel-identity"><SkelText size="xl" width={220} /><SkelText size="xs" width={200} /><SkelText size="xs" width={160} /></span></div>
+    {[0, 1, 2, 3].map(index => <section key={index} className="tw-group">
+      <SkelText size="lg" width={40} className="ui-skel-center" />
+      {[0, 1].map(row => <div key={row} className="ui-skel-bar-row"><SkelText size="xs" width={28} /><Skeleton className="ui-skel-track" width={`${40 + ((index + row) * 17) % 40}%`} /><SkelText size="xs" width={40} /></div>)}
+    </section>)}
+  </article>;
+}
+
+/** The page body's loading state: both consoles, the weights button, then the twin panel with two cards. */
+function TwinsSkeleton() {
+  return <>
+    <div className="tw-consoles" aria-hidden="true">
+      <section className="tw-console tw-console-scope"><SkelSegmented options={[96, 84, 92]} /><SkelControl width={161} /><SkelControl width={220} size="lg" /><SkelSegmented options={[92, 84]} /></section>
+      <section className="tw-console tw-console-pool"><SkelSegmented options={[100, 108]} /><SkelControl width={221} /><SkelControl width={218} /></section>
+    </div>
+    <section className="tw-panel player-glass" aria-hidden="true">
+      <header className="tw-panel-head"><div><SkelText size="2xs" width={140} /><SkelText size="xl" width={194} /></div><SkelText size="lg" width={124} /></header>
+      <SkelText size="xs" width={320} />
+      <div className="tw-cards"><TwinCardSkeleton /><TwinCardSkeleton /></div>
+    </section>
+  </>;
+}
+
+/** The whole page before the view mounts (Suspense): centred header, then the consoles and twin cards. */
+export function TwinsPageSkeleton() {
+  return <div className="tw-page" role="status" aria-busy="true" aria-label="Loading Player Twins"><SkelHeader align="center" title={187} subtitle={504} /><TwinsSkeleton /></div>;
+}
+
 export function PlayerTwinsView() {
   const { get, set } = useUrlState();
   const modeParam = get("mode");
@@ -57,7 +92,7 @@ export function PlayerTwinsView() {
     <PageHeader className="pvp-header" icon="fingerprint" title="Player Twins" subtitle={meta.blurb} />
     {view && <Console view={view} set={set} mode={mode} pool={pool} minPoss={minPoss} byPosition={byPosition} />}
     {error && <FeedFailure error={error} retry={retry} what="Player Twins" />}
-    {loading && !view && <FeedSkeleton label="Finding twins" />}
+    {loading && !view && <FeedSkeleton label="Finding twins"><TwinsSkeleton /></FeedSkeleton>}
     {view && <>
       <section className="tw-panel player-glass" aria-label={meta.title}>
         <header className="tw-panel-head">
@@ -107,7 +142,7 @@ function Console({ view, set, mode, pool, minPoss, byPosition }: {
       id, canonical_id: id, kind: "player", display_name: name, subtitle: team ?? undefined, match_basis: "suggestion", match_score: 1,
       availability: { has_current_season: true, status: "available", seasons: [] },
       team_association: { basis: "selected_scope", teams: team ? [team] : [], observed_through: null, season: null, phase: null, before_date: null },
-      destination_url: `/players/${id}`, metadata: { caption },
+      destination_url: playerHref(id), metadata: { caption },
     });
     const here = view.roster.map(player => item(player.player_id, player.name, player.team,
       `${view.season} · ${[player.team, player.position].filter(Boolean).join(" · ") || "—"} · ${whole(player.off_poss)} offensive possessions`));
@@ -186,7 +221,7 @@ function ProfileCard({ view, profile, twin, next }: { view: TwinsView; profile: 
         {profile.team && <span className="tw-avatar-logo"><TeamLogo team={profile.team} season={profile.season} size={22} /></span>}
       </span>
       <div className="tw-who-text">
-        <h3><span className="tw-season">{profile.season}</span> <Link href={`/players/${profile.player_id}?season=${profile.season}`}>{profile.name}</Link>
+        <h3><span className="tw-season">{profile.season}</span> <IntentLink className="entity-link" href={playerHref(profile.player_id, { season: profile.season })} prefetch={false}>{profile.name}</IntentLink>
           {profile.team && <span className="tw-name-logo"><TeamLogo team={profile.team} season={profile.season} size={24} /></span>}</h3>
         <div className="tw-badges">
           {profile.teams.length > 0 && <span className="tw-badge tw-badge-team">{profile.teams.join(" / ")}</span>}
@@ -289,7 +324,7 @@ function Matches({ view, rows, set, excludeOwn }: { view: TwinsView; rows: numbe
                   <span className="tw-identity">
                     <PlayerPortrait playerId={match.player_id} name={match.name} size="sm" era={match.team ? { season: match.season, team: match.team } : null} />
                     <span className="tw-identity-text">
-                      <Link href={`/players/${match.player_id}?season=${match.season}`}>{match.name}</Link>
+                      <IntentLink className="entity-link" href={playerHref(match.player_id, { season: match.season })} prefetch={false}>{match.name}</IntentLink>
                       <small>{[match.teams.join(" / ") || "—", match.position].filter(Boolean).join(" · ")}</small>
                     </span>
                   </span>
@@ -397,7 +432,7 @@ function Career({ view }: { view: TwinsView }) {
     </header>
     <ol className="tw-career-list">
       {view.career.map(entry => <li key={entry.season}>
-        <Link className="tw-career-card" href={href(entry)} scroll={false} aria-current={entry.season === view.season || undefined}
+        <IntentLink className="tw-career-card" href={href(entry)} scroll={false} aria-current={entry.season === view.season || undefined}
           aria-label={`${entry.season}: ${entry.twin ? `${entry.twin.season} ${entry.twin.name}, ${one(entry.twin.match)}% match` : "no twin in this pool"}`}>
           <span className="tw-career-season">{entry.team && <TeamLogo team={entry.team} season={entry.season} size={16} />}{entry.season}</span>
           {entry.twin ? <>
@@ -405,7 +440,7 @@ function Career({ view }: { view: TwinsView }) {
             <span className="tw-career-name">{entry.twin.name}</span>
             <span className="tw-career-meta">{entry.twin.season} · {one(entry.twin.match)}%</span>
           </> : <span className="tw-career-meta">No twin in this pool</span>}
-        </Link>
+        </IntentLink>
       </li>)}
     </ol>
   </section>;

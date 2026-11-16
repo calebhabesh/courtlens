@@ -575,6 +575,37 @@
   color: var(--color-text-tertiary);
 }
 
+/* The scope tabs: All, Pages, Players, Teams. */
+.ui-command-scopes {
+  display: flex;
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+/* A page row's icon sits in the same 28 px slot as a portrait or logo, so names align. */
+.ui-command-page-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-2);
+  color: var(--color-text-secondary);
+}
+
+/* The menu a page lives in, beside it in mixed results. */
+.ui-command-item-section {
+  flex-shrink: 0;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+@media (width < 640px) {
+  .ui-command-item-section { display: none; }
+}
+
 .ui-command-footer {
   display: flex;
   align-items: center;

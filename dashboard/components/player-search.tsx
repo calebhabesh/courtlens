@@ -5,6 +5,7 @@ import { Button } from "./ui/kit";
 import { FormEvent, useState } from "react";
 import { browserApi } from "@/lib/api";
 import type { AnalyticsCatalog, AnalyticsSearch } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
 
 export function PlayerSearch({ catalog }: { catalog: AnalyticsCatalog }) {
   const [query, setQuery] = useState("");
@@ -69,7 +70,7 @@ export function PlayerSearch({ catalog }: { catalog: AnalyticsCatalog }) {
           {results.map((player) => (
             <li key={player.id}>
               <Link
-                href={`/players/${player.id}?date=${catalog.default_replay_date}&snapshotId=${catalog.snapshot_id}`}
+                href={playerHref(player.id, { params: { date: catalog.default_replay_date, snapshotId: catalog.snapshot_id } })} prefetch={false}
               >
                 <span className="avatar" aria-hidden="true">
                   {player.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}

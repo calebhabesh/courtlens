@@ -7,6 +7,7 @@ import { ButtonLink, IconButtonLink } from "./ui/kit";
 import { seasonEra } from "@/lib/portrait-source";
 import { IMPACT_COLUMNS } from "@/lib/stats-presets";
 import type { ImpactResponse } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * RAPM Ratings tab table (RD00 rounds 3–4): the served 1Y / 2Y / 3Y ratings on the shared Research
@@ -21,7 +22,7 @@ export const RAPM_RATING_METRICS = ["rapm", "orapm", "drapm", "bpr", "rapm_2y", 
 const minutes = (row: Row) => row.support.rapm?.seconds == null ? null : row.support.rapm.seconds / 60;
 const games = (row: Row) => row.support.rapm?.games ?? null;
 
-export function RapmRatingsTable({ players, teams, season, phase, scope, statsHref }: { players: readonly Row[]; teams: Record<string, string>; season: string; phase: string; scope: string; statsHref: string }) {
+export function RapmRatingsTable({ players, teams, season, phase, statsHref }: { players: readonly Row[]; teams: Record<string, string>; season: string; phase: string; statsHref: string }) {
   const columns = useMemo<ResearchColumn<Row>[]>(() => RAPM_RATING_METRICS.map(key => ({
     key, label: IMPACT_COLUMNS[key].label, title: IMPACT_COLUMNS[key].tooltip ?? IMPACT_COLUMNS[key].label, signedValue: true,
     value: row => row.metrics[key] ?? null,
@@ -39,7 +40,7 @@ export function RapmRatingsTable({ players, teams, season, phase, scope, statsHr
   const team = (row: Row) => teams[row.player_id] ?? null;
   return <ResearchTable label="Served impact ratings" rows={players} rowKey={row => row.player_id} name={row => row.player_name} season={season}
     team={Object.keys(teams).length ? team : undefined}
-    player={row => <PlayerIdentity playerId={row.player_id} name={row.player_name} team={team(row)} era={seasonEra(season, team(row))} size="sm" href={`/players/${row.player_id}?${scope}`} />}
+    player={row => <PlayerIdentity playerId={row.player_id} name={row.player_name} team={team(row)} era={seasonEra(season, team(row))} size="sm" href={playerHref(row.player_id, { season, phase })} />}
     views={[{ value: "ratings", label: "Ratings", columns }]} trailingColumns={trailing} defaultSort="rapm" noun="players"
     minimum={{ label: "Min MIN", value: minutes, initial: 0, step: 100 }}
     csv={{ filename: `courtlens-rapm-ratings-${season}-${phase}.csv`, columns: csvColumns }}

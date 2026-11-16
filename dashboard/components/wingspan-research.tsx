@@ -7,6 +7,8 @@ import { chartVars, toneColor, type ChartTone } from "./charts/semantics";
 import { ResearchDisclosure, ResearchSection, MethodBlock } from "./research/research-page";
 import { sortRows } from "./research/research-table";
 import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { SkelChart, SkelControl, SkelGrid, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
@@ -22,6 +24,7 @@ import {
 } from "@/lib/research-r10";
 import { fmt, getCombine, type CombineRow } from "@/lib/stats-feeds";
 import { UNIT_LABELS, diffText, lengthText, lengthTicks, percentileText, signIdentity, type Units } from "@/lib/wingspan-format";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * RD01 Combine & Wingspan, after Databallr's Wingspan Database: one filter panel, the players table
@@ -146,7 +149,7 @@ function PlayersTable({ rows, scope, overlay, set }: { rows: WingspanPlayer[]; s
       group: "Player",
       label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="ws-search" /></span>,
       cell: p => { const inOverlay = overlay.includes(p.player_id);
-        return <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={`/players/${p.player_id}`}
+        return <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={playerHref(p.player_id)}
           subtitle={reported(p) ? <>{p.photo_team ?? "—"} · <ReportedTag /></> : <>{p.photo_team ?? "—"}{p.combine_year != null ? ` · ${p.combine_year} combine` : ""}</>}
           tools={<>
             <IconButton size="xs" icon="target" label={`Find similar profiles for ${p.name}`} onClick={() => set({ build: p.player_id })} />
@@ -336,11 +339,11 @@ function SimilarProfiles({ data, playerId, fallback, units, onPick, onClear }: {
     aside={target && <Button size="sm" variant="ghost" icon="close" onClick={onClear} aria-label="Clear the selected player">Clear</Button>}>
     {!playerId && <GatedNote action={fallback && <Button size="lg" onClick={() => onPick(fallback.player_id)}>Show {fallback.name}</Button>}>No player selected. Pick the target beside a player to see the {data.nearest.k} closest builds.</GatedNote>}
     {playerId && error && <FeedFailure error={error} retry={retry} what="Similar profiles" />}
-    {playerId && loading && <FeedSkeleton label="Loading similar profiles" />}
+    {playerId && loading && <FeedSkeleton label="Loading similar profiles" shape="grid" rows={6} density="compact" />}
     {near && near.state === "not_measured" && <GatedNote>No height and wingspan for this player: similar builds are unknown.</GatedNote>}
     {near && near.state === "ready" && <StatsGrid<Row> label="Nearest builds" name="nearest" rows={rows} rowKey={p => p.player_id} columns={columns} density="compact" height="auto" leadWidth="lg"
       rowData={p => ({ current: p.distance == null || undefined })}
-      lead={{ label: "Player", cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={`/players/${p.player_id}`}
+      lead={{ label: "Player", cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={playerHref(p.player_id)}
         subtitle={reported(p) ? <>{p.photo_team ?? "—"} · <ReportedTag /></> : <>{p.photo_team ?? "—"}{p.combine_year != null ? ` · ${p.combine_year} combine` : ""}</>} /> }} />}
   </ResearchSection>;
 }
@@ -370,11 +373,11 @@ function CombineDrills({ year }: { year: number }) {
     data.rows.map(r => [r.player_id, r.player_name, r.pick_overall, r.standing_reach_inches, r.weight_lbs, r.max_vertical_inches, r.lane_agility_seconds, r.three_quarter_sprint_seconds])));
   return <ResearchSection id="drills" icon="gauge" title={`${year} Combine Drills`} aside={data && <Button size="sm" icon="download" onClick={exportCsv}>Download CSV</Button>}>
     {error && <FeedFailure error={error} retry={retry} what="Combine drills" />}
-    {loading && <FeedSkeleton label="Loading combine drills" />}
+    {loading && <FeedSkeleton label="Loading combine drills" shape="grid" rows={8} density="compact" />}
     {data && <StatsGrid<CombineRow> label="Combine drills" name="drills" rows={sortRows(data.rows, column.sort!, sort.direction, r => r.row_key)} rowKey={r => r.row_key} columns={columns} leadWidth="lg"
       sort={{ ...sort, onSort: key => setSort(s => s.key === key ? { key, direction: s.direction === "desc" ? "asc" : "desc" } : { key, direction: "desc" }) }}
       lead={{ group: "Player", label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.drafted_by} season={rookie} era={seasonEra(rookie, r.drafted_by)}
-        href={r.player_id ? `/players/${r.player_id}` : undefined} subtitle={r.player_id ? `${r.position ?? "—"} · ${year} combine` : "Identity unknown"} /> }} />}
+        href={playerHref(r.player_id) ?? undefined} subtitle={r.player_id ? `${r.position ?? "—"} · ${year} combine` : "Identity unknown"} /> }} />}
   </ResearchSection>;
 }
 
@@ -481,6 +484,25 @@ function Methodology({ data, details }: { data: WingspanSummary; details: ReactN
 }
 
 /** Research → Combine & Wingspan (R10 data, RD01 design after Databallr's Wingspan Database). */
+/** The tab body while the measurements load: filter panel, the table beside its side panels, then the scatter. */
+export function WingspanSkeleton() {
+  return <div className="rs-column ws-page"><FeedSkeleton label="Loading wingspan measurements">
+    <div className="ws-panel ws-filters" aria-hidden="true">
+      <div className="ws-filter-rows"><SkelSegmented options={[92, 72, 76]} /><SkelSegmented options={[96, 40, 40, 40, 40, 40]} /><span className="ui-skel-controls"><SkelSegmented options={[64, 84, 84]} /><SkelSegmented options={[56, 48, 60, 32, 36]} /><SkelControl width={180} /></span><SkelText size="xs" width={454} /></div>
+      <div className="ws-filter-actions"><SkelControl width={139} size="md" /><SkelText size="sm" width={96} /></div>
+    </div>
+    <div className="ws-main">
+      <div className="ws-main-table"><SkelGrid label="Measurements" rows={10} search leadGroup="Player" labels={["Pos", "Height (no shoes)", "Wingspan", "Diff (W-H)", "D-DPM", "Career"]}
+        groups={["Measurements", "Measurements", "Measurements", "Measurements", "Defense (DARKO)", "Defense (DARKO)"]} density="compact" /></div>
+      <aside className="ws-side">
+        <section className="ws-panel ws-side-block"><SkelText size="sm" width={140} />{Array.from({ length: 5 }, (_, index) => <Skeleton key={index} height={44} />)}</section>
+        <section className="ws-panel ws-side-block"><SkelText size="sm" width={160} /><Skeleton height={56} /></section>
+      </aside>
+    </div>
+    <section className="ws-panel ws-scatter"><div className="ws-scatter-head"><SkelControl width={468} /><SkelControl width={360} size="lg" /><SkelText size="md" width={50} /></div><SkelChart height={436} title={false} className="ui-skel-plain" /></section>
+  </FeedSkeleton></div>;
+}
+
 export function WingspanResearch() {
   const { get, set } = useUrlState();
   const { data, error, loading, retry } = useFeed([], signal => getWingspan(signal));
@@ -501,7 +523,7 @@ export function WingspanResearch() {
   const buildId = build && build !== NONE && byId.has(build) ? build : null;
   const longest = useMemo(() => [...rows].sort((a, b) => (b.wingspan ?? 0) - (a.wingspan ?? 0) || a.player_id.localeCompare(b.player_id))[0], [rows]);
   if (error) return <div className="rs-column ws-page"><FeedFailure error={error} retry={retry} what="Wingspan measurements" /></div>;
-  if (loading || !data) return <div className="rs-column ws-page"><FeedSkeleton label="Loading wingspan measurements" /></div>;
+  if (loading || !data) return <WingspanSkeleton />;
   // Highlighted on the scatter: the overlay players, the similar-profiles pick and players added to the graph.
   const marks = (get("mark") ?? "").split(",").filter(id => byId.get(id)?.measurement_source != null && !overlay.includes(id) && id !== buildId).slice(0, MARK_MAX);
   const picked: Picked[] = [

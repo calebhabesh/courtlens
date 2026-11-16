@@ -11,6 +11,7 @@ import {
   FAMILIES, density, familyTs, formatNumber, formatPoints, formatShare, formatSigned, formatTs, signTone,
   type LeagueType, type PlayerType, type ValidationBlock, type ZtsRow,
 } from "@/lib/zts";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * RD03 figures for Research → zTS, after Databallr's zTS explainer: the league play-type bars, the pair mix and its
@@ -129,7 +130,7 @@ export function compareCandidates(season: string, players: readonly ZtsRow[]): L
     return {
       id: r.player_id, kind: "player", canonical_id: r.player_id, display_name: r.player_name,
       subtitle: r.teams.map(t => t.tricode ?? t.team_id).join(" · ") || null,
-      match_basis: "substring", match_score: 0, destination_url: `/players/${r.player_id}?season=${season}`,
+      match_basis: "substring", match_score: 0, destination_url: playerHref(r.player_id, { season }),
       availability: { has_current_season: true, status: "served", seasons: [season], latest_team_id: team?.team_id ?? null, latest_tricode: team?.tricode ?? null },
     } satisfies LookupItem;
   });

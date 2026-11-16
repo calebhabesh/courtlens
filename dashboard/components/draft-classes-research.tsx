@@ -1,12 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { SqPanel } from "./shot-quality-figures";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelGrid, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerAvatar } from "./ui/identity";
 import { ButtonSummary, IconButton, Segmented, Select } from "./ui/kit";
@@ -31,6 +33,8 @@ import { seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
 import { teamAccent } from "@/lib/team-colors";
 import type { LookupItem } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /*
  * Research → Draft Classes (R09 analysis; RD08 design, owner 2026-11-08). No Databallr page exists and Draftballr's look is not
@@ -83,7 +87,7 @@ const codeOf = (team: string | null, season: string) => team ? (/^\d+$/.test(tea
 function TeamCode({ team, season }: { team: string | null; season: string }) {
   const code = codeOf(team, season);
   if (!team || !code) return <span className="rs-grid-unknown">—</span>;
-  return <span className="dc-team"><TeamLogo team={team} season={season} size={16} />{code}</span>;
+  return <TeamLink team={team} scope={{ season }} variant="block" className="dc-team"><TeamLogo team={team} season={season} size={16} /><span className="entity-link-text">{code}</span></TeamLink>;
 }
 
 /** Sort rows by a column's sort value, unknowns last in both directions. */
@@ -145,7 +149,7 @@ function useCurrentSection(): string | null {
 function rookieItem(r: Rookie): LookupItem {
   return {
     id: r.player_id!, canonical_id: r.player_id!, kind: "player", display_name: r.name, match_basis: "suggestion", match_score: 1,
-    availability: { has_current_season: true, status: "available", seasons: [ROOKIE_SEASON] }, destination_url: `/players/${r.player_id}`,
+    availability: { has_current_season: true, status: "available", seasons: [ROOKIE_SEASON] }, destination_url: playerHref(r.player_id),
     metadata: { caption: `${pickLabel(r.round, r.pick)} · ${r.team ?? codeOf(r.draft_team, ROOKIE_SEASON) ?? "—"} · ${r.comparison?.line.games ?? 0} games` },
   } as LookupItem;
 }
@@ -160,6 +164,27 @@ function RookieTile({ stat, rookie }: { stat: RookieStat; rookie: Rookie }) {
   </div>;
 }
 
+/** The rookie tracker's loading state: lead, rookie search, the rookie card beside past picks, then the rookie stats table. */
+export function RookieTrackerSkeleton() {
+  return <>
+    <SkelLines lines={2} size="sm" last="40%" className="dc-lead" />
+    <div className="dc-rookie-pick"><SkelControl width={200} size="md" /></div>
+    <div className="dc-rookie-pair">
+      <div className="dc-card dc-rookie-card" aria-hidden="true">
+        <div className="dc-card-head"><Skeleton variant="circle" width={64} height={64} /><div className="dc-card-titles"><SkelText size="lg" width={120} /><SkelText size="xs" width={48} /><SkelText size="2xs" width={96} /></div></div>
+        <div className="dc-tiles">{Array.from({ length: 8 }, (_, index) => <div key={index} className="dc-tile"><SkelText size="2xs" width={36} /><SkelText size="lg" width={40} /><SkelText size="2xs" width={44} /></div>)}</div>
+        <div className="dc-ratings">{[0, 1].map(index => <div key={index} className="dc-rating"><SkelText size="2xs" width={64} /><SkelText size="lg" width={44} /></div>)}</div>
+        <SkelLines lines={2} size="2xs" />
+      </div>
+      <div className="dc-past"><SkelText size="md" width={320} /><SkelGrid label="Past picks" rows={8} columns={11} density="compact" leadWidth="md" /></div>
+    </div>
+    <SkelText size="lg" width={180} />
+    <div className="dc-grid-tools dc-rookie-tools"><SkelSegmented options={[72, 56, 56, 92]} size="md" /><SkelControl width={120} size="md" /></div>
+    <SkelLines lines={2} size="xs" last="20%" />
+    <SkelGrid label="Rookies" rows={10} search />
+  </>;
+}
+
 function RookieCard({ rookie, tracker }: { rookie: Rookie; tracker: RookieTracker }) {
   const line = rookie.comparison!.line;
   const tint = teamAccent(rookie.team, ROOKIE_SEASON);
@@ -168,7 +193,7 @@ function RookieCard({ rookie, tracker }: { rookie: Rookie; tracker: RookieTracke
     <header className="dc-card-head">
       <PlayerAvatar playerId={rookie.player_id ?? undefined} name={rookie.name} team={rookie.team} size="lg" era={seasonEra(ROOKIE_SEASON, rookie.team)} className="dc-avatar" />
       <div className="dc-card-titles">
-        <Link className="dc-card-name" href={`/players/${rookie.player_id}?season=${ROOKIE_SEASON}`}>{rookie.name}</Link>
+        {rookie.player_id ? <IntentLink className="dc-card-name entity-link" href={playerHref(rookie.player_id, { season: ROOKIE_SEASON })} prefetch={false}>{rookie.name}</IntentLink> : <span className="dc-card-name">{rookie.name}</span>}
         <span className="dc-card-team"><TeamCode team={rookie.team} season={ROOKIE_SEASON} />{drafted && drafted !== rookie.team ? <> · drafted by <TeamCode team={rookie.draft_team} season={ROOKIE_SEASON} /></> : null}</span>
         <span className="dc-card-meta" data-field="games" data-value={line.games}>{line.games} games · {whole(line.minutes)} minutes{rookie.comparison!.small_sample ? " · under 100 minutes" : ""}</span>
       </div>
@@ -207,12 +232,12 @@ function PastPicks({ rookie }: { rookie: Rookie }) {
   return <div className="dc-past">
     <h3 className="dc-subhead">Past number {rookie.pick} picks over their first {games} games, per 36 minutes</h3>
     {error && <FeedFailure error={error} retry={retry} what="The comparison" />}
-    {loading && <FeedSkeleton label="Loading the comparison" />}
+    {loading && <FeedSkeleton label="Loading the comparison" shape="grid" rows={8} density="compact" />}
     {data && (data.comparisons.length === 0 ? <GatedNote>No past rookie at this pick has logged games.</GatedNote> :
       <StatsGrid<Row> label={`Past number ${rookie.pick} picks at ${games} games`} name="rookie-comparisons" density="compact" leadWidth="md" className="dc-past-grid"
         rows={sorted.rows} sort={sorted.sort} rowKey={r => r.player_id} rowData={r => ({ current: r.current ? "true" : undefined })}
         lead={{ label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.photo_team} season={r.photo_season} era={seasonEra(r.photo_season, r.photo_team)}
-          subtitle={r.current ? "This season" : r.first_season} href={`/players/${r.player_id}?season=${r.photo_season}`} /> }}
+          subtitle={r.current ? "This season" : r.first_season} href={playerHref(r.player_id, { season: r.photo_season })} /> }}
         columns={columns} />)}
   </div>;
 }
@@ -285,7 +310,7 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
   const filtered = useMemo(() => (data?.rookies ?? []).filter(r => matches(r.name, query) && (!team || r.team === team)), [data, query, team]);
   const sorted = useSort(filtered, columns, { key: "pick", direction: "asc" });
   if (feed.error) return <FeedFailure error={feed.error} retry={feed.retry} what="The rookie tracker" />;
-  if (feed.loading || !data) return <FeedSkeleton label="Loading the rookie tracker" />;
+  if (feed.loading || !data) return <FeedSkeleton label="Loading the rookie tracker"><RookieTrackerSkeleton /></FeedSkeleton>;
   if (data.state !== "ok") return <GatedNote>{data.state === "no_games" ? `No ${data.season} regular-season game is in the published data yet.` : "The past-rookie comparison table is not on this server, so the rookies can't be compared here."}</GatedNote>;
   const chosen = compared.find(r => r.player_id === get("rookie")) ?? compared[0] ?? null;
   const choose = (id: string | null) => {
@@ -313,16 +338,16 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
       ? <p className="dc-note" data-field="rookie-note">Per 36 minutes, so rookies on different minutes can be compared with past picks at their slot. Under each figure, the rookie&apos;s percentile among those picks.
         Green or red: outside their middle 80% (turnovers count the other way). * Under 100 minutes. DARKO and RAPM are gold above zero and blue below.</p>
       : <p className="dc-note" data-field="rookie-note">Every {ROOKIE_CLASS} draft pick this regular season, with games through <time dateTime={data.comparison_date ?? undefined}>{formatDate(data.comparison_date)}</time>.
-        DARKO and RAPM are gold above zero and blue below. <Link href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</Link></p>}
+        DARKO and RAPM are gold above zero and blue below. <IntentLink href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</IntentLink></p>}
     {view !== "past" && stats.error ? <FeedFailure error={stats.error} retry={stats.retry} what="The rookie stats" />
-      : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" />
+      : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" shape="grid" rows={10} search />
       :     <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
       rowData={r => ({ pick: r.pick, selected: chosen?.pick === r.pick ? "true" : undefined })} sort={sorted.sort}
       empty={query || team ? "No rookie matches these filters." : "No rookies."}
       lead={{ span: true, label: <GridSearch value={query} onChange={setQuery} label="Search rookies" placeholder="Search rookies…" />,
         cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={ROOKIE_SEASON} era={seasonEra(r.photo_season, r.team)}
           subtitle={r.state === "compared" ? `${r.team ?? ""} · ${ROOKIE_SEASON}` : <span data-field="state" data-value="no_games">No games yet</span>}
-          href={r.player_id ? `/players/${r.player_id}?season=${ROOKIE_SEASON}` : undefined}
+          href={playerHref(r.player_id, { season: ROOKIE_SEASON }) ?? undefined}
           tools={r.state === "compared" && r.player_id ? <IconButton size="sm" icon="arrow-right" label={`Show ${r.name} in the card`} pressed={chosen?.pick === r.pick} onClick={() => choose(r.player_id)} /> : undefined} /> }}
       columns={columns} />}
   </>;
@@ -450,7 +475,7 @@ function ClassesSection({ summary }: { summary: DraftSummary }) {
       <TeamPicker value={team} onChange={setTeam} season={season} />
     </SqPanel>
     {error && <FeedFailure error={error} retry={retry} what="The draft class" />}
-    {loading && <FeedSkeleton label="Loading the draft class" />}
+    {loading && <FeedSkeleton label="Loading the draft class" shape="grid" rows={12} search />}
     {data && data.year === year && <ClassBody data={data} order={data.status === "complete" ? order : "draft"} query={query} setQuery={setQuery} team={team} showAll={showAll} />}
   </>;
 }
@@ -504,7 +529,7 @@ function ClassBody({ data, order, query, setQuery, team, showAll }: { data: Draf
       lead={{ span: true, label: <GridSearch value={query} onChange={setQuery} label="Search the class" placeholder="Search players…" />,
         cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.photo_team} season={r.photo_season} era={seasonEra(r.photo_season, r.photo_team)}
           subtitle={r.played ? [r.photo_team, r.photo_season].filter(Boolean).join(" · ") : "Never played in the NBA"}
-          href={r.player_id ? `/players/${r.player_id}?season=${r.photo_season}` : undefined} /> }}
+          href={playerHref(r.player_id, { season: r.photo_season }) ?? undefined} /> }}
       columns={columns} />
   </>;
 }
@@ -518,7 +543,7 @@ function PickCard({ row }: { row: PickRow }) {
     <header className="dc-card-head">
       <PlayerAvatar playerId={row.player_id ?? undefined} name={row.name} team={row.photo_team} size="lg" era={seasonEra(row.photo_season, row.photo_team)} className="dc-avatar" />
       <div className="dc-card-titles">
-        {row.player_id ? <Link className="dc-card-name" href={`/players/${row.player_id}?season=${row.photo_season}`}>{row.name}</Link> : <span className="dc-card-name">{row.name}</span>}
+        {row.player_id ? <IntentLink className="dc-card-name entity-link" href={playerHref(row.player_id, { season: row.photo_season })} prefetch={false}>{row.name}</IntentLink> : <span className="dc-card-name">{row.name}</span>}
         <span className="dc-card-team"><TeamCode team={row.team} season={season} /> · {row.year} draft</span>
       </div>
       <span className="dc-badge" data-field="pick" data-value={row.pick}>{pickLabel(row.round, row.pick)}</span>
@@ -534,7 +559,7 @@ function PickCard({ row }: { row: PickRow }) {
 function PickList({ rows, label, name }: { rows: PickRow[]; label: string; name: string }) {
   return <StatsGrid<PickRow> label={label} name={name} density="compact" leadWidth="md" className="dc-list-grid" rows={rows} rowKey={r => `${r.year}-${r.pick}`}
     lead={{ label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={seasonLabel(r.year)} era={seasonEra(r.photo_season, r.photo_team)}
-      subtitle={`${r.year} · ${codeOf(r.team, seasonLabel(r.year)) ?? "—"}`} href={r.player_id ? `/players/${r.player_id}?season=${r.photo_season}` : undefined} /> }}
+      subtitle={`${r.year} · ${codeOf(r.team, seasonLabel(r.year)) ?? "—"}`} href={playerHref(r.player_id, { season: r.photo_season }) ?? undefined} /> }}
     columns={[
       { key: "pick", label: "Pick", title: "Round and overall pick", width: "sm", data: r => ({ field: "pick", value: r.pick, round: r.round ?? "" }), cell: r => <GridValue text={pickLabel(r.round, r.pick)} /> },
       { key: "window_ws", label: "WS", title: "Win shares, first four seasons", width: "xs", data: r => ({ field: "window_ws", value: r.window_ws ?? "" }), cell: r => <GridValue text={fixed(r.window_ws)} /> },
@@ -625,7 +650,7 @@ function CombineSection({ summary }: { summary: DraftSummary }) {
       </Select>
     </div>
     {error && <FeedFailure error={error} retry={retry} what="Combine rows" />}
-    {loading && <FeedSkeleton label="Loading combine rows" />}
+    {loading && <FeedSkeleton label="Loading combine rows" shape="chart" height={360} />}
     {data && <figure className="dc-figure">
       <CombineScatter rows={data.rows} measure={measure} r={rText} />
       <figcaption className="dc-note" data-field="combine-r">{rText}. Each dot is one drafted player; hover for the name.</figcaption>
