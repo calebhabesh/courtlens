@@ -116,6 +116,12 @@ if ! compose "$next" "${tunnel_profile[@]}" up -d --wait --wait-timeout 300 --re
   fi
   exit 1
 fi
+# Hold the jobs loop until the Stats cohorts below are stored: its warm crawl (speed plan SP02)
+# would otherwise compute the same cohorts on demand while the API warms its catalog, and on
+# 2026-11-16 the three together pushed the database past its 2 GB limit (a backend was OOM-killed
+# and three crawled pages timed out). The trap restarts it whatever happens below.
+compose "$next" stop jobs >/dev/null
+trap 'compose "$next" start jobs >/dev/null 2>&1 || compose release.env start jobs >/dev/null 2>&1 || true' EXIT
 # Caddy mounts the single Caddyfile; rsync replaces the file, so a running container keeps the
 # old one until it restarts (2026-11-10: the public Ask allowlist wasn't live after a deploy).
 caddy_id="$(compose "$next" ps -q caddy)"
@@ -133,6 +139,7 @@ compose "$next" exec -T api courtlens seed-demo-account < /dev/null \
 # release or changed serving code changes the stored keys (docs/deployment.md).
 compose "$next" exec -T api courtlens warm-stats-cohorts < /dev/null \
   || echo "Stats cohort warm-up failed; each season is computed on its first view." >&2
+compose "$next" start jobs >/dev/null
 
 [[ -f release.env ]] && mv release.env release.prev.env
 mv "$next" release.env

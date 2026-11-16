@@ -359,6 +359,11 @@ scripts/deploy-vps.sh            # latest origin/main
 scripts/deploy-vps.sh <sha>      # a specific main commit
 ```
 
+**When.** Any time. A deploy restarts every service, including `win-probability-seal`, and takes
+about 3 to 4 minutes. On a game day the seal service takes each game's last seal at :25 and :55
+Eastern, 5 minutes before tip, so a deploy that should not risk a seal starts just after one of
+those runs. Earlier deploys used 9:00 AM to noon Eastern only because no game is sealed then.
+
 Serving files are git-ignored and live only under the VPS's `data/` (`SERVING_DIRS` in the
 script). Since W7 a deploy only makes sure those directories exist: nothing under `data/` is
 copied, overwritten or deleted from the deploying machine. Before W7 they were rsynced from the
@@ -379,6 +384,32 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 ```
 
 ## Deploy log
+
+### 2026-11-16 (evening of 2026-11-15 Eastern): release bb4c758f (#110: site improvements and the speed plan)
+
+- **What:** search, provisional positions, season impact on the VPS, player-page contracts with
+  Wikipedia terms, the player header, site links, loading skeletons, speed plan SP00–SP08 (read
+  cache, warm start, warm crawl, prefetch on intent, lighter pages, `.webp` portraits), the Stats
+  pager. No migration. Deployed outside the 9:00 AM to noon window on the owner's word (no
+  visitors yet).
+- **Deploy:** `deploy-vps.sh` took **206 s** (00:51:52 to 00:55:18 UTC). CI and Images passed on
+  the merge commit first.
+- **Database OOM during the deploy.** The deploy's Stats cohort warm-up, the warm crawl
+  (computing the same cohorts on demand) and the API's warm start overlapped; the db container
+  reached its 2 GiB limit and the kernel killed one Postgres backend (00:55:13). Postgres
+  reinitialised in 3 s, the warm-up step failed, the crawl lost 3 pages to timeouts, and
+  `warm-stats-cohorts` was rerun by hand (75 built, 96 existing, 191 s; db peak 0.92 GiB).
+  `deploy-vps.sh` now stops `jobs` until the cohorts are stored, then starts it (a trap restarts
+  it on any failure), so the crawl never builds cohorts itself.
+- **After the deploy:** the API's warm start took 42 s (catalog 29 s); the first warm crawl 438 s
+  for 571 pages (568 ok); the read cache then held 3,043 entries, 70 MB of 128 MB. Peak memory:
+  api 2.68 of 3 GiB, db 2.04 of 2 GiB (the OOM above), dashboard 164 of 768 MiB, jobs 188 MiB of
+  4 GiB. Numbers in the speed progress log (SP08).
+- **Wikipedia contract terms:** `acquire-wikipedia-contracts --scope all` started in `jobs` at
+  01:08:47 UTC (about 4.6 hours, the first full run), with `bump-data-stamp` chained after it; log
+  at `/home/ubuntu/wikipedia-contracts-run.log` on the VPS.
+- **Checked on the public URL:** `/api/health` ok; `.webp` portraits `HIT` at Cloudflare; pages,
+  reads and click timings in the speed progress log.
 
 ### 2026-11-13 (evening): W7c applied by hand; no new release
 

@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). SP08 under way: guards, docs and suites done; the merge, the deploy and the final live table remain.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). SP08 built 2026-11-16: merged (#110), deployed (bb4c758f), final live table recorded. G1 awaits the owner trying the live site.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -137,7 +137,7 @@ gate G2; any other may be overturned at gate G1.
 | SP06 | Images and static files | ✅ owner, 2026-11-15; built 2026-11-15 |
 | G2 | Owner gate: Cloudflare changes | ✅ owner, 2026-11-15 |
 | SP07 | Cloudflare settings | built 2026-11-15 |
-| SP08 | Close: suites, deploy, final numbers, docs | in progress: deploy and final table remain |
+| SP08 | Close: suites, deploy, final numbers, docs | built 2026-11-16 |
 
 ## SP00 Measuring tools and baseline
 
