@@ -1,0 +1,43 @@
+### 1 GET https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6
+HTTP/2 200 
+content-type: image/webp
+cache-control: public, max-age=86400
+cf-cache-status: EXPIRED
+### 2 GET https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6
+HTTP/2 200 
+content-type: image/webp
+cache-control: public, max-age=86400
+age: 2
+cf-cache-status: HIT
+### 1 GET https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait?size=288&crop=face-v6
+HTTP/2 200 
+content-type: image/webp
+cache-control: public, max-age=86400
+cf-cache-status: DYNAMIC
+### 2 GET https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait?size=288&crop=face-v6
+HTTP/2 200 
+content-type: image/webp
+cache-control: public, max-age=86400
+cf-cache-status: DYNAMIC
+### 1 GET https://courtlens.calebhabesh.com/team-logos/1610612747-5b68f7b92ba7d058.svg
+HTTP/2 200 
+content-type: image/svg+xml
+cache-control: public, max-age=31536000, immutable
+cf-cache-status: EXPIRED
+### 2 GET https://courtlens.calebhabesh.com/team-logos/1610612747-5b68f7b92ba7d058.svg
+HTTP/2 200 
+content-type: image/svg+xml
+cache-control: public, max-age=31536000, immutable
+age: 2
+cf-cache-status: HIT
+### 1 GET https://courtlens.calebhabesh.com/flags/us.png
+HTTP/2 200 
+content-type: image/png
+cache-control: public, max-age=2592000
+cf-cache-status: EXPIRED
+### 2 GET https://courtlens.calebhabesh.com/flags/us.png
+HTTP/2 200 
+content-type: image/png
+cache-control: public, max-age=2592000
+age: 2
+cf-cache-status: HIT

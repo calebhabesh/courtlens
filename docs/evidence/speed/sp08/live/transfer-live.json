@@ -1,0 +1,642 @@
+{
+ "base": "https://courtlens.calebhabesh.com",
+ "taken_at": "2026-11-16T01:09:52.684Z",
+ "method": "resource timing encodedBodySize, Accept-Encoding gzip/br as Chromium sends",
+ "pages": [
+  {
+   "path": "/players/2544",
+   "js_html": 296975,
+   "css_html": 113042,
+   "js_later": 0,
+   "css_later": 0,
+   "decoded_js_css": 1782104,
+   "files": [
+    {
+     "path": "/_next/static/chunks/0ai681_r7-xol.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 357,
+     "decoded": 746
+    },
+    {
+     "path": "/_next/static/chunks/0o01jnohtvi6i.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 6501,
+     "decoded": 39012
+    },
+    {
+     "path": "/_next/static/chunks/3gyqo9eyoc-98.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 104514,
+     "decoded": 729698
+    },
+    {
+     "path": "/_next/static/chunks/3k1espijkslmg.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3677,
+     "decoded": 14271
+    },
+    {
+     "path": "/_next/static/chunks/3bjftwosq1w-2.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10784,
+     "decoded": 50943
+    },
+    {
+     "path": "/_next/static/chunks/439x3ngfhm_u5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8281,
+     "decoded": 23257
+    },
+    {
+     "path": "/_next/static/chunks/1w0adbjzb112k.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 390,
+     "decoded": 801
+    },
+    {
+     "path": "/_next/static/chunks/2wfas0u4mf_5u.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 1280,
+     "decoded": 5660
+    },
+    {
+     "path": "/_next/static/chunks/05fupwyqbrh92.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 43543,
+     "decoded": 130486
+    },
+    {
+     "path": "/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3940,
+     "decoded": 10030
+    },
+    {
+     "path": "/_next/static/chunks/2evgu094glu3w.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 7420,
+     "decoded": 24062
+    },
+    {
+     "path": "/_next/static/chunks/11by306wyrff5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 48348,
+     "decoded": 178256
+    },
+    {
+     "path": "/_next/static/chunks/12x3oeh7cvdw1.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 71970,
+     "decoded": 229820
+    },
+    {
+     "path": "/_next/static/chunks/0m2u3ewo8eopd.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 235,
+     "decoded": 416
+    },
+    {
+     "path": "/_next/static/chunks/0y88fnwwrrxno.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 4672,
+     "decoded": 15355
+    },
+    {
+     "path": "/_next/static/chunks/0vqh716e-d2dd.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 21686,
+     "decoded": 62751
+    },
+    {
+     "path": "/_next/static/chunks/0rji8ky5ukqm3.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 20787,
+     "decoded": 66641
+    },
+    {
+     "path": "/_next/static/chunks/3mzlcdfe0gn_f.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16438,
+     "decoded": 46072
+    },
+    {
+     "path": "/_next/static/chunks/3izu38znmhnrd.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10709,
+     "decoded": 32492
+    },
+    {
+     "path": "/_next/static/chunks/1xa40hpdtvo79.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8748,
+     "decoded": 66980
+    },
+    {
+     "path": "/_next/static/chunks/1e2u4895ein2i.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 15737,
+     "decoded": 54355
+    }
+   ],
+   "first_load": 410017,
+   "all_js_css": 410017,
+   "runs_first_load": [
+    410017,
+    410017,
+    410017
+   ]
+  },
+  {
+   "path": "/stats",
+   "js_html": 287277,
+   "css_html": 111372,
+   "js_later": 0,
+   "css_later": 0,
+   "decoded_js_css": 1744920,
+   "files": [
+    {
+     "path": "/_next/static/chunks/0ai681_r7-xol.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 357,
+     "decoded": 746
+    },
+    {
+     "path": "/_next/static/chunks/3gyqo9eyoc-98.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 104514,
+     "decoded": 729698
+    },
+    {
+     "path": "/_next/static/chunks/0o01jnohtvi6i.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 6501,
+     "decoded": 39012
+    },
+    {
+     "path": "/_next/static/chunks/2evgu094glu3w.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 7420,
+     "decoded": 24062
+    },
+    {
+     "path": "/_next/static/chunks/3k1espijkslmg.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3677,
+     "decoded": 14271
+    },
+    {
+     "path": "/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3940,
+     "decoded": 10030
+    },
+    {
+     "path": "/_next/static/chunks/12x3oeh7cvdw1.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 71970,
+     "decoded": 229820
+    },
+    {
+     "path": "/_next/static/chunks/11by306wyrff5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 48348,
+     "decoded": 178256
+    },
+    {
+     "path": "/_next/static/chunks/3bjftwosq1w-2.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10784,
+     "decoded": 50943
+    },
+    {
+     "path": "/_next/static/chunks/0rji8ky5ukqm3.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 20787,
+     "decoded": 66641
+    },
+    {
+     "path": "/_next/static/chunks/05fupwyqbrh92.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 43543,
+     "decoded": 130486
+    },
+    {
+     "path": "/_next/static/chunks/164jrbk3eppwe.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 295,
+     "decoded": 618
+    },
+    {
+     "path": "/_next/static/chunks/3mzlcdfe0gn_f.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16438,
+     "decoded": 46072
+    },
+    {
+     "path": "/_next/static/chunks/439x3ngfhm_u5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8281,
+     "decoded": 23257
+    },
+    {
+     "path": "/_next/static/chunks/0y88fnwwrrxno.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 4672,
+     "decoded": 15355
+    },
+    {
+     "path": "/_next/static/chunks/1xa40hpdtvo79.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8748,
+     "decoded": 66980
+    },
+    {
+     "path": "/_next/static/chunks/1l3nqq-dzxisw.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16344,
+     "decoded": 47157
+    },
+    {
+     "path": "/_next/static/chunks/24yni12h_l_vu.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 5465,
+     "decoded": 19529
+    },
+    {
+     "path": "/_next/static/chunks/2_v_ilutgiu1t.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16565,
+     "decoded": 51987
+    }
+   ],
+   "first_load": 398649,
+   "all_js_css": 398649,
+   "runs_first_load": [
+    398649,
+    398649,
+    398649
+   ]
+  },
+  {
+   "path": "/teams/1610612747",
+   "js_html": 330657,
+   "css_html": 111372,
+   "js_later": 0,
+   "css_later": 0,
+   "decoded_js_css": 1874941,
+   "files": [
+    {
+     "path": "/_next/static/chunks/0ai681_r7-xol.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 357,
+     "decoded": 746
+    },
+    {
+     "path": "/_next/static/chunks/3gyqo9eyoc-98.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 104514,
+     "decoded": 729698
+    },
+    {
+     "path": "/_next/static/chunks/0o01jnohtvi6i.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 6501,
+     "decoded": 39012
+    },
+    {
+     "path": "/_next/static/chunks/12x3oeh7cvdw1.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 71970,
+     "decoded": 229820
+    },
+    {
+     "path": "/_next/static/chunks/2evgu094glu3w.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 7420,
+     "decoded": 24062
+    },
+    {
+     "path": "/_next/static/chunks/11by306wyrff5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 48348,
+     "decoded": 178256
+    },
+    {
+     "path": "/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3940,
+     "decoded": 10030
+    },
+    {
+     "path": "/_next/static/chunks/439x3ngfhm_u5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8281,
+     "decoded": 23257
+    },
+    {
+     "path": "/_next/static/chunks/0rji8ky5ukqm3.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 20787,
+     "decoded": 66641
+    },
+    {
+     "path": "/_next/static/chunks/3k1espijkslmg.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3677,
+     "decoded": 14271
+    },
+    {
+     "path": "/_next/static/chunks/05fupwyqbrh92.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 43543,
+     "decoded": 130486
+    },
+    {
+     "path": "/_next/static/chunks/3bjftwosq1w-2.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10784,
+     "decoded": 50943
+    },
+    {
+     "path": "/_next/static/chunks/1-f5j6xg80p0i.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8554,
+     "decoded": 27766
+    },
+    {
+     "path": "/_next/static/chunks/24yni12h_l_vu.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 5465,
+     "decoded": 19529
+    },
+    {
+     "path": "/_next/static/chunks/2v11zl0dl99ev.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 15933,
+     "decoded": 46094
+    },
+    {
+     "path": "/_next/static/chunks/2_v_ilutgiu1t.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16565,
+     "decoded": 51987
+    },
+    {
+     "path": "/_next/static/chunks/164jrbk3eppwe.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 295,
+     "decoded": 618
+    },
+    {
+     "path": "/_next/static/chunks/3mzlcdfe0gn_f.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16438,
+     "decoded": 46072
+    },
+    {
+     "path": "/_next/static/chunks/1b_0fq-bjai7r.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 11648,
+     "decoded": 31608
+    },
+    {
+     "path": "/_next/static/chunks/1xa40hpdtvo79.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8748,
+     "decoded": 66980
+    },
+    {
+     "path": "/_next/static/chunks/0bb9gb9cklbjn.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 12880,
+     "decoded": 39218
+    },
+    {
+     "path": "/_next/static/chunks/0y88fnwwrrxno.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 4672,
+     "decoded": 15355
+    },
+    {
+     "path": "/_next/static/chunks/3izu38znmhnrd.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10709,
+     "decoded": 32492
+    }
+   ],
+   "first_load": 442029,
+   "all_js_css": 442029,
+   "runs_first_load": [
+    442029,
+    442029,
+    442029
+   ]
+  },
+  {
+   "path": "/players",
+   "js_html": 281664,
+   "css_html": 111372,
+   "js_later": 0,
+   "css_later": 0,
+   "decoded_js_css": 1721693,
+   "files": [
+    {
+     "path": "/_next/static/chunks/0ai681_r7-xol.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 357,
+     "decoded": 746
+    },
+    {
+     "path": "/_next/static/chunks/0o01jnohtvi6i.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 6501,
+     "decoded": 39012
+    },
+    {
+     "path": "/_next/static/chunks/439x3ngfhm_u5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8281,
+     "decoded": 23257
+    },
+    {
+     "path": "/_next/static/chunks/2evgu094glu3w.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 7420,
+     "decoded": 24062
+    },
+    {
+     "path": "/_next/static/chunks/12x3oeh7cvdw1.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 71970,
+     "decoded": 229820
+    },
+    {
+     "path": "/_next/static/chunks/05fupwyqbrh92.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 43543,
+     "decoded": 130486
+    },
+    {
+     "path": "/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3940,
+     "decoded": 10030
+    },
+    {
+     "path": "/_next/static/chunks/3mzlcdfe0gn_f.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 16438,
+     "decoded": 46072
+    },
+    {
+     "path": "/_next/static/chunks/0rji8ky5ukqm3.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 20787,
+     "decoded": 66641
+    },
+    {
+     "path": "/_next/static/chunks/3bjftwosq1w-2.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 10784,
+     "decoded": 50943
+    },
+    {
+     "path": "/_next/static/chunks/3gyqo9eyoc-98.css",
+     "kind": "css",
+     "in_html": true,
+     "encoded": 104514,
+     "decoded": 729698
+    },
+    {
+     "path": "/_next/static/chunks/3k1espijkslmg.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 3677,
+     "decoded": 14271
+    },
+    {
+     "path": "/_next/static/chunks/11by306wyrff5.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 48348,
+     "decoded": 178256
+    },
+    {
+     "path": "/_next/static/chunks/2-zd1p8r9-mu0.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 578,
+     "decoded": 884
+    },
+    {
+     "path": "/_next/static/chunks/0y88fnwwrrxno.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 4672,
+     "decoded": 15355
+    },
+    {
+     "path": "/_next/static/chunks/2nwor0vd1-s3z.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 14147,
+     "decoded": 45379
+    },
+    {
+     "path": "/_next/static/chunks/3f5ubazh7evem.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 18331,
+     "decoded": 49801
+    },
+    {
+     "path": "/_next/static/chunks/1xa40hpdtvo79.js",
+     "kind": "js",
+     "in_html": true,
+     "encoded": 8748,
+     "decoded": 66980
+    }
+   ],
+   "first_load": 393036,
+   "all_js_css": 393036,
+   "runs_first_load": [
+    393036,
+    393036,
+    393036
+   ]
+  }
+ ]
+}
