@@ -22,7 +22,7 @@ export function composerKeyAction(event: { key: string; shiftKey: boolean; isCom
   return event.key === "Enter" && !event.shiftKey && !event.isComposing ? "send" : null;
 }
 
-const windowLabels: Record<string, string> = { season: "Season to date", last_10: "Last 10", last_5: "Last 5" };
+const windowLabels: Record<string, string> = { season: "Season to Date", last_10: "Last 10", last_5: "Last 5" };
 export function scopeChipLabel(context: Context): string {
   const parts = [
     context.season,
@@ -30,7 +30,7 @@ export function scopeChipLabel(context: Context): string {
     context.window ? windowLabels[context.window] ?? humanLabel(context.window) : null,
     context.before_date ? throughLabel(context.before_date) || "Through date unavailable" : null,
   ].filter(Boolean);
-  return parts.length ? parts.join(" · ") : "Default scope";
+  return parts.length ? parts.join(" · ") : "Default Scope";
 }
 
 export type ThreadGroup = { label: string; threads: DurableThreadHeader[] };
