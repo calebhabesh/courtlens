@@ -2090,3 +2090,12 @@ Started in `jobs` at 01:08:47 UTC, `--scope all` (no bundle existed on the VPS),
 
 - The navigation spec's live run did not record long tasks against a baseline (none live before).
 - Layout shift was not remeasured live.
+
+## 2026-11-15 — Plan finished (owner)
+
+The owner tried the live site (release bb4c758f) and wrote: "It's really good. We can mark the
+entire plan finished." G1, SP07 and SP08 are ✅ owner, 2026-11-15; every block and gate of the
+plan is now ✅. The floors recorded at SP03, SP05, SP06 and SP08 stand as accepted.
+
+Still running when the plan closed: the Wikipedia contract-terms crawl in `jobs` (2,129 of 3,297
+players at 04:15 UTC on 2026-11-16), with `bump-data-stamp` chained after it.
