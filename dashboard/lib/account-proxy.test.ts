@@ -230,4 +230,13 @@ describe("account proxy: sign-up, email links and Google (accounts plan)", () =>
     const cancelled = await GET(incoming("google/callback?error=access_denied&state=s", { headers: { cookie: `courtlens-google-flow=${flow}` } }), context(["google", "callback"]));
     expect(cancelled.headers.get("location")).toBe("http://localhost:3000/?signin=google-cancelled");
   });
+
+  it("redirects to the public site, not the container's port, behind the hosted proxy", async () => {
+    vi.stubEnv("NEXT_PUBLIC_COURTLENS_HOSTED", "true");
+    const fetch = vi.fn().mockImplementation(async () => Response.json({ detail: "Not Found" }, { status: 404 }));
+    vi.stubGlobal("fetch", fetch);
+    const request = new NextRequest("http://0.0.0.0:3000/api/account/google/start?next=/stats", { headers: { host: "courtlens.example", "x-forwarded-proto": "https" } });
+    const response = await GET(request, context(["google", "start"]));
+    expect(response.headers.get("location")).toBe("https://courtlens.example/stats?signin=google-off");
+  });
 });

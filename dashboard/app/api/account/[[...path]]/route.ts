@@ -168,11 +168,11 @@ function returnPath(value: string | null): string {
 
 function siteUrl(request: NextRequest, path: string): URL {
   // Behind Cloudflare and Caddy the request URL is the internal one; the Host header is the site's.
-  const host = request.headers.get("host");
-  const base = new URL(request.nextUrl.origin);
-  if (host) base.host = host;
-  if (request.headers.get("x-forwarded-proto") === "https" || process.env.NEXT_PUBLIC_COURTLENS_HOSTED === "true") base.protocol = "https:";
-  return new URL(path, base);
+  // Build the origin from scratch: assigning a port-less Host to a URL keeps its internal port
+  // (:3000 in the container), which sent hosted Google redirects to the wrong address.
+  const host = request.headers.get("host") || request.nextUrl.host;
+  const https = request.headers.get("x-forwarded-proto") === "https" || process.env.NEXT_PUBLIC_COURTLENS_HOSTED === "true";
+  return new URL(path, `${https ? "https:" : request.nextUrl.protocol}//${host}`);
 }
 
 /** Back to the page with the sign-in dialog open and a short reason code (never free text). */
