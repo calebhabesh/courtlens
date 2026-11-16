@@ -2016,3 +2016,77 @@ Fixture Playwright on the fixed tree: **668 passed, 0 failed, 27 skipped**
 (`docs/evidence/speed/sp08/playwright-fixture-after-fixes.log`). Lint and typecheck pass; Vitest
 153 files, 1,098 passed. The phone identity fix touches every small identity on phones; the full
 suite, including the phone baselines, passes with it.
+
+## 2026-11-16 — SP08 part 2: merge, deploy, final numbers
+
+The owner: "You can commit push and deploy everything", and, on the deploy window, "There are no
+users on the site … So do it." PR #110 merged as bb4c758f; CI and Images passed; deployed at
+00:51:52 UTC (7:51 PM Eastern on 2026-11-15) in **206 s**. Evidence: `docs/evidence/speed/sp08/live/`.
+
+### After the deploy
+
+- **API warm start:** 42 s on the VPS (catalog 29.4 s, tracking facts 12.6 s, finance book 0.01 s);
+  about 2.5 s on the PC. The VPS is roughly ten times slower at this work.
+- **First warm crawl** (`warm-site.json`): 571 pages (16 top-level, 30 teams, 525 roster players)
+  in 438 s, median 1.04 s a page, **568 ok, 3 timeouts** (player pages at 30 s while their
+  cohorts were computed). The cache then held 3,043 entries, 70.5 MB of 128 MB.
+- **Database OOM.** See the deploy log. The deploy's `warm-stats-cohorts`, the crawl computing the
+  same cohorts and the API's warm start overlapped at 00:55; the db container reached its 2 GiB limit
+  and one Postgres backend was killed. Postgres reinitialised in 3 s; `warm-stats-cohorts` rerun
+  alone afterwards: 75 built, 96 existing, 191 s, db peak 0.92 GiB. **Fix:** `deploy-vps.sh` holds
+  `jobs` (and so the crawl) until the cohorts are stored.
+- **Cloudflare** (`cf-cache-check.txt`): `.webp` portrait 200, second request `HIT`; old
+  `/portrait` path `DYNAMIC`; logo `public, max-age=31536000, immutable` and flag
+  `public, max-age=2592000` reach the browser, both `HIT` on the second request.
+
+### `docker stats` (`docker-stats.txt`, sampled about every 2 s for 30 minutes from just before the deploy)
+
+| Container (limit) | Before | Deploy and warm start | First crawl | Cohort warm-up (alone) | Quiet after |
+| --- | --- | --- | --- | --- | --- |
+| api (3 GiB) | 1.28 GiB | 1.29 GiB, 135% CPU | 2.50 GiB, 188% | **2.68 GiB**, 120% | 1.87 GiB |
+| db (2 GiB) | 0.67 GiB | 0.93 GiB, 130% | **2.04 GiB (OOM kill)**, 313% | 0.92 GiB, 101% | 0.75 GiB |
+| dashboard (768 MiB) | 88 MiB | 88 MiB | 164 MiB, 43% | 159 MiB | 162 MiB |
+| jobs (4 GiB) | 11 MiB | 166 MiB, 108% | 188 MiB, 31% | 5 MiB | 5 MiB |
+
+SP01's memory figure was an estimate; this is the real one. The API's peak, 2.68 GiB, came while
+it computed cohorts with the impact bundle loaded and the cache at 70 MB: 330 MB under its limit.
+No limit was raised.
+
+### Final table (live medians of five `measure.py` runs from the owner's PC after the crawl; navigation spec, five runs)
+
+| Measure | Baseline | Local, SP04–SP06 | Live after deploy | Verdict |
+| --- | --- | --- | --- | --- |
+| Player page, warm, HTML complete | 1.1–1.8 s | 14–32 ms | **0.11–0.26 s** | met |
+| Team page, warm | 1.4–6.1 s | 29–34 ms | **0.20 s** | met |
+| Stats, warm | 0.83 s | 36 ms | **0.29 s** | met |
+| Player page, cold | up to 4.9 s | 281 ms | **1.5–2.4 s** first visit; 0.12–0.14 s second | **floor**: the VPS database (a career read 669 ms, 573 ms of it in queries, against about 65 ms on the PC) |
+| Click to content, prefetched | ~page time | 75 / 124 / 179 ms | row → player **71 ms**; player → team 111 ms; nav → Stats 181 ms | met for row → player; the other two are the floors accepted at G1 and G2 |
+| Click to content, no prefetch, warm | ~page time | 135–186 ms | row → player 190, player → team 160, back 135 ms; **nav → Stats 459 ms** | met but nav → Stats: the Stats markup floor (1.72 MB of HTML to render) |
+| API read from the cache | 40–400 ms | ≤ 1.5 ms | 36–74 ms, median 49 ms; 26 of 31 ≤ 60 ms | met in substance: each request opens a new TLS connection (about 26 ms); the five over are network variance |
+| Stats HTML, uncompressed | 2.2 MB | 1.64 MB | 1.72 MB | **floor** accepted at G2 |
+| Player first-load JS and CSS, compressed | 488 KB | 407 KB gzip | **410 KB** | **floor** accepted at G2 (below) |
+| Player portrait at Cloudflare | `DYNAMIC` | `.webp` route | **`HIT`** | met |
+| Layout shift | — | two small non-image shifts | not remeasured live | floor accepted at G2 |
+
+Live before the deploy (same tool, same evening, `main`): player pages 0.75–1.49 s, team pages
+1.26–1.61 s, Stats 0.65–0.71 s, Compare 1.63 s → after: 0.11–0.26 s, 0.20 s, 0.29 s, 0.12 s.
+
+**During the crawl** (`measure-live-during-crawl-*.json`, one run): two player pages hit the
+dashboard's 30 s read timeout while their career cohorts were being computed, the case the
+deploy-script fix removes.
+
+**First load compression (`transfer-live.json`).** Chromium sends `Accept-Encoding: gzip, deflate,
+br, zstd`, and Cloudflare answers with the origin's gzip. Probed on one chunk: gzip 71,970 B,
+Cloudflare brotli 71,888 B, zstd 73,723 B. Cloudflare's own compression would save nothing, so the
+SP05 "brotli 11" figure (340 KB) is not reachable this way, and turning origin compression off was
+not done.
+
+### Wikipedia contract terms
+
+Started in `jobs` at 01:08:47 UTC, `--scope all` (no bundle existed on the VPS), with
+`bump-data-stamp` chained after it so the cache empties and the next loop's crawl refills it.
+
+### Not done
+
+- The navigation spec's live run did not record long tasks against a baseline (none live before).
+- Layout shift was not remeasured live.

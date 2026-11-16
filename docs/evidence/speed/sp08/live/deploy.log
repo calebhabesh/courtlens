@@ -1,0 +1,461 @@
+Deploying bb4c758f12bd011e0f8b65f31dae84e816666c3c to vps:/home/ubuntu/apps/courtlens
+ Container courtlens-db-1 Running 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-db-1 Running 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-migrate-run-4d8c40a491ab Creating 
+ Container courtlens-migrate-run-4d8c40a491ab Created 
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+ Container courtlens-caddy-1 Running 
+ Container courtlens-db-1 Running 
+ Container courtlens-cloudflared-1 Running 
+ Container courtlens-api-1 Recreate 
+ Container courtlens-demo-reset-1 Recreate 
+ Container courtlens-jobs-1 Recreate 
+ Container courtlens-win-probability-seal-1 Recreate 
+ Container courtlens-api-1 Recreated 
+ Container courtlens-dashboard-1 Recreate 
+ Container courtlens-dashboard-1 Recreated 
+ Container courtlens-demo-reset-1 Recreated 
+ Container courtlens-jobs-1 Recreated 
+ Container courtlens-win-probability-seal-1 Recreated 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-win-probability-seal-1 Starting 
+ Container courtlens-win-probability-seal-1 Started 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-api-1 Starting 
+ Container courtlens-demo-reset-1 Starting 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-jobs-1 Starting 
+ Container courtlens-api-1 Started 
+ Container courtlens-api-1 Waiting 
+ Container courtlens-demo-reset-1 Started 
+ Container courtlens-jobs-1 Started 
+ Container courtlens-api-1 Healthy 
+ Container courtlens-dashboard-1 Starting 
+ Container courtlens-dashboard-1 Started 
+ Container courtlens-dashboard-1 Waiting 
+ Container courtlens-dashboard-1 Healthy 
+ Container courtlens-caddy-1 Waiting 
+ Container courtlens-caddy-1 Healthy 
+ Container courtlens-dashboard-1 Waiting 
+ Container courtlens-demo-reset-1 Waiting 
+ Container courtlens-win-probability-seal-1 Waiting 
+ Container courtlens-jobs-1 Waiting 
+ Container courtlens-caddy-1 Waiting 
+ Container courtlens-db-1 Waiting 
+ Container courtlens-cloudflared-1 Waiting 
+ Container courtlens-api-1 Waiting 
+ Container courtlens-demo-reset-1 Healthy 
+ Container courtlens-cloudflared-1 Healthy 
+ Container courtlens-jobs-1 Healthy 
+ Container courtlens-api-1 Healthy 
+ Container courtlens-dashboard-1 Healthy 
+ Container courtlens-caddy-1 Healthy 
+ Container courtlens-db-1 Healthy 
+ Container courtlens-win-probability-seal-1 Healthy 
+{"demo": "guest@demo.courtlens", "favorites": 8}
+Stats cohort 253c7154ca35ac2f65c7a5d069c2f79ba07eca44edf8fa10e7d30a9654978fdd was not persisted
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1367, in _checkout
+    raise exc.InvalidatePoolError()
+sqlalchemy.exc.InvalidatePoolError: ()
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3326, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1401, in _checkout
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1398, in _checkout
+    fairy._connection_record.get_connection()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 853, in get_connection
+    self.__connect()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 921, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 917, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 642, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/psycopg/connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "172.20.0.7", port 5432 failed: FATAL:  the database system is in recovery mode
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/courtlens/services/stats_cohort_store.py", line 263, in save_cohort
+    engine.connect().execution_options(isolation_level="READ COMMITTED") as connection,
+    ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3302, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2457, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3326, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1401, in _checkout
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1398, in _checkout
+    fairy._connection_record.get_connection()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 853, in get_connection
+    self.__connect()
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 921, in __connect
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 917, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 642, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/psycopg/connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+sqlalchemy.exc.OperationalError: (psycopg.OperationalError) connection failed: connection to server at "172.20.0.7", port 5432 failed: FATAL:  the database system is in recovery mode
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1976 in    │
+│ _exec_single_context                                                         │
+│                                                                              │
+│   1973 │   │   │   │   │   │   │   evt_handled = True                        │
+│   1974 │   │   │   │   │   │   │   break                                     │
+│   1975 │   │   │   │   if not evt_handled:                                   │
+│ ❱ 1976 │   │   │   │   │   self.dialect.do_execute(                          │
+│   1977 │   │   │   │   │   │   cursor, str_statement, effective_parameters,  │
+│        context                                                               │
+│   1978 │   │   │   │   │   )                                                 │
+│   1979                                                                       │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/default.py:964 in  │
+│ do_execute                                                                   │
+│                                                                              │
+│    961 │   │   cursor.executemany(statement, parameters)                     │
+│    962 │                                                                     │
+│    963 │   def do_execute(self, cursor, statement, parameters,               │
+│        context=None):                                                        │
+│ ❱  964 │   │   cursor.execute(statement, parameters)                         │
+│    965 │                                                                     │
+│    966 │   def do_execute_no_params(self, cursor, statement, context=None):  │
+│    967 │   │   cursor.execute(statement)                                     │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/psycopg/cursor.py:117 in execute     │
+│                                                                              │
+│   114 │   │   │   │   │   self._execute_gen(query, params, prepare=prepare,  │
+│       binary=binary)                                                         │
+│   115 │   │   │   │   )                                                      │
+│   116 │   │   except e._NO_TRACEBACK as ex:                                  │
+│ ❱ 117 │   │   │   raise ex.with_traceback(None)                              │
+│   118 │   │   return self                                                    │
+│   119 │                                                                      │
+│   120 │   def executemany(                                                   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+OperationalError: consuming input failed: server closed the connection 
+unexpectedly
+        This probably means the server terminated abnormally
+        before or while processing the request.
+
+The above exception was the direct cause of the following exception:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /usr/local/lib/python3.12/site-packages/courtlens/cli.py:103 in              │
+│ warm_stats_cohorts_command                                                   │
+│                                                                              │
+│    100 │   from courtlens.services.player_career import warm_stats_cohorts   │
+│    101 │                                                                     │
+│    102 │   with SessionLocal() as session:                                   │
+│ ❱  103 │   │   typer.echo(json.dumps(warm_stats_cohorts(session, release_id, │
+│        prune=prune)))                                                        │
+│    104                                                                       │
+│    105                                                                       │
+│    106 @app.command("acquire-player-context")                                │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/courtlens/services/player_career.py: │
+│ 266 in warm_stats_cohorts                                                    │
+│                                                                              │
+│   263 │   │   cutoff = date.fromisoformat(scope["default_before_date"])      │
+│   264 │   │   context = season_context(phases[phase], scope["season"],       │
+│       cutoff)                                                                │
+│   265 │   │   query = cohort_query(career_query(context, scope["season"],    │
+│       cutoff))                                                               │
+│ ❱ 266 │   │   key = persisted_key(session, context, query)                   │
+│   267 │   │   if key is None:                                                │
+│   268 │   │   │   raise ValueError("This release's cohorts cannot persist:   │
+│       its dataset is not ready")                                             │
+│   269 │   │   if stats_cohort_store.stored_keys(session, [key]):             │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/courtlens/services/stats_cohort_cach │
+│ e.py:203 in persisted_key                                                    │
+│                                                                              │
+│   200 │   """The stored entry key of a scope's presentation cohort, or None  │
+│       when it cannot persist."""                                             │
+│   201 │   from courtlens.services import stats_cohort_store                  │
+│   202 │                                                                      │
+│ ❱ 203 │   facts = stats_cohort_store.source_facts(session, context)          │
+│   204 │   if facts is None:                                                  │
+│   205 │   │   return None                                                    │
+│   206 │   return stats_cohort_store.entry_key(facts, context, scope,         │
+│       presentation_key(context, scope))                                      │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/courtlens/services/stats_cohort_stor │
+│ e.py:108 in source_facts                                                     │
+│                                                                              │
+│   105 │   │   hit = _sources.get(context.dataset_id)                         │
+│   106 │   │   if hit and now - hit[0] < SOURCE_TTL_SECONDS:                  │
+│   107 │   │   │   return hit[1]                                              │
+│ ❱ 108 │   facts = _read_source_facts(session, context)                       │
+│   109 │   with _lock:                                                        │
+│   110 │   │   _sources[context.dataset_id] = (now, facts)                    │
+│   111 │   return facts                                                       │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/courtlens/services/stats_cohort_stor │
+│ e.py:120 in _read_source_facts                                               │
+│                                                                              │
+│   117 │   bind = session.get_bind()                                          │
+│   118 │   if bind.dialect.name != "postgresql" or context.dataset_type !=    │
+│       "workbench":                                                           │
+│   119 │   │   return None                                                    │
+│ ❱ 120 │   dataset = session.get(WorkbenchDataset, context.dataset_id)        │
+│   121 │   if dataset is None or dataset.status != "ready":                   │
+│   122 │   │   return None                                                    │
+│   123 │   count, latest = dataset_fingerprint(session, context.dataset_id)   │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:3702 in    │
+│ get                                                                          │
+│                                                                              │
+│   3699 │   │   :return: The object instance, or ``None``.                    │
+│   3700 │   │                                                                 │
+│   3701 │   │   """  # noqa: E501                                             │
+│ ❱ 3702 │   │   return self._get_impl(                                        │
+│   3703 │   │   │   entity,                                                   │
+│   3704 │   │   │   ident,                                                    │
+│   3705 │   │   │   loading.load_on_pk_identity,                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:3881 in    │
+│ _get_impl                                                                    │
+│                                                                              │
+│   3878 │   │                                                                 │
+│   3879 │   │   if options:                                                   │
+│   3880 │   │   │   statement = statement.options(*options)                   │
+│ ❱ 3881 │   │   return db_load_fn(                                            │
+│   3882 │   │   │   self,                                                     │
+│   3883 │   │   │   statement,                                                │
+│   3884 │   │   │   primary_key_identity,                                     │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/loading.py:695 in     │
+│ load_on_pk_identity                                                          │
+│                                                                              │
+│    692 │   │   execution_options, {"_sa_orm_load_options": load_options}     │
+│    693 │   )                                                                 │
+│    694 │   result = (                                                        │
+│ ❱  695 │   │   session.execute(                                              │
+│    696 │   │   │   q,                                                        │
+│    697 │   │   │   params=params,                                            │
+│    698 │   │   │   execution_options=execution_options,                      │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2373 in    │
+│ execute                                                                      │
+│                                                                              │
+│   2370 │   │                                                                 │
+│   2371 │   │                                                                 │
+│   2372 │   │   """                                                           │
+│ ❱ 2373 │   │   return self._execute_internal(                                │
+│   2374 │   │   │   statement,                                                │
+│   2375 │   │   │   params,                                                   │
+│   2376 │   │   │   execution_options=execution_options,                      │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2271 in    │
+│ _execute_internal                                                            │
+│                                                                              │
+│   2268 │   │   │   )                                                         │
+│   2269 │   │                                                                 │
+│   2270 │   │   if compile_state_cls:                                         │
+│ ❱ 2271 │   │   │   result: Result[Any] =                                     │
+│        compile_state_cls.orm_execute_statement(                              │
+│   2272 │   │   │   │   self,                                                 │
+│   2273 │   │   │   │   statement,                                            │
+│   2274 │   │   │   │   params or {},                                         │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/orm/context.py:306 in     │
+│ orm_execute_statement                                                        │
+│                                                                              │
+│    303 │   │   bind_arguments,                                               │
+│    304 │   │   conn,                                                         │
+│    305 │   ) -> Result:                                                      │
+│ ❱  306 │   │   result = conn.execute(                                        │
+│    307 │   │   │   statement, params or {},                                  │
+│        execution_options=execution_options                                   │
+│    308 │   │   )                                                             │
+│    309 │   │   return cls.orm_setup_cursor_result(                           │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1428 in    │
+│ execute                                                                      │
+│                                                                              │
+│   1425 │   │   except AttributeError as err:                                 │
+│   1426 │   │   │   raise exc.ObjectNotExecutableError(statement) from err    │
+│   1427 │   │   else:                                                         │
+│ ❱ 1428 │   │   │   return meth(                                              │
+│   1429 │   │   │   │   self,                                                 │
+│   1430 │   │   │   │   distilled_parameters,                                 │
+│   1431 │   │   │   │   execution_options or NO_OPTIONS,                      │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:526 in    │
+│ _execute_on_connection                                                       │
+│                                                                              │
+│    523 │   │   if self.supports_execution:                                   │
+│    524 │   │   │   if TYPE_CHECKING:                                         │
+│    525 │   │   │   │   assert isinstance(self, Executable)                   │
+│ ❱  526 │   │   │   return connection._execute_clauseelement(                 │
+│    527 │   │   │   │   self, distilled_params, execution_options             │
+│    528 │   │   │   )                                                         │
+│    529 │   │   else:                                                         │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1650 in    │
+│ _execute_clauseelement                                                       │
+│                                                                              │
+│   1647 │   │   │   schema_translate_map=schema_translate_map,                │
+│   1648 │   │   │   linting=self.dialect.compiler_linting |                   │
+│        compiler.WARN_LINTING,                                                │
+│   1649 │   │   )                                                             │
+│ ❱ 1650 │   │   ret = self._execute_context(                                  │
+│   1651 │   │   │   dialect,                                                  │
+│   1652 │   │   │   dialect.execution_ctx_cls._init_compiled,                 │
+│   1653 │   │   │   compiled_sql,                                             │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1855 in    │
+│ _execute_context                                                             │
+│                                                                              │
+│   1852 │   │   if context.execute_style is ExecuteStyle.INSERTMANYVALUES:    │
+│   1853 │   │   │   return self._exec_insertmany_context(dialect, context)    │
+│   1854 │   │   else:                                                         │
+│ ❱ 1855 │   │   │   return self._exec_single_context(                         │
+│   1856 │   │   │   │   dialect, context, statement, parameters               │
+│   1857 │   │   │   )                                                         │
+│   1858                                                                       │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1995 in    │
+│ _exec_single_context                                                         │
+│                                                                              │
+│   1992 │   │   │   result = context._setup_result_proxy()                    │
+│   1993 │   │                                                                 │
+│   1994 │   │   except BaseException as e:                                    │
+│ ❱ 1995 │   │   │   self._handle_dbapi_exception(                             │
+│   1996 │   │   │   │   e, str_statement, effective_parameters, cursor,       │
+│        context                                                               │
+│   1997 │   │   │   )                                                         │
+│   1998                                                                       │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:2372 in    │
+│ _handle_dbapi_exception                                                      │
+│                                                                              │
+│   2369 │   │   │   │   raise newraise.with_traceback(exc_info[2]) from e     │
+│   2370 │   │   │   elif should_wrap:                                         │
+│   2371 │   │   │   │   assert sqlalchemy_exception is not None               │
+│ ❱ 2372 │   │   │   │   raise                                                 │
+│        sqlalchemy_exception.with_traceback(exc_info[2]) from e               │
+│   2373 │   │   │   else:                                                     │
+│   2374 │   │   │   │   assert exc_info[1] is not None                        │
+│   2375 │   │   │   │   raise exc_info[1].with_traceback(exc_info[2])         │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1976 in    │
+│ _exec_single_context                                                         │
+│                                                                              │
+│   1973 │   │   │   │   │   │   │   evt_handled = True                        │
+│   1974 │   │   │   │   │   │   │   break                                     │
+│   1975 │   │   │   │   if not evt_handled:                                   │
+│ ❱ 1976 │   │   │   │   │   self.dialect.do_execute(                          │
+│   1977 │   │   │   │   │   │   cursor, str_statement, effective_parameters,  │
+│        context                                                               │
+│   1978 │   │   │   │   │   )                                                 │
+│   1979                                                                       │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/sqlalchemy/engine/default.py:964 in  │
+│ do_execute                                                                   │
+│                                                                              │
+│    961 │   │   cursor.executemany(statement, parameters)                     │
+│    962 │                                                                     │
+│    963 │   def do_execute(self, cursor, statement, parameters,               │
+│        context=None):                                                        │
+│ ❱  964 │   │   cursor.execute(statement, parameters)                         │
+│    965 │                                                                     │
+│    966 │   def do_execute_no_params(self, cursor, statement, context=None):  │
+│    967 │   │   cursor.execute(statement)                                     │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/psycopg/cursor.py:117 in execute     │
+│                                                                              │
+│   114 │   │   │   │   │   self._execute_gen(query, params, prepare=prepare,  │
+│       binary=binary)                                                         │
+│   115 │   │   │   │   )                                                      │
+│   116 │   │   except e._NO_TRACEBACK as ex:                                  │
+│ ❱ 117 │   │   │   raise ex.with_traceback(None)                              │
+│   118 │   │   return self                                                    │
+│   119 │                                                                      │
+│   120 │   def executemany(                                                   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+OperationalError: (psycopg.OperationalError) consuming input failed: server 
+closed the connection unexpectedly
+        This probably means the server terminated abnormally
+        before or while processing the request.
+[SQL: SELECT workbench_datasets.id AS workbench_datasets_id, 
+workbench_datasets.content_sha256 AS workbench_datasets_content_sha256, 
+workbench_datasets.membership_sha256 AS workbench_datasets_membership_sha256, 
+workbench_datasets.semantic_signature AS workbench_datasets_semantic_signature, 
+workbench_datasets.source_namespace AS workbench_datasets_source_namespace, 
+workbench_datasets.admission_transaction AS 
+workbench_datasets_admission_transaction, workbench_datasets.parser_version AS 
+workbench_datasets_parser_version, workbench_datasets.quality_version AS 
+workbench_datasets_quality_version, workbench_datasets.seasons_json AS 
+workbench_datasets_seasons_json, workbench_datasets.phases_json AS 
+workbench_datasets_phases_json, workbench_datasets.manifest_json AS 
+workbench_datasets_manifest_json, workbench_datasets.coverage_json AS 
+workbench_datasets_coverage_json, workbench_datasets.exclusions_json AS 
+workbench_datasets_exclusions_json, workbench_datasets.status AS 
+workbench_datasets_status, workbench_datasets.created_at AS 
+workbench_datasets_created_at 
+FROM workbench_datasets 
+WHERE workbench_datasets.id = %(pk_1)s::VARCHAR]
+[parameters: {'pk_1': '6130823e-d5ba-452c-8472-85676efde05a'}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Stats cohort warm-up failed; each season is computed on its first view.
+Release bb4c758f12bd011e0f8b65f31dae84e816666c3c is live. Disk: 138G free of 193G
