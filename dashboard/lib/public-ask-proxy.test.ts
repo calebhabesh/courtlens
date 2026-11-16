@@ -4,9 +4,11 @@ import { GET, POST } from "../app/api/assistant-v2/[[...path]]/route";
 
 const context = (path: string[]) => ({ params: Promise.resolve({ path }) });
 const browser = "22222222-2222-4222-8222-222222222222";
-function incoming(path: string, headers: Record<string, string> = {}, method = "GET") {
+const SESSION = "aaa.bbb.ccc";
+function incoming(path: string, headers: Record<string, string> = {}, method = "GET", signedIn = true) {
+  const cookie = [signedIn ? `courtlens-session=${SESSION}` : "", headers.cookie ?? ""].filter(Boolean).join("; ");
   return new NextRequest(`http://localhost:3000/api/assistant-v2/${path}`, {
-    method, headers: { host: "localhost:3000", origin: "http://localhost:3000", ...headers }, ...(method === "POST" ? { body: "{}" } : {}),
+    method, headers: { host: "localhost:3000", origin: "http://localhost:3000", ...headers, ...(cookie ? { cookie } : {}) }, ...(method === "POST" ? { body: "{}" } : {}),
   });
 }
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
@@ -67,5 +69,19 @@ describe("public Ask identity on the hosted demo", () => {
     const response = await POST(incoming("turn/stream", { cookie: `courtlens-ask-visitor=${browser}` }, "POST"), context(["turn", "stream"]));
     expect(response.status).toBe(429);
     expect((await response.json()).detail).toEqual(detail);
+  });
+
+  it("needs an account to ask, and forwards the session for the API to check", async () => {
+    vi.stubEnv("COURTLENS_PUBLIC_ASK", "true");
+    vi.stubEnv("COURTLENS_PUBLIC_ASK_TOKEN", "ask-only");
+    const fetch = vi.fn().mockImplementation(async () => Response.json({ threads: [] })); vi.stubGlobal("fetch", fetch);
+    const refused = await POST(incoming("turn/stream", {}, "POST", false), context(["turn", "stream"]));
+    expect(refused.status).toBe(401);
+    expect((await refused.json()).code).toBe("sign_in");
+    expect(fetch).not.toHaveBeenCalled();
+    // Reading history needs no account; it simply holds nothing of yours when signed out.
+    expect((await GET(incoming("threads", {}, "GET", false), context(["threads"]))).status).toBe(200);
+    await POST(incoming("threads", {}, "POST"), context(["threads"]));
+    expect(fetch.mock.calls[1][1].headers.Authorization).toBe(`Bearer ${SESSION}`);
   });
 });

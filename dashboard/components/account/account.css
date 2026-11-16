@@ -220,19 +220,60 @@
   background: var(--color-hairline);
 }
 
-.account-demo {
+/* A column, so the Google and demo buttons fill the dialog's width. */
+.account-wide {
   display: flex;
   flex-direction: column;
+}
+
+.account-google-mark {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.account-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.account-confirm,
+.account-drawer-actions {
+  display: flex;
+  justify-content: flex-end;
   gap: var(--space-2);
 }
 
-.account-demo p,
-.account-note {
+/* /account/verify and /account/reset */
+.account-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 400px;
+}
+
+.account-link p {
   margin: 0;
-  font-size: var(--text-xs);
-  line-height: var(--text-xs-lh);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
   color: var(--color-text-secondary);
 }
 
-.account-note { margin-top: var(--space-4); }
+.account-sent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.account-sent p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-text-secondary);
+}
+
+.account-sent strong { color: var(--color-text); }
 }

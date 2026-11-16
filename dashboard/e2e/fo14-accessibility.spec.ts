@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
+import { signInForAsk } from "./ask-session";
 
 test("skip link moves focus into the page before its controls", async ({ page }) => {
   await openWorkbench(page, "/stats");
@@ -133,7 +134,8 @@ test("switch keeps its compact track inside a full phone target", async ({ page 
   await expect(toggle).toHaveAttribute("aria-checked", "true");
 });
 
-test("tab panels and the Ask composer show their keyboard focus", async ({ page }) => {
+test("tab panels and the Ask composer show their keyboard focus", async ({ page, context, baseURL }) => {
+  await signInForAsk(context, baseURL);
   await openWorkbench(page, "/players/23");
   const panel = page.getByRole("tabpanel").first();
   await panel.focus();

@@ -88,6 +88,10 @@ button.ask-chip:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: n
 .ask-notice p { margin: 0 0 var(--space-2); }
 .ask-notice-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .ask-composer-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-width: 0; padding: 0 var(--space-2) var(--space-1); }
+/* Accounts plan: signed out, the composer's place holds the way in. */
+.ask-sign-in { display: grid; gap: var(--space-3); justify-items: start; padding: var(--space-4) var(--space-5); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg); background: var(--color-surface-2); }
+.ask-sign-in p { margin: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); color: var(--color-text-secondary); }
+.ask-sign-in-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .ask-composer { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4); border: 1px solid var(--color-hairline); border-radius: var(--radius-pill); background: var(--color-surface-2); }
 .ask-composer:focus-within { border-color: var(--color-hairline-strong); }
 .ask-composer textarea { flex: 1; min-width: 0; min-height: 24px; max-height: 200px; margin: 0; padding: var(--space-2) 0; field-sizing: content; resize: none; border: 0; outline: 0; background: transparent; color: var(--color-text); font: inherit; font-size: var(--text-md); line-height: 1.5; }

@@ -159,4 +159,75 @@ describe("dev account auto sign-in (local development only)", () => {
     expect(await response.json()).toEqual({ user: null });
     expect(response.headers.get("set-cookie")).toBeNull();
   });
+
+});
+
+describe("account proxy: sign-up, email links and Google (accounts plan)", () => {
+  it("confirms an email link and keeps the new session in the cookie", async () => {
+    const fetch = vi.fn().mockResolvedValue(Response.json({ user: { id: "u", name: "New", email: "n@x.co", is_demo: false, methods: ["password"] }, token: SESSION, expires_in: 43200 }));
+    vi.stubGlobal("fetch", fetch);
+    const response = await POST(incoming("confirm", { method: "POST", body: JSON.stringify({ token: "t".repeat(43) }) }), context(["confirm"]));
+    expect(String(fetch.mock.calls[0][0])).toBe("http://localhost:8000/api/auth/confirm");
+    expect(fetch.mock.calls[0][1].body).toContain("t".repeat(43));
+    expect(response.headers.get("set-cookie")).toContain(`courtlens-session=${SESSION}`);
+    expect(JSON.stringify(await response.json())).not.toContain(SESSION);
+  });
+
+  it("forwards sign-up and reset requests with their bodies and no session", async () => {
+    const fetch = vi.fn().mockImplementation(async () => Response.json({ status: "check_email", message: "Check your email" }, { status: 202 }));
+    vi.stubGlobal("fetch", fetch);
+    const signUp = await POST(incoming("sign-up", { method: "POST", headers: signedIn, body: JSON.stringify({ email: "n@x.co", password: "p" }) }), context(["sign-up"]));
+    expect(signUp.status).toBe(202);
+    expect(signUp.headers.get("set-cookie")).toBeNull();
+    expect(fetch.mock.calls[0][1].headers.Authorization).toBeUndefined();
+    await POST(incoming("forgot-password", { method: "POST", body: JSON.stringify({ email: "n@x.co" }) }), context(["forgot-password"]));
+    expect(String(fetch.mock.calls[1][0])).toBe("http://localhost:8000/api/auth/forgot-password");
+  });
+
+  it("deletes the account and clears the cookie", async () => {
+    const fetch = vi.fn().mockResolvedValue(Response.json({ deleted: true }));
+    vi.stubGlobal("fetch", fetch);
+    expect((await DELETE(incoming("me", { method: "DELETE" }), context(["me"]))).status).toBe(401);
+    const response = await DELETE(incoming("me", { method: "DELETE", headers: signedIn }), context(["me"]));
+    expect(fetch.mock.calls[0][1].method).toBe("DELETE");
+    expect(fetch.mock.calls[0][1].headers.Authorization).toBe(`Bearer ${SESSION}`);
+    expect(response.headers.get("set-cookie")).toContain("Max-Age=0");
+  });
+
+  it("starts Google with a short-lived flow cookie and a safe return path", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => Response.json({ url: "https://accounts.google.com/o/oauth2/v2/auth?x=1", state: "s".repeat(43), nonce: "n".repeat(43), verifier: "v".repeat(86) })));
+    const response = await GET(incoming("google/start?next=/players/201939"), context(["google", "start"]));
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("https://accounts.google.com/o/oauth2/v2/auth?x=1");
+    const cookie = response.headers.get("set-cookie") ?? "";
+    expect(cookie).toContain("Path=/api/account/google; Max-Age=600; HttpOnly; Secure; SameSite=Lax");
+    const flow = JSON.parse(Buffer.from(cookie.split(";")[0].split("=")[1], "base64url").toString());
+    expect(flow.next).toBe("/players/201939");
+    const offsite = await GET(incoming("google/start?next=//evil.example"), context(["google", "start"]));
+    const offsiteFlow = JSON.parse(Buffer.from((offsite.headers.get("set-cookie") ?? "").split(";")[0].split("=")[1], "base64url").toString());
+    expect(offsiteFlow.next).toBe("/");
+  });
+
+  it("finishes Google only when the state matches, then returns signed in", async () => {
+    const flow = Buffer.from(JSON.stringify({ state: "good-state", nonce: "n".repeat(43), verifier: "v".repeat(86), next: "/stats" })).toString("base64url");
+    const fetch = vi.fn().mockResolvedValue(Response.json({ user: { id: "g" }, token: SESSION, expires_in: 43200 }));
+    vi.stubGlobal("fetch", fetch);
+    const forged = await GET(incoming("google/callback?code=c&state=bad", { headers: { cookie: `courtlens-google-flow=${flow}` } }), context(["google", "callback"]));
+    expect(forged.headers.get("location")).toBe("http://localhost:3000/stats?signin=google-expired");
+    expect(fetch).not.toHaveBeenCalled();
+    const good = await GET(incoming("google/callback?code=c&state=good-state", { headers: { cookie: `courtlens-google-flow=${flow}` } }), context(["google", "callback"]));
+    expect(good.status).toBe(303);
+    expect(good.headers.get("location")).toBe("http://localhost:3000/stats");
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({ code: "c", verifier: "v".repeat(86), nonce: "n".repeat(43) });
+    expect(good.headers.get("set-cookie")).toContain(`courtlens-session=${SESSION}`);
+  });
+
+  it("reports a refused Google sign-in by code, never by free text", async () => {
+    const flow = Buffer.from(JSON.stringify({ state: "s", nonce: "n", verifier: "v", next: "/" })).toString("base64url");
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => Response.json({ detail: "This account is turned off." }, { status: 400 })));
+    const response = await GET(incoming("google/callback?code=c&state=s", { headers: { cookie: `courtlens-google-flow=${flow}` } }), context(["google", "callback"]));
+    expect(response.headers.get("location")).toBe("http://localhost:3000/?signin=google-off-account");
+    const cancelled = await GET(incoming("google/callback?error=access_denied&state=s", { headers: { cookie: `courtlens-google-flow=${flow}` } }), context(["google", "callback"]));
+    expect(cancelled.headers.get("location")).toBe("http://localhost:3000/?signin=google-cancelled");
+  });
 });

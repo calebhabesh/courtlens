@@ -3,6 +3,9 @@ import type { DurableThreadHeader, HybridTurnRequest, HybridTurnResponse } from 
 import type { AgentTurnResponse, StoredTurnRecord as DurableTurnRecord } from "../lib/assistant-v3.generated";
 
 import { waitForStreamedPage } from "./workbench-navigation";
+import { signInForAsk } from "./ask-session";
+
+test.beforeEach(async ({ context, baseURL }) => { await signInForAsk(context, baseURL); });
 
 async function openPage(page: Page, url: string) {
   await page.goto(url);

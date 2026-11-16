@@ -117,6 +117,34 @@ the API container. Anyone may use the one shared demo account with one click.
 **Before the first deploy with F04:** add `COURTLENS_ACCOUNT_PROXY_TOKEN` (from
 `openssl rand -hex 32`) to `secrets.env`. The migration `3c4d9e1f0a21` is additive.
 
+### Accounts: sign-up and Google (accounts plan, 2026-11-16)
+
+The [accounts plan](accounts-plan.md) opened accounts: people create one with a password (confirmed
+by an emailed link) or with Google. The operator commands above still work, and Ask now needs an
+account or the demo account.
+
+- **More writes allowed:** `POST /api/account/sign-up`, `/confirm`, `/forgot-password`,
+  `/reset-password` and `DELETE /api/account/me`. Google sign-in is two GETs,
+  `/api/account/google/start` and `/api/account/google/callback`. `check_caddy_allowlist.sh`
+  covers them.
+- **Google:** `COURTLENS_GOOGLE_CLIENT_ID` and `COURTLENS_GOOGLE_CLIENT_SECRET` in `secrets.env`,
+  from the CourtLens Google Cloud project's OAuth client (Web application). Its redirect URIs are
+  `https://courtlens.calebhabesh.com/api/account/google/callback` and
+  `http://localhost:3100/api/account/google/callback`. The consent screen is published ("In
+  production"), asks only for `openid email profile`, and links to `/privacy`. Without both
+  values the dialog doesn't offer Google.
+- **Email:** `COURTLENS_SMTP_HOST`, `COURTLENS_SMTP_PORT` (587), `COURTLENS_SMTP_SECURITY`
+  (`starttls`, or `ssl` for 465), `COURTLENS_SMTP_USERNAME`, `COURTLENS_SMTP_PASSWORD` and
+  `COURTLENS_EMAIL_FROM` in `secrets.env`, for any free SMTP provider. Without `SMTP_HOST`
+  production turns password sign-up and reset off. Development logs the links instead.
+- **Limits:** 5 sign-ups or reset requests per client an hour, 3 emails per address an hour,
+  90 emails a day for the whole site (under free-tier sending caps), 30 Google starts per client
+  an hour. Like the other limits, they live in memory.
+- **Housekeeping:** the nightly `demo-reset` run also deletes sign-ups never confirmed within a
+  week and spent or expired links (`courtlens prune-accounts` does it alone).
+- **Migration:** `5e6f7a8b9c03` makes passwords optional and adds `user_identities` and
+  `account_tokens`. Accounts the operator had enabled count as confirmed.
+
 ### Live
 
 Live works on the demo: its endpoints are GETs, and the API container fetches ESPN when a cached

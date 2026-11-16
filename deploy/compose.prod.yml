@@ -22,6 +22,18 @@ x-api-environment: &api-environment
   # Accounts (finish plan F04): held only by the dashboard's account proxy; also salts the
   # client address for sign-in limits. Without it the API refuses every account request.
   COURTLENS_ACCOUNT_PROXY_TOKEN: ${COURTLENS_ACCOUNT_PROXY_TOKEN:?}
+  # Accounts plan: email links and the Google redirect URI are built from the site URL. Google
+  # sign-in is on when both Google values are set; password sign-up and reset when SMTP is set
+  # (unset, the dialog offers Google and the demo only). docs/deployment.md#accounts.
+  COURTLENS_PUBLIC_SITE_URL: https://courtlens.calebhabesh.com
+  COURTLENS_GOOGLE_CLIENT_ID: ${COURTLENS_GOOGLE_CLIENT_ID:-}
+  COURTLENS_GOOGLE_CLIENT_SECRET: ${COURTLENS_GOOGLE_CLIENT_SECRET:-}
+  COURTLENS_SMTP_HOST: ${COURTLENS_SMTP_HOST:-}
+  COURTLENS_SMTP_PORT: ${COURTLENS_SMTP_PORT:-587}
+  COURTLENS_SMTP_SECURITY: ${COURTLENS_SMTP_SECURITY:-starttls}
+  COURTLENS_SMTP_USERNAME: ${COURTLENS_SMTP_USERNAME:-}
+  COURTLENS_SMTP_PASSWORD: ${COURTLENS_SMTP_PASSWORD:-}
+  COURTLENS_EMAIL_FROM: ${COURTLENS_EMAIL_FROM:-CourtLens <no-reply@calebhabesh.com>}
   COURTLENS_PUBLIC_ASK_PROMPTS_PER_VISITOR: "3"
   COURTLENS_PUBLIC_ASK_DAILY_REQUESTS: "480"
   COURTLENS_ASSISTANT_PROVIDERS: gemini,groq
