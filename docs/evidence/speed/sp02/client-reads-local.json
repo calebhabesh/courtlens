@@ -1,0 +1,3215 @@
+{
+ "/": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=64&season=2026-27&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2026-27&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=64&season=2026-27&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629029/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628369/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630595/portrait?size=64&season=2026-27&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630162/portrait?size=64&season=2026-27&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/stats": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=64&season=2026-27&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2026-27&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629029/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=64&season=2026-27&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628369/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630162/portrait?size=64&season=2026-27&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630595/portrait?size=64&season=2026-27&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/players": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=192&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=192&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=192&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=192&season=2025-26&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203507/portrait?size=192&season=2025-26&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630595/portrait?size=192&season=2025-26&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628378/portrait?size=192&season=2025-26&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629029/portrait?size=192&season=2025-26&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631096/portrait?size=192&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630162/portrait?size=192&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203954/portrait?size=192&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628392/portrait?size=192&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201142/portrait?size=192&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628369/portrait?size=192&season=2025-26&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628384/portrait?size=192&season=2025-26&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203932/portrait?size=192&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627750/portrait?size=192&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628389/portrait?size=192&season=2025-26&team=MIA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630163/portrait?size=192&season=2025-26&team=CHA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628386/portrait?size=192&season=2025-26&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628973/portrait?size=192&season=2025-26&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630596/portrait?size=192&season=2025-26&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627759/portrait?size=192&season=2025-26&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630567/portrait?size=192&season=2025-26&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628401/portrait?size=192&season=2025-26&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202710/portrait?size=192&season=2025-26&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626164/portrait?size=192&season=2025-26&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629057/portrait?size=192&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203497/portrait?size=192&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629011/portrait?size=192&season=2025-26&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626157/portrait?size=192&season=2025-26&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201935/portrait?size=192&season=2025-26&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631105/portrait?size=192&season=2025-26&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201939/portrait?size=192&season=2025-26&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630591/portrait?size=192&season=2025-26&team=ORL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628368/portrait?size=192&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630178/portrait?size=192&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627751/portrait?size=192&season=2025-26&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631114/portrait?size=192&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627936/portrait?size=192&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203500/portrait?size=192&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629674/portrait?size=192&season=2025-26&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630572/portrait?size=192&season=2025-26&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642270/portrait?size=192&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/2544/portrait?size=192&season=2025-26&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630168/portrait?size=192&season=2025-26&team=ATL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630578/portrait?size=192&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628374/portrait?size=192&season=2025-26&team=UTA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630559/portrait?size=192&season=2025-26&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202331/portrait?size=192&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/teams": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/teams/six-factors?season=2026-27&phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/standings": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/live/standings?season=2026-27",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  }
+ ],
+ "/wowy": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/operations/wowy-combos?phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/stat-line-shift": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/operations/stat-shift-roster",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/playoffs": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/last-games": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=100",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/teams/DEN/schedule?season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/teams?season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=192&season=2026-27&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/showcase": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201142/portrait?size=192&season=2026-27&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630178/portrait?size=192&season=2026-27&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630559/portrait?size=192&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631117/portrait?size=192&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630532/portrait?size=192&season=2026-27&team=ORL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631095/portrait?size=192&season=2026-27&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627759/portrait?size=192&season=2026-27&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629027/portrait?size=192&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642845/portrait?size=192&season=2026-27&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629628/portrait?size=192&season=2026-27&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642273/portrait?size=192&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643411/portrait?size=192&season=2026-27&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/roster-shapes": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/roster-shapes",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/teams/six-factors?season=2025-26&phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/roster-shapes?season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/contracts": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/operations/finance/refreshes?season=2026-27",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/free-agency": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/operations/free-agency",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202685/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201145/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203552/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642490/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626156/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628971/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631466/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631223/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630623/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/compare": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629027/portrait?size=192&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630178/portrait?size=192&season=2026-27&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630178/portrait?size=288&season=2026-27&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629027/portrait?size=288&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630178/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629027/portrait?size=64&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/team-compare": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628369/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642272/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628401/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629026/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202331/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641775/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642349/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629011/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643530/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630202/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629674/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628392/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642892/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631119/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630573/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627936/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642877/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642864/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631248/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630568/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643717/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631114/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631199/portrait?size=64&season=2026-27&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/methodology": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/players/2544": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/2544/portrait?size=192&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/players/1643411": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/college-logos/8",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643411/portrait?size=192&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/teams/1610612747": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629029/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629680/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630559/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631117/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630572/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630533/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629020/portrait?size=64&season=2026-27&team=LAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/live/standings?season=2026-27",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/live/teams/1610612747/schedule?season=2026-27&phase=regular_season",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  }
+ ],
+ "/similar-players": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/player-twins?mode=shot&pool=all&minPoss=1000&limit=12",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641708/portrait?size=96&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203076/portrait?size=96&season=2012-13&team=NOH&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/player-twins/players",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1737/portrait?size=64&season=2004-05&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/101135/portrait?size=64&season=2014-15&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203076/portrait?size=64&season=2012-13&team=NOH&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/722/portrait?size=64&season=2006-07&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/722/portrait?size=64&season=1996-97&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202328/portrait?size=64&season=2017-18&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/722/portrait?size=64&season=2004-05&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630208/portrait?size=64&season=2024-25&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/763/portrait?size=64&season=1997-98&team=VAN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/970/portrait?size=64&season=1998-99&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201578/portrait?size=64&season=2008-09&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202324/portrait?size=64&season=2013-14&team=UTA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/722/portrait?size=64&season=2003-04&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/matchups": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/season-matchups?side=offense&limit=500",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641708/portrait?size=192&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642264/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628978/portrait?size=64&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627750/portrait?size=64&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203468/portrait?size=64&season=2025-26&team=ATL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631097/portrait?size=64&season=2025-26&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642845/portrait?size=64&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203501/portrait?size=64&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/research/win-probability": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/win-probability",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/win-probability/wpa?season=2026-27",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/live?slate_date=2026-11-15",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  }
+ ],
+ "/research/projected-impact": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/projected-impact",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2026-27&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2026-27&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=64&season=2026-27&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=64&season=2026-27&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641708/portrait?size=64&season=2026-27&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628374/portrait?size=64&season=2026-27&team=UTA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626164/portrait?size=64&season=2026-27&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628378/portrait?size=64&season=2026-27&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203507/portrait?size=64&season=2026-27&team=MIA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/projected-impact/players/202695",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=96&season=2026-27&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/research/lineup-model": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/lineup-model",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/lineup-model/players",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203497/portrait?size=96&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630162/portrait?size=96&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630183/portrait?size=96&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628978/portrait?size=96&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203944/portrait?size=96&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/lineup-model/fit?players=1628978,1630162,1630183,203497,203944",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/research/rapm/six-factor": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/six-factor?season=2025-26&phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201939/portrait?size=64&season=2025-26&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=64&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629628/portrait?size=64&season=2025-26&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626192/portrait?size=64&season=2025-26&team=CHA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642964/portrait?size=64&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630172/portrait?size=64&season=2025-26&team=CHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630692/portrait?size=64&season=2025-26&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203954/portrait?size=64&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642270/portrait?size=64&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/six-factor/tree?playerId=202695&season=2025-26&phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629750/portrait?size=64&season=2025-26&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630700/portrait?size=64&season=2025-26&team=ATL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=96&season=2025-26&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/lookup?q=202695&season=2025-26&phase=regular_season&kinds=player&limit=1",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/research/backtest": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/metric-backtest",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/research/shot-quality": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-quality/decomposition",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-quality/decomposition/players?season=2025-26&side=offense&sort=ts&minShots=1000",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-quality/decomposition/players?season=2025-26&side=combined&sort=ts&minShots=1000",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-quality/decomposition/players?season=2025-26&side=defense&sort=ts&minShots=1000",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628983/portrait?size=64&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203999/portrait?size=64&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201939/portrait?size=64&season=2025-26&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627750/portrait?size=64&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203954/portrait?size=64&season=2025-26&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629628/portrait?size=64&season=2025-26&team=TOR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203507/portrait?size=64&season=2025-26&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202695/portrait?size=64&season=2025-26&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630170/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/research/zts": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/leaderboard?season=2025-26&sort=zts_add&limit=1000",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/teams?season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630163/portrait?size=96&season=2025-26&team=CHA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642259/portrait?size=96&season=2025-26&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/player?playerId=1642259&season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/player?playerId=1642259&season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/player?playerId=1630163&season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/role-moves?season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/zts/player?playerId=1630163&season=2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/research/shooting/aftermath": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/teams?season=2025-26&position=all&zone=all",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/scope?season=2025-26&team=all&position=bigs",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/scope?season=2025-26&team=all&position=guards",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/scope?season=2025-26&team=all&position=forwards",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/scope?season=2025-26&team=all&position=all",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/shot-aftermath/scope?season=2024-25&team=all&position=all",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/research/defensive-matchups": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/defensive-shot-quality",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/defensive-shot-quality/cards?season=2025-26&kind=2pt&sort=dsq",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/defensive-shot-quality/cards?season=2025-26&kind=all&sort=dsq",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/defensive-shot-quality/cards?season=2025-26&kind=3pt&sort=dsq",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203991/portrait?size=96&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631096/portrait?size=96&season=2025-26&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=96&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629684/portrait?size=96&season=2025-26&team=CHA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630192/portrait?size=96&season=2025-26&team=DEN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630194/portrait?size=96&season=2025-26&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642270/portrait?size=64&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628415/portrait?size=64&season=2025-26&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629640/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642875/portrait?size=64&season=2025-26&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203076/portrait?size=64&season=2025-26&team=DAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630578/portrait?size=64&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641731/portrait?size=64&season=2025-26&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630595/portrait?size=64&season=2025-26&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/201142/portrait?size=64&season=2025-26&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203110/portrait?size=64&season=2025-26&team=GSW&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203994/portrait?size=64&season=2025-26&team=UTA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628389/portrait?size=64&season=2025-26&team=MIA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629627/portrait?size=64&season=2025-26&team=NOP&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631170/portrait?size=64&season=2025-26&team=MIA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/202696/portrait?size=64&season=2025-26&team=CHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203084/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626157/portrait?size=64&season=2025-26&team=NYK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641774/portrait?size=64&season=2025-26&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626171/portrait?size=64&season=2025-26&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630245/portrait?size=64&season=2025-26&team=CHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642273/portrait?size=64&season=2025-26&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1626167/portrait?size=64&season=2025-26&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631157/portrait?size=64&season=2025-26&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1627759/portrait?size=64&season=2025-26&team=BOS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/research/signal-noise": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/signal-noise",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/signal-noise/player",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642905/portrait?size=96&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642905/career?phase=regular_season",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/forecasts": [
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/forecasts/evaluation",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/forecasts?page_size=50",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ],
+ "/wingspan": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/wingspan",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2025-26&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642270/portrait?size=64&season=2025-26&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641744/portrait?size=64&season=2024-25&team=MEM&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641726/portrait?size=64&season=2024-25&team=DAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642863/portrait?size=64&season=2025-26&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1629605/portrait?size=64&season=2021-22&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203497/portrait?size=64&season=2025-26&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1628964/portrait?size=64&season=2023-24&team=PHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631109/portrait?size=64&season=2025-26&team=PHX&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/draft": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/draft",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/101108/portrait?size=96&season=2005-06&team=NOK&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/draft/classes/2022",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/76003/portrait?size=96&season=1969-70&team=MIL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/77475/portrait?size=96&season=1972-73&team=POR&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/893/portrait?size=96&season=1984-85&team=CHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/203461/portrait?size=96&season=2013-14&team=CLE&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1709/portrait?size=96&season=1998-99&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/draft/combine",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "POST",
+   "url": "/api/workbench/query",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631094/portrait?size=64&season=2022-23&team=ORL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631096/portrait?size=64&season=2023-24&team=OKC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631095/portrait?size=64&season=2022-23&team=HOU&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/draft/rookies",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643407/portrait?size=96&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643407/portrait?size=64&season=2026-27&team=WAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643413/portrait?size=64&season=2026-27&team=LAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643410/portrait?size=64&season=2026-27&team=CHI&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643409/portrait?size=64&season=2026-27&team=MEM&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643414/portrait?size=64&season=2026-27&team=BKN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643412/portrait?size=64&season=2026-27&team=ATL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643408/portrait?size=64&season=2026-27&team=UTA&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643411/portrait?size=64&season=2026-27&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1643516/portrait?size=64&season=2026-27&team=DAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/draft/rookies/1643407",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631099/portrait?size=64&season=2022-23&team=SAC&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1631093/portrait?size=64&season=2022-23&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1641705/portrait?size=64&season=2023-24&team=SAS&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642843/portrait?size=64&season=2025-26&team=DAL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630595/portrait?size=64&season=2021-22&team=DET&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1642258/portrait?size=64&season=2024-25&team=ATL&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workbench/players/1630162/portrait?size=64&season=2020-21&team=MIN&crop=face-v6",
+   "status": 200,
+   "xcache": "bypass",
+   "via": "api"
+  }
+ ],
+ "/calculator": [
+  {
+   "method": "GET",
+   "url": "/api/workbench/catalog",
+   "status": 200,
+   "xcache": "hit",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/account/me",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/workspace?workspaceId=default",
+   "status": 200,
+   "xcache": null,
+   "via": "dashboard-proxy"
+  },
+  {
+   "method": "GET",
+   "url": "/api/four-factors",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  },
+  {
+   "method": "GET",
+   "url": "/api/four-factors/seasons/2025-26",
+   "status": 200,
+   "xcache": "miss",
+   "via": "api"
+  }
+ ]
+}

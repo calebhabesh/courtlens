@@ -475,6 +475,24 @@ def test_http_opt_in_and_legacy_payload(facts: tuple[Session, ResolvedContext]) 
             },
         ).json()
         assert second["output_offset"] == 1
+        # Numbered paging: one cursor per page, page 1 has none, and the cursor for page 2 is
+        # the one Next issues; the last page's cursor lands on the last row.
+        assert len(first["page_cursors"]) == first["total_output_players"]
+        assert first["page_cursors"][0] is None
+        assert first["page_cursors"][1] == first["next_cursor"]
+        last = client.post(
+            "/api/workbench/query",
+            json={
+                "query": {
+                    "season": "2023-24",
+                    "page": {"limit": 1, "cursor": first["page_cursors"][-1]},
+                },
+                "presentation": {},
+            },
+        ).json()
+        assert last["output_offset"] == first["total_output_players"] - 1
+        assert last["has_more"] is False
+        assert last["page_cursors"] == first["page_cursors"]
         empty = client.post(
             "/api/workbench/query", json={"query": query, "presentation": {"player_ids": []}}
         ).json()
@@ -489,6 +507,60 @@ def test_http_opt_in_and_legacy_payload(facts: tuple[Session, ResolvedContext]) 
             client.post(
                 "/api/workbench/query",
                 json={"query": query, "presentation": {"version": "future"}},
+            ).status_code
+            == 422
+        )
+
+
+def test_sort_metrics_presentation_keeps_rows_order_and_cursor(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    """Speed plan SP05: `metrics: "sort"` narrows each item's maps to the sort fields only."""
+    session, context = facts
+    app = create_app()
+    app.dependency_overrides[get_db] = lambda: session
+    with (
+        patch("courtlens.api.routers.workbench.resolve_workbench_context", return_value=context),
+        TestClient(app) as client,
+    ):
+        for direction in ("desc", "asc"):
+            query = {
+                "season": "2023-24",
+                "sort": [{"field": "pts_per_game", "direction": direction, "nulls_last": True}],
+                "page": {"limit": 3},
+            }
+            full = client.post(
+                "/api/workbench/query",
+                json={"query": query, "presentation": {"player_ids": None}},
+            ).json()
+            narrow = client.post(
+                "/api/workbench/query",
+                json={"query": query, "presentation": {"player_ids": None, "metrics": "sort"}},
+            ).json()
+            assert [i["player_id"] for i in narrow["items"]] == [
+                i["player_id"] for i in full["items"]
+            ]
+            for whole, item in zip(full["items"], narrow["items"], strict=True):
+                assert set(item["metrics"]) <= {"pts_per_game"}
+                assert item["metrics"].get("pts_per_game") == whole["metrics"].get("pts_per_game")
+                assert set(item["sample_sizes"]) <= {"pts_per_game"}
+                assert set(item["percentiles"] or {}) <= {"pts_per_game"}
+                assert set(item["cohort_sample_sizes"] or {}) <= {"pts_per_game"}
+                assert len(whole["metrics"]) > 1
+            for key in ("total_eligible_players", "total_output_players", "output_offset"):
+                assert narrow[key] == full[key]
+            # The cursor binds the result, not the response's shape: either one pages on.
+            assert narrow["next_cursor"] == full["next_cursor"]
+            assert narrow["cohort"] == full["cohort"]
+        default = client.post(
+            "/api/workbench/query",
+            json={"query": {"season": "2023-24"}, "presentation": {"metrics": "all"}},
+        ).json()
+        assert len(default["items"][0]["metrics"]) > 1
+        assert (
+            client.post(
+                "/api/workbench/query",
+                json={"query": {"season": "2023-24"}, "presentation": {"metrics": "some"}},
             ).status_code
             == 422
         )

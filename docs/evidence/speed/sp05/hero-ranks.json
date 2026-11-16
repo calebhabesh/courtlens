@@ -1,0 +1,388 @@
+{
+ "api": "http://localhost:8180",
+ "pins": {
+  "releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+  "season": "2026-27",
+  "beforeDate": "2026-11-13"
+ },
+ "reads": [
+  {
+   "name": "query-hero-rank-pts_per_game",
+   "metric": "pts_per_game",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 861123,
+   "sort_only_bytes": 76601,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 22,
+   "null_ranks": 0,
+   "ranks_sha256": "32732284b2facccd3dec8dfffeed7b426aa4948fa95652cb4f2dde9a5254e03e",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "pts_per_game",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  },
+  {
+   "name": "query-hero-rank-reb_per_game",
+   "metric": "reb_per_game",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 860174,
+   "sort_only_bytes": 76281,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 24,
+   "null_ranks": 0,
+   "ranks_sha256": "1dc5e4e493823bdb403a39260242a7735dadbc9ffda8c91808916c470de967dd",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "reb_per_game",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  },
+  {
+   "name": "query-hero-rank-ast_per_game",
+   "metric": "ast_per_game",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 860033,
+   "sort_only_bytes": 75940,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 25,
+   "null_ranks": 0,
+   "ranks_sha256": "97935c0e7a857039db4d1880df2a218e834ace1279150bd8aaa447e73c136657",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "ast_per_game",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  },
+  {
+   "name": "query-hero-rank-ts_pct",
+   "metric": "ts_pct",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 855611,
+   "sort_only_bytes": 73954,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 6,
+   "null_ranks": 0,
+   "ranks_sha256": "ceeb7d813e1b950cead3ba9e0e2e7f81ceb8e632468bd3eae56762097d2a93e1",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "ts_pct",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  },
+  {
+   "name": "query-hero-rank-dpm",
+   "metric": "dpm",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 859682,
+   "sort_only_bytes": 73326,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 0,
+   "null_ranks": 0,
+   "ranks_sha256": "997d2171853f45a68ec67d214fa49ed748a486e036483a43a6f4905de0075d28",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "dpm",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  },
+  {
+   "name": "query-hero-rank-min_per_game",
+   "metric": "min_per_game",
+   "direction": "high",
+   "rows": 100,
+   "full_bytes": 860874,
+   "sort_only_bytes": 76440,
+   "pages_equal": true,
+   "ranks_equal": true,
+   "tied_ranks": 28,
+   "null_ranks": 0,
+   "ranks_sha256": "847b67c181664f50ae9acee1fd1a7ba74c2279e522dd80f17e5f2b199b3a97e7",
+   "sort_only_body": {
+    "query": {
+     "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+     "season": "2026-27",
+     "phase": "regular_season",
+     "before_date": "2026-11-13",
+     "name": null,
+     "entity_kind": "player",
+     "window": {
+      "kind": "season"
+     },
+     "team_scope": {
+      "team_id": null,
+      "participation_only": true
+     },
+     "sample_filters": {
+      "min_games": null,
+      "min_minutes": null,
+      "min_avg_minutes": null,
+      "min_possessions": null,
+      "min_attempts": null
+     },
+     "sort": [
+      {
+       "field": "min_per_game",
+       "direction": "desc",
+       "nulls_last": true
+      }
+     ],
+     "view_state": {
+      "columns": [
+       "pts_per_game",
+       "reb_per_game",
+       "ast_per_game",
+       "ts_pct",
+       "dpm",
+       "min_per_game"
+      ]
+     },
+     "page": {
+      "limit": 100
+     },
+     "predicates": null,
+     "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+    },
+    "presentation": {
+     "player_ids": null,
+     "metrics": "sort"
+    }
+   }
+  }
+ ]
+}

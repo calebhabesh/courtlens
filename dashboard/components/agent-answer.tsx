@@ -1,15 +1,16 @@
 "use client";
 
-import { useId, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { Fragment, useId, useRef, useState, type ReactNode } from "react";
+import { IntentLink } from "@/components/intent-link";
 import type { AgentResultBlock, AgentSource, AgentTurnResponse } from "@/lib/assistant-v3.generated";
-import { agentCellText, agentResultView, resultAnchor, resultColumnLabel, reviewDestination, safeAgentUrl, sourceDestination, sourceDetails, sourceLabel } from "@/lib/agent-answer";
+import { agentCellText, agentResultView, answerEntityNames, entityOfCell, flagAt, proseLinks, resultAnchor, resultScope, type ProseLink, resultColumnLabel, reviewDestination, safeAgentUrl, sourceDestination, sourceDetails, sourceLabel } from "@/lib/agent-answer";
 import { parsePositionedMarkdown } from "@/lib/markdown";
 import { scopeChipLabel } from "@/lib/assistant-chat";
 import { pinnedContext } from "@/lib/conversation";
+import { PlayerLink, TeamLink } from "@/components/entity-link";
 
 function AnswerLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
-  return href.startsWith("/") ? <Link className={className} href={href}>{children}</Link> : <a className={className} href={href} {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
+  return href.startsWith("/") ? <IntentLink className={className} href={href}>{children}</IntentLink> : <a className={className} href={href} {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
 }
 
 export function SourceChip({ source, answer }: { source: AgentSource; answer: AgentTurnResponse }) {
@@ -25,23 +26,44 @@ export function SourceChip({ source, answer }: { source: AgentSource; answer: Ag
 }
 
 const unverifiedReason = "Unverified: these numbers have no supporting result or cited source in this turn.";
-function InlineProse({ text, positions, answer, literal = false }: { text: string; positions: number[]; answer: AgentTurnResponse; literal?: boolean }) {
+const noLinks = new Map<number, ProseLink>();
+function ProseEntityLink({ link, children }: { link: ProseLink; children: ReactNode }) {
+  return link.entity.kind === "player"
+    ? <PlayerLink id={link.entity.id} scope={link.scope} variant="prose">{children}</PlayerLink>
+    : <TeamLink team={link.entity.id} scope={link.scope} variant="prose">{children}</TeamLink>;
+}
+function InlineProse({ text, positions, answer, literal = false, links = noLinks }: { text: string; positions: number[]; answer: AgentTurnResponse; literal?: boolean; links?: Map<number, ProseLink> }) {
   const characters = Array.from(text);
   const flagged = (answer.provenance?.unverified_sentences ?? []).filter(sentence => sentence.end > sentence.start);
-  function plain(start: number, end: number) {
+  // Names linked inside one marking run; `proseLinks` only picks mentions that sit inside one.
+  function linked(from: number, to: number) {
+    const parts: ReactNode[] = [];
+    let cursor = from;
+    let i = from;
+    while (i < to) {
+      const link = links.get(positions[i]);
+      if (!link || i + link.length > to) { i++; continue; }
+      if (i > cursor) parts.push(characters.slice(cursor, i).join(""));
+      parts.push(<ProseEntityLink key={i} link={link}>{characters.slice(i, i + link.length).join("")}</ProseEntityLink>);
+      cursor = i += link.length;
+    }
+    if (cursor < to) parts.push(characters.slice(cursor, to).join(""));
+    return parts;
+  }
+  function plain(start: number, end: number, linkable = true) {
     const parts: ReactNode[] = [];
     let from = start;
     while (from < end) {
-      const flag = flagged.find(sentence => sentence.start <= positions[from] && positions[from] < sentence.end);
+      const flag = flagAt(flagged, positions[from]);
       let to = from + 1;
-      while (to < end && flagged.find(sentence => sentence.start <= positions[to] && positions[to] < sentence.end) === flag) to++;
-      const value = characters.slice(from, to).join("");
-      parts.push(flag ? <span key={from} className="agent-unverified" tabIndex={0} title={unverifiedReason}>{value}<span className="agent-unverified-label"> unverified</span><span className="sr-only">: {unverifiedReason}</span></span> : value);
+      while (to < end && flagAt(flagged, positions[to]) === flag) to++;
+      const value = linkable ? linked(from, to) : [characters.slice(from, to).join("")];
+      parts.push(flag ? <span key={from} className="agent-unverified" tabIndex={0} title={unverifiedReason}>{value}<span className="agent-unverified-label"> unverified</span><span className="sr-only">: {unverifiedReason}</span></span> : <Fragment key={from}>{value}</Fragment>);
       from = to;
     }
     return parts;
   }
-  if (literal) return plain(0, characters.length);
+  if (literal) return plain(0, characters.length, false);
   // No raw HTML, images, arbitrary links or executable markup. Citation IDs bind to sources.
   const pattern = /\[\^([A-Za-z0-9_-]+)\]|\*\*([^*]+)\*\*|`([^`]+)`/gu;
   const nodes: ReactNode[] = [];
@@ -53,7 +75,7 @@ function InlineProse({ text, positions, answer, literal = false }: { text: strin
     const source = match[1] ? answer.sources?.find(source => source.source_id === match[1]) : null;
     if (source) nodes.push(<SourceChip key={start} source={source} answer={answer} />);
     else if (match[2]) nodes.push(<strong key={start}>{plain(start + 2, end - 2)}</strong>);
-    else if (match[3]) nodes.push(<code key={start}>{plain(start + 1, end - 1)}</code>);
+    else if (match[3]) nodes.push(<code key={start}>{plain(start + 1, end - 1, false)}</code>);
     else nodes.push(...plain(start, end));
     cursor = end;
   }
@@ -61,21 +83,38 @@ function InlineProse({ text, positions, answer, literal = false }: { text: strin
   return nodes;
 }
 
+/**
+ * The answer's prose. It only ever receives a finished turn: while the answer streams,
+ * `threaded-assistant.tsx` shows the live text as a plain paragraph and mounts `AgentAnswer` once
+ * the response arrives, so names link only after streaming has finished (SL06).
+ */
 export function AgentProse({ answer }: { answer: AgentTurnResponse }) {
-  return <div className="agent-prose hybrid-narrative">{parsePositionedMarkdown(answer.answer.text).map((block, i) => {
-    const inline = <InlineProse text={block.text} positions={block.positions} answer={answer} literal={block.kind === "code"} />;
+  const blocks = parsePositionedMarkdown(answer.answer.text).map(block => {
+    if (block.kind !== "list") return { block, items: [{ text: block.text, positions: block.positions, literal: block.kind === "code" }] };
+    let offset = 0;
+    return { block, items: block.text.split("\n").map(item => {
+      const length = Array.from(item).length;
+      const positions = block.positions.slice(offset, offset + length); offset += length + 1;
+      return { text: item, positions, literal: false };
+    }) };
+  });
+  const flagged = (answer.provenance?.unverified_sentences ?? []).filter(sentence => sentence.end > sentence.start);
+  const links = proseLinks(blocks.flatMap(({ items }) => items), answerEntityNames(answer.results ?? []), flagged);
+  return <div className="agent-prose hybrid-narrative">{blocks.map(({ block, items }, i) => {
+    const inline = <InlineProse text={block.text} positions={block.positions} answer={answer} literal={block.kind === "code"} links={links} />;
     if (block.kind === "code") return <pre key={i}><code>{inline}</code></pre>;
     if (block.kind === "heading") return <h3 key={i}>{inline}</h3>;
-    if (block.kind === "list") {
-      let offset = 0;
-      return <ul key={i}>{block.text.split("\n").map((item, n) => {
-        const length = Array.from(item).length;
-        const positions = block.positions.slice(offset, offset + length); offset += length + 1;
-        return <li key={n}><InlineProse text={item} positions={positions} answer={answer} /></li>;
-      })}</ul>;
-    }
+    if (block.kind === "list") return <ul key={i}>{items.map((item, n) => <li key={n}><InlineProse text={item.text} positions={item.positions} answer={answer} links={links} /></li>)}</ul>;
     return <p key={i}>{inline}</p>;
   })}</div>;
+}
+
+/** A result cell: the name links when its row carries the id (SL06), in the result's own scope. */
+function ResultCell({ row, column, scope }: { row: Record<string, unknown>; column: string; scope: ReturnType<typeof resultScope> }) {
+  const text = agentCellText(row[column]);
+  const entity = entityOfCell(row, column);
+  if (!entity) return text;
+  return entity.kind === "player" ? <PlayerLink id={entity.id} scope={scope}>{text}</PlayerLink> : <TeamLink team={entity.id} scope={scope}>{text}</TeamLink>;
 }
 
 export function AgentResult({ block, answer }: { block: AgentResultBlock; answer: AgentTurnResponse }) {
@@ -85,14 +124,15 @@ export function AgentResult({ block, answer }: { block: AgentResultBlock; answer
   const href = safeAgentUrl(result.open_url);
   const review = answer.saveable ? reviewDestination(block) : null;
   const context = pinnedContext(block.context ?? {});
+  const scope = resultScope(block);
   const name = `${result.operation.replaceAll("_", " ")} results`;
   return <section id={resultAnchor(answer.turn_id, result.operation_hash)} className="agent-result" aria-label={name} tabIndex={-1}>
     <div className="agent-result-heading"><h3>{name}</h3>{context.season && <span className="ask-scope-tag">{scopeChipLabel(context)}</span>}</div>
     {!view ? <p className="text-muted">No rows were returned.</p> : view.kind === "facts"
-      ? <dl className="ask-facts">{view.entries.map(([key, value]) => <div key={key}><dt>{resultColumnLabel(key, result)}</dt><dd>{agentCellText(value)}</dd></div>)}</dl>
-      : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}>{agentCellText(row[key])}</td>)}</tr>)}</tbody></table></div>{view.total > 10 && <button type="button" className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</button>}</>}
+      ? <dl className="ask-facts">{view.entries.map(([key]) => <div key={key}><dt>{resultColumnLabel(key, result)}</dt><dd><ResultCell row={view.row} column={key} scope={scope} /></dd></div>)}</dl>
+      : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}><ResultCell row={row} column={key} scope={scope} /></td>)}</tr>)}</tbody></table></div>{view.total > 10 && <button type="button" className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</button>}</>}
     {result.limitations?.map((text, i) => <p key={i} className="text-muted ask-limitation">{text}</p>)}
-    <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <Link className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</Link>}</div>
+    <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <IntentLink className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</IntentLink>}</div>
     <details className="ask-disclosure"><summary>Returned Fields and Exact Evidence</summary><pre>{JSON.stringify({ data: result.data, rows: result.rows, evidence: result.evidence, context: block.context }, null, 2)}</pre></details>
   </section>;
 }

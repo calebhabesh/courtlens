@@ -1,0 +1,262 @@
+[
+ {
+  "t": 0.0,
+  "label": "start",
+  "rss_mb": 1035.5,
+  "entries": 135,
+  "cache_mb": 21.7,
+  "evictions": 0,
+  "hits": 36,
+  "misses": 138
+ },
+ {
+  "t": 0.0,
+  "label": "impact bundle loaded",
+  "rss_mb": 1035.5,
+  "entries": 135,
+  "cache_mb": 21.7,
+  "evictions": 0,
+  "hits": 48,
+  "misses": 138
+ },
+ {
+  "t": 0.2,
+  "label": "26783 reads listed",
+  "rss_mb": 1035.5,
+  "entries": 135,
+  "cache_mb": 21.7,
+  "evictions": 0,
+  "hits": 118,
+  "misses": 138
+ },
+ {
+  "t": 15.9,
+  "label": "500 reads",
+  "rss_mb": 1070.0,
+  "entries": 531,
+  "cache_mb": 36.5,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 639
+ },
+ {
+  "t": 29.3,
+  "label": "1000 reads",
+  "rss_mb": 1084.3,
+  "entries": 931,
+  "cache_mb": 50.5,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 1139
+ },
+ {
+  "t": 43.3,
+  "label": "1500 reads",
+  "rss_mb": 1097.9,
+  "entries": 1331,
+  "cache_mb": 63.5,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 1639
+ },
+ {
+  "t": 56.3,
+  "label": "2000 reads",
+  "rss_mb": 1110.1,
+  "entries": 1731,
+  "cache_mb": 75.7,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 2139
+ },
+ {
+  "t": 67.8,
+  "label": "2500 reads",
+  "rss_mb": 1120.5,
+  "entries": 2131,
+  "cache_mb": 86.1,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 2639
+ },
+ {
+  "t": 76.2,
+  "label": "3000 reads",
+  "rss_mb": 1131.4,
+  "entries": 2527,
+  "cache_mb": 94.5,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 3137
+ },
+ {
+  "t": 88.9,
+  "label": "3500 reads",
+  "rss_mb": 1142.1,
+  "entries": 2902,
+  "cache_mb": 102.8,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 3637
+ },
+ {
+  "t": 102.1,
+  "label": "4000 reads",
+  "rss_mb": 1150.3,
+  "entries": 3277,
+  "cache_mb": 111.0,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 4137
+ },
+ {
+  "t": 115.1,
+  "label": "4500 reads",
+  "rss_mb": 1158.4,
+  "entries": 3652,
+  "cache_mb": 119.0,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 4637
+ },
+ {
+  "t": 125.5,
+  "label": "5000 reads",
+  "rss_mb": 1165.5,
+  "entries": 4028,
+  "cache_mb": 126.2,
+  "evictions": 0,
+  "hits": 125,
+  "misses": 5137
+ },
+ {
+  "t": 135.0,
+  "label": "5500 reads",
+  "rss_mb": 1167.6,
+  "entries": 4355,
+  "cache_mb": 127.9,
+  "evictions": 49,
+  "hits": 125,
+  "misses": 5638
+ },
+ {
+  "t": 147.3,
+  "label": "6000 reads",
+  "rss_mb": 1175.4,
+  "entries": 4694,
+  "cache_mb": 127.8,
+  "evictions": 83,
+  "hits": 125,
+  "misses": 6137
+ },
+ {
+  "t": 160.0,
+  "label": "6500 reads",
+  "rss_mb": 1175.9,
+  "entries": 5025,
+  "cache_mb": 127.8,
+  "evictions": 126,
+  "hits": 125,
+  "misses": 6635
+ },
+ {
+  "t": 172.0,
+  "label": "7000 reads",
+  "rss_mb": 1176.4,
+  "entries": 5214,
+  "cache_mb": 128.0,
+  "evictions": 314,
+  "hits": 125,
+  "misses": 7138
+ },
+ {
+  "t": 180.1,
+  "label": "7500 reads",
+  "rss_mb": 1176.4,
+  "entries": 5428,
+  "cache_mb": 127.9,
+  "evictions": 475,
+  "hits": 125,
+  "misses": 7638
+ },
+ {
+  "t": 191.7,
+  "label": "8000 reads",
+  "rss_mb": 1176.5,
+  "entries": 5592,
+  "cache_mb": 128.0,
+  "evictions": 685,
+  "hits": 125,
+  "misses": 8137
+ },
+ {
+  "t": 205.4,
+  "label": "8500 reads",
+  "rss_mb": 1177.6,
+  "entries": 5735,
+  "cache_mb": 128.0,
+  "evictions": 917,
+  "hits": 125,
+  "misses": 8637
+ },
+ {
+  "t": 218.8,
+  "label": "9000 reads",
+  "rss_mb": 1177.6,
+  "entries": 5868,
+  "cache_mb": 128.0,
+  "evictions": 1159,
+  "hits": 125,
+  "misses": 9133
+ },
+ {
+  "t": 230.6,
+  "label": "9500 reads",
+  "rss_mb": 1177.6,
+  "entries": 6013,
+  "cache_mb": 128.0,
+  "evictions": 1390,
+  "hits": 125,
+  "misses": 9638
+ },
+ {
+  "t": 241.3,
+  "label": "10000 reads",
+  "rss_mb": 1177.6,
+  "entries": 6194,
+  "cache_mb": 128.0,
+  "evictions": 1583,
+  "hits": 125,
+  "misses": 10137
+ },
+ {
+  "t": 255.4,
+  "label": "10500 reads",
+  "rss_mb": 1177.8,
+  "entries": 6274,
+  "cache_mb": 128.0,
+  "evictions": 1878,
+  "hits": 125,
+  "misses": 10637
+ },
+ {
+  "t": 269.3,
+  "label": "11000 reads",
+  "rss_mb": 1178.0,
+  "entries": 6336,
+  "cache_mb": 128.0,
+  "evictions": 2191,
+  "hits": 125,
+  "misses": 11137
+ },
+ {
+  "t": 269.7,
+  "label": "end",
+  "rss_mb": 1178.0,
+  "entries": 6332,
+  "cache_mb": 128.0,
+  "evictions": 2199,
+  "hits": 125,
+  "misses": 11137
+ }
+]

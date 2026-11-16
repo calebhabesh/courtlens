@@ -16,6 +16,8 @@ import { useFeed } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { Icon, type IconName } from "./ui/icon";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /**
  * W4: the Pre-Game "why". Every number is the seal's, read through the breakdown API: the groups add
@@ -63,7 +65,7 @@ function Header({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
   return <p className="lp-headline" data-field="headline" data-home-win={why.prediction.home_win}>
     <CourtLensSays size={12} />{" "}
     <span>favors</span>
-    <span className="lp-team"><TeamLogo team={logoTeam(team)} season={sides.season} size={20} /><strong>{teamFullName(team, sides.season)}</strong></span>
+    <TeamLink team={team.canonical_id} scope={{ season: sides.season }} variant="block" className="lp-team"><TeamLogo team={logoTeam(team)} season={sides.season} size={20} /><strong className="entity-link-text">{teamFullName(team, sides.season)}</strong></TeamLink>
     <span>· <strong>{pct(p)}</strong> to win · predicted margin {marginText(why.prediction.home_margin, teamCode(sides.home), teamCode(sides.away))}</span>
   </p>;
 }
@@ -119,7 +121,7 @@ function OutList({ team, players, sides, scale }: { team: LiveTeam; players: Why
     {players?.length ? <ul>{players.map(p => <li key={p.player_id ?? p.name} className="lp-person">
       <PlayerPortrait playerId={p.player_id ?? undefined} name={p.name} size="md" era={seasonEra(sides.season, logoTeam(team))} />
       <span className="lp-person-text">
-        <span className="lp-person-name">{p.player_id ? <Link href={`/players/${p.player_id}?season=${sides.season}`}>{p.name}</Link> : p.name}</span>
+        <span className="lp-person-name">{p.player_id ? <Link className="entity-link" href={playerHref(p.player_id, { season: sides.season })} prefetch={false}>{p.name}</Link> : p.name}</span>
         <span className="lp-muted">{absence(p.cost, code)}</span>
       </span>
       {p.cost != null && <span className="lp-cost" data-sign={p.cost > 0.05 ? "costs" : p.cost < -0.05 ? "helps" : "none"} aria-hidden="true">
@@ -136,7 +138,7 @@ function PlayerList({ team, players, sides }: { team: LiveTeam; players: WhyPlay
     {players?.length ? <ol>{players.map(p => <li key={p.player_id} className="lp-person">
       <PlayerPortrait playerId={p.player_id} name={p.name} size="sm" era={seasonEra(sides.season, logoTeam(team))} />
       <span className="lp-person-text">
-        <span className="lp-person-name"><Link href={`/players/${p.player_id}?season=${sides.season}`}>{p.name}</Link></span>
+        <span className="lp-person-name"><Link className="entity-link" href={playerHref(p.player_id, { season: sides.season })} prefetch={false}>{p.name}</Link></span>
         <span className="lp-minutes" aria-hidden="true"><span style={vars({ "--lp-min": `${(p.minutes / most) * 100}%` })} /></span>
       </span>
       <span className="lp-muted lp-person-stat">{num(p.minutes, 1)} min · rating {p.rating > 0 ? "+" : ""}{num(p.rating, 1)}{p.default_rating ? " (default)" : ""}</span>

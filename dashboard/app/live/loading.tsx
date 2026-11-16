@@ -1,5 +1,3 @@
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { LivePageSkeleton } from "@/components/live-skeletons";
 
-export default function Loading() {
-  return <TemplateSkeleton template="board" />;
-}
+export default function Loading() { return <LivePageSkeleton />; }

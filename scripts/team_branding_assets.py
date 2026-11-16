@@ -12,6 +12,7 @@ import time
 from collections import Counter, deque
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree
@@ -26,6 +27,38 @@ from courtlens.domain.teams import (
 )
 
 CATALOG = Path("dashboard/lib/team-branding.json")
+# What the browser reads of the catalog (speed plan SP05): no provenance, hashes or byte counts.
+# dashboard/lib/team-branding-client.test.ts fails when the two files disagree.
+CLIENT_CATALOG = Path("dashboard/lib/team-branding.client.json")
+CLIENT_FIELDS = {
+    "teams": ("team_id", "tricode", "artwork_name", "asset"),
+    "eras": (
+        "code",
+        "franchise_id",
+        "artwork_name",
+        "first_season",
+        "last_season",
+        "stored_as_code",
+        "asset",
+        "brand_color",
+    ),
+    "inactive": ("franchise_id", "first_season", "last_season"),
+    "season_logos": ("franchise_id", "first_season", "last_season", "asset"),
+    "conferences": ("conference", "artwork_name", "asset", "width", "height"),
+}
+
+
+def client_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
+    """The catalog's records with only the fields the dashboard's browser code reads."""
+    return {
+        key: [
+            {field: record[field] for field in fields if field in record}
+            for record in catalog.get(key, [])
+        ]
+        for key, fields in CLIENT_FIELDS.items()
+    }
+
+
 PUBLIC = Path("dashboard/public")
 MAX_BYTES = 512_000
 USER_AGENT = "CourtLens/1.0 (non-commercial portfolio research)"
@@ -572,6 +605,9 @@ def main() -> None:
         data = (PUBLIC / record["asset"].lstrip("/")).read_bytes()
         assert hashlib.sha256(data).hexdigest() == record["sha256"]
         assert len(data) == record.get("bytes", len(data)) <= MAX_BYTES
+    CLIENT_CATALOG.write_text(
+        json.dumps(client_catalog(catalog), indent=2, ensure_ascii=False) + "\n"
+    )
     print(
         json.dumps(
             {

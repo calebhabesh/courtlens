@@ -1,0 +1,2276 @@
+{
+ "_about": "SP02: every page warm-site crawled on the local stack (16 top-level pages, 30 teams, 521 roster players), for measure.py --only pages.",
+ "version": 1,
+ "pages": [
+  {
+   "name": "home",
+   "path": "/"
+  },
+  {
+   "name": "stats",
+   "path": "/stats"
+  },
+  {
+   "name": "wowy",
+   "path": "/wowy"
+  },
+  {
+   "name": "stat-line-shift",
+   "path": "/stat-line-shift"
+  },
+  {
+   "name": "playoffs",
+   "path": "/playoffs"
+  },
+  {
+   "name": "last-games",
+   "path": "/last-games"
+  },
+  {
+   "name": "showcase",
+   "path": "/showcase"
+  },
+  {
+   "name": "players",
+   "path": "/players"
+  },
+  {
+   "name": "teams",
+   "path": "/teams"
+  },
+  {
+   "name": "standings",
+   "path": "/standings"
+  },
+  {
+   "name": "roster-shapes",
+   "path": "/roster-shapes"
+  },
+  {
+   "name": "contracts",
+   "path": "/contracts"
+  },
+  {
+   "name": "free-agency",
+   "path": "/free-agency"
+  },
+  {
+   "name": "compare",
+   "path": "/compare"
+  },
+  {
+   "name": "team-compare",
+   "path": "/team-compare"
+  },
+  {
+   "name": "methodology",
+   "path": "/methodology"
+  },
+  {
+   "name": "teams-1610612737",
+   "path": "/teams/1610612737"
+  },
+  {
+   "name": "teams-1610612738",
+   "path": "/teams/1610612738"
+  },
+  {
+   "name": "teams-1610612739",
+   "path": "/teams/1610612739"
+  },
+  {
+   "name": "teams-1610612740",
+   "path": "/teams/1610612740"
+  },
+  {
+   "name": "teams-1610612741",
+   "path": "/teams/1610612741"
+  },
+  {
+   "name": "teams-1610612742",
+   "path": "/teams/1610612742"
+  },
+  {
+   "name": "teams-1610612743",
+   "path": "/teams/1610612743"
+  },
+  {
+   "name": "teams-1610612744",
+   "path": "/teams/1610612744"
+  },
+  {
+   "name": "teams-1610612745",
+   "path": "/teams/1610612745"
+  },
+  {
+   "name": "teams-1610612746",
+   "path": "/teams/1610612746"
+  },
+  {
+   "name": "teams-1610612747",
+   "path": "/teams/1610612747"
+  },
+  {
+   "name": "teams-1610612748",
+   "path": "/teams/1610612748"
+  },
+  {
+   "name": "teams-1610612749",
+   "path": "/teams/1610612749"
+  },
+  {
+   "name": "teams-1610612750",
+   "path": "/teams/1610612750"
+  },
+  {
+   "name": "teams-1610612751",
+   "path": "/teams/1610612751"
+  },
+  {
+   "name": "teams-1610612752",
+   "path": "/teams/1610612752"
+  },
+  {
+   "name": "teams-1610612753",
+   "path": "/teams/1610612753"
+  },
+  {
+   "name": "teams-1610612754",
+   "path": "/teams/1610612754"
+  },
+  {
+   "name": "teams-1610612755",
+   "path": "/teams/1610612755"
+  },
+  {
+   "name": "teams-1610612756",
+   "path": "/teams/1610612756"
+  },
+  {
+   "name": "teams-1610612757",
+   "path": "/teams/1610612757"
+  },
+  {
+   "name": "teams-1610612758",
+   "path": "/teams/1610612758"
+  },
+  {
+   "name": "teams-1610612759",
+   "path": "/teams/1610612759"
+  },
+  {
+   "name": "teams-1610612760",
+   "path": "/teams/1610612760"
+  },
+  {
+   "name": "teams-1610612761",
+   "path": "/teams/1610612761"
+  },
+  {
+   "name": "teams-1610612762",
+   "path": "/teams/1610612762"
+  },
+  {
+   "name": "teams-1610612763",
+   "path": "/teams/1610612763"
+  },
+  {
+   "name": "teams-1610612764",
+   "path": "/teams/1610612764"
+  },
+  {
+   "name": "teams-1610612765",
+   "path": "/teams/1610612765"
+  },
+  {
+   "name": "teams-1610612766",
+   "path": "/teams/1610612766"
+  },
+  {
+   "name": "players-1626145",
+   "path": "/players/1626145"
+  },
+  {
+   "name": "players-1626157",
+   "path": "/players/1626157"
+  },
+  {
+   "name": "players-1626162",
+   "path": "/players/1626162"
+  },
+  {
+   "name": "players-1626164",
+   "path": "/players/1626164"
+  },
+  {
+   "name": "players-1626167",
+   "path": "/players/1626167"
+  },
+  {
+   "name": "players-1626168",
+   "path": "/players/1626168"
+  },
+  {
+   "name": "players-1626171",
+   "path": "/players/1626171"
+  },
+  {
+   "name": "players-1626172",
+   "path": "/players/1626172"
+  },
+  {
+   "name": "players-1626181",
+   "path": "/players/1626181"
+  },
+  {
+   "name": "players-1626204",
+   "path": "/players/1626204"
+  },
+  {
+   "name": "players-1626209",
+   "path": "/players/1626209"
+  },
+  {
+   "name": "players-1626220",
+   "path": "/players/1626220"
+  },
+  {
+   "name": "players-1627732",
+   "path": "/players/1627732"
+  },
+  {
+   "name": "players-1627734",
+   "path": "/players/1627734"
+  },
+  {
+   "name": "players-1627739",
+   "path": "/players/1627739"
+  },
+  {
+   "name": "players-1627741",
+   "path": "/players/1627741"
+  },
+  {
+   "name": "players-1627742",
+   "path": "/players/1627742"
+  },
+  {
+   "name": "players-1627747",
+   "path": "/players/1627747"
+  },
+  {
+   "name": "players-1627749",
+   "path": "/players/1627749"
+  },
+  {
+   "name": "players-1627750",
+   "path": "/players/1627750"
+  },
+  {
+   "name": "players-1627751",
+   "path": "/players/1627751"
+  },
+  {
+   "name": "players-1627752",
+   "path": "/players/1627752"
+  },
+  {
+   "name": "players-1627759",
+   "path": "/players/1627759"
+  },
+  {
+   "name": "players-1627777",
+   "path": "/players/1627777"
+  },
+  {
+   "name": "players-1627780",
+   "path": "/players/1627780"
+  },
+  {
+   "name": "players-1627783",
+   "path": "/players/1627783"
+  },
+  {
+   "name": "players-1627826",
+   "path": "/players/1627826"
+  },
+  {
+   "name": "players-1627827",
+   "path": "/players/1627827"
+  },
+  {
+   "name": "players-1627832",
+   "path": "/players/1627832"
+  },
+  {
+   "name": "players-1627884",
+   "path": "/players/1627884"
+  },
+  {
+   "name": "players-1627936",
+   "path": "/players/1627936"
+  },
+  {
+   "name": "players-1628368",
+   "path": "/players/1628368"
+  },
+  {
+   "name": "players-1628369",
+   "path": "/players/1628369"
+  },
+  {
+   "name": "players-1628370",
+   "path": "/players/1628370"
+  },
+  {
+   "name": "players-1628371",
+   "path": "/players/1628371"
+  },
+  {
+   "name": "players-1628374",
+   "path": "/players/1628374"
+  },
+  {
+   "name": "players-1628378",
+   "path": "/players/1628378"
+  },
+  {
+   "name": "players-1628379",
+   "path": "/players/1628379"
+  },
+  {
+   "name": "players-1628380",
+   "path": "/players/1628380"
+  },
+  {
+   "name": "players-1628381",
+   "path": "/players/1628381"
+  },
+  {
+   "name": "players-1628384",
+   "path": "/players/1628384"
+  },
+  {
+   "name": "players-1628386",
+   "path": "/players/1628386"
+  },
+  {
+   "name": "players-1628389",
+   "path": "/players/1628389"
+  },
+  {
+   "name": "players-1628392",
+   "path": "/players/1628392"
+  },
+  {
+   "name": "players-1628396",
+   "path": "/players/1628396"
+  },
+  {
+   "name": "players-1628398",
+   "path": "/players/1628398"
+  },
+  {
+   "name": "players-1628401",
+   "path": "/players/1628401"
+  },
+  {
+   "name": "players-1628404",
+   "path": "/players/1628404"
+  },
+  {
+   "name": "players-1628415",
+   "path": "/players/1628415"
+  },
+  {
+   "name": "players-1628418",
+   "path": "/players/1628418"
+  },
+  {
+   "name": "players-1628436",
+   "path": "/players/1628436"
+  },
+  {
+   "name": "players-1628960",
+   "path": "/players/1628960"
+  },
+  {
+   "name": "players-1628963",
+   "path": "/players/1628963"
+  },
+  {
+   "name": "players-1628964",
+   "path": "/players/1628964"
+  },
+  {
+   "name": "players-1628969",
+   "path": "/players/1628969"
+  },
+  {
+   "name": "players-1628970",
+   "path": "/players/1628970"
+  },
+  {
+   "name": "players-1628973",
+   "path": "/players/1628973"
+  },
+  {
+   "name": "players-1628975",
+   "path": "/players/1628975"
+  },
+  {
+   "name": "players-1628976",
+   "path": "/players/1628976"
+  },
+  {
+   "name": "players-1628978",
+   "path": "/players/1628978"
+  },
+  {
+   "name": "players-1628983",
+   "path": "/players/1628983"
+  },
+  {
+   "name": "players-1628989",
+   "path": "/players/1628989"
+  },
+  {
+   "name": "players-1628991",
+   "path": "/players/1628991"
+  },
+  {
+   "name": "players-1628997",
+   "path": "/players/1628997"
+  },
+  {
+   "name": "players-1629001",
+   "path": "/players/1629001"
+  },
+  {
+   "name": "players-1629004",
+   "path": "/players/1629004"
+  },
+  {
+   "name": "players-1629006",
+   "path": "/players/1629006"
+  },
+  {
+   "name": "players-1629008",
+   "path": "/players/1629008"
+  },
+  {
+   "name": "players-1629011",
+   "path": "/players/1629011"
+  },
+  {
+   "name": "players-1629012",
+   "path": "/players/1629012"
+  },
+  {
+   "name": "players-1629013",
+   "path": "/players/1629013"
+  },
+  {
+   "name": "players-1629014",
+   "path": "/players/1629014"
+  },
+  {
+   "name": "players-1629018",
+   "path": "/players/1629018"
+  },
+  {
+   "name": "players-1629020",
+   "path": "/players/1629020"
+  },
+  {
+   "name": "players-1629021",
+   "path": "/players/1629021"
+  },
+  {
+   "name": "players-1629023",
+   "path": "/players/1629023"
+  },
+  {
+   "name": "players-1629026",
+   "path": "/players/1629026"
+  },
+  {
+   "name": "players-1629027",
+   "path": "/players/1629027"
+  },
+  {
+   "name": "players-1629028",
+   "path": "/players/1629028"
+  },
+  {
+   "name": "players-1629029",
+   "path": "/players/1629029"
+  },
+  {
+   "name": "players-1629048",
+   "path": "/players/1629048"
+  },
+  {
+   "name": "players-1629057",
+   "path": "/players/1629057"
+  },
+  {
+   "name": "players-1629060",
+   "path": "/players/1629060"
+  },
+  {
+   "name": "players-1629111",
+   "path": "/players/1629111"
+  },
+  {
+   "name": "players-1629130",
+   "path": "/players/1629130"
+  },
+  {
+   "name": "players-1629162",
+   "path": "/players/1629162"
+  },
+  {
+   "name": "players-1629605",
+   "path": "/players/1629605"
+  },
+  {
+   "name": "players-1629611",
+   "path": "/players/1629611"
+  },
+  {
+   "name": "players-1629614",
+   "path": "/players/1629614"
+  },
+  {
+   "name": "players-1629618",
+   "path": "/players/1629618"
+  },
+  {
+   "name": "players-1629622",
+   "path": "/players/1629622"
+  },
+  {
+   "name": "players-1629627",
+   "path": "/players/1629627"
+  },
+  {
+   "name": "players-1629628",
+   "path": "/players/1629628"
+  },
+  {
+   "name": "players-1629630",
+   "path": "/players/1629630"
+  },
+  {
+   "name": "players-1629631",
+   "path": "/players/1629631"
+  },
+  {
+   "name": "players-1629632",
+   "path": "/players/1629632"
+  },
+  {
+   "name": "players-1629636",
+   "path": "/players/1629636"
+  },
+  {
+   "name": "players-1629637",
+   "path": "/players/1629637"
+  },
+  {
+   "name": "players-1629638",
+   "path": "/players/1629638"
+  },
+  {
+   "name": "players-1629639",
+   "path": "/players/1629639"
+  },
+  {
+   "name": "players-1629640",
+   "path": "/players/1629640"
+  },
+  {
+   "name": "players-1629646",
+   "path": "/players/1629646"
+  },
+  {
+   "name": "players-1629651",
+   "path": "/players/1629651"
+  },
+  {
+   "name": "players-1629652",
+   "path": "/players/1629652"
+  },
+  {
+   "name": "players-1629655",
+   "path": "/players/1629655"
+  },
+  {
+   "name": "players-1629656",
+   "path": "/players/1629656"
+  },
+  {
+   "name": "players-1629660",
+   "path": "/players/1629660"
+  },
+  {
+   "name": "players-1629661",
+   "path": "/players/1629661"
+  },
+  {
+   "name": "players-1629673",
+   "path": "/players/1629673"
+  },
+  {
+   "name": "players-1629674",
+   "path": "/players/1629674"
+  },
+  {
+   "name": "players-1629675",
+   "path": "/players/1629675"
+  },
+  {
+   "name": "players-1629680",
+   "path": "/players/1629680"
+  },
+  {
+   "name": "players-1629684",
+   "path": "/players/1629684"
+  },
+  {
+   "name": "players-1629731",
+   "path": "/players/1629731"
+  },
+  {
+   "name": "players-1629750",
+   "path": "/players/1629750"
+  },
+  {
+   "name": "players-1630162",
+   "path": "/players/1630162"
+  },
+  {
+   "name": "players-1630163",
+   "path": "/players/1630163"
+  },
+  {
+   "name": "players-1630164",
+   "path": "/players/1630164"
+  },
+  {
+   "name": "players-1630166",
+   "path": "/players/1630166"
+  },
+  {
+   "name": "players-1630167",
+   "path": "/players/1630167"
+  },
+  {
+   "name": "players-1630168",
+   "path": "/players/1630168"
+  },
+  {
+   "name": "players-1630169",
+   "path": "/players/1630169"
+  },
+  {
+   "name": "players-1630170",
+   "path": "/players/1630170"
+  },
+  {
+   "name": "players-1630171",
+   "path": "/players/1630171"
+  },
+  {
+   "name": "players-1630172",
+   "path": "/players/1630172"
+  },
+  {
+   "name": "players-1630173",
+   "path": "/players/1630173"
+  },
+  {
+   "name": "players-1630174",
+   "path": "/players/1630174"
+  },
+  {
+   "name": "players-1630178",
+   "path": "/players/1630178"
+  },
+  {
+   "name": "players-1630180",
+   "path": "/players/1630180"
+  },
+  {
+   "name": "players-1630182",
+   "path": "/players/1630182"
+  },
+  {
+   "name": "players-1630183",
+   "path": "/players/1630183"
+  },
+  {
+   "name": "players-1630188",
+   "path": "/players/1630188"
+  },
+  {
+   "name": "players-1630191",
+   "path": "/players/1630191"
+  },
+  {
+   "name": "players-1630192",
+   "path": "/players/1630192"
+  },
+  {
+   "name": "players-1630193",
+   "path": "/players/1630193"
+  },
+  {
+   "name": "players-1630194",
+   "path": "/players/1630194"
+  },
+  {
+   "name": "players-1630198",
+   "path": "/players/1630198"
+  },
+  {
+   "name": "players-1630200",
+   "path": "/players/1630200"
+  },
+  {
+   "name": "players-1630202",
+   "path": "/players/1630202"
+  },
+  {
+   "name": "players-1630208",
+   "path": "/players/1630208"
+  },
+  {
+   "name": "players-1630217",
+   "path": "/players/1630217"
+  },
+  {
+   "name": "players-1630224",
+   "path": "/players/1630224"
+  },
+  {
+   "name": "players-1630228",
+   "path": "/players/1630228"
+  },
+  {
+   "name": "players-1630230",
+   "path": "/players/1630230"
+  },
+  {
+   "name": "players-1630241",
+   "path": "/players/1630241"
+  },
+  {
+   "name": "players-1630245",
+   "path": "/players/1630245"
+  },
+  {
+   "name": "players-1630249",
+   "path": "/players/1630249"
+  },
+  {
+   "name": "players-1630256",
+   "path": "/players/1630256"
+  },
+  {
+   "name": "players-1630264",
+   "path": "/players/1630264"
+  },
+  {
+   "name": "players-1630311",
+   "path": "/players/1630311"
+  },
+  {
+   "name": "players-1630314",
+   "path": "/players/1630314"
+  },
+  {
+   "name": "players-1630529",
+   "path": "/players/1630529"
+  },
+  {
+   "name": "players-1630530",
+   "path": "/players/1630530"
+  },
+  {
+   "name": "players-1630532",
+   "path": "/players/1630532"
+  },
+  {
+   "name": "players-1630533",
+   "path": "/players/1630533"
+  },
+  {
+   "name": "players-1630538",
+   "path": "/players/1630538"
+  },
+  {
+   "name": "players-1630540",
+   "path": "/players/1630540"
+  },
+  {
+   "name": "players-1630541",
+   "path": "/players/1630541"
+  },
+  {
+   "name": "players-1630543",
+   "path": "/players/1630543"
+  },
+  {
+   "name": "players-1630544",
+   "path": "/players/1630544"
+  },
+  {
+   "name": "players-1630545",
+   "path": "/players/1630545"
+  },
+  {
+   "name": "players-1630549",
+   "path": "/players/1630549"
+  },
+  {
+   "name": "players-1630551",
+   "path": "/players/1630551"
+  },
+  {
+   "name": "players-1630552",
+   "path": "/players/1630552"
+  },
+  {
+   "name": "players-1630557",
+   "path": "/players/1630557"
+  },
+  {
+   "name": "players-1630558",
+   "path": "/players/1630558"
+  },
+  {
+   "name": "players-1630559",
+   "path": "/players/1630559"
+  },
+  {
+   "name": "players-1630567",
+   "path": "/players/1630567"
+  },
+  {
+   "name": "players-1630568",
+   "path": "/players/1630568"
+  },
+  {
+   "name": "players-1630570",
+   "path": "/players/1630570"
+  },
+  {
+   "name": "players-1630572",
+   "path": "/players/1630572"
+  },
+  {
+   "name": "players-1630573",
+   "path": "/players/1630573"
+  },
+  {
+   "name": "players-1630574",
+   "path": "/players/1630574"
+  },
+  {
+   "name": "players-1630577",
+   "path": "/players/1630577"
+  },
+  {
+   "name": "players-1630578",
+   "path": "/players/1630578"
+  },
+  {
+   "name": "players-1630579",
+   "path": "/players/1630579"
+  },
+  {
+   "name": "players-1630581",
+   "path": "/players/1630581"
+  },
+  {
+   "name": "players-1630583",
+   "path": "/players/1630583"
+  },
+  {
+   "name": "players-1630590",
+   "path": "/players/1630590"
+  },
+  {
+   "name": "players-1630591",
+   "path": "/players/1630591"
+  },
+  {
+   "name": "players-1630592",
+   "path": "/players/1630592"
+  },
+  {
+   "name": "players-1630595",
+   "path": "/players/1630595"
+  },
+  {
+   "name": "players-1630596",
+   "path": "/players/1630596"
+  },
+  {
+   "name": "players-1630598",
+   "path": "/players/1630598"
+  },
+  {
+   "name": "players-1630611",
+   "path": "/players/1630611"
+  },
+  {
+   "name": "players-1630619",
+   "path": "/players/1630619"
+  },
+  {
+   "name": "players-1630631",
+   "path": "/players/1630631"
+  },
+  {
+   "name": "players-1630643",
+   "path": "/players/1630643"
+  },
+  {
+   "name": "players-1630658",
+   "path": "/players/1630658"
+  },
+  {
+   "name": "players-1630692",
+   "path": "/players/1630692"
+  },
+  {
+   "name": "players-1630695",
+   "path": "/players/1630695"
+  },
+  {
+   "name": "players-1630696",
+   "path": "/players/1630696"
+  },
+  {
+   "name": "players-1630700",
+   "path": "/players/1630700"
+  },
+  {
+   "name": "players-1630702",
+   "path": "/players/1630702"
+  },
+  {
+   "name": "players-1630703",
+   "path": "/players/1630703"
+  },
+  {
+   "name": "players-1631094",
+   "path": "/players/1631094"
+  },
+  {
+   "name": "players-1631095",
+   "path": "/players/1631095"
+  },
+  {
+   "name": "players-1631096",
+   "path": "/players/1631096"
+  },
+  {
+   "name": "players-1631097",
+   "path": "/players/1631097"
+  },
+  {
+   "name": "players-1631099",
+   "path": "/players/1631099"
+  },
+  {
+   "name": "players-1631101",
+   "path": "/players/1631101"
+  },
+  {
+   "name": "players-1631104",
+   "path": "/players/1631104"
+  },
+  {
+   "name": "players-1631105",
+   "path": "/players/1631105"
+  },
+  {
+   "name": "players-1631106",
+   "path": "/players/1631106"
+  },
+  {
+   "name": "players-1631107",
+   "path": "/players/1631107"
+  },
+  {
+   "name": "players-1631108",
+   "path": "/players/1631108"
+  },
+  {
+   "name": "players-1631109",
+   "path": "/players/1631109"
+  },
+  {
+   "name": "players-1631114",
+   "path": "/players/1631114"
+  },
+  {
+   "name": "players-1631117",
+   "path": "/players/1631117"
+  },
+  {
+   "name": "players-1631119",
+   "path": "/players/1631119"
+  },
+  {
+   "name": "players-1631121",
+   "path": "/players/1631121"
+  },
+  {
+   "name": "players-1631123",
+   "path": "/players/1631123"
+  },
+  {
+   "name": "players-1631124",
+   "path": "/players/1631124"
+  },
+  {
+   "name": "players-1631126",
+   "path": "/players/1631126"
+  },
+  {
+   "name": "players-1631127",
+   "path": "/players/1631127"
+  },
+  {
+   "name": "players-1631128",
+   "path": "/players/1631128"
+  },
+  {
+   "name": "players-1631131",
+   "path": "/players/1631131"
+  },
+  {
+   "name": "players-1631133",
+   "path": "/players/1631133"
+  },
+  {
+   "name": "players-1631157",
+   "path": "/players/1631157"
+  },
+  {
+   "name": "players-1631159",
+   "path": "/players/1631159"
+  },
+  {
+   "name": "players-1631165",
+   "path": "/players/1631165"
+  },
+  {
+   "name": "players-1631166",
+   "path": "/players/1631166"
+  },
+  {
+   "name": "players-1631169",
+   "path": "/players/1631169"
+  },
+  {
+   "name": "players-1631170",
+   "path": "/players/1631170"
+  },
+  {
+   "name": "players-1631172",
+   "path": "/players/1631172"
+  },
+  {
+   "name": "players-1631199",
+   "path": "/players/1631199"
+  },
+  {
+   "name": "players-1631200",
+   "path": "/players/1631200"
+  },
+  {
+   "name": "players-1631204",
+   "path": "/players/1631204"
+  },
+  {
+   "name": "players-1631212",
+   "path": "/players/1631212"
+  },
+  {
+   "name": "players-1631217",
+   "path": "/players/1631217"
+  },
+  {
+   "name": "players-1631218",
+   "path": "/players/1631218"
+  },
+  {
+   "name": "players-1631221",
+   "path": "/players/1631221"
+  },
+  {
+   "name": "players-1631222",
+   "path": "/players/1631222"
+  },
+  {
+   "name": "players-1631230",
+   "path": "/players/1631230"
+  },
+  {
+   "name": "players-1631243",
+   "path": "/players/1631243"
+  },
+  {
+   "name": "players-1631245",
+   "path": "/players/1631245"
+  },
+  {
+   "name": "players-1631248",
+   "path": "/players/1631248"
+  },
+  {
+   "name": "players-1631250",
+   "path": "/players/1631250"
+  },
+  {
+   "name": "players-1631255",
+   "path": "/players/1631255"
+  },
+  {
+   "name": "players-1631260",
+   "path": "/players/1631260"
+  },
+  {
+   "name": "players-1631288",
+   "path": "/players/1631288"
+  },
+  {
+   "name": "players-1631321",
+   "path": "/players/1631321"
+  },
+  {
+   "name": "players-1631323",
+   "path": "/players/1631323"
+  },
+  {
+   "name": "players-1631342",
+   "path": "/players/1631342"
+  },
+  {
+   "name": "players-1631457",
+   "path": "/players/1631457"
+  },
+  {
+   "name": "players-1641705",
+   "path": "/players/1641705"
+  },
+  {
+   "name": "players-1641706",
+   "path": "/players/1641706"
+  },
+  {
+   "name": "players-1641707",
+   "path": "/players/1641707"
+  },
+  {
+   "name": "players-1641708",
+   "path": "/players/1641708"
+  },
+  {
+   "name": "players-1641709",
+   "path": "/players/1641709"
+  },
+  {
+   "name": "players-1641710",
+   "path": "/players/1641710"
+  },
+  {
+   "name": "players-1641711",
+   "path": "/players/1641711"
+  },
+  {
+   "name": "players-1641712",
+   "path": "/players/1641712"
+  },
+  {
+   "name": "players-1641713",
+   "path": "/players/1641713"
+  },
+  {
+   "name": "players-1641715",
+   "path": "/players/1641715"
+  },
+  {
+   "name": "players-1641716",
+   "path": "/players/1641716"
+  },
+  {
+   "name": "players-1641717",
+   "path": "/players/1641717"
+  },
+  {
+   "name": "players-1641718",
+   "path": "/players/1641718"
+  },
+  {
+   "name": "players-1641722",
+   "path": "/players/1641722"
+  },
+  {
+   "name": "players-1641723",
+   "path": "/players/1641723"
+  },
+  {
+   "name": "players-1641724",
+   "path": "/players/1641724"
+  },
+  {
+   "name": "players-1641725",
+   "path": "/players/1641725"
+  },
+  {
+   "name": "players-1641726",
+   "path": "/players/1641726"
+  },
+  {
+   "name": "players-1641729",
+   "path": "/players/1641729"
+  },
+  {
+   "name": "players-1641730",
+   "path": "/players/1641730"
+  },
+  {
+   "name": "players-1641731",
+   "path": "/players/1641731"
+  },
+  {
+   "name": "players-1641736",
+   "path": "/players/1641736"
+  },
+  {
+   "name": "players-1641737",
+   "path": "/players/1641737"
+  },
+  {
+   "name": "players-1641738",
+   "path": "/players/1641738"
+  },
+  {
+   "name": "players-1641739",
+   "path": "/players/1641739"
+  },
+  {
+   "name": "players-1641740",
+   "path": "/players/1641740"
+  },
+  {
+   "name": "players-1641744",
+   "path": "/players/1641744"
+  },
+  {
+   "name": "players-1641747",
+   "path": "/players/1641747"
+  },
+  {
+   "name": "players-1641750",
+   "path": "/players/1641750"
+  },
+  {
+   "name": "players-1641751",
+   "path": "/players/1641751"
+  },
+  {
+   "name": "players-1641755",
+   "path": "/players/1641755"
+  },
+  {
+   "name": "players-1641757",
+   "path": "/players/1641757"
+  },
+  {
+   "name": "players-1641759",
+   "path": "/players/1641759"
+  },
+  {
+   "name": "players-1641761",
+   "path": "/players/1641761"
+  },
+  {
+   "name": "players-1641763",
+   "path": "/players/1641763"
+  },
+  {
+   "name": "players-1641764",
+   "path": "/players/1641764"
+  },
+  {
+   "name": "players-1641765",
+   "path": "/players/1641765"
+  },
+  {
+   "name": "players-1641767",
+   "path": "/players/1641767"
+  },
+  {
+   "name": "players-1641771",
+   "path": "/players/1641771"
+  },
+  {
+   "name": "players-1641774",
+   "path": "/players/1641774"
+  },
+  {
+   "name": "players-1641775",
+   "path": "/players/1641775"
+  },
+  {
+   "name": "players-1641778",
+   "path": "/players/1641778"
+  },
+  {
+   "name": "players-1641783",
+   "path": "/players/1641783"
+  },
+  {
+   "name": "players-1641790",
+   "path": "/players/1641790"
+  },
+  {
+   "name": "players-1641796",
+   "path": "/players/1641796"
+  },
+  {
+   "name": "players-1641807",
+   "path": "/players/1641807"
+  },
+  {
+   "name": "players-1641824",
+   "path": "/players/1641824"
+  },
+  {
+   "name": "players-1641842",
+   "path": "/players/1641842"
+  },
+  {
+   "name": "players-1641844",
+   "path": "/players/1641844"
+  },
+  {
+   "name": "players-1641854",
+   "path": "/players/1641854"
+  },
+  {
+   "name": "players-1641869",
+   "path": "/players/1641869"
+  },
+  {
+   "name": "players-1641871",
+   "path": "/players/1641871"
+  },
+  {
+   "name": "players-1641989",
+   "path": "/players/1641989"
+  },
+  {
+   "name": "players-1642066",
+   "path": "/players/1642066"
+  },
+  {
+   "name": "players-1642258",
+   "path": "/players/1642258"
+  },
+  {
+   "name": "players-1642259",
+   "path": "/players/1642259"
+  },
+  {
+   "name": "players-1642260",
+   "path": "/players/1642260"
+  },
+  {
+   "name": "players-1642261",
+   "path": "/players/1642261"
+  },
+  {
+   "name": "players-1642262",
+   "path": "/players/1642262"
+  },
+  {
+   "name": "players-1642263",
+   "path": "/players/1642263"
+  },
+  {
+   "name": "players-1642264",
+   "path": "/players/1642264"
+  },
+  {
+   "name": "players-1642266",
+   "path": "/players/1642266"
+  },
+  {
+   "name": "players-1642267",
+   "path": "/players/1642267"
+  },
+  {
+   "name": "players-1642268",
+   "path": "/players/1642268"
+  },
+  {
+   "name": "players-1642269",
+   "path": "/players/1642269"
+  },
+  {
+   "name": "players-1642270",
+   "path": "/players/1642270"
+  },
+  {
+   "name": "players-1642271",
+   "path": "/players/1642271"
+  },
+  {
+   "name": "players-1642272",
+   "path": "/players/1642272"
+  },
+  {
+   "name": "players-1642273",
+   "path": "/players/1642273"
+  },
+  {
+   "name": "players-1642274",
+   "path": "/players/1642274"
+  },
+  {
+   "name": "players-1642275",
+   "path": "/players/1642275"
+  },
+  {
+   "name": "players-1642276",
+   "path": "/players/1642276"
+  },
+  {
+   "name": "players-1642277",
+   "path": "/players/1642277"
+  },
+  {
+   "name": "players-1642278",
+   "path": "/players/1642278"
+  },
+  {
+   "name": "players-1642281",
+   "path": "/players/1642281"
+  },
+  {
+   "name": "players-1642284",
+   "path": "/players/1642284"
+  },
+  {
+   "name": "players-1642285",
+   "path": "/players/1642285"
+  },
+  {
+   "name": "players-1642345",
+   "path": "/players/1642345"
+  },
+  {
+   "name": "players-1642346",
+   "path": "/players/1642346"
+  },
+  {
+   "name": "players-1642347",
+   "path": "/players/1642347"
+  },
+  {
+   "name": "players-1642348",
+   "path": "/players/1642348"
+  },
+  {
+   "name": "players-1642349",
+   "path": "/players/1642349"
+  },
+  {
+   "name": "players-1642350",
+   "path": "/players/1642350"
+  },
+  {
+   "name": "players-1642352",
+   "path": "/players/1642352"
+  },
+  {
+   "name": "players-1642353",
+   "path": "/players/1642353"
+  },
+  {
+   "name": "players-1642355",
+   "path": "/players/1642355"
+  },
+  {
+   "name": "players-1642357",
+   "path": "/players/1642357"
+  },
+  {
+   "name": "players-1642358",
+   "path": "/players/1642358"
+  },
+  {
+   "name": "players-1642359",
+   "path": "/players/1642359"
+  },
+  {
+   "name": "players-1642363",
+   "path": "/players/1642363"
+  },
+  {
+   "name": "players-1642364",
+   "path": "/players/1642364"
+  },
+  {
+   "name": "players-1642366",
+   "path": "/players/1642366"
+  },
+  {
+   "name": "players-1642367",
+   "path": "/players/1642367"
+  },
+  {
+   "name": "players-1642369",
+   "path": "/players/1642369"
+  },
+  {
+   "name": "players-1642377",
+   "path": "/players/1642377"
+  },
+  {
+   "name": "players-1642382",
+   "path": "/players/1642382"
+  },
+  {
+   "name": "players-1642383",
+   "path": "/players/1642383"
+  },
+  {
+   "name": "players-1642384",
+   "path": "/players/1642384"
+  },
+  {
+   "name": "players-1642389",
+   "path": "/players/1642389"
+  },
+  {
+   "name": "players-1642391",
+   "path": "/players/1642391"
+  },
+  {
+   "name": "players-1642394",
+   "path": "/players/1642394"
+  },
+  {
+   "name": "players-1642403",
+   "path": "/players/1642403"
+  },
+  {
+   "name": "players-1642419",
+   "path": "/players/1642419"
+  },
+  {
+   "name": "players-1642434",
+   "path": "/players/1642434"
+  },
+  {
+   "name": "players-1642449",
+   "path": "/players/1642449"
+  },
+  {
+   "name": "players-1642450",
+   "path": "/players/1642450"
+  },
+  {
+   "name": "players-1642461",
+   "path": "/players/1642461"
+  },
+  {
+   "name": "players-1642484",
+   "path": "/players/1642484"
+  },
+  {
+   "name": "players-1642502",
+   "path": "/players/1642502"
+  },
+  {
+   "name": "players-1642504",
+   "path": "/players/1642504"
+  },
+  {
+   "name": "players-1642843",
+   "path": "/players/1642843"
+  },
+  {
+   "name": "players-1642844",
+   "path": "/players/1642844"
+  },
+  {
+   "name": "players-1642845",
+   "path": "/players/1642845"
+  },
+  {
+   "name": "players-1642846",
+   "path": "/players/1642846"
+  },
+  {
+   "name": "players-1642847",
+   "path": "/players/1642847"
+  },
+  {
+   "name": "players-1642848",
+   "path": "/players/1642848"
+  },
+  {
+   "name": "players-1642849",
+   "path": "/players/1642849"
+  },
+  {
+   "name": "players-1642850",
+   "path": "/players/1642850"
+  },
+  {
+   "name": "players-1642851",
+   "path": "/players/1642851"
+  },
+  {
+   "name": "players-1642852",
+   "path": "/players/1642852"
+  },
+  {
+   "name": "players-1642853",
+   "path": "/players/1642853"
+  },
+  {
+   "name": "players-1642854",
+   "path": "/players/1642854"
+  },
+  {
+   "name": "players-1642855",
+   "path": "/players/1642855"
+  },
+  {
+   "name": "players-1642856",
+   "path": "/players/1642856"
+  },
+  {
+   "name": "players-1642857",
+   "path": "/players/1642857"
+  },
+  {
+   "name": "players-1642859",
+   "path": "/players/1642859"
+  },
+  {
+   "name": "players-1642860",
+   "path": "/players/1642860"
+  },
+  {
+   "name": "players-1642862",
+   "path": "/players/1642862"
+  },
+  {
+   "name": "players-1642863",
+   "path": "/players/1642863"
+  },
+  {
+   "name": "players-1642864",
+   "path": "/players/1642864"
+  },
+  {
+   "name": "players-1642865",
+   "path": "/players/1642865"
+  },
+  {
+   "name": "players-1642866",
+   "path": "/players/1642866"
+  },
+  {
+   "name": "players-1642867",
+   "path": "/players/1642867"
+  },
+  {
+   "name": "players-1642868",
+   "path": "/players/1642868"
+  },
+  {
+   "name": "players-1642869",
+   "path": "/players/1642869"
+  },
+  {
+   "name": "players-1642873",
+   "path": "/players/1642873"
+  },
+  {
+   "name": "players-1642874",
+   "path": "/players/1642874"
+  },
+  {
+   "name": "players-1642875",
+   "path": "/players/1642875"
+  },
+  {
+   "name": "players-1642876",
+   "path": "/players/1642876"
+  },
+  {
+   "name": "players-1642877",
+   "path": "/players/1642877"
+  },
+  {
+   "name": "players-1642878",
+   "path": "/players/1642878"
+  },
+  {
+   "name": "players-1642879",
+   "path": "/players/1642879"
+  },
+  {
+   "name": "players-1642880",
+   "path": "/players/1642880"
+  },
+  {
+   "name": "players-1642881",
+   "path": "/players/1642881"
+  },
+  {
+   "name": "players-1642882",
+   "path": "/players/1642882"
+  },
+  {
+   "name": "players-1642883",
+   "path": "/players/1642883"
+  },
+  {
+   "name": "players-1642884",
+   "path": "/players/1642884"
+  },
+  {
+   "name": "players-1642885",
+   "path": "/players/1642885"
+  },
+  {
+   "name": "players-1642889",
+   "path": "/players/1642889"
+  },
+  {
+   "name": "players-1642892",
+   "path": "/players/1642892"
+  },
+  {
+   "name": "players-1642905",
+   "path": "/players/1642905"
+  },
+  {
+   "name": "players-1642907",
+   "path": "/players/1642907"
+  },
+  {
+   "name": "players-1642910",
+   "path": "/players/1642910"
+  },
+  {
+   "name": "players-1642911",
+   "path": "/players/1642911"
+  },
+  {
+   "name": "players-1642912",
+   "path": "/players/1642912"
+  },
+  {
+   "name": "players-1642914",
+   "path": "/players/1642914"
+  },
+  {
+   "name": "players-1642918",
+   "path": "/players/1642918"
+  },
+  {
+   "name": "players-1642920",
+   "path": "/players/1642920"
+  },
+  {
+   "name": "players-1642927",
+   "path": "/players/1642927"
+  },
+  {
+   "name": "players-1642928",
+   "path": "/players/1642928"
+  },
+  {
+   "name": "players-1642933",
+   "path": "/players/1642933"
+  },
+  {
+   "name": "players-1642942",
+   "path": "/players/1642942"
+  },
+  {
+   "name": "players-1642948",
+   "path": "/players/1642948"
+  },
+  {
+   "name": "players-1642949",
+   "path": "/players/1642949"
+  },
+  {
+   "name": "players-1642951",
+   "path": "/players/1642951"
+  },
+  {
+   "name": "players-1642954",
+   "path": "/players/1642954"
+  },
+  {
+   "name": "players-1642959",
+   "path": "/players/1642959"
+  },
+  {
+   "name": "players-1642962",
+   "path": "/players/1642962"
+  },
+  {
+   "name": "players-1642964",
+   "path": "/players/1642964"
+  },
+  {
+   "name": "players-1643018",
+   "path": "/players/1643018"
+  },
+  {
+   "name": "players-1643022",
+   "path": "/players/1643022"
+  },
+  {
+   "name": "players-1643024",
+   "path": "/players/1643024"
+  },
+  {
+   "name": "players-1643052",
+   "path": "/players/1643052"
+  },
+  {
+   "name": "players-1643257",
+   "path": "/players/1643257"
+  },
+  {
+   "name": "players-1643407",
+   "path": "/players/1643407"
+  },
+  {
+   "name": "players-1643408",
+   "path": "/players/1643408"
+  },
+  {
+   "name": "players-1643409",
+   "path": "/players/1643409"
+  },
+  {
+   "name": "players-1643410",
+   "path": "/players/1643410"
+  },
+  {
+   "name": "players-1643411",
+   "path": "/players/1643411"
+  },
+  {
+   "name": "players-1643412",
+   "path": "/players/1643412"
+  },
+  {
+   "name": "players-1643413",
+   "path": "/players/1643413"
+  },
+  {
+   "name": "players-1643414",
+   "path": "/players/1643414"
+  },
+  {
+   "name": "players-1643415",
+   "path": "/players/1643415"
+  },
+  {
+   "name": "players-1643416",
+   "path": "/players/1643416"
+  },
+  {
+   "name": "players-1643417",
+   "path": "/players/1643417"
+  },
+  {
+   "name": "players-1643418",
+   "path": "/players/1643418"
+  },
+  {
+   "name": "players-1643419",
+   "path": "/players/1643419"
+  },
+  {
+   "name": "players-1643509",
+   "path": "/players/1643509"
+  },
+  {
+   "name": "players-1643510",
+   "path": "/players/1643510"
+  },
+  {
+   "name": "players-1643512",
+   "path": "/players/1643512"
+  },
+  {
+   "name": "players-1643515",
+   "path": "/players/1643515"
+  },
+  {
+   "name": "players-1643516",
+   "path": "/players/1643516"
+  },
+  {
+   "name": "players-1643517",
+   "path": "/players/1643517"
+  },
+  {
+   "name": "players-1643519",
+   "path": "/players/1643519"
+  },
+  {
+   "name": "players-1643520",
+   "path": "/players/1643520"
+  },
+  {
+   "name": "players-1643530",
+   "path": "/players/1643530"
+  },
+  {
+   "name": "players-1643536",
+   "path": "/players/1643536"
+  },
+  {
+   "name": "players-1643538",
+   "path": "/players/1643538"
+  },
+  {
+   "name": "players-1643539",
+   "path": "/players/1643539"
+  },
+  {
+   "name": "players-1643542",
+   "path": "/players/1643542"
+  },
+  {
+   "name": "players-1643544",
+   "path": "/players/1643544"
+  },
+  {
+   "name": "players-1643547",
+   "path": "/players/1643547"
+  },
+  {
+   "name": "players-1643548",
+   "path": "/players/1643548"
+  },
+  {
+   "name": "players-1643551",
+   "path": "/players/1643551"
+  },
+  {
+   "name": "players-1643552",
+   "path": "/players/1643552"
+  },
+  {
+   "name": "players-1643553",
+   "path": "/players/1643553"
+  },
+  {
+   "name": "players-1643555",
+   "path": "/players/1643555"
+  },
+  {
+   "name": "players-1643558",
+   "path": "/players/1643558"
+  },
+  {
+   "name": "players-1643563",
+   "path": "/players/1643563"
+  },
+  {
+   "name": "players-1643567",
+   "path": "/players/1643567"
+  },
+  {
+   "name": "players-1643568",
+   "path": "/players/1643568"
+  },
+  {
+   "name": "players-1643570",
+   "path": "/players/1643570"
+  },
+  {
+   "name": "players-1643573",
+   "path": "/players/1643573"
+  },
+  {
+   "name": "players-1643576",
+   "path": "/players/1643576"
+  },
+  {
+   "name": "players-1643588",
+   "path": "/players/1643588"
+  },
+  {
+   "name": "players-1643589",
+   "path": "/players/1643589"
+  },
+  {
+   "name": "players-1643590",
+   "path": "/players/1643590"
+  },
+  {
+   "name": "players-1643591",
+   "path": "/players/1643591"
+  },
+  {
+   "name": "players-1643593",
+   "path": "/players/1643593"
+  },
+  {
+   "name": "players-1643595",
+   "path": "/players/1643595"
+  },
+  {
+   "name": "players-1643621",
+   "path": "/players/1643621"
+  },
+  {
+   "name": "players-1643624",
+   "path": "/players/1643624"
+  },
+  {
+   "name": "players-1643633",
+   "path": "/players/1643633"
+  },
+  {
+   "name": "players-1643637",
+   "path": "/players/1643637"
+  },
+  {
+   "name": "players-1643640",
+   "path": "/players/1643640"
+  },
+  {
+   "name": "players-1643717",
+   "path": "/players/1643717"
+  },
+  {
+   "name": "players-1643721",
+   "path": "/players/1643721"
+  },
+  {
+   "name": "players-1643738",
+   "path": "/players/1643738"
+  },
+  {
+   "name": "players-1643813",
+   "path": "/players/1643813"
+  },
+  {
+   "name": "players-201142",
+   "path": "/players/201142"
+  },
+  {
+   "name": "players-201143",
+   "path": "/players/201143"
+  },
+  {
+   "name": "players-201144",
+   "path": "/players/201144"
+  },
+  {
+   "name": "players-201572",
+   "path": "/players/201572"
+  },
+  {
+   "name": "players-201599",
+   "path": "/players/201599"
+  },
+  {
+   "name": "players-201935",
+   "path": "/players/201935"
+  },
+  {
+   "name": "players-201939",
+   "path": "/players/201939"
+  },
+  {
+   "name": "players-201942",
+   "path": "/players/201942"
+  },
+  {
+   "name": "players-201950",
+   "path": "/players/201950"
+  },
+  {
+   "name": "players-202331",
+   "path": "/players/202331"
+  },
+  {
+   "name": "players-202681",
+   "path": "/players/202681"
+  },
+  {
+   "name": "players-202691",
+   "path": "/players/202691"
+  },
+  {
+   "name": "players-202695",
+   "path": "/players/202695"
+  },
+  {
+   "name": "players-202696",
+   "path": "/players/202696"
+  },
+  {
+   "name": "players-202699",
+   "path": "/players/202699"
+  },
+  {
+   "name": "players-202710",
+   "path": "/players/202710"
+  },
+  {
+   "name": "players-203076",
+   "path": "/players/203076"
+  },
+  {
+   "name": "players-203078",
+   "path": "/players/203078"
+  },
+  {
+   "name": "players-203081",
+   "path": "/players/203081"
+  },
+  {
+   "name": "players-203083",
+   "path": "/players/203083"
+  },
+  {
+   "name": "players-203084",
+   "path": "/players/203084"
+  },
+  {
+   "name": "players-203110",
+   "path": "/players/203110"
+  },
+  {
+   "name": "players-203114",
+   "path": "/players/203114"
+  },
+  {
+   "name": "players-203468",
+   "path": "/players/203468"
+  },
+  {
+   "name": "players-203471",
+   "path": "/players/203471"
+  },
+  {
+   "name": "players-203484",
+   "path": "/players/203484"
+  },
+  {
+   "name": "players-203486",
+   "path": "/players/203486"
+  },
+  {
+   "name": "players-203497",
+   "path": "/players/203497"
+  },
+  {
+   "name": "players-203500",
+   "path": "/players/203500"
+  },
+  {
+   "name": "players-203501",
+   "path": "/players/203501"
+  },
+  {
+   "name": "players-203507",
+   "path": "/players/203507"
+  },
+  {
+   "name": "players-203897",
+   "path": "/players/203897"
+  },
+  {
+   "name": "players-203903",
+   "path": "/players/203903"
+  },
+  {
+   "name": "players-203924",
+   "path": "/players/203924"
+  },
+  {
+   "name": "players-203932",
+   "path": "/players/203932"
+  },
+  {
+   "name": "players-203935",
+   "path": "/players/203935"
+  },
+  {
+   "name": "players-203937",
+   "path": "/players/203937"
+  },
+  {
+   "name": "players-203944",
+   "path": "/players/203944"
+  },
+  {
+   "name": "players-203952",
+   "path": "/players/203952"
+  },
+  {
+   "name": "players-203954",
+   "path": "/players/203954"
+  },
+  {
+   "name": "players-203991",
+   "path": "/players/203991"
+  },
+  {
+   "name": "players-203992",
+   "path": "/players/203992"
+  },
+  {
+   "name": "players-203994",
+   "path": "/players/203994"
+  },
+  {
+   "name": "players-203999",
+   "path": "/players/203999"
+  },
+  {
+   "name": "players-204001",
+   "path": "/players/204001"
+  },
+  {
+   "name": "players-204456",
+   "path": "/players/204456"
+  },
+  {
+   "name": "players-2544",
+   "path": "/players/2544"
+  }
+ ],
+ "api": [],
+ "snapshot": []
+}

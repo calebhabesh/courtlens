@@ -1,3 +1,3 @@
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { CaseStudiesSkeleton } from "@/components/case-studies-skeleton";
 
-export default function Loading() { return <TemplateSkeleton template="research" />; }
+export default function Loading() { return <CaseStudiesSkeleton />; }

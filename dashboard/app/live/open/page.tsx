@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { findLiveGameId } from "@/lib/workbench-api";
 import { validSlate } from "@/lib/live";
+import { gameHref } from "@/lib/entity-links";
 
 /**
  * Opens one of our games (Team Game Log) as its Live game page. Live pages are keyed by ESPN's
@@ -15,5 +16,5 @@ export default async function LiveOpenPage({ searchParams }: { searchParams: Pro
   const teams = (typeof sp.teams === "string" ? sp.teams.split(",") : []).slice(0, 2)
     .map(team => team.split(":").filter(key => /^(\d{1,12}|[A-Z]{2,4})$/.test(key)));
   const id = await findLiveGameId({ date, gameId, teams }).catch(() => null);
-  redirect(id ? `/live/games/${id}?date=${date}` : `/live/${date}`);
+  redirect(id ? gameHref({ espnId: id, date })! : `/live/${date}`);
 }

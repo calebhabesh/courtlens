@@ -1,0 +1,1900 @@
+{
+  "teams": [
+    {
+      "team_id": "1610612737",
+      "tricode": "ATL",
+      "artwork_name": "Atlanta Hawks",
+      "asset": "/team-logos/1610612737-efe7639e6daac1a1.svg"
+    },
+    {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "artwork_name": "Boston Celtics",
+      "asset": "/team-logos/1610612738-531038092e848f73.svg"
+    },
+    {
+      "team_id": "1610612739",
+      "tricode": "CLE",
+      "artwork_name": "Cleveland Cavaliers",
+      "asset": "/team-logos/1610612739-ef345729b4d9f698.svg"
+    },
+    {
+      "team_id": "1610612740",
+      "tricode": "NOP",
+      "artwork_name": "New Orleans Pelicans",
+      "asset": "/team-logos/1610612740-3d74bfcf573428a0.svg"
+    },
+    {
+      "team_id": "1610612741",
+      "tricode": "CHI",
+      "artwork_name": "Chicago Bulls",
+      "asset": "/team-logos/1610612741-a11d0d6480b75e4e.svg"
+    },
+    {
+      "team_id": "1610612742",
+      "tricode": "DAL",
+      "artwork_name": "Dallas Mavericks",
+      "asset": "/team-logos/1610612742-1547494512746c18.svg"
+    },
+    {
+      "team_id": "1610612743",
+      "tricode": "DEN",
+      "artwork_name": "Denver Nuggets",
+      "asset": "/team-logos/1610612743-4e180a9d1906a726.svg"
+    },
+    {
+      "team_id": "1610612744",
+      "tricode": "GSW",
+      "artwork_name": "Golden State Warriors",
+      "asset": "/team-logos/1610612744-99af50c32a1b1c19.svg"
+    },
+    {
+      "team_id": "1610612745",
+      "tricode": "HOU",
+      "artwork_name": "Houston Rockets",
+      "asset": "/team-logos/1610612745-9a0fd3d351f0726d.svg"
+    },
+    {
+      "team_id": "1610612746",
+      "tricode": "LAC",
+      "artwork_name": "LA Clippers",
+      "asset": "/team-logos/1610612746-6fe94cd7b648afe8.svg"
+    },
+    {
+      "team_id": "1610612747",
+      "tricode": "LAL",
+      "artwork_name": "Los Angeles Lakers",
+      "asset": "/team-logos/1610612747-5b68f7b92ba7d058.svg"
+    },
+    {
+      "team_id": "1610612748",
+      "tricode": "MIA",
+      "artwork_name": "Miami Heat",
+      "asset": "/team-logos/1610612748-bb56d6319628bed9.svg"
+    },
+    {
+      "team_id": "1610612749",
+      "tricode": "MIL",
+      "artwork_name": "Milwaukee Bucks",
+      "asset": "/team-logos/1610612749-1a315b6ea7d465c4.svg"
+    },
+    {
+      "team_id": "1610612750",
+      "tricode": "MIN",
+      "artwork_name": "Minnesota Timberwolves",
+      "asset": "/team-logos/1610612750-e23cca4da95fe6a0.svg"
+    },
+    {
+      "team_id": "1610612751",
+      "tricode": "BKN",
+      "artwork_name": "Brooklyn Nets",
+      "asset": "/team-logos/1610612751-6a3b134fbf97503b.svg"
+    },
+    {
+      "team_id": "1610612752",
+      "tricode": "NYK",
+      "artwork_name": "New York Knicks",
+      "asset": "/team-logos/1610612752-42e914c5226c3ff7.svg"
+    },
+    {
+      "team_id": "1610612753",
+      "tricode": "ORL",
+      "artwork_name": "Orlando Magic",
+      "asset": "/team-logos/1610612753-aa38562ae665b426.svg"
+    },
+    {
+      "team_id": "1610612754",
+      "tricode": "IND",
+      "artwork_name": "Indiana Pacers",
+      "asset": "/team-logos/1610612754-07b320f178a5bf9a.svg"
+    },
+    {
+      "team_id": "1610612755",
+      "tricode": "PHI",
+      "artwork_name": "Philadelphia 76ers",
+      "asset": "/team-logos/1610612755-1e3fbaf4f2d48a4e.svg"
+    },
+    {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "artwork_name": "Phoenix Suns",
+      "asset": "/team-logos/1610612756-b4ec319fc4551e87.svg"
+    },
+    {
+      "team_id": "1610612757",
+      "tricode": "POR",
+      "artwork_name": "Portland Trail Blazers",
+      "asset": "/team-logos/1610612757-65fbdafe950a7064.svg"
+    },
+    {
+      "team_id": "1610612758",
+      "tricode": "SAC",
+      "artwork_name": "Sacramento Kings",
+      "asset": "/team-logos/1610612758-36bcebbe9c06361d.svg"
+    },
+    {
+      "team_id": "1610612759",
+      "tricode": "SAS",
+      "artwork_name": "San Antonio Spurs",
+      "asset": "/team-logos/1610612759-c4df842e0d660dbc.svg"
+    },
+    {
+      "team_id": "1610612760",
+      "tricode": "OKC",
+      "artwork_name": "Oklahoma City Thunder",
+      "asset": "/team-logos/1610612760-fb684464e11e0798.svg"
+    },
+    {
+      "team_id": "1610612761",
+      "tricode": "TOR",
+      "artwork_name": "Toronto Raptors",
+      "asset": "/team-logos/1610612761-cb754caf37f8132f.svg"
+    },
+    {
+      "team_id": "1610612762",
+      "tricode": "UTA",
+      "artwork_name": "Utah Jazz",
+      "asset": "/team-logos/1610612762-f1df72b502f198c4.svg"
+    },
+    {
+      "team_id": "1610612763",
+      "tricode": "MEM",
+      "artwork_name": "Memphis Grizzlies",
+      "asset": "/team-logos/1610612763-677c8053201e9047.svg"
+    },
+    {
+      "team_id": "1610612764",
+      "tricode": "WAS",
+      "artwork_name": "Washington Wizards",
+      "asset": "/team-logos/1610612764-4e99c8f715c1af7e.svg"
+    },
+    {
+      "team_id": "1610612765",
+      "tricode": "DET",
+      "artwork_name": "Detroit Pistons",
+      "asset": "/team-logos/1610612765-efc20345b37e5220.svg"
+    },
+    {
+      "team_id": "1610612766",
+      "tricode": "CHA",
+      "artwork_name": "Charlotte Hornets",
+      "asset": "/team-logos/1610612766-cf2c99a2d619f635.svg"
+    }
+  ],
+  "eras": [
+    {
+      "code": "PHW",
+      "franchise_id": "1610612744",
+      "artwork_name": "Philadelphia Warriors",
+      "first_season": "1946-47",
+      "last_season": "1961-62",
+      "stored_as_code": true,
+      "asset": "/team-logos/philadelphia-warriors-bad96f77631b4c53.png",
+      "brand_color": "#1C3299"
+    },
+    {
+      "code": "SFW",
+      "franchise_id": "1610612744",
+      "artwork_name": "San Francisco Warriors",
+      "first_season": "1962-63",
+      "last_season": "1970-71",
+      "stored_as_code": true,
+      "asset": "/team-logos/san-francisco-warriors-7301d7e8cddc8c28.png",
+      "brand_color": "#FEFF02"
+    },
+    {
+      "code": "SYR",
+      "franchise_id": "1610612755",
+      "artwork_name": "Syracuse Nationals",
+      "first_season": "1949-50",
+      "last_season": "1962-63",
+      "stored_as_code": true,
+      "asset": "/team-logos/syracuse-nationals-72f7406b13b3019c.png",
+      "brand_color": "#E70108"
+    },
+    {
+      "code": "MNL",
+      "franchise_id": "1610612747",
+      "artwork_name": "Minneapolis Lakers",
+      "first_season": "1948-49",
+      "last_season": "1959-60",
+      "stored_as_code": true,
+      "asset": "/team-logos/minneapolis-lakers-e6ca9307a136dcd6.png",
+      "brand_color": "#D7D02A"
+    },
+    {
+      "code": "FTW",
+      "franchise_id": "1610612765",
+      "artwork_name": "Fort Wayne Pistons",
+      "first_season": "1948-49",
+      "last_season": "1956-57",
+      "stored_as_code": true,
+      "asset": "/team-logos/fort-wayne-pistons-29ff504c963d6cbb.png",
+      "brand_color": "#E8A0A3"
+    },
+    {
+      "code": "ROC",
+      "franchise_id": "1610612758",
+      "artwork_name": "Rochester Royals",
+      "first_season": "1948-49",
+      "last_season": "1956-57",
+      "stored_as_code": true,
+      "asset": "/team-logos/rochester-royals-8fdfc02bd91e091f.png",
+      "brand_color": "#2A275D"
+    },
+    {
+      "code": "CIN",
+      "franchise_id": "1610612758",
+      "artwork_name": "Cincinnati Royals",
+      "first_season": "1957-58",
+      "last_season": "1971-72",
+      "stored_as_code": true,
+      "asset": "/team-logos/cincinnati-royals-06d3c5d94e7fd635.png",
+      "brand_color": "#CC3300"
+    },
+    {
+      "code": "KCO",
+      "franchise_id": "1610612758",
+      "artwork_name": "Kansas City-Omaha Kings",
+      "first_season": "1972-73",
+      "last_season": "1974-75",
+      "stored_as_code": true,
+      "asset": "/team-logos/kansas-city-omaha-kings-ad53a3b1866aed54.png",
+      "brand_color": "#D03320"
+    },
+    {
+      "code": "TRI",
+      "franchise_id": "1610612737",
+      "artwork_name": "Tri-Cities Blackhawks",
+      "first_season": "1949-50",
+      "last_season": "1950-51",
+      "stored_as_code": true,
+      "asset": "/team-logos/tri-cities-blackhawks-120b6e06ea01596e.png",
+      "brand_color": "#342323"
+    },
+    {
+      "code": "MLH",
+      "franchise_id": "1610612737",
+      "artwork_name": "Milwaukee Hawks",
+      "first_season": "1951-52",
+      "last_season": "1954-55",
+      "stored_as_code": true,
+      "asset": "/team-logos/milwaukee-hawks-7dcb397f25ae55c9.png",
+      "brand_color": "#A5FCFE"
+    },
+    {
+      "code": "STL",
+      "franchise_id": "1610612737",
+      "artwork_name": "St. Louis Hawks",
+      "first_season": "1955-56",
+      "last_season": "1967-68",
+      "stored_as_code": true,
+      "asset": "/team-logos/st-louis-hawks-c2ba2db74d53bf30.png",
+      "brand_color": "#E17F92"
+    },
+    {
+      "code": "CHP",
+      "franchise_id": "1610612764",
+      "artwork_name": "Chicago Packers",
+      "first_season": "1961-62",
+      "last_season": "1961-62",
+      "stored_as_code": true,
+      "asset": "/team-logos/chicago-packers-59417aa2eec4395a.png",
+      "brand_color": "#8B4539"
+    },
+    {
+      "code": "CHZ",
+      "franchise_id": "1610612764",
+      "artwork_name": "Chicago Zephyrs",
+      "first_season": "1962-63",
+      "last_season": "1962-63",
+      "stored_as_code": true,
+      "asset": "/team-logos/chicago-zephyrs-37f88de6e38e355f.png",
+      "brand_color": "#B9996D"
+    },
+    {
+      "code": "BAL",
+      "franchise_id": "1610612764",
+      "artwork_name": "Baltimore Bullets",
+      "first_season": "1963-64",
+      "last_season": "1972-73",
+      "stored_as_code": true,
+      "asset": "/team-logos/baltimore-bullets-0f14ecbce094aa4e.png",
+      "brand_color": "#013499"
+    },
+    {
+      "code": "CAP",
+      "franchise_id": "1610612764",
+      "artwork_name": "Capital Bullets",
+      "first_season": "1973-74",
+      "last_season": "1973-74",
+      "stored_as_code": true,
+      "asset": "/team-logos/capital-bullets-39c17aa0df076988.png",
+      "brand_color": "#023399"
+    },
+    {
+      "code": "SDR",
+      "franchise_id": "1610612745",
+      "artwork_name": "San Diego Rockets",
+      "first_season": "1967-68",
+      "last_season": "1970-71",
+      "stored_as_code": true,
+      "asset": "/team-logos/san-diego-rockets-d69e13304648a0c3.png",
+      "brand_color": "#046234"
+    },
+    {
+      "code": "BUF",
+      "franchise_id": "1610612746",
+      "artwork_name": "Buffalo Braves",
+      "first_season": "1970-71",
+      "last_season": "1977-78",
+      "stored_as_code": true,
+      "asset": "/team-logos/buffalo-braves-837640f153aa8563.png",
+      "brand_color": "#0479C0"
+    },
+    {
+      "code": "NOJ",
+      "franchise_id": "1610612762",
+      "artwork_name": "New Orleans Jazz",
+      "first_season": "1974-75",
+      "last_season": "1978-79",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-orleans-jazz-0e8615451051c6f2.png",
+      "brand_color": "#350348"
+    },
+    {
+      "code": "NYN",
+      "franchise_id": "1610612751",
+      "artwork_name": "New York Nets",
+      "first_season": "1976-77",
+      "last_season": "1976-77",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-york-nets-17a7176f75d78b1b.png",
+      "brand_color": "#AE150B"
+    },
+    {
+      "code": "CHS",
+      "franchise_id": null,
+      "artwork_name": "Chicago Stags",
+      "first_season": "1946-47",
+      "last_season": "1949-50",
+      "stored_as_code": true,
+      "asset": "/team-logos/chicago-stags-ed5dc7c986fc6620.png",
+      "brand_color": "#C02E3B"
+    },
+    {
+      "code": "CLR",
+      "franchise_id": null,
+      "artwork_name": "Cleveland Rebels",
+      "first_season": "1946-47",
+      "last_season": "1946-47",
+      "stored_as_code": true,
+      "asset": "/team-logos/cleveland-rebels-f6ee68ac543c8ee0.png",
+      "brand_color": "#E10001"
+    },
+    {
+      "code": "DTF",
+      "franchise_id": null,
+      "artwork_name": "Detroit Falcons",
+      "first_season": "1946-47",
+      "last_season": "1946-47",
+      "stored_as_code": true
+    },
+    {
+      "code": "PIT",
+      "franchise_id": null,
+      "artwork_name": "Pittsburgh Ironmen",
+      "first_season": "1946-47",
+      "last_season": "1946-47",
+      "stored_as_code": true
+    },
+    {
+      "code": "PRO",
+      "franchise_id": null,
+      "artwork_name": "Providence Steamrollers",
+      "first_season": "1946-47",
+      "last_season": "1948-49",
+      "stored_as_code": true,
+      "asset": "/team-logos/providence-steamrollers-23c798e9fe7de74c.png",
+      "brand_color": "#CC2925"
+    },
+    {
+      "code": "STB",
+      "franchise_id": null,
+      "artwork_name": "St. Louis Bombers",
+      "first_season": "1946-47",
+      "last_season": "1949-50",
+      "stored_as_code": true,
+      "asset": "/team-logos/st-louis-bombers-0ee417d481a118de.png",
+      "brand_color": "#B64802"
+    },
+    {
+      "code": "TRH",
+      "franchise_id": null,
+      "artwork_name": "Toronto Huskies",
+      "first_season": "1946-47",
+      "last_season": "1946-47",
+      "stored_as_code": true,
+      "asset": "/team-logos/toronto-huskies-8f0f24b7e1790208.png",
+      "brand_color": "#0A6DB5"
+    },
+    {
+      "code": "WSC",
+      "franchise_id": null,
+      "artwork_name": "Washington Capitols",
+      "first_season": "1946-47",
+      "last_season": "1950-51",
+      "stored_as_code": true
+    },
+    {
+      "code": "BLB",
+      "franchise_id": null,
+      "artwork_name": "Baltimore Bullets",
+      "first_season": "1947-48",
+      "last_season": "1954-55",
+      "stored_as_code": true,
+      "asset": "/team-logos/baltimore-bullets-blb-98398203f222cb30.png",
+      "brand_color": "#241F2E"
+    },
+    {
+      "code": "INJ",
+      "franchise_id": null,
+      "artwork_name": "Indianapolis Jets",
+      "first_season": "1948-49",
+      "last_season": "1948-49",
+      "stored_as_code": true
+    },
+    {
+      "code": "AND",
+      "franchise_id": null,
+      "artwork_name": "Anderson Packers",
+      "first_season": "1949-50",
+      "last_season": "1949-50",
+      "stored_as_code": true,
+      "asset": "/team-logos/anderson-packers-8f3908ba9c443857.png",
+      "brand_color": "#F60401"
+    },
+    {
+      "code": "DNN",
+      "franchise_id": null,
+      "artwork_name": "Denver Nuggets",
+      "first_season": "1949-50",
+      "last_season": "1949-50",
+      "stored_as_code": true,
+      "asset": "/team-logos/denver-nuggets-dnn-dd3bbb1750bb6619.png",
+      "brand_color": "#1D254E"
+    },
+    {
+      "code": "INO",
+      "franchise_id": null,
+      "artwork_name": "Indianapolis Olympians",
+      "first_season": "1949-50",
+      "last_season": "1952-53",
+      "stored_as_code": true,
+      "asset": "/team-logos/indianapolis-olympians-a64db0589d392f81.svg",
+      "brand_color": "#1A2741"
+    },
+    {
+      "code": "SHE",
+      "franchise_id": null,
+      "artwork_name": "Sheboygan Red Skins",
+      "first_season": "1949-50",
+      "last_season": "1949-50",
+      "stored_as_code": true
+    },
+    {
+      "code": "WAT",
+      "franchise_id": null,
+      "artwork_name": "Waterloo Hawks",
+      "first_season": "1949-50",
+      "last_season": "1949-50",
+      "stored_as_code": true
+    },
+    {
+      "code": "WSB",
+      "franchise_id": "1610612764",
+      "artwork_name": "Washington Bullets",
+      "first_season": "1974-75",
+      "last_season": "1996-97",
+      "stored_as_code": true,
+      "asset": "/team-logos/washington-bullets-a1823dbd44b9811e.png",
+      "brand_color": "#0445AE"
+    },
+    {
+      "code": "KCK",
+      "franchise_id": "1610612758",
+      "artwork_name": "Kansas City Kings",
+      "first_season": "1975-76",
+      "last_season": "1984-85",
+      "stored_as_code": true,
+      "asset": "/team-logos/kansas-city-kings-e34ff779af0615c1.png",
+      "brand_color": "#CF311D"
+    },
+    {
+      "code": "SDC",
+      "franchise_id": "1610612746",
+      "artwork_name": "San Diego Clippers",
+      "first_season": "1978-79",
+      "last_season": "1983-84",
+      "stored_as_code": true,
+      "asset": "/team-logos/san-diego-clippers-c58a7a8a673757d6.png",
+      "brand_color": "#036AB7"
+    },
+    {
+      "code": "SEA",
+      "franchise_id": "1610612760",
+      "artwork_name": "Seattle SuperSonics",
+      "first_season": "1967-68",
+      "last_season": "2003-04",
+      "stored_as_code": true,
+      "asset": "/team-logos/seattle-supersonics-85320f6c174083f9.svg",
+      "brand_color": "#FFC121"
+    },
+    {
+      "code": "SEA",
+      "franchise_id": "1610612760",
+      "artwork_name": "Seattle SuperSonics",
+      "first_season": "2004-05",
+      "last_season": "2007-08",
+      "stored_as_code": true,
+      "asset": "/team-logos/seattle-supersonics-85320f6c174083f9.svg",
+      "brand_color": "#FFC121"
+    },
+    {
+      "code": "NJN",
+      "franchise_id": "1610612751",
+      "artwork_name": "New Jersey Nets",
+      "first_season": "1977-78",
+      "last_season": "2011-12",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-jersey-nets-0789a52d3da8924c.png",
+      "brand_color": "#022A61"
+    },
+    {
+      "code": "VAN",
+      "franchise_id": "1610612763",
+      "artwork_name": "Vancouver Grizzlies",
+      "first_season": "1995-96",
+      "last_season": "2000-01",
+      "stored_as_code": true,
+      "asset": "/team-logos/vancouver-grizzlies-ac26413c74130727.svg",
+      "brand_color": "#A47858"
+    },
+    {
+      "code": "CHH",
+      "franchise_id": "1610612766",
+      "artwork_name": "Charlotte Hornets",
+      "first_season": "1988-89",
+      "last_season": "2001-02",
+      "stored_as_code": true,
+      "asset": "/team-logos/charlotte-hornets-db0a859f832d7706.png",
+      "brand_color": "#017488"
+    },
+    {
+      "code": "NOH",
+      "franchise_id": "1610612740",
+      "artwork_name": "New Orleans Hornets",
+      "first_season": "2002-03",
+      "last_season": "2003-04",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-orleans-hornets-c907d05fd6a4ee55.png",
+      "brand_color": "#028DC4"
+    },
+    {
+      "code": "NOH",
+      "franchise_id": "1610612740",
+      "artwork_name": "New Orleans Hornets",
+      "first_season": "2004-05",
+      "last_season": "2004-05",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-orleans-hornets-c907d05fd6a4ee55.png",
+      "brand_color": "#028DC4"
+    },
+    {
+      "code": "NOK",
+      "franchise_id": "1610612740",
+      "artwork_name": "New Orleans/Oklahoma City Hornets",
+      "first_season": "2005-06",
+      "last_season": "2006-07",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-orleans-oklahoma-city-hornets-70ea9e86bbac36c6.png",
+      "brand_color": "#0091B0"
+    },
+    {
+      "code": "NOH",
+      "franchise_id": "1610612740",
+      "artwork_name": "New Orleans Hornets",
+      "first_season": "2007-08",
+      "last_season": "2012-13",
+      "stored_as_code": true,
+      "asset": "/team-logos/new-orleans-hornets-c907d05fd6a4ee55.png",
+      "brand_color": "#028DC4"
+    },
+    {
+      "code": "LAC",
+      "franchise_id": "1610612746",
+      "artwork_name": "Los Angeles Clippers",
+      "first_season": "1984-85",
+      "last_season": "2014-15",
+      "stored_as_code": false,
+      "asset": "/team-logos/los-angeles-clippers-8e39517d5c1cdea9.png",
+      "brand_color": "#0649B0"
+    },
+    {
+      "code": "CHA",
+      "franchise_id": "1610612766",
+      "artwork_name": "Charlotte Bobcats",
+      "first_season": "2004-05",
+      "last_season": "2013-14",
+      "stored_as_code": false,
+      "asset": "/team-logos/charlotte-bobcats-f132838976d52060.png",
+      "brand_color": "#052A5B"
+    }
+  ],
+  "inactive": [
+    {
+      "franchise_id": "1610612737",
+      "first_season": null,
+      "last_season": "1948-49"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": null,
+      "last_season": "1975-76"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": null,
+      "last_season": "1987-88"
+    },
+    {
+      "franchise_id": "1610612741",
+      "first_season": null,
+      "last_season": "1965-66"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": null,
+      "last_season": "1969-70"
+    },
+    {
+      "franchise_id": "1610612742",
+      "first_season": null,
+      "last_season": "1979-80"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": null,
+      "last_season": "1975-76"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": null,
+      "last_season": "1947-48"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": null,
+      "last_season": "1966-67"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": null,
+      "last_season": "1975-76"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": null,
+      "last_season": "1969-70"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": null,
+      "last_season": "1947-48"
+    },
+    {
+      "franchise_id": "1610612763",
+      "first_season": null,
+      "last_season": "1994-95"
+    },
+    {
+      "franchise_id": "1610612748",
+      "first_season": null,
+      "last_season": "1987-88"
+    },
+    {
+      "franchise_id": "1610612749",
+      "first_season": null,
+      "last_season": "1967-68"
+    },
+    {
+      "franchise_id": "1610612750",
+      "first_season": null,
+      "last_season": "1988-89"
+    },
+    {
+      "franchise_id": "1610612740",
+      "first_season": null,
+      "last_season": "2001-02"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": null,
+      "last_season": "1966-67"
+    },
+    {
+      "franchise_id": "1610612753",
+      "first_season": null,
+      "last_season": "1988-89"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": null,
+      "last_season": "1948-49"
+    },
+    {
+      "franchise_id": "1610612756",
+      "first_season": null,
+      "last_season": "1967-68"
+    },
+    {
+      "franchise_id": "1610612757",
+      "first_season": null,
+      "last_season": "1969-70"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": null,
+      "last_season": "1947-48"
+    },
+    {
+      "franchise_id": "1610612759",
+      "first_season": null,
+      "last_season": "1975-76"
+    },
+    {
+      "franchise_id": "1610612761",
+      "first_season": null,
+      "last_season": "1994-95"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": null,
+      "last_season": "1973-74"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": null,
+      "last_season": "1960-61"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "2002-03",
+      "last_season": "2003-04"
+    }
+  ],
+  "season_logos": [
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1949-50",
+      "last_season": "1950-51",
+      "asset": "/team-logos/tri-cities-blackhawks-120b6e06ea01596e.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1951-52",
+      "last_season": "1954-55",
+      "asset": "/team-logos/milwaukee-hawks-7dcb397f25ae55c9.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1955-56",
+      "last_season": "1956-57",
+      "asset": "/team-logos/stl-1956-3a07c38250c683ab.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1957-58",
+      "last_season": "1967-68",
+      "asset": "/team-logos/st-louis-hawks-c2ba2db74d53bf30.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1968-69",
+      "last_season": "1968-69",
+      "asset": "/team-logos/atl-1969-43752f7c31a57560.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1969-70",
+      "last_season": "1969-70",
+      "asset": "/team-logos/atl-1970-8b653836d452d39e.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1970-71",
+      "last_season": "1971-72",
+      "asset": "/team-logos/atl-1971-f0f710cfaf22c96c.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1972-73",
+      "last_season": "1994-95",
+      "asset": "/team-logos/atl-1973-dbd822ce14a66cbd.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "1995-96",
+      "last_season": "2006-07",
+      "asset": "/team-logos/atl-1996-a2937c0c43bb0bfa.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "2007-08",
+      "last_season": "2014-15",
+      "asset": "/team-logos/atl-2008-197a0108aba5d7be.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "2015-16",
+      "last_season": "2019-20",
+      "asset": "/team-logos/atl-2016-9edd09656051907c.png"
+    },
+    {
+      "franchise_id": "1610612737",
+      "first_season": "2020-21",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612737-efe7639e6daac1a1.svg"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1946-47",
+      "last_season": "1949-50",
+      "asset": "/team-logos/bos-1947-17d3a1c80c173c40.png"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1950-51",
+      "last_season": "1959-60",
+      "asset": "/team-logos/bos-1951-077ee3157ce3a008.png"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1960-61",
+      "last_season": "1967-68",
+      "asset": "/team-logos/bos-1961-017386a1b29728fc.png"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1968-69",
+      "last_season": "1975-76",
+      "asset": "/team-logos/bos-1969-96819ea2f137e9f5.png"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1976-77",
+      "last_season": "1995-96",
+      "asset": "/team-logos/bos-1977-4571e077bce6b1e7.png"
+    },
+    {
+      "franchise_id": "1610612738",
+      "first_season": "1996-97",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612738-531038092e848f73.svg"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "1970-71",
+      "last_season": "1982-83",
+      "asset": "/team-logos/cle-1971-072ee1f356a6c03f.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "1983-84",
+      "last_season": "1993-94",
+      "asset": "/team-logos/cle-1984-dd4762aa966bd163.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "1994-95",
+      "last_season": "2002-03",
+      "asset": "/team-logos/cle-1995-c0c49668688d847e.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "2003-04",
+      "last_season": "2009-10",
+      "asset": "/team-logos/cle-2004-22acbb6b39873d8f.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "2010-11",
+      "last_season": "2016-17",
+      "asset": "/team-logos/cle-2011-4c55cea445be7bfd.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "2017-18",
+      "last_season": "2021-22",
+      "asset": "/team-logos/cle-2018-213bd02fcb612fa3.png"
+    },
+    {
+      "franchise_id": "1610612739",
+      "first_season": "2022-23",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612739-ef345729b4d9f698.svg"
+    },
+    {
+      "franchise_id": "1610612740",
+      "first_season": "2002-03",
+      "last_season": "2007-08",
+      "asset": "/team-logos/new-orleans-oklahoma-city-hornets-70ea9e86bbac36c6.png"
+    },
+    {
+      "franchise_id": "1610612740",
+      "first_season": "2008-09",
+      "last_season": "2012-13",
+      "asset": "/team-logos/new-orleans-hornets-c907d05fd6a4ee55.png"
+    },
+    {
+      "franchise_id": "1610612740",
+      "first_season": "2013-14",
+      "last_season": "2022-23",
+      "asset": "/team-logos/nop-2014-d3ab5d5b2b570e01.png"
+    },
+    {
+      "franchise_id": "1610612740",
+      "first_season": "2023-24",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612740-3d74bfcf573428a0.svg"
+    },
+    {
+      "franchise_id": "1610612741",
+      "first_season": "1966-67",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612741-a11d0d6480b75e4e.svg"
+    },
+    {
+      "franchise_id": "1610612742",
+      "first_season": "1980-81",
+      "last_season": "1992-93",
+      "asset": "/team-logos/dal-1981-58dcb7664353baff.png"
+    },
+    {
+      "franchise_id": "1610612742",
+      "first_season": "1993-94",
+      "last_season": "2000-01",
+      "asset": "/team-logos/dal-1994-a2b9f98b98bb89ed.png"
+    },
+    {
+      "franchise_id": "1610612742",
+      "first_season": "2001-02",
+      "last_season": "2016-17",
+      "asset": "/team-logos/dal-2002-bc05f82b512c9cfa.png"
+    },
+    {
+      "franchise_id": "1610612742",
+      "first_season": "2017-18",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612742-1547494512746c18.svg"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "1976-77",
+      "last_season": "1980-81",
+      "asset": "/team-logos/den-1977-23f6c97182db2a00.png"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "1981-82",
+      "last_season": "1992-93",
+      "asset": "/team-logos/den-1982-ea7110da7ebfc692.png"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "1993-94",
+      "last_season": "2002-03",
+      "asset": "/team-logos/den-1994-b268b0913f0b16fc.png"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "2003-04",
+      "last_season": "2007-08",
+      "asset": "/team-logos/den-2004-34e11c4bff119117.png"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "2008-09",
+      "last_season": "2017-18",
+      "asset": "/team-logos/den-2009-11bd2321fa2da412.png"
+    },
+    {
+      "franchise_id": "1610612743",
+      "first_season": "2018-19",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612743-4e180a9d1906a726.svg"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1946-47",
+      "last_season": "1950-51",
+      "asset": "/team-logos/phw-1947-76e657aef6e07a43.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1951-52",
+      "last_season": "1961-62",
+      "asset": "/team-logos/philadelphia-warriors-bad96f77631b4c53.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1962-63",
+      "last_season": "1968-69",
+      "asset": "/team-logos/sfw-1963-324e724ee3a746de.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1969-70",
+      "last_season": "1970-71",
+      "asset": "/team-logos/san-francisco-warriors-7301d7e8cddc8c28.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1971-72",
+      "last_season": "1971-72",
+      "asset": "/team-logos/gsw-1972-ddbd9bdc1e3d39da.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1972-73",
+      "last_season": "1974-75",
+      "asset": "/team-logos/gsw-1973-cc7fbd9ce7c1d985.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1975-76",
+      "last_season": "1987-88",
+      "asset": "/team-logos/gsw-1976-ce64b73b29d7e88a.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1988-89",
+      "last_season": "1996-97",
+      "asset": "/team-logos/gsw-1989-5f527da87a60c573.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "1997-98",
+      "last_season": "2009-10",
+      "asset": "/team-logos/gsw-1998-6fba521085df6bfd.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "2010-11",
+      "last_season": "2018-19",
+      "asset": "/team-logos/gsw-2011-a868d26f747e71bc.png"
+    },
+    {
+      "franchise_id": "1610612744",
+      "first_season": "2019-20",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612744-99af50c32a1b1c19.svg"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "1967-68",
+      "last_season": "1970-71",
+      "asset": "/team-logos/san-diego-rockets-d69e13304648a0c3.png"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "1971-72",
+      "last_season": "1971-72",
+      "asset": "/team-logos/hou-1972-85e461664d5715cd.png"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "1972-73",
+      "last_season": "1994-95",
+      "asset": "/team-logos/hou-1973-d1359247ab5e9852.png"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "1995-96",
+      "last_season": "2002-03",
+      "asset": "/team-logos/hou-1996-ddec7a5e74ea5685.png"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "2003-04",
+      "last_season": "2018-19",
+      "asset": "/team-logos/hou-2004-8a8faf3c60a1e0d7.png"
+    },
+    {
+      "franchise_id": "1610612745",
+      "first_season": "2019-20",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612745-9a0fd3d351f0726d.svg"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "1970-71",
+      "last_season": "1970-71",
+      "asset": "/team-logos/buf-1971-3391e14a4aa05239.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "1971-72",
+      "last_season": "1977-78",
+      "asset": "/team-logos/buffalo-braves-837640f153aa8563.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "1978-79",
+      "last_season": "1981-82",
+      "asset": "/team-logos/sdc-1979-fa8759cee552760b.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "1982-83",
+      "last_season": "1983-84",
+      "asset": "/team-logos/san-diego-clippers-c58a7a8a673757d6.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "1984-85",
+      "last_season": "2009-10",
+      "asset": "/team-logos/lac-1985-77008a5a0a0bdedc.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "2010-11",
+      "last_season": "2014-15",
+      "asset": "/team-logos/lac-2011-8e39517d5c1cdea9.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "2015-16",
+      "last_season": "2023-24",
+      "asset": "/team-logos/lac-2016-9467279bbaa35a4e.png"
+    },
+    {
+      "franchise_id": "1610612746",
+      "first_season": "2024-25",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612746-6fe94cd7b648afe8.svg"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "1948-49",
+      "last_season": "1959-60",
+      "asset": "/team-logos/minneapolis-lakers-e6ca9307a136dcd6.png"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "1960-61",
+      "last_season": "1975-76",
+      "asset": "/team-logos/lal-1961-50c98c818899b919.png"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "1976-77",
+      "last_season": "2000-01",
+      "asset": "/team-logos/lal-1977-99f0ea0df6348c3b.png"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "2001-02",
+      "last_season": "2016-17",
+      "asset": "/team-logos/lal-2002-04785fa4b09c8c26.png"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "2017-18",
+      "last_season": "2022-23",
+      "asset": "/team-logos/lal-2018-c93b5fcdb35e139a.png"
+    },
+    {
+      "franchise_id": "1610612747",
+      "first_season": "2023-24",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612747-5b68f7b92ba7d058.svg"
+    },
+    {
+      "franchise_id": "1610612748",
+      "first_season": "1988-89",
+      "last_season": "1998-99",
+      "asset": "/team-logos/mia-1989-c58e9005cac55943.png"
+    },
+    {
+      "franchise_id": "1610612748",
+      "first_season": "1999-00",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612748-bb56d6319628bed9.svg"
+    },
+    {
+      "franchise_id": "1610612749",
+      "first_season": "1968-69",
+      "last_season": "1992-93",
+      "asset": "/team-logos/mil-1969-bc32e1f8a76bb772.png"
+    },
+    {
+      "franchise_id": "1610612749",
+      "first_season": "1993-94",
+      "last_season": "2005-06",
+      "asset": "/team-logos/mil-1994-1d48981609e8c758.png"
+    },
+    {
+      "franchise_id": "1610612749",
+      "first_season": "2006-07",
+      "last_season": "2014-15",
+      "asset": "/team-logos/mil-2007-43d3778d19416262.png"
+    },
+    {
+      "franchise_id": "1610612749",
+      "first_season": "2015-16",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612749-1a315b6ea7d465c4.svg"
+    },
+    {
+      "franchise_id": "1610612750",
+      "first_season": "1989-90",
+      "last_season": "1995-96",
+      "asset": "/team-logos/min-1990-4c2f07bfad3231d2.png"
+    },
+    {
+      "franchise_id": "1610612750",
+      "first_season": "1996-97",
+      "last_season": "2007-08",
+      "asset": "/team-logos/min-1997-1b9b741368323ef8.png"
+    },
+    {
+      "franchise_id": "1610612750",
+      "first_season": "2008-09",
+      "last_season": "2016-17",
+      "asset": "/team-logos/min-2009-b265e83a93b33f4c.png"
+    },
+    {
+      "franchise_id": "1610612750",
+      "first_season": "2017-18",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612750-e23cca4da95fe6a0.svg"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "1976-77",
+      "last_season": "1976-77",
+      "asset": "/team-logos/new-york-nets-17a7176f75d78b1b.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "1977-78",
+      "last_season": "1977-78",
+      "asset": "/team-logos/njn-1978-0e2f44fe39d1308d.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "1978-79",
+      "last_season": "1989-90",
+      "asset": "/team-logos/njn-1979-8eb11c412ba2b258.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "1990-91",
+      "last_season": "1996-97",
+      "asset": "/team-logos/njn-1991-6dddec3a72c58f47.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "1997-98",
+      "last_season": "2011-12",
+      "asset": "/team-logos/new-jersey-nets-0789a52d3da8924c.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "2012-13",
+      "last_season": "2023-24",
+      "asset": "/team-logos/brk-2013-d5d828b50de69beb.png"
+    },
+    {
+      "franchise_id": "1610612751",
+      "first_season": "2024-25",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612751-6a3b134fbf97503b.svg"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1946-47",
+      "last_season": "1963-64",
+      "asset": "/team-logos/nyk-1947-e92e5e97c6e092a1.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1964-65",
+      "last_season": "1978-79",
+      "asset": "/team-logos/nyk-1965-9d075162cddb904d.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1979-80",
+      "last_season": "1982-83",
+      "asset": "/team-logos/nyk-1980-333897e8a59b351e.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1983-84",
+      "last_season": "1988-89",
+      "asset": "/team-logos/nyk-1984-1d17d925ec501e70.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1989-90",
+      "last_season": "1991-92",
+      "asset": "/team-logos/nyk-1990-57720f5f1c29df44.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1992-93",
+      "last_season": "1994-95",
+      "asset": "/team-logos/nyk-1993-4d20386c46041453.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "1995-96",
+      "last_season": "2010-11",
+      "asset": "/team-logos/nyk-1996-b09a833f5df42913.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "2011-12",
+      "last_season": "2021-22",
+      "asset": "/team-logos/nyk-2012-b5942a3696aa62a9.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "2022-23",
+      "last_season": "2022-23",
+      "asset": "/team-logos/nyk-2023-1d022732168f81ed.png"
+    },
+    {
+      "franchise_id": "1610612752",
+      "first_season": "2023-24",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612752-42e914c5226c3ff7.svg"
+    },
+    {
+      "franchise_id": "1610612753",
+      "first_season": "1989-90",
+      "last_season": "1999-00",
+      "asset": "/team-logos/orl-1990-84b32927e36376a8.png"
+    },
+    {
+      "franchise_id": "1610612753",
+      "first_season": "2000-01",
+      "last_season": "2009-10",
+      "asset": "/team-logos/orl-2001-1a62e9f411a95617.png"
+    },
+    {
+      "franchise_id": "1610612753",
+      "first_season": "2010-11",
+      "last_season": "2024-25",
+      "asset": "/team-logos/orl-2011-f5e5d0bb771de623.png"
+    },
+    {
+      "franchise_id": "1610612753",
+      "first_season": "2025-26",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612753-aa38562ae665b426.svg"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": "1976-77",
+      "last_season": "1989-90",
+      "asset": "/team-logos/ind-1977-b45c65947e9fbc42.png"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": "1990-91",
+      "last_season": "2004-05",
+      "asset": "/team-logos/ind-1991-df23d35f1ef70693.png"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": "2005-06",
+      "last_season": "2016-17",
+      "asset": "/team-logos/ind-2006-49304e62e7d3aa86.png"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": "2017-18",
+      "last_season": "2024-25",
+      "asset": "/team-logos/ind-2018-688c3e1b878055d3.png"
+    },
+    {
+      "franchise_id": "1610612754",
+      "first_season": "2025-26",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612754-07b320f178a5bf9a.svg"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "1949-50",
+      "last_season": "1962-63",
+      "asset": "/team-logos/syracuse-nationals-72f7406b13b3019c.png"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "1963-64",
+      "last_season": "1976-77",
+      "asset": "/team-logos/phi-1964-7ba899f9f6177a9a.png"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "1977-78",
+      "last_season": "1996-97",
+      "asset": "/team-logos/phi-1978-2eb66a75f36acb13.png"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "1997-98",
+      "last_season": "2008-09",
+      "asset": "/team-logos/phi-1998-8ca62d55b9d12207.png"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "2009-10",
+      "last_season": "2014-15",
+      "asset": "/team-logos/phi-2010-e36b13496b586394.png"
+    },
+    {
+      "franchise_id": "1610612755",
+      "first_season": "2015-16",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612755-1e3fbaf4f2d48a4e.svg"
+    },
+    {
+      "franchise_id": "1610612756",
+      "first_season": "1968-69",
+      "last_season": "1991-92",
+      "asset": "/team-logos/pho-1969-9070f3b79faec690.png"
+    },
+    {
+      "franchise_id": "1610612756",
+      "first_season": "1992-93",
+      "last_season": "1999-00",
+      "asset": "/team-logos/pho-1993-e9dee8c465734b1b.png"
+    },
+    {
+      "franchise_id": "1610612756",
+      "first_season": "2000-01",
+      "last_season": "2012-13",
+      "asset": "/team-logos/pho-2001-8e0feb1575a5337f.png"
+    },
+    {
+      "franchise_id": "1610612756",
+      "first_season": "2013-14",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612756-b4ec319fc4551e87.svg"
+    },
+    {
+      "franchise_id": "1610612757",
+      "first_season": "1970-71",
+      "last_season": "1989-90",
+      "asset": "/team-logos/por-1971-e19eaf319775830c.png"
+    },
+    {
+      "franchise_id": "1610612757",
+      "first_season": "1990-91",
+      "last_season": "2001-02",
+      "asset": "/team-logos/por-1991-0840d9466552d097.png"
+    },
+    {
+      "franchise_id": "1610612757",
+      "first_season": "2002-03",
+      "last_season": "2016-17",
+      "asset": "/team-logos/por-2003-06d4980dd87d08dc.png"
+    },
+    {
+      "franchise_id": "1610612757",
+      "first_season": "2017-18",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612757-65fbdafe950a7064.svg"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1948-49",
+      "last_season": "1956-57",
+      "asset": "/team-logos/rochester-royals-8fdfc02bd91e091f.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1957-58",
+      "last_season": "1970-71",
+      "asset": "/team-logos/cin-1958-d53ff733a74dc8ca.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1971-72",
+      "last_season": "1971-72",
+      "asset": "/team-logos/cincinnati-royals-06d3c5d94e7fd635.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1972-73",
+      "last_season": "1974-75",
+      "asset": "/team-logos/kansas-city-omaha-kings-ad53a3b1866aed54.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1975-76",
+      "last_season": "1984-85",
+      "asset": "/team-logos/kansas-city-kings-e34ff779af0615c1.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1985-86",
+      "last_season": "1993-94",
+      "asset": "/team-logos/sac-1986-c89036e7f5b3deb3.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "1994-95",
+      "last_season": "2015-16",
+      "asset": "/team-logos/sac-1995-39e72ba213bbf860.png"
+    },
+    {
+      "franchise_id": "1610612758",
+      "first_season": "2016-17",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612758-36bcebbe9c06361d.svg"
+    },
+    {
+      "franchise_id": "1610612759",
+      "first_season": "1976-77",
+      "last_season": "1988-89",
+      "asset": "/team-logos/sas-1977-14207dc5c47117a5.png"
+    },
+    {
+      "franchise_id": "1610612759",
+      "first_season": "1989-90",
+      "last_season": "2001-02",
+      "asset": "/team-logos/sas-1990-08d5dc9a98c81edc.png"
+    },
+    {
+      "franchise_id": "1610612759",
+      "first_season": "2002-03",
+      "last_season": "2016-17",
+      "asset": "/team-logos/sas-2003-05fb13e35d46138d.png"
+    },
+    {
+      "franchise_id": "1610612759",
+      "first_season": "2017-18",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612759-c4df842e0d660dbc.svg"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "1967-68",
+      "last_season": "1969-70",
+      "asset": "/team-logos/sea-1968-0c23cc0ce3385371.png"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "1970-71",
+      "last_season": "1970-71",
+      "asset": "/team-logos/sea-1971-4f7b96504a30f9f4.png"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "1971-72",
+      "last_season": "1974-75",
+      "asset": "/team-logos/sea-1972-8e635b918b473abe.png"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "1975-76",
+      "last_season": "1994-95",
+      "asset": "/team-logos/sea-1976-4fc0899fde2e3c01.png"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "1995-96",
+      "last_season": "2000-01",
+      "asset": "/team-logos/sea-1996-91b0a1c4ff3d61f6.png"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "2001-02",
+      "last_season": "2007-08",
+      "asset": "/team-logos/seattle-supersonics-85320f6c174083f9.svg"
+    },
+    {
+      "franchise_id": "1610612760",
+      "first_season": "2008-09",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612760-fb684464e11e0798.svg"
+    },
+    {
+      "franchise_id": "1610612761",
+      "first_season": "1995-96",
+      "last_season": "2007-08",
+      "asset": "/team-logos/tor-1996-a6a56b5ba6e709ce.png"
+    },
+    {
+      "franchise_id": "1610612761",
+      "first_season": "2008-09",
+      "last_season": "2014-15",
+      "asset": "/team-logos/tor-2009-0039e13dd02271c8.png"
+    },
+    {
+      "franchise_id": "1610612761",
+      "first_season": "2015-16",
+      "last_season": "2019-20",
+      "asset": "/team-logos/tor-2016-120871f74153cef7.png"
+    },
+    {
+      "franchise_id": "1610612761",
+      "first_season": "2020-21",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612761-cb754caf37f8132f.svg"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "1974-75",
+      "last_season": "1978-79",
+      "asset": "/team-logos/new-orleans-jazz-0e8615451051c6f2.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "1979-80",
+      "last_season": "1995-96",
+      "asset": "/team-logos/uta-1980-d30edcf6be9b2112.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "1996-97",
+      "last_season": "2003-04",
+      "asset": "/team-logos/uta-1997-c690c2f079a18e45.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "2004-05",
+      "last_season": "2009-10",
+      "asset": "/team-logos/uta-2005-82f189d83cfa34f7.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "2010-11",
+      "last_season": "2015-16",
+      "asset": "/team-logos/uta-2011-42077a9618c94bd9.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "2016-17",
+      "last_season": "2021-22",
+      "asset": "/team-logos/uta-2017-a870846151a9a4e9.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "2022-23",
+      "last_season": "2024-25",
+      "asset": "/team-logos/uta-2023-e7253cd3470f314e.png"
+    },
+    {
+      "franchise_id": "1610612762",
+      "first_season": "2025-26",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612762-f1df72b502f198c4.svg"
+    },
+    {
+      "franchise_id": "1610612763",
+      "first_season": "1995-96",
+      "last_season": "2000-01",
+      "asset": "/team-logos/vancouver-grizzlies-ac26413c74130727.svg"
+    },
+    {
+      "franchise_id": "1610612763",
+      "first_season": "2001-02",
+      "last_season": "2003-04",
+      "asset": "/team-logos/mem-2002-bf252896bbe8a16a.png"
+    },
+    {
+      "franchise_id": "1610612763",
+      "first_season": "2004-05",
+      "last_season": "2017-18",
+      "asset": "/team-logos/mem-2005-e6d4c78460a489d5.png"
+    },
+    {
+      "franchise_id": "1610612763",
+      "first_season": "2018-19",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612763-677c8053201e9047.svg"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1961-62",
+      "last_season": "1961-62",
+      "asset": "/team-logos/chicago-packers-59417aa2eec4395a.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1962-63",
+      "last_season": "1962-63",
+      "asset": "/team-logos/chicago-zephyrs-37f88de6e38e355f.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1963-64",
+      "last_season": "1968-69",
+      "asset": "/team-logos/bal-1964-03a71a1a21cb5ccc.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1969-70",
+      "last_season": "1972-73",
+      "asset": "/team-logos/baltimore-bullets-0f14ecbce094aa4e.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1973-74",
+      "last_season": "1973-74",
+      "asset": "/team-logos/capital-bullets-39c17aa0df076988.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1974-75",
+      "last_season": "1986-87",
+      "asset": "/team-logos/wsb-1975-9db465de4d3a3c5c.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1987-88",
+      "last_season": "1996-97",
+      "asset": "/team-logos/washington-bullets-a1823dbd44b9811e.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "1997-98",
+      "last_season": "2006-07",
+      "asset": "/team-logos/was-1998-97f2d881bf7681bd.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "2007-08",
+      "last_season": "2010-11",
+      "asset": "/team-logos/was-2008-0429550961fd345a.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "2011-12",
+      "last_season": "2014-15",
+      "asset": "/team-logos/was-2012-fa528b8d01da9b53.png"
+    },
+    {
+      "franchise_id": "1610612764",
+      "first_season": "2015-16",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612764-4e99c8f715c1af7e.svg"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1948-49",
+      "last_season": "1956-57",
+      "asset": "/team-logos/fort-wayne-pistons-29ff504c963d6cbb.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1957-58",
+      "last_season": "1970-71",
+      "asset": "/team-logos/det-1958-f8b92edfde283d12.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1971-72",
+      "last_season": "1974-75",
+      "asset": "/team-logos/det-1972-274d03397b0aba10.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1975-76",
+      "last_season": "1978-79",
+      "asset": "/team-logos/det-1976-97914e938a0ecd37.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1979-80",
+      "last_season": "1995-96",
+      "asset": "/team-logos/det-1980-e692717bbe1293bb.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "1996-97",
+      "last_season": "2000-01",
+      "asset": "/team-logos/det-1997-339a644ac384dea4.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "2001-02",
+      "last_season": "2004-05",
+      "asset": "/team-logos/det-2002-b0facf3918234343.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "2005-06",
+      "last_season": "2016-17",
+      "asset": "/team-logos/det-2006-2d3b619fb9834735.png"
+    },
+    {
+      "franchise_id": "1610612765",
+      "first_season": "2017-18",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612765-efc20345b37e5220.svg"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "1988-89",
+      "last_season": "2001-02",
+      "asset": "/team-logos/charlotte-hornets-db0a859f832d7706.png"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "2004-05",
+      "last_season": "2006-07",
+      "asset": "/team-logos/cha-2005-7de8cf272df5b33a.png"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "2007-08",
+      "last_season": "2011-12",
+      "asset": "/team-logos/cha-2008-761a0ae6c020751f.png"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "2012-13",
+      "last_season": "2013-14",
+      "asset": "/team-logos/charlotte-bobcats-f132838976d52060.png"
+    },
+    {
+      "franchise_id": "1610612766",
+      "first_season": "2014-15",
+      "last_season": "2025-26",
+      "asset": "/team-logos/1610612766-cf2c99a2d619f635.svg"
+    }
+  ],
+  "conferences": [
+    {
+      "conference": "East",
+      "artwork_name": "Eastern Conference",
+      "asset": "/team-logos/eastern-conference-4fc4154b051fa146.png",
+      "width": 173,
+      "height": 96
+    },
+    {
+      "conference": "West",
+      "artwork_name": "Western Conference",
+      "asset": "/team-logos/western-conference-cbc760e9865c8f3e.png",
+      "width": 175,
+      "height": 96
+    }
+  ]
+}

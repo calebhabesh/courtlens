@@ -1,0 +1,41 @@
+route /players/[id]: initial client JS 19 files, 445,576 B compressed (analyzer); CSS 112,307 B
+ by package:
+    190,610  app code
+    169,443  next
+     42,943  motion-dom
+     20,742  lucide-react
+     15,476  framer-motion
+      2,156  [turbopack]/shared/runtime/runtime-utils.ts
+      1,348  motion-utils
+      1,082  [turbopack]/browser/runtime/dom/runtime-backend-dom.ts
+      1,032  [turbopack]/browser/runtime/base/runtime-base.ts
+        395  @swc/helpers
+        333  [turbopack]/browser/runtime/base/build-base.ts
+         16  motion
+ largest modules:
+     63,930  node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js
+     30,837  lib/team-branding.json.[json].cjs
+      7,774  node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js
+      6,401  node_modules/next/dist/client/components/segment-cache/cache.js
+      6,346  node_modules/motion-dom/dist/es/projection/node/create-projection-node.mjs
+      6,128  lib/stats-presets.ts
+      5,490  components/workbench-player-profile.tsx
+      5,110  components/player-reference-sections.tsx
+      5,099  components/threaded-assistant.tsx
+      4,977  components/ui/command-palette.tsx
+      4,962  components/ui/content-skeletons.tsx
+      4,003  node_modules/next/dist/client/components/render-tree.js
+      3,969  node_modules/next/dist/client/components/segment-cache/scheduler.js
+      3,938  components/ask-courtlens.tsx
+      3,745  components/research/stats-grid.tsx
+      3,675  components/player-career-table.tsx
+      3,551  components/lookup-input.tsx
+      3,507  components/agent-answer.tsx
+      3,418  components/ui/header.tsx
+      3,403  components/stats-trend-dialog.tsx
+      3,398  lib/site-pages.ts
+      2,972  node_modules/next/dist/compiled/react/cjs/react.production.js
+      2,718  components/player-bio-header.tsx
+      2,679  lib/impact-metrics.json.[json].cjs
+      2,432  lib/nav-model.ts
+ loaded on demand (next/dynamic, import()): 0 files, 0 B; app modules: 

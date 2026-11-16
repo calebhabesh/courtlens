@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import catalog from "@/lib/team-branding.json";
+import catalog from "@/lib/team-branding.client.json";
 import { foldedTeams, franchiseActive, teamEra } from "@/lib/team-era";
 import { TeamLogo } from "./team-logo";
 import { SearchField } from "./ui/input";

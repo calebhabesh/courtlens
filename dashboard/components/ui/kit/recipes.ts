@@ -93,14 +93,20 @@ export interface ControlClassOptions {
   dense?: boolean;
   identity?: KitIdentity;
   beckon?: boolean;
+  /** An action inside a text field's box (a search clear ×): a 24 px square, below `xs`, so its
+   *  hover fill clears the field's border. Square controls only; phone keeps the 40 px hit area. */
+  inField?: boolean;
 }
 
-export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false, identity, beckon = false }: ControlClassOptions) {
+const inFieldSquare = "kit:h-6 kit:text-xs kit:w-6 kit:phone:min-w-control-lg";
+
+export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false, identity, beckon = false, inField = false }: ControlClassOptions) {
+  const field = inField && square;
   return cx(
     pressable,
-    sizes[size],
+    field ? inFieldSquare : sizes[size],
     tight ? "kit:gap-1" : "kit:gap-2",
-    square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
+    field ? false : square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
     beckon ? beckonClasses[identity ?? "accent"] : tone === "default" ? variants[variant] : tones[tone],
     variant !== "primary" && (identity ? identitySelected[identity] : selectedClasses),
   );

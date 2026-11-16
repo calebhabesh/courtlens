@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useId, useState, type CSSProperties, type ReactNode } from "react";
 import { arc, pie } from "d3-shape";
 import { sankey, sankeyLinkHorizontal, sankeyLeft, type SankeyLink, type SankeyNode } from "d3-sankey";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import { portraitSource, seasonEra, type PortraitEra } from "@/lib/portrait-source";
 import {
@@ -12,6 +12,8 @@ import {
   nextOption, payrollSlices, resolveRefresh, salaryIn, shortName, smallVsBig, thresholdLines, timelineMarks, yearRoster,
   type ContractPlayer, type PayrollSlice, type PositionGroup, type RefreshContext, type TeamContracts, type ValueGroup, type ValueRow,
 } from "@/lib/contracts";
+import { SkelChart, SkelLines, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamGrid } from "./team-grid";
 import { TeamLogo } from "./team-logo";
@@ -21,6 +23,7 @@ import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { PlayerAvatar, teamStyle } from "./ui/identity";
 import { Icon, type IconName } from "./ui/icon";
 import { Button, Segmented, Select } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
 
 const TEAMS = branding.teams;
 type Tab = "overview" | "small-big";
@@ -168,7 +171,7 @@ function ContractTimeline({ data, year, players, era }: { data: TeamContracts; y
       <div role="row" className="ctr-timeline-head"><span role="columnheader">Player</span><span role="columnheader" title="DARKO Daily Plus-Minus, latest board">DPM</span>
         {years.map(y => <span role="columnheader" key={y} data-current={y === year || undefined}>{y}</span>)}</div>
       {rows.map(player => <div role="row" key={player.player_id} className="ctr-timeline-row">
-        <span role="rowheader" className="ctr-timeline-name"><PlayerAvatar playerId={player.player_id} name={player.name} team={data.team_id} size="sm" era={era(player)} /><Link href={`/players/${player.player_id}`} title={player.name}>{shortName(player.name)}</Link>
+        <span role="rowheader" className="ctr-timeline-name"><PlayerAvatar playerId={player.player_id} name={player.name} team={data.team_id} size="sm" era={era(player)} /><IntentLink className="entity-link" href={playerHref(player.player_id)} prefetch={false} title={player.name}>{shortName(player.name)}</IntentLink>
           <span className="ctr-timeline-info" title={[player.name, ...years.map(y => `${y}: ${money(salaryIn(player, y, current))}`), nextOption(player) ?? ""].filter(Boolean).join("\n")}><Icon name="info" size={14} /></span></span>
         <span role="cell" className="ctr-timeline-dpm">{player.darko_dpm === null || player.darko_dpm === undefined ? "—" : `${player.darko_dpm > 0 ? "+" : ""}${player.darko_dpm.toFixed(1)}`}</span>
         {timelineMarks(player, years, current).map(cell => <span role="cell" key={cell.year} className="ctr-timeline-cell" data-mark={cell.mark}
@@ -245,7 +248,7 @@ function ValueTable({ title, label, rows }: { title: ReactNode; label: string; r
     <h3>{title}</h3>
     <table className="ctr-sv-table"><thead><tr><th scope="col">Player</th><th scope="col" className="num">Salary</th><th scope="col" className="num" title="DARKO market value minus salary">Surplus</th></tr></thead>
       <tbody>{rows.map(row => <tr key={row.player.player_id}>
-        <th scope="row"><Link href={`/players/${row.player.player_id}`}>{row.player.name}</Link></th>
+        <th scope="row"><IntentLink className="entity-link" href={playerHref(row.player.player_id)} prefetch={false}>{row.player.name}</IntentLink></th>
         <td className="num">{money(row.salary)}</td>
         <td className="num ctr-surplus" data-sign={row.surplus === null ? undefined : row.surplus >= 0 ? "up" : "down"} title={row.value === null ? "No DARKO value for this player" : `DARKO value ${money(row.value)}`}>{signedMoney(row.surplus)}</td>
       </tr>)}{!rows.length && <tr><td colSpan={3} className="ctr-sv-empty">No contracts on this side</td></tr>}</tbody></table>
@@ -312,6 +315,27 @@ function RosterBanner({ data, players }: { data: TeamContracts; players: Contrac
 const tricodeOf = (team: string) => TEAMS.find(t => t.team_id === team || t.tricode === team)?.tricode ?? team;
 
 /** Contracts (alignment row 14): the reference site's Select Team flow, Overview and Small vs Big. */
+/** A contracts panel's loading state: its icon heading, then the panel's own body. */
+function PanelSkeleton({ title, children, className = "" }: { title: number; children: ReactNode; className?: string }) {
+  return <section className={`ctr-panel player-glass ${className}`} aria-hidden="true">
+    <header className="ctr-panel-head"><span className="ui-skel-labeled"><Skeleton width={20} height={20} /><SkelText size="xl" width={title} /></span></header>
+    {children}
+  </section>;
+}
+
+/** The team's loading state: the roster banner, then the four overview panels in their grid. */
+export function ContractsSkeleton() {
+  return <>
+    <div className="ctr-banner" aria-hidden="true"><SkelText size="sm" width={180} /><SkelLines lines={2} size="sm" last="40%" /></div>
+    <div className="ctr-grid">
+      <PanelSkeleton title={120}><SkelText size="3xl" width={150} /><SkelText size="xs" width={260} /><SkelText size="xs" width={240} /></PanelSkeleton>
+      <PanelSkeleton title={140}><SkelText size="xs" width={200} /><Skeleton height={24} className="ui-skel-bar" /><SkelLines lines={2} size="xs" last="80%" /></PanelSkeleton>
+      <PanelSkeleton title={130}><SkelChart height={560} title={false} className="ui-skel-plain" /></PanelSkeleton>
+      <PanelSkeleton title={170}>{Array.from({ length: 12 }, (_, index) => <div key={index} className="ui-skel-labeled"><Skeleton variant="circle" width={24} height={24} /><SkelText size="sm" width={80} /><Skeleton width={56 + (index % 3) * 60} height={20} /></div>)}</PanelSkeleton>
+    </div>
+  </>;
+}
+
 export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
   const { get, set } = useUrlState();
   const team = get("team")?.toUpperCase() ?? null;
@@ -348,7 +372,7 @@ export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
         { label: "DARKO board", value: data.darko ? `${data.darko.season} · data ${formatDate(data.darko.data_date)} · sealed ${data.darko.as_of}` : "Not configured" }]}>
         <ul className="ctr-method">{data.limitations.map(item => <li key={item}>{item}</li>)}</ul>
         <p className="ctr-note">Source: {SOURCE}; DARKO (darko.app, Kostya Medvedovsky) for value and DPM.</p>
-        <p><Link href={`/contracts/books${query}`}>Retained source books (advanced)</Link></p>
+        <p><IntentLink href={`/contracts/books${query}`}>Retained source books (advanced)</IntentLink></p>
       </DataDetailsButton>}
     </div>
     <Segmented<Tab> size="lg" label="Contracts view" value={tab} onChange={next => set({ tab: next === "overview" ? null : next })} options={TABS} className="ctr-tabs" />
@@ -364,7 +388,7 @@ export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
       <p>Choose an NBA team to view their salary cap breakdown, contract details, and multi-year commitments.</p>
       <Button size="md" variant="primary" onClick={() => setPicker(true)}>Choose Team</Button>
     </div>}
-    {team && !failure && !data && <FeedSkeleton label="Loading contracts" />}
+    {team && !failure && !data && <FeedSkeleton label="Loading contracts"><ContractsSkeleton /></FeedSkeleton>}
     {data && <>
       <RosterBanner data={data} players={data.players.filter(p => p.on_index_roster)} />
       {tab === "overview" && <>

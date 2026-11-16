@@ -1,3 +1,4 @@
+import { playerBioData } from "@/lib/client-props";
 import type { ReactNode } from "react";
 import { ComparisonRows } from "@/components/ui/comparison-rows";
 import { TeamLogo } from "@/components/team-logo";
@@ -21,6 +22,8 @@ import { comparePlayers, WorkbenchApiError } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, ComparisonGroupPlayer, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
 import type { BestSeason } from "@/lib/landing-season";
+import { TeamLink } from "@/components/entity-link";
+import { seasonOf } from "@/lib/live";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Comparison · CourtLens" };
@@ -48,6 +51,9 @@ export default async function ComparePage({ searchParams }: {
   }>;
 }) {
   const requested = await searchParams;
+  // Both catalogs and the metric catalog need nothing else: start them before the default pair's
+  // query, so every later read reuses them (speed plan SP04).
+  for (const early of [getAnalyticsCatalog(requested.snapshotId), getWorkbenchCatalog(requested.releaseId ?? requested.release_id), getMetricCatalog()]) void early.catch(() => undefined);
   // Alignment row 3, 6: the page opens on a real pair, written to the URL (supersedes PC C5).
   // It renders in this response and the client writes the URL: a redirect cost a second request
   // with nothing on screen while it ran.
@@ -95,7 +101,7 @@ export default async function ComparePage({ searchParams }: {
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
     {urlSync}
-    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} best={best} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios && compareBios(bios)} career={career} sides={sides} played={played} best={best} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;
@@ -211,8 +217,13 @@ async function loadComparison(selected: {
   seasonB?: string;
 }) {
   try {
-    const catalog = await getAnalyticsCatalog(selected.snapshotId);
-    const workbenchCatalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
+    // Two waves (speed plan SP04): both catalogs and the metric catalog, then every read of the
+    // pair together (see `early` below).
+    const metricsRequest = getMetricCatalog().catch(() => null);
+    const [catalog, workbenchCatalog] = await Promise.all([
+      getAnalyticsCatalog(selected.snapshotId),
+      getWorkbenchCatalog(selected.releaseId).catch(() => null)
+    ]);
     const scope = workbenchCatalog ? resolveStatsQuery(selected, workbenchCatalog, "per_game") : null;
     const date = selected.date ?? (selected.snapshotId === "snapshot-browser-fixture" ? catalog.default_replay_date : scope?.before_date) ?? catalog.default_replay_date;
 
@@ -237,6 +248,17 @@ async function loadComparison(selected: {
     let comparison: AnalyticsCompare | null = null;
     let wbComparison: PlayerComparisonResponse | null = null;
     let error: string | null = null;
+
+    const cohortIn = (query: typeof scope, ids: string[]) => query ? executeWorkbenchQuery({ ...query, page: { limit: 2 } }, { player_ids: ids, table_percentiles: true }).catch(() => null) : Promise.resolve(null);
+    const cohortsOf = (ids: string[]) => sides.a.season === sides.b.season ? Promise.all([cohortIn(scopedA.query, ids)]) : Promise.all([cohortIn(scopedA.query, [ids[0]]), cohortIn(scopedB.query, [ids[1]])]);
+    const biosOf = (ids: string[]) => Promise.all(([[ids[0], sides.a], [ids[1], sides.b]] as const).map(([id, side]) => getPlayerBio(id, { season: side.season, beforeDate: side.before_date }).catch(() => null))) as Promise<[PlayerBio | null, PlayerBio | null]>;
+    const seasonsOf = (ids: string[], phase: string) => getPlayerSeasons(ids, phase, scope?.release_id ?? undefined).catch(() => null);
+    // The pair's other reads need only the two ids and the scope, so they start beside the
+    // comparison; they are used only when the comparison answers for the same ids and phase.
+    const earlyPhase = scope?.phase ?? "regular_season";
+    const early = scope && targetA && targetB && targetA !== targetB && selected.snapshotId !== "snapshot-browser-fixture"
+      ? { ids: [targetA, targetB], cohorts: cohortsOf([targetA, targetB]), bios: biosOf([targetA, targetB]), seasons: seasonsOf([targetA, targetB], earlyPhase) }
+      : null;
 
     if (targetA && targetB) {
       if (targetA === targetB) {
@@ -277,15 +299,18 @@ async function loadComparison(selected: {
         }
       }
     }
-    const cohortIn = (query: typeof scope, ids: string[]) => query ? executeWorkbenchQuery({ ...query, page: { limit: 2 } }, { player_ids: ids, table_percentiles: true }).catch(() => null) : Promise.resolve(null);
-    const ids = wbComparison ? [wbComparison.player_a.id, wbComparison.player_b.id] : [];
-    const [cohortA, cohortB] = wbComparison ? sides.a.season === sides.b.season ? [await cohortIn(scopedA.query, ids)] : await Promise.all([cohortIn(scopedA.query, [ids[0]]), cohortIn(scopedB.query, [ids[1]])]) : [null];
+    const found = wbComparison as PlayerComparisonResponse | null;
+    const ids = found ? [found.player_a.id, found.player_b.id] : [];
+    const playedPhase = found ? String(found.context.phase ?? scope?.phase ?? "regular_season") : "";
+    const sameIds = early !== null && ids[0] === early.ids[0] && ids[1] === early.ids[1];
+    const [[cohortA, cohortB], metrics, bios, playedSeasons] = await Promise.all([
+      found ? sameIds ? early.cohorts : cohortsOf(ids) : Promise.resolve([null]),
+      metricsRequest,
+      found ? sameIds ? early.bios : biosOf(ids) : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null]),
+      found ? sameIds && playedPhase === earlyPhase ? early.seasons : seasonsOf(ids, playedPhase) : Promise.resolve(null)
+    ]);
     // One cohort-shaped source: each player's row from their own season.
     const cohort = cohortA && cohortB ? { ...cohortA, items: [...cohortA.items, ...cohortB.items] } : cohortA ?? null;
-    const [metrics, bios, playedSeasons] = await Promise.all([getMetricCatalog().catch(() => null), wbComparison
-      ? Promise.all(([[ids[0], sides.a], [ids[1], sides.b]] as const).map(([id, side]) => getPlayerBio(id, { season: side.season, beforeDate: side.before_date }).catch(() => null))) as Promise<[PlayerBio | null, PlayerBio | null]>
-      : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null]),
-      wbComparison ? getPlayerSeasons(ids, String(wbComparison.context.phase ?? scope?.phase ?? "regular_season"), scope?.release_id ?? undefined).catch(() => null) : Promise.resolve(null)]);
     const played = wbComparison && playedSeasons ? { a: playedSeasons.seasons[ids[0]] ?? [], b: playedSeasons.seasons[ids[1]] ?? [] } : null;
     const best = wbComparison && playedSeasons ? { a: bestOf(playedSeasons, ids[0]), b: bestOf(playedSeasons, ids[1]) } : null;
     return {
@@ -321,7 +346,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
     ["Last 10 · minutes / game", (p) => summaryValue(p.summaries.last_10, "minutes_per_game")],
     ["Season · minutes / game", (p) => summaryValue(p.summaries.season, "minutes_per_game")],
     ["Last 10 sample", (p) => p.summaries.last_10 == null ? "Unavailable" : String(p.summaries.last_10.n)],
-    ["Next team game", (p) => p.target ? <>{formatDate(p.target.date)} · <TeamLogo team={p.target.team ?? p.target.team_id} size={20} />{p.target.team ?? p.target.team_id} {p.target.side === "home" ? "vs" : "at"} <TeamLogo team={p.target.opponent ?? p.target.opponent_id} size={20} />{p.target.opponent ?? p.target.opponent_id}</> : "No reconstructed target"],
+    ["Next team game", (p) => p.target ? <>{formatDate(p.target.date)} · <TeamLink team={p.target.team_id ?? p.target.team} scope={{ season: seasonOf(p.target.date) }} variant="block"><TeamLogo team={p.target.team ?? p.target.team_id} size={20} /><span className="entity-link-text">{p.target.team ?? p.target.team_id}</span></TeamLink> {p.target.side === "home" ? "vs" : "at"} <TeamLink team={p.target.opponent_id ?? p.target.opponent} scope={{ season: seasonOf(p.target.date) }} variant="block"><TeamLogo team={p.target.opponent ?? p.target.opponent_id} size={20} /><span className="entity-link-text">{p.target.opponent ?? p.target.opponent_id}</span></TeamLink></> : "No reconstructed target"],
     ["Rest before game", (p) => p.target?.rest_days == null ? "Unavailable" : `${p.target.rest_days} days`],
     ["Opponent context", (p) => p.opponent_context && p.opponent_context.eligible_games >= 5 ? `${p.opponent_context.eligible_games} prior games` : "Insufficient opponent coverage"],
     ["Next-game estimate", (p) => p.estimate.point == null ? estimateReason(p.estimate.status) : `${p.estimate.point.toFixed(1)} points`],
@@ -383,4 +408,9 @@ function estimateReason(status: string) {
     : status === "evaluation_pending"
     ? "Estimate artifact not installed"
     : status.replaceAll("_", " ");
+}
+
+/** Compare reads no per-season game highs; only the career rows travel (speed plan SP05). */
+function compareBios<T extends readonly (PlayerBio | null)[]>(bios: T): T {
+  return bios.map(bio => bio && playerBioData(bio)) as unknown as T;
 }

@@ -7,6 +7,7 @@ import {
   fullestAverage, missingStyles, one, shapeKind, signed, styleShares, teamFill, valueAbove, whiteAsPlayer,
   type RosterShapes, type ShapeHistory, type ShapeMode, type ShapeTeam
 } from "@/lib/roster-shapes";
+import { playerHref } from "@/lib/entity-links";
 
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 
@@ -86,7 +87,7 @@ export function TeamPanel({ team, entries, data, mode, active, onActive }: {
           return <tr key={player.player_id} data-mark={mark} className={player.player_id === active ? "is-active" : undefined}
             onPointerEnter={() => onActive(player.player_id)} onPointerLeave={() => onActive(null)}
             onFocus={() => onActive(player.player_id)} onBlur={() => onActive(null)}>
-            <th scope="row"><ShapeIcon kind={shapeKind(player.fit_band)} color={tone(player.archetype?.primary)} size={14} /><Link href={`/players/${player.player_id}`}>{player.player_name}</Link></th>
+            <th scope="row"><ShapeIcon kind={shapeKind(player.fit_band)} color={tone(player.archetype?.primary)} size={14} /><Link className="entity-link" href={playerHref(player.player_id)} prefetch={false}>{player.player_name}</Link></th>
             <td>{one(minutes ?? player.minutes_per_game)}</td>
             <td data-tone={dpm === null || Math.abs(dpm) < 0.05 ? undefined : dpm > 0 ? "up" : "down"}>{signed(dpm)}</td>
             <td>{player.fit_ease === null ? "—" : Math.round(player.fit_ease * 100)}</td>

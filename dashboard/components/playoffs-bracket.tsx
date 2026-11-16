@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type CSSProperties } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { PlayoffSeriesSummary, TeamSeriesHeader } from "@/lib/types";
 import { recordLabel, seasonSeriesLabel, type BracketLayout, type BracketSide, type BracketSlot } from "@/lib/playoffs-bracket";
 import { splitTeamName } from "@/lib/playoffs";
@@ -9,6 +9,8 @@ import { teamAccent } from "@/lib/team-colors";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { Segmented } from "./ui/kit";
+import { Skeleton } from "./ui/skeleton";
+import { SkelText } from "./ui/content-skeletons";
 
 type Focus = "Western" | "finals" | "Eastern";
 
@@ -49,7 +51,7 @@ function Slot({ slot, seeded, href }: { slot: BracketSlot; seeded: boolean; href
   const meetings = seasonSeriesLabel(series);
   const records = [series.team1, series.team2].map(team => recordLabel(team) && `${team.tricode} ${recordLabel(team)}`).filter(Boolean);
   return (
-    <Link className="pb-slot" href={href(series.slug)} aria-describedby={tip}
+    <IntentLink className="pb-slot" href={href(series.slug)} aria-describedby={tip}
       aria-label={`${series.team1.name} vs ${series.team2.name}, ${series.series_score}`}>
       <SlotTeam team={series.team1} series={series} seeded={seeded} />
       <SlotTeam team={series.team2} series={series} seeded={seeded} />
@@ -58,7 +60,7 @@ function Slot({ slot, seeded, href }: { slot: BracketSlot; seeded: boolean; href
         <span>{meetings ? `Regular season: ${meetings}` : "No regular-season meetings"}</span>
         {records.length > 0 && <span>{records.join(" · ")}</span>}
       </span>
-    </Link>
+    </IntentLink>
   );
 }
 
@@ -136,7 +138,7 @@ function FinalsCard({ series, name, href }: { series: PlayoffSeriesSummary | nul
         <small>vs</small>
         <span style={teamVars(series.team2.team_id, series.season)}>{two}</span>
       </p>
-      <Link className="pb-finals-card" href={href(series.slug)} aria-label={`${name}: ${series.team1.name} vs ${series.team2.name}, ${series.series_score}. Open the series breakdown.`}>
+      <IntentLink className="pb-finals-card" href={href(series.slug)} aria-label={`${name}: ${series.team1.name} vs ${series.team2.name}, ${series.series_score}. Open the series breakdown.`}>
         <span className="pb-finals-teams">
           <FinalsTeam team={series.team1} series={series} />
           <span className="pb-finals-vs">vs</span>
@@ -152,7 +154,7 @@ function FinalsCard({ series, name, href }: { series: PlayoffSeriesSummary | nul
             {Array.from({ length: series.total_scheduled }, (_, game) => <i key={game} aria-hidden="true" className={game < series.games_count ? "is-played" : ""} />)}
           </span>
         </span>
-      </Link>
+      </IntentLink>
       <span className="pb-finals-hint">Open any matchup for the full series breakdown.</span>
     </div>
   );
@@ -175,4 +177,30 @@ export function PlayoffsBracket({ layout, season, seeded, href }: { layout: Brac
       </div>
     </section>
   );
+}
+
+function SlotSkeleton() {
+  const team = <span className="pb-team"><Skeleton variant="circle" width={36} height={36} /><SkelText size="lg" width={48} /><SkelText size="lg" width={14} /></span>;
+  return <span className="pb-slot">{team}{team}</span>;
+}
+
+function SideSkeleton({ side }: { side: "Western" | "Eastern" }) {
+  return <div className="pb-side" data-side={side} style={{ "--pb-columns": 3, "--pb-rows": 4 } as CSSProperties}>
+    <SkelText size="xs" width={96} className="pb-side-title ui-skel-center" />
+    {[0, 1, 2].map(index => <SkelText key={index} size="xs" width={96} className="pb-round-name ui-skel-center" />)}
+    {[4, 2, 1].map((cells, index) => <div key={index} className="pb-col" data-inner={index === 2 || undefined}>
+      {Array.from({ length: Math.max(1, cells / 2) }, (_, pair) => <div key={pair} className="pb-pair" data-single={cells === 1 || undefined}>
+        {Array.from({ length: Math.min(cells, 2) }, (_, cell) => <div key={cell} className="pb-cell"><SlotSkeleton /></div>)}
+      </div>)}
+    </div>)}
+  </div>;
+}
+
+/** The bracket while it loads: both conference sides in their rounds around the Finals card. */
+export function PlayoffsBracketSkeleton() {
+  return <section className="pb-bracket" aria-hidden="true"><div className="pb-grid">
+    <SideSkeleton side="Western" />
+    <div className="pb-finals"><SkelText size="xs" width={80} className="ui-skel-center" /><SkelText size="3xl" width={240} className="ui-skel-center" /><Skeleton className="pb-finals-card" height={356} /></div>
+    <SideSkeleton side="Eastern" />
+  </div></section>;
 }

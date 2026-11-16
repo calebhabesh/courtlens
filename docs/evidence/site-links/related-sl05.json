@@ -1,0 +1,106 @@
+{
+  "/players/2544?season=2024-25": [
+    {
+      "label": "Los Angeles Lakers",
+      "href": "/teams/1610612747?season=2024-25"
+    },
+    {
+      "label": "Compare",
+      "href": "/compare?playerA=2544&season=2024-25&phase=regular_season&beforeDate=2025-04-14"
+    },
+    {
+      "label": "Similar Players",
+      "href": "/similar-players?playerId=2544&season=2024-25"
+    },
+    {
+      "label": "Last Games",
+      "href": "/last-games?playerId=2544&season=2024-25&phase=regular_season&beforeDate=2025-04-14"
+    },
+    {
+      "label": "Matchups",
+      "href": "/matchups?playerId=2544&season=2024-25&phase=regular_season"
+    },
+    {
+      "label": "2003 Draft Class",
+      "href": "/draft?year=2003&tab=classes"
+    },
+    {
+      "label": "PHI Contracts",
+      "href": "/contracts?team=PHI"
+    }
+  ],
+  "/teams/1610612760?season=2024-25": [
+    {
+      "label": "2024-25 Standings",
+      "href": "/standings?season=2024-25"
+    },
+    {
+      "label": "Schedule",
+      "href": "#schedule"
+    },
+    {
+      "label": "Roster Shapes",
+      "href": "/roster-shapes?team=OKC&season=2024-25"
+    },
+    {
+      "label": "Contracts",
+      "href": "/contracts?team=OKC"
+    },
+    {
+      "label": "Team Compare",
+      "href": "/team-compare?teamA=1610612760&season=2024-25&phase=regular_season"
+    },
+    {
+      "label": "2024-25 Playoffs",
+      "href": "/playoffs?season=2024-25"
+    }
+  ],
+  "/live/games/401909296?date=2026-11-13": [
+    {
+      "label": "New York Knicks",
+      "href": "/teams/1610612752?season=2026-27"
+    },
+    {
+      "label": "Indiana Pacers",
+      "href": "/teams/1610612754?season=2026-27"
+    },
+    {
+      "label": "NYK Schedule",
+      "href": "/teams/1610612752?season=2026-27#schedule"
+    },
+    {
+      "label": "IND Schedule",
+      "href": "/teams/1610612754?season=2026-27#schedule"
+    }
+  ],
+  "/playoffs/2025-r1-okc-mem": [
+    {
+      "label": "Oklahoma City Thunder",
+      "href": "/teams/1610612760?season=2024-25&phase=playoffs"
+    },
+    {
+      "label": "Memphis Grizzlies",
+      "href": "/teams/1610612763?season=2024-25&phase=playoffs"
+    },
+    {
+      "label": "2024-25 Bracket",
+      "href": "/playoffs?season=2024-25"
+    },
+    {
+      "label": "Game 1",
+      "href": "/live/open?date=2025-04-20&game=0042400141&teams=1610612763%3AMEM%2C1610612760%3AOKC"
+    },
+    {
+      "label": "Game 2",
+      "href": "/live/open?date=2025-04-22&game=0042400142&teams=1610612763%3AMEM%2C1610612760%3AOKC"
+    },
+    {
+      "label": "Game 3",
+      "href": "/live/open?date=2025-04-24&game=0042400143&teams=1610612760%3AOKC%2C1610612763%3AMEM"
+    },
+    {
+      "label": "Game 4",
+      "href": "/live/open?date=2025-04-26&game=0042400144&teams=1610612760%3AOKC%2C1610612763%3AMEM"
+    }
+  ]
+}

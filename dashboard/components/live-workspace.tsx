@@ -2,17 +2,21 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { easternToday, nearestGameDate, seasonOf, validSlate, type LiveGameData, type LiveRead, type LiveSlateData } from "@/lib/live";
+import { awayFirst, easternToday, nearestGameDate, seasonOf, validSlate, type LiveGameData, type LiveRead, type LiveSlateData } from "@/lib/live";
 import { useLiveRead } from "@/lib/use-live-read";
 import { formatDate } from "@/lib/format-date";
 import { AllGamesRail, DateStrip, GameCard } from "./live-board";
 import { GAME_TABS, GameBanner, GameTabs, teamColors, type GameTab } from "./live-game";
+import { LiveCardsSkeleton, LiveGameSkeleton } from "./live-skeletons";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { DatePicker } from "./ui/date-picker";
 import { GatedNote } from "./ui/gated-note";
 import { Icon } from "./ui/icon";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
+import { gameHref as buildGameHref, hrefPath } from "@/lib/entity-links";
+import { gameRelated } from "@/lib/related-links";
+import { RelatedRow } from "./related-row";
 
 function ago(seconds: number | null) {
   if (seconds == null) return "not read yet";
@@ -54,7 +58,7 @@ function Board({ slate, explicit }: { slate: string; explicit: boolean }) {
   const { read, error } = useLiveRead<LiveSlateData>(`?slate_date=${slate}`);
   const games = read?.data?.games ?? [];
   const href = (day: string) => `/live/${day}`;
-  const gameHref = (id: string) => `/live/games/${id}?date=${slate}`;
+  const gameHref = (id: string) => buildGameHref({ espnId: id, date: slate })!;
 
   // Only the parameter-free landing moves: an empty today opens the nearest date with games.
   useEffect(() => {
@@ -85,7 +89,7 @@ function Board({ slate, explicit }: { slate: string; explicit: boolean }) {
       <ol className="live-grid">{games.map((game, i) => <li key={game.source_id}><GameCard game={game} index={i} href={gameHref(game.source_id)} /></li>)}</ol>
     </section>}
     {read?.data && !games.length && <GatedNote>No games on {formatDate(slate, "compact")}.</GatedNote>}
-    {!read && !error && <p className="live-loading" aria-live="polite">Loading games…</p>}
+    {!read && !error && <div role="status" aria-busy="true" aria-label="Loading games"><LiveCardsSkeleton /></div>}
     {read && read.status !== "observed" && !read.data && <GatedNote why={read.error ?? undefined}>ESPN hasn&apos;t answered for this date yet.</GatedNote>}
     <SourceLine read={read} rows={detailRows(read)} />
   </>;
@@ -107,12 +111,12 @@ function Game({ gameId, slate, requested }: { gameId: string; slate: string; req
   const fallback = defaultTab(data?.game.status);
   const tab = requested ?? fallback;
   // Jumping games keeps a tab the viewer chose; otherwise each game opens on its own default.
-  const gameHref = (id: string) => `/live/games/${id}?date=${slate}${requested ? `&tab=${requested}` : ""}`;
+  const gameHref = (id: string) => buildGameHref({ espnId: id, date: slate }, { tab: requested })!;
 
   function setTab(next: GameTab) {
     const search = new URLSearchParams(window.location.search);
     if (next === fallback) search.delete("tab"); else search.set("tab", next);
-    router.replace(`/live/games/${gameId}?${search}`, { scroll: false });
+    router.replace(`${hrefPath(buildGameHref({ espnId: gameId })!)}?${search}`, { scroll: false });
   }
 
   useEffect(() => {
@@ -146,12 +150,17 @@ function Game({ gameId, slate, requested }: { gameId: string; slate: string; req
   });
 
   return <>
-    {data ? <div className="live-game" style={teamColors(data.game.teams, seasonOf(data.game.slate_date))}>
-      <GameBanner game={data.game} index={index < 0 ? 99 : index} backHref={backHref} />
-      <GameTabs tab={tab} onTab={setTab} data={data} />
-    </div> : <>
+    {data ? <>
+      <div className="live-game" style={teamColors(data.game.teams, seasonOf(data.game.slate_date))}>
+        <GameBanner game={data.game} index={index < 0 ? 99 : index} backHref={backHref} />
+        <GameTabs tab={tab} onTab={setTab} data={data} />
+      </div>
+      {/* Site links SL05: the hub's Related row, from the game this page already reads. */}
+      <RelatedRow links={gameRelated({ season: seasonOf(data.game.slate_date),
+        teams: awayFirst(data.game.teams).map(team => ({ id: team.canonical_id, name: team.name })) })} />
+    </> : <>
       <div className="sr-only"><PageHeader title="Live game" /></div>
-      {!read && !error && <p className="live-loading" aria-live="polite">Loading game…</p>}
+      {!read && !error && <div role="status" aria-busy="true" aria-label="Loading game"><LiveGameSkeleton /></div>}
       {(error || read) && <GatedNote why={read?.error ?? error ?? undefined}>This game isn&apos;t available from ESPN right now.</GatedNote>}
     </>}
     <SourceLine read={read} rows={[...detailRows(read), { label: "Slate date", value: `${slate} (Eastern)`, mono: true }]} />

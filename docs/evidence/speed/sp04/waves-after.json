@@ -1,0 +1,1224 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T08:08:08+00:00",
+  "pages": [
+    {
+      "name": "stats",
+      "path": "/stats",
+      "status": 200,
+      "bytes": 2170376,
+      "seconds": 0.185,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0138,
+          "end": 0.0172,
+          "seconds": 0.0034,
+          "server_timing": "total;dur=1.8, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/workspace?workspaceId=default",
+          "status": 200,
+          "start": 0.014,
+          "end": 0.0192,
+          "seconds": 0.0052,
+          "server_timing": "total;dur=3.8, db;dur=1.0, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/draft-classes",
+          "status": 200,
+          "start": 0.0136,
+          "end": 0.0203,
+          "seconds": 0.0067,
+          "server_timing": "total;dur=5.4, db;dur=1.9, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0139,
+          "end": 0.0699,
+          "seconds": 0.056,
+          "server_timing": "total;dur=54.7, db;dur=21.1, queries;desc=\"5\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0713,
+          "end": 0.1469,
+          "seconds": 0.0756,
+          "server_timing": "total;dur=74.7, db;dur=25.5, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "dpm",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "view_id": "overview",
+                "columns": [
+                  "gp",
+                  "min",
+                  "min_per_game",
+                  "on_ball_pct",
+                  "dpm",
+                  "o_dpm",
+                  "d_dpm",
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "pts_created_per_game",
+                  "rim_ast_per_game",
+                  "tov_per_game",
+                  "ts_pct",
+                  "impact_rts",
+                  "efg_pct",
+                  "ctov_pct",
+                  "fg2_pct",
+                  "fg3_pct",
+                  "fg3a_per_game",
+                  "ft_pct",
+                  "fta_per_game",
+                  "oreb_per_game",
+                  "dreb_per_game",
+                  "stl_per_game",
+                  "blk_per_game"
+                ]
+              },
+              "page": {
+                "limit": 50,
+                "cursor": null
+              },
+              "predicates": null,
+              "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "table_percentiles": true,
+              "player_ids": null,
+              "positions": null,
+              "draft_year": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "players",
+      "path": "/players",
+      "status": 200,
+      "bytes": 748179,
+      "seconds": 0.166,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0027,
+          "end": 0.0577,
+          "seconds": 0.055,
+          "server_timing": "total;dur=54.2, db;dur=20.7, queries;desc=\"5\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0595,
+          "end": 0.1529,
+          "seconds": 0.0934,
+          "server_timing": "total;dur=92.5, db;dur=24.9, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2025-26",
+              "phase": "regular_season",
+              "before_date": "2026-04-13",
+              "window": {
+                "kind": "season"
+              },
+              "sample_filters": {
+                "min_minutes": 400
+              },
+              "sort": [
+                {
+                  "field": "dpm",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "page": {
+                "limit": 50
+              },
+              "view_state": {
+                "view_id": "player-dashboard-carousel",
+                "columns": [
+                  "dpm"
+                ]
+              },
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "table_percentiles": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "compare",
+      "path": "/compare?playerA=2544&playerB=203999",
+      "status": 200,
+      "bytes": 532509,
+      "seconds": 0.311,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0034,
+          "end": 0.006,
+          "seconds": 0.0026,
+          "server_timing": "total;dur=1.5, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/analytics/catalog",
+          "status": 200,
+          "start": 0.0031,
+          "end": 0.0136,
+          "seconds": 0.0106,
+          "server_timing": "total;dur=9.2, db;dur=2.1, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0032,
+          "end": 0.0578,
+          "seconds": 0.0545,
+          "server_timing": "total;dur=53.7, db;dur=23.1, queries;desc=\"5\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0599,
+          "end": 0.1709,
+          "seconds": 0.1109,
+          "server_timing": "total;dur=107.7, db;dur=47.3, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 2
+              },
+              "predicates": null
+            },
+            "presentation": {
+              "player_ids": [
+                "2544",
+                "203999"
+              ],
+              "table_percentiles": true
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/203999/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0596,
+          "end": 0.1736,
+          "seconds": 0.114,
+          "server_timing": "total;dur=112.9, db;dur=83.8, queries;desc=\"16\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0595,
+          "end": 0.1749,
+          "seconds": 0.1154,
+          "server_timing": "total;dur=114.6, db;dur=82.1, queries;desc=\"16\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/player-seasons?phase=regular_season&playerId=2544&playerId=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 0.0603,
+          "end": 0.1944,
+          "seconds": 0.1341,
+          "server_timing": "total;dur=133.1, db;dur=117.4, queries;desc=\"12\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/compare?playerA=2544&playerB=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0605,
+          "end": 0.2984,
+          "seconds": 0.2379,
+          "server_timing": "total;dur=236.9, db;dur=184.7, queries;desc=\"22\""
+        }
+      ]
+    },
+    {
+      "name": "player-star",
+      "path": "/players/2544",
+      "status": 200,
+      "bytes": 1130892,
+      "seconds": 0.374,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0037,
+          "end": 0.0064,
+          "seconds": 0.0027,
+          "server_timing": "total;dur=1.4, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0036,
+          "end": 0.0846,
+          "seconds": 0.081,
+          "server_timing": "total;dur=80.0, db;dur=33.9, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=2544",
+          "status": 200,
+          "start": 0.0865,
+          "end": 0.1086,
+          "seconds": 0.0221,
+          "server_timing": "total;dur=18.2, db;dur=5.8, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0873,
+          "end": 0.1682,
+          "seconds": 0.081,
+          "server_timing": "total;dur=79.6, db;dur=52.1, queries;desc=\"16\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+          "status": 200,
+          "start": 0.0863,
+          "end": 0.219,
+          "seconds": 0.1327,
+          "server_timing": "total;dur=131.3, db;dur=93.9, queries;desc=\"8\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+          "status": 200,
+          "start": 0.0862,
+          "end": 0.2205,
+          "seconds": 0.1343,
+          "server_timing": "total;dur=133.1, db;dur=94.2, queries;desc=\"9\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0869,
+          "end": 0.2241,
+          "seconds": 0.1372,
+          "server_timing": "total;dur=135.9, db;dur=62.4, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "2544"
+              ]
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 0.086,
+          "end": 0.2925,
+          "seconds": 0.2065,
+          "server_timing": "total;dur=205.0, db;dur=59.2, queries;desc=\"11\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2023-24&phase=regular_season&beforeDate=2024-04-15&playerId=2544&window=season",
+          "status": 200,
+          "start": 0.2956,
+          "end": 0.3492,
+          "seconds": 0.0535,
+          "server_timing": "total;dur=51.6, db;dur=2.4, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+          "status": 200,
+          "start": 0.2952,
+          "end": 0.3492,
+          "seconds": 0.054,
+          "server_timing": "total;dur=52.6, db;dur=12.3, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2024-25&phase=regular_season&beforeDate=2025-04-14&playerId=2544&window=season",
+          "status": 200,
+          "start": 0.2958,
+          "end": 0.3496,
+          "seconds": 0.0538,
+          "server_timing": "total;dur=52.7, db;dur=4.3, queries;desc=\"1\""
+        }
+      ]
+    },
+    {
+      "name": "player-rookie",
+      "path": "/players/1643411",
+      "status": 200,
+      "bytes": 343878,
+      "seconds": 0.148,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0037,
+          "end": 0.006,
+          "seconds": 0.0023,
+          "server_timing": "total;dur=1.1, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0035,
+          "end": 0.0579,
+          "seconds": 0.0543,
+          "server_timing": "total;dur=53.5, db;dur=22.2, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1643411",
+          "status": 200,
+          "start": 0.0597,
+          "end": 0.0805,
+          "seconds": 0.0208,
+          "server_timing": "total;dur=19.3, db;dur=5.4, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0599,
+          "end": 0.1081,
+          "seconds": 0.0482,
+          "server_timing": "total;dur=46.6, db;dur=21.0, queries;desc=\"16\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+          "status": 200,
+          "start": 0.0594,
+          "end": 0.1219,
+          "seconds": 0.0625,
+          "server_timing": "total;dur=60.6, db;dur=31.8, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+          "status": 200,
+          "start": 0.0595,
+          "end": 0.1227,
+          "seconds": 0.0632,
+          "server_timing": "total;dur=61.9, db;dur=39.1, queries;desc=\"8\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 0.0593,
+          "end": 0.1372,
+          "seconds": 0.0779,
+          "server_timing": "total;dur=77.0, db;dur=51.3, queries;desc=\"11\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.06,
+          "end": 0.1401,
+          "seconds": 0.0801,
+          "server_timing": "total;dur=79.0, db;dur=50.4, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1643411"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "player-pre2000",
+      "path": "/players/1449",
+      "status": 200,
+      "bytes": 738546,
+      "seconds": 0.285,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.003,
+          "end": 0.0055,
+          "seconds": 0.0025,
+          "server_timing": "total;dur=1.4, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0029,
+          "end": 0.0592,
+          "seconds": 0.0563,
+          "server_timing": "total;dur=55.3, db;dur=23.1, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1449",
+          "status": 200,
+          "start": 0.0607,
+          "end": 0.0838,
+          "seconds": 0.0231,
+          "server_timing": "total;dur=21.5, db;dur=6.7, queries;desc=\"1\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.061,
+          "end": 0.1167,
+          "seconds": 0.0557,
+          "server_timing": "total;dur=53.7, db;dur=33.1, queries;desc=\"3\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1449"
+              ]
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+          "status": 200,
+          "start": 0.0606,
+          "end": 0.119,
+          "seconds": 0.0585,
+          "server_timing": "total;dur=57.1, db;dur=48.5, queries;desc=\"6\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+          "status": 200,
+          "start": 0.0604,
+          "end": 0.1191,
+          "seconds": 0.0586,
+          "server_timing": "total;dur=57.3, db;dur=39.5, queries;desc=\"11\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0609,
+          "end": 0.133,
+          "seconds": 0.0722,
+          "server_timing": "total;dur=70.2, db;dur=48.4, queries;desc=\"15\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 0.0603,
+          "end": 0.1575,
+          "seconds": 0.0972,
+          "server_timing": "total;dur=96.1, db;dur=50.9, queries;desc=\"11\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+          "status": 200,
+          "start": 0.1591,
+          "end": 0.1659,
+          "seconds": 0.0068,
+          "server_timing": "total;dur=5.4, db;dur=0.8, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+          "status": 200,
+          "start": 0.1673,
+          "end": 0.175,
+          "seconds": 0.0078,
+          "server_timing": "total;dur=5.8, db;dur=2.3, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+          "status": 200,
+          "start": 0.1666,
+          "end": 0.19,
+          "seconds": 0.0233,
+          "server_timing": "total;dur=22.3, db;dur=6.0, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+          "status": 200,
+          "start": 0.1668,
+          "end": 0.1902,
+          "seconds": 0.0235,
+          "server_timing": "total;dur=22.1, db;dur=1.7, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+          "status": 200,
+          "start": 0.1589,
+          "end": 0.2366,
+          "seconds": 0.0777,
+          "server_timing": "total;dur=76.4, db;dur=64.4, queries;desc=\"7\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+          "status": 200,
+          "start": 0.1588,
+          "end": 0.2367,
+          "seconds": 0.0779,
+          "server_timing": "total;dur=76.6, db;dur=34.6, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+          "status": 200,
+          "start": 0.1592,
+          "end": 0.2374,
+          "seconds": 0.0782,
+          "server_timing": "total;dur=76.8, db;dur=55.0, queries;desc=\"15\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.1594,
+          "end": 0.2715,
+          "seconds": 0.1121,
+          "server_timing": "total;dur=110.5, db;dur=62.8, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "1991-92",
+              "phase": "regular_season",
+              "before_date": "1992-04-20",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1449"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "team-lal",
+      "path": "/teams/1610612747",
+      "status": 200,
+      "bytes": 1345212,
+      "seconds": 0.268,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0033,
+          "end": 0.0071,
+          "seconds": 0.0037,
+          "server_timing": "total;dur=2.1, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/workspace?workspaceId=default",
+          "status": 200,
+          "start": 0.003,
+          "end": 0.0087,
+          "seconds": 0.0056,
+          "server_timing": "total;dur=4.4, db;dur=0.9, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/draft-classes",
+          "status": 200,
+          "start": 0.0032,
+          "end": 0.0091,
+          "seconds": 0.006,
+          "server_timing": "total;dur=4.4, db;dur=2.0, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0029,
+          "end": 0.0619,
+          "seconds": 0.059,
+          "server_timing": "total;dur=57.8, db;dur=22.5, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612747/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0632,
+          "end": 0.1155,
+          "seconds": 0.0523,
+          "server_timing": "total;dur=50.8, db;dur=45.0, queries;desc=\"4\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612747/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0634,
+          "end": 0.1632,
+          "seconds": 0.0998,
+          "server_timing": "total;dur=97.9, db;dur=85.9, queries;desc=\"4\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0631,
+          "end": 0.1679,
+          "seconds": 0.1048,
+          "server_timing": "total;dur=103.6, db;dur=92.9, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?venue=away&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0636,
+          "end": 0.1683,
+          "seconds": 0.1046,
+          "server_timing": "total;dur=103.6, db;dur=78.1, queries;desc=\"6\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0635,
+          "end": 0.1689,
+          "seconds": 0.1054,
+          "server_timing": "total;dur=103.6, db;dur=70.8, queries;desc=\"6\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?venue=home&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0638,
+          "end": 0.2029,
+          "seconds": 0.1391,
+          "server_timing": "total;dur=134.2, db;dur=109.7, queries;desc=\"6\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0641,
+          "end": 0.2512,
+          "seconds": 0.1871,
+          "server_timing": "total;dur=185.1, db;dur=118.2, queries;desc=\"11\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": "1610612747",
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "dpm",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "view_id": "overview",
+                "columns": [
+                  "gp",
+                  "min",
+                  "min_per_game",
+                  "on_ball_pct",
+                  "dpm",
+                  "o_dpm",
+                  "d_dpm",
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "pts_created_per_game",
+                  "rim_ast_per_game",
+                  "tov_per_game",
+                  "ts_pct",
+                  "impact_rts",
+                  "efg_pct",
+                  "ctov_pct",
+                  "fg2_pct",
+                  "fg3_pct",
+                  "fg3a_per_game",
+                  "ft_pct",
+                  "fta_per_game",
+                  "oreb_per_game",
+                  "dreb_per_game",
+                  "stl_per_game",
+                  "blk_per_game"
+                ]
+              },
+              "page": {
+                "limit": 50,
+                "cursor": null
+              },
+              "predicates": null,
+              "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "table_percentiles": true,
+              "player_ids": null,
+              "positions": null,
+              "draft_year": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "team-bos",
+      "path": "/teams/1610612738",
+      "status": 200,
+      "bytes": 1219314,
+      "seconds": 0.218,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0032,
+          "end": 0.0065,
+          "seconds": 0.0033,
+          "server_timing": "total;dur=1.7, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/workspace?workspaceId=default",
+          "status": 200,
+          "start": 0.0029,
+          "end": 0.0085,
+          "seconds": 0.0057,
+          "server_timing": "total;dur=4.1, db;dur=1.0, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/draft-classes",
+          "status": 200,
+          "start": 0.003,
+          "end": 0.0098,
+          "seconds": 0.0068,
+          "server_timing": "total;dur=5.3, db;dur=2.2, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0027,
+          "end": 0.0582,
+          "seconds": 0.0555,
+          "server_timing": "total;dur=54.4, db;dur=20.8, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0596,
+          "end": 0.119,
+          "seconds": 0.0594,
+          "server_timing": "total;dur=58.1, db;dur=45.9, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612738/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0597,
+          "end": 0.1389,
+          "seconds": 0.0792,
+          "server_timing": "total;dur=68.3, db;dur=55.9, queries;desc=\"4\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/1610612738/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0598,
+          "end": 0.1396,
+          "seconds": 0.0798,
+          "server_timing": "total;dur=78.0, db;dur=67.8, queries;desc=\"4\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.06,
+          "end": 0.1438,
+          "seconds": 0.0838,
+          "server_timing": "total;dur=82.0, db;dur=63.2, queries;desc=\"6\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 0.0604,
+          "end": 0.1842,
+          "seconds": 0.1238,
+          "server_timing": "total;dur=121.7, db;dur=95.5, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": "1610612738",
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "dpm",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "view_id": "overview",
+                "columns": [
+                  "gp",
+                  "min",
+                  "min_per_game",
+                  "on_ball_pct",
+                  "dpm",
+                  "o_dpm",
+                  "d_dpm",
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "pts_created_per_game",
+                  "rim_ast_per_game",
+                  "tov_per_game",
+                  "ts_pct",
+                  "impact_rts",
+                  "efg_pct",
+                  "ctov_pct",
+                  "fg2_pct",
+                  "fg3_pct",
+                  "fg3a_per_game",
+                  "ft_pct",
+                  "fta_per_game",
+                  "oreb_per_game",
+                  "dreb_per_game",
+                  "stl_per_game",
+                  "blk_per_game"
+                ]
+              },
+              "page": {
+                "limit": 50,
+                "cursor": null
+              },
+              "predicates": null,
+              "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "table_percentiles": true,
+              "player_ids": null,
+              "positions": null,
+              "draft_year": null
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?venue=away&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0602,
+          "end": 0.1864,
+          "seconds": 0.1262,
+          "server_timing": "total;dur=124.4, db;dur=97.4, queries;desc=\"6\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/teams/six-factors?venue=home&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 0.0601,
+          "end": 0.1869,
+          "seconds": 0.1268,
+          "server_timing": "total;dur=125.3, db;dur=100.6, queries;desc=\"6\""
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,8 @@ import { useEffect } from "react";
  */
 export function ReplaceUrl({ href }: { href: string }) {
   useEffect(() => {
-    if (`${window.location.pathname}${window.location.search}` !== href) window.history.replaceState(null, "", href);
+    // A `#section` the link asked for (site links SL05: a team's schedule) stays in the address.
+    if (`${window.location.pathname}${window.location.search}` !== href) window.history.replaceState(null, "", `${href}${window.location.hash}`);
   }, [href]);
   return null;
 }

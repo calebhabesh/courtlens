@@ -51,6 +51,44 @@ app = typer.Typer(
 )
 
 
+@app.command("bump-data-stamp")
+def bump_data_stamp_command() -> None:
+    """Empty the API read cache after a hand-run write of served data (speed plan SP01).
+
+    Scheduled jobs change the data stamp themselves (their health records); a command run by
+    hand does not, so run this after it. The API notices within 5 seconds.
+    """
+    from courtlens.api.read_cache import bump_data_stamp
+
+    typer.echo(bump_data_stamp())
+
+
+@app.command("warm-site")
+def warm_site_command(
+    base_url: str = typer.Option(
+        "http://localhost:3000", envvar="COURTLENS_WARM_BASE_URL", help="Dashboard origin."
+    ),
+    api_url: str = typer.Option(
+        "http://localhost:8000", envvar="COURTLENS_WARM_API_URL", help="API origin."
+    ),
+    deadline_seconds: float = typer.Option(1200.0, help="Stop crawling after this long."),
+    force: bool = typer.Option(False, help="Crawl even if this generation was already warmed."),
+) -> None:
+    """Request the most-opened pages so the API read cache is warm (speed plan SP02).
+
+    Crawls only a settled generation it has not warmed yet; reports go to stderr and its health
+    record to data/derived/job-health/warm-site.json. Exits 1 when the crawl did not finish
+    cleanly; it never touches the data stamp.
+    """
+    from courtlens.services.warm_site import warm_site
+
+    record = warm_site(
+        base_url=base_url, api_url=api_url, deadline_seconds=deadline_seconds, force=force
+    )
+    if record.get("outcome") not in ("complete", "skipped"):
+        raise typer.Exit(1)
+
+
 @app.command("warm-stats-cohorts")
 def warm_stats_cohorts_command(
     release_id: str | None = typer.Option(
@@ -1586,6 +1624,43 @@ def acquire_bbref_bios_command(
         raise typer.Exit(1)
 
 
+@app.command("refresh-college-schools")
+def refresh_college_schools_command(
+    pages_root: Path = typer.Option(
+        Path("data/raw/bbref"), help="Retained Basketball-Reference player pages."
+    ),
+    root: Path = typer.Option(Path("data/raw/college-schools"), help="Retained index pages."),
+) -> None:
+    """Each player's college, its "City, State" and logo for the player header (weekly).
+
+    Reads colleges from retained Basketball-Reference pages, fetches Sports-Reference's schools
+    index and ESPN's college teams once each, downloads logos it does not have yet, and writes
+    colleges.json to `college_schools_dir`. A run that cannot read an index writes nothing.
+    """
+    import httpx
+
+    from courtlens.services.college_schools import CollegeFetcher, refresh
+
+    out_dir = get_settings().college_schools_dir
+    if out_dir is None:
+        raise typer.BadParameter("college_schools_dir is not configured")
+
+    def log(event: dict[str, Any]) -> None:
+        typer.echo(json.dumps(event, default=str), err=True)
+
+    with SessionLocal() as session, httpx.Client() as client:
+        summary = refresh(
+            session,
+            CollegeFetcher(session, root, client),
+            pages_root=pages_root,
+            out_dir=out_dir,
+            log=log,
+        )
+    typer.echo(json.dumps(summary, default=str))
+    if not summary["written"]:
+        raise typer.Exit(1)
+
+
 @app.command("acquire-bbref-history")
 def acquire_bbref_history_command(
     phase: list[str] = typer.Option(["league", "gamelogs"], help="league and/or gamelogs."),
@@ -1928,6 +2003,45 @@ def refresh_wikipedia_transactions_command(
     typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
 
 
+@app.command("acquire-wikipedia-contracts")
+def acquire_wikipedia_contracts_command(
+    scope: str = typer.Option(
+        "gaps", help="gaps (unbracketed signings), active (current contract) or all (salaried)."
+    ),
+    max_age_days: int = typer.Option(300, help="Skip players read within this many days."),
+    limit: int | None = typer.Option(None, help="Read at most this many articles."),
+    root: Path = typer.Option(Path("data/raw/wikipedia-contracts")),
+    output: Path = typer.Option(Path("data/derived/wikipedia-contracts-v1")),
+    reparse_only: bool = typer.Option(
+        False, "--reparse", help="Re-read retained pages with the current parser; no network."
+    ),
+) -> None:
+    """Seal the contract terms players' Wikipedia articles state (lengths, missing signings)."""
+    import httpx
+
+    from courtlens.services.wikipedia_contracts import acquire, reparse
+
+    if reparse_only:
+        path, result = reparse(root, output)
+    else:
+        with SessionLocal() as session, httpx.Client() as client:
+            found, result = acquire(
+                session,
+                root,
+                client,
+                output,
+                scope=scope,
+                max_age=timedelta(days=max_age_days),
+                limit=limit,
+                log=typer.echo,
+            )
+        if found is None:
+            raise typer.Exit(1)
+        path = found
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (served as the newest bundle in {output})")
+
+
 @app.command("refresh-season-stats")
 def refresh_season_stats_command(
     season: str | None = typer.Option(None, help="Default: the season under way today."),
@@ -2165,11 +2279,33 @@ def capture_win_probability_inputs_command() -> None:
     typer.echo(str(capture_slate(today, Client())))
 
 
+@app.command("refresh-position-estimates")
+def refresh_position_estimates_command() -> None:
+    """Label the season in progress with the sealed position model (provisional, daily)."""
+    from courtlens.evaluation.position_estimates import run_provisional
+
+    sealed = get_settings().position_estimates_manifest
+    if sealed is None or not sealed.is_file():
+        raise typer.BadParameter("no sealed position estimate artifact is configured")
+    typer.echo(json.dumps(run_provisional(get_settings().database_url, sealed)))
+
+
+@app.command("refresh-player-reference")
+def refresh_player_reference_command() -> None:
+    """Rebuild the player reference marts (salaries with cap shares, awards, honours,
+    transactions) from the newest parsed Basketball-Reference profiles and retained cap
+    thresholds. The API joins them by profile id, so a re-parse is invisible until this runs."""
+    from courtlens.services.workbench_ingestion import run_dbt_workbench
+
+    run_dbt_workbench(select="tag:player_reference")
+    typer.echo("player reference marts rebuilt")
+
+
 @app.command("refresh-daily")
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
 ) -> None:
-    """Scheduled daily run: player index, season stats, team scoring, contracts, DARKO, moves.
+    """Scheduled daily run: player index, season stats, positions, team scoring, contracts, more.
 
     Each step runs even when an earlier one fails (contracts then pin the previous index);
     the run exits non-zero if any step failed so the timer's journal records it.
@@ -2184,11 +2320,13 @@ def refresh_daily_command(
             "season stats",
             lambda: refresh_season_stats_command(None, Path("data/raw/season-boxscores"), 2, False),
         ),
+        ("position estimates", refresh_position_estimates_command),
         (
             "team scoring",
             lambda: acquire_team_scoring_command([], None, Path("data/raw/stats-feeds"), None),
         ),
         ("contracts", lambda: refresh_contracts_command(None, Path("data/raw/finance"), keep_days)),
+        ("player reference", refresh_player_reference_command),
         (
             "darko",
             lambda: refresh_darko_daily_command(

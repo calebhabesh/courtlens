@@ -8,7 +8,7 @@ test("retained historical terms stay unknown, drawer sources and financial conte
   const result=page.getByRole("region",{name:"Financial query result"});await expect(result).toContainText("USD 40000000");await expect(result).toContainText("Historical reconstruction");
   await expect(result).toContainText("cap / tax / apron status pending");await expect(result).toContainText("Unknown");
   await page.getByRole("button",{name:"Brandon Ingram",exact:true}).click();await expect(page.getByRole("dialog")).toContainText("reported total / documented years");
-  await expect(page.getByRole("dialog").getByRole("link").first()).toHaveAttribute("href",/^https:/);
+  await expect(page.getByRole("dialog").locator('a[href^="https:"]').first()).toBeVisible();
   await page.keyboard.press("Escape");await expect(page.getByRole("dialog")).toHaveCount(0);await expect(page.getByRole("button",{name:"Brandon Ingram",exact:true})).toBeFocused();
   await expect(page.getByRole("heading",{level:1})).toHaveText("Retained source books");expect(new URL(page.url()).searchParams.get("season")).toBe("2024-25");
   await expect(page.getByLabel("Financial season",{exact:true})).toHaveValue("2025-26");await expect(page.getByRole("region",{name:"Financial query result"})).toContainText("40000000");

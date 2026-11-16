@@ -1,0 +1,3029 @@
+{
+  "tool": "scripts/speed/slow_reads.py",
+  "taken_at": "2026-11-15T07:37:23+00:00",
+  "api": "http://localhost:8180",
+  "pins": {
+    "releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+    "season": "2026-27",
+    "beforeDate": "2026-11-13"
+  },
+  "runs": 5,
+  "reads": [
+    {
+      "name": "workbench-workspace",
+      "method": "GET",
+      "path": "/api/workbench/workspace?workspaceId=default",
+      "status": 200,
+      "first_total_ms": 2.0,
+      "median_total_ms": 1.0,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1061,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1061,
+          "wall_ms": 6.8,
+          "total_ms": 2.0,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1061,
+          "wall_ms": 2.0,
+          "total_ms": 1.5,
+          "db_ms": 0.5,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1061,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1061,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1061,
+          "wall_ms": 1.3,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-catalog",
+      "method": "GET",
+      "path": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 54.1,
+      "median_total_ms": 54.1,
+      "median_db_ms": 26.2,
+      "queries": 4,
+      "bytes": 65598,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 65598,
+          "wall_ms": 54.6,
+          "total_ms": 54.1,
+          "db_ms": 25.5,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 65598,
+          "wall_ms": 55.5,
+          "total_ms": 54.8,
+          "db_ms": 26.5,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 65598,
+          "wall_ms": 54.9,
+          "total_ms": 54.2,
+          "db_ms": 26.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 65598,
+          "wall_ms": 52.7,
+          "total_ms": 52.0,
+          "db_ms": 25.3,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 65598,
+          "wall_ms": 54.1,
+          "total_ms": 53.4,
+          "db_ms": 26.2,
+          "queries": 4,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-metrics",
+      "method": "GET",
+      "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+      "status": 200,
+      "first_total_ms": 0.9,
+      "median_total_ms": 0.7,
+      "median_db_ms": 0.0,
+      "queries": 0,
+      "bytes": 106801,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 106801,
+          "wall_ms": 1.5,
+          "total_ms": 0.9,
+          "db_ms": 0.0,
+          "queries": 0,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 106801,
+          "wall_ms": 1.1,
+          "total_ms": 0.7,
+          "db_ms": 0.0,
+          "queries": 0,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 106801,
+          "wall_ms": 1.0,
+          "total_ms": 0.7,
+          "db_ms": 0.0,
+          "queries": 0,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 106801,
+          "wall_ms": 1.0,
+          "total_ms": 0.7,
+          "db_ms": 0.0,
+          "queries": 0,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 106801,
+          "wall_ms": 0.9,
+          "total_ms": 0.7,
+          "db_ms": 0.0,
+          "queries": 0,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-draft-classes",
+      "method": "GET",
+      "path": "/api/workbench/draft-classes",
+      "status": 200,
+      "first_total_ms": 1.5,
+      "median_total_ms": 1.2,
+      "median_db_ms": 0.8,
+      "queries": 1,
+      "bytes": 818,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 818,
+          "wall_ms": 1.8,
+          "total_ms": 1.5,
+          "db_ms": 0.8,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 818,
+          "wall_ms": 1.6,
+          "total_ms": 1.3,
+          "db_ms": 0.8,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 818,
+          "wall_ms": 1.4,
+          "total_ms": 1.1,
+          "db_ms": 0.7,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 818,
+          "wall_ms": 1.5,
+          "total_ms": 1.2,
+          "db_ms": 0.8,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 818,
+          "wall_ms": 1.4,
+          "total_ms": 1.1,
+          "db_ms": 0.6,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-stats",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 57.1,
+      "median_total_ms": 59.5,
+      "median_db_ms": 30.0,
+      "queries": 9,
+      "bytes": 629329,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 629329,
+          "wall_ms": 57.9,
+          "total_ms": 57.1,
+          "db_ms": 29.0,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 629329,
+          "wall_ms": 65.0,
+          "total_ms": 64.0,
+          "db_ms": 31.0,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 629329,
+          "wall_ms": 65.0,
+          "total_ms": 64.2,
+          "db_ms": 32.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 629329,
+          "wall_ms": 59.4,
+          "total_ms": 58.7,
+          "db_ms": 29.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 629329,
+          "wall_ms": 60.2,
+          "total_ms": 59.5,
+          "db_ms": 30.0,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-players",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 272.8,
+      "median_total_ms": 69.3,
+      "median_db_ms": 30.4,
+      "queries": 9,
+      "bytes": 469994,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 469994,
+          "wall_ms": 273.5,
+          "total_ms": 272.8,
+          "db_ms": 148.9,
+          "queries": 15,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 469994,
+          "wall_ms": 94.0,
+          "total_ms": 93.2,
+          "db_ms": 30.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 469994,
+          "wall_ms": 70.1,
+          "total_ms": 69.3,
+          "db_ms": 29.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 469994,
+          "wall_ms": 65.5,
+          "total_ms": 64.8,
+          "db_ms": 31.1,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 469994,
+          "wall_ms": 66.0,
+          "total_ms": 65.3,
+          "db_ms": 29.5,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "analytics-catalog",
+      "method": "GET",
+      "path": "/api/analytics/catalog?snapshotId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 6.1,
+      "median_total_ms": 4.8,
+      "median_db_ms": 1.0,
+      "queries": 5,
+      "bytes": 774,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 774,
+          "wall_ms": 6.7,
+          "total_ms": 6.1,
+          "db_ms": 2.1,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 774,
+          "wall_ms": 5.4,
+          "total_ms": 4.8,
+          "db_ms": 0.9,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 774,
+          "wall_ms": 5.6,
+          "total_ms": 5.1,
+          "db_ms": 1.1,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 774,
+          "wall_ms": 4.7,
+          "total_ms": 4.2,
+          "db_ms": 0.7,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 774,
+          "wall_ms": 5.3,
+          "total_ms": 4.8,
+          "db_ms": 1.0,
+          "queries": 5,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-compare",
+      "method": "GET",
+      "path": "/api/workbench/compare?playerA=2544&playerB=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 146.7,
+      "median_total_ms": 142.3,
+      "median_db_ms": 101.4,
+      "queries": 22,
+      "bytes": 12828,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 12828,
+          "wall_ms": 147.3,
+          "total_ms": 146.7,
+          "db_ms": 106.0,
+          "queries": 22,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12828,
+          "wall_ms": 143.4,
+          "total_ms": 142.8,
+          "db_ms": 101.4,
+          "queries": 22,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12828,
+          "wall_ms": 143.0,
+          "total_ms": 142.3,
+          "db_ms": 101.8,
+          "queries": 22,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12828,
+          "wall_ms": 140.6,
+          "total_ms": 140.0,
+          "db_ms": 99.3,
+          "queries": 22,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12828,
+          "wall_ms": 138.9,
+          "total_ms": 138.2,
+          "db_ms": 99.7,
+          "queries": 22,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-compare",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 103.8,
+      "median_total_ms": 42.3,
+      "median_db_ms": 29.3,
+      "queries": 9,
+      "bytes": 14802,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 14802,
+          "wall_ms": 104.5,
+          "total_ms": 103.8,
+          "db_ms": 35.7,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 14802,
+          "wall_ms": 50.1,
+          "total_ms": 49.5,
+          "db_ms": 29.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 14802,
+          "wall_ms": 43.0,
+          "total_ms": 42.3,
+          "db_ms": 29.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 14802,
+          "wall_ms": 42.7,
+          "total_ms": 42.0,
+          "db_ms": 29.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 14802,
+          "wall_ms": 42.7,
+          "total_ms": 42.0,
+          "db_ms": 28.9,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-player-seasons-203999",
+      "method": "GET",
+      "path": "/api/workbench/player-seasons?phase=regular_season&playerId=2544&playerId=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 41.8,
+      "median_total_ms": 41.1,
+      "median_db_ms": 30.8,
+      "queries": 12,
+      "bytes": 543,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 543,
+          "wall_ms": 42.5,
+          "total_ms": 41.8,
+          "db_ms": 31.5,
+          "queries": 12,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 543,
+          "wall_ms": 41.6,
+          "total_ms": 41.0,
+          "db_ms": 30.8,
+          "queries": 12,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 543,
+          "wall_ms": 42.6,
+          "total_ms": 42.0,
+          "db_ms": 30.6,
+          "queries": 12,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 543,
+          "wall_ms": 41.7,
+          "total_ms": 41.0,
+          "db_ms": 30.8,
+          "queries": 12,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 543,
+          "wall_ms": 41.8,
+          "total_ms": 41.1,
+          "db_ms": 30.8,
+          "queries": 12,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-bio-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 24.0,
+      "median_total_ms": 24.1,
+      "median_db_ms": 11.6,
+      "queries": 16,
+      "bytes": 98627,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 98627,
+          "wall_ms": 24.7,
+          "total_ms": 24.0,
+          "db_ms": 11.6,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 98627,
+          "wall_ms": 24.8,
+          "total_ms": 24.1,
+          "db_ms": 11.5,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 98627,
+          "wall_ms": 26.2,
+          "total_ms": 25.5,
+          "db_ms": 12.3,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 98627,
+          "wall_ms": 25.4,
+          "total_ms": 24.8,
+          "db_ms": 12.0,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 98627,
+          "wall_ms": 24.6,
+          "total_ms": 24.0,
+          "db_ms": 11.6,
+          "queries": 16,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-bio-203999",
+      "method": "GET",
+      "path": "/api/workbench/players/203999/bio?season=2026-27&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 23.0,
+      "median_total_ms": 23.1,
+      "median_db_ms": 12.0,
+      "queries": 16,
+      "bytes": 47934,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 47934,
+          "wall_ms": 23.6,
+          "total_ms": 23.0,
+          "db_ms": 12.0,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 47934,
+          "wall_ms": 23.8,
+          "total_ms": 23.1,
+          "db_ms": 11.8,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 47934,
+          "wall_ms": 24.6,
+          "total_ms": 23.9,
+          "db_ms": 12.7,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 47934,
+          "wall_ms": 23.7,
+          "total_ms": 23.1,
+          "db_ms": 11.8,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 47934,
+          "wall_ms": 23.8,
+          "total_ms": 23.1,
+          "db_ms": 12.0,
+          "queries": 16,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-career-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 82.9,
+      "median_total_ms": 85.1,
+      "median_db_ms": 43.9,
+      "queries": 11,
+      "bytes": 233954,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 233954,
+          "wall_ms": 83.6,
+          "total_ms": 82.9,
+          "db_ms": 43.3,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 233954,
+          "wall_ms": 85.9,
+          "total_ms": 85.1,
+          "db_ms": 44.2,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 233954,
+          "wall_ms": 86.4,
+          "total_ms": 85.7,
+          "db_ms": 43.2,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 233954,
+          "wall_ms": 84.3,
+          "total_ms": 83.6,
+          "db_ms": 43.9,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 233954,
+          "wall_ms": 86.0,
+          "total_ms": 85.3,
+          "db_ms": 43.9,
+          "queries": 11,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-profile-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 50.4,
+      "median_total_ms": 50.4,
+      "median_db_ms": 28.2,
+      "queries": 8,
+      "bytes": 5568,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 5568,
+          "wall_ms": 51.1,
+          "total_ms": 50.4,
+          "db_ms": 27.8,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5568,
+          "wall_ms": 50.7,
+          "total_ms": 50.0,
+          "db_ms": 28.2,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5568,
+          "wall_ms": 49.5,
+          "total_ms": 48.8,
+          "db_ms": 27.4,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5568,
+          "wall_ms": 52.8,
+          "total_ms": 52.1,
+          "db_ms": 28.8,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5568,
+          "wall_ms": 268.9,
+          "total_ms": 268.2,
+          "db_ms": 29.3,
+          "queries": 8,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-games-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 45.7,
+      "median_total_ms": 44.9,
+      "median_db_ms": 27.7,
+      "queries": 7,
+      "bytes": 8551,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 8551,
+          "wall_ms": 46.3,
+          "total_ms": 45.7,
+          "db_ms": 27.8,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8551,
+          "wall_ms": 45.5,
+          "total_ms": 44.9,
+          "db_ms": 27.6,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8551,
+          "wall_ms": 44.4,
+          "total_ms": 43.7,
+          "db_ms": 26.9,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8551,
+          "wall_ms": 48.9,
+          "total_ms": 48.2,
+          "db_ms": 29.0,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8551,
+          "wall_ms": 45.3,
+          "total_ms": 44.7,
+          "db_ms": 27.7,
+          "queries": 7,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-2544",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=2544",
+      "status": 200,
+      "first_total_ms": 1.6,
+      "median_total_ms": 1.1,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 2.2,
+          "total_ms": 1.6,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.5,
+          "total_ms": 1.1,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.2,
+          "total_ms": 0.9,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.5,
+          "total_ms": 1.1,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.5,
+          "total_ms": 1.1,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-2544-2025-26",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+      "status": 200,
+      "first_total_ms": 10.9,
+      "median_total_ms": 9.9,
+      "median_db_ms": 0.3,
+      "queries": 1,
+      "bytes": 24710,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 24710,
+          "wall_ms": 11.4,
+          "total_ms": 10.9,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 24710,
+          "wall_ms": 10.0,
+          "total_ms": 9.4,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 24710,
+          "wall_ms": 10.1,
+          "total_ms": 9.5,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 24710,
+          "wall_ms": 10.4,
+          "total_ms": 9.9,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 24710,
+          "wall_ms": 11.2,
+          "total_ms": 10.6,
+          "db_ms": 0.4,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-player-star",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 66.7,
+      "median_total_ms": 43.1,
+      "median_db_ms": 29.1,
+      "queries": 9,
+      "bytes": 12717,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 12717,
+          "wall_ms": 67.4,
+          "total_ms": 66.7,
+          "db_ms": 29.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12717,
+          "wall_ms": 42.9,
+          "total_ms": 42.3,
+          "db_ms": 28.6,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12717,
+          "wall_ms": 43.8,
+          "total_ms": 43.1,
+          "db_ms": 29.1,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12717,
+          "wall_ms": 48.8,
+          "total_ms": 48.2,
+          "db_ms": 34.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12717,
+          "wall_ms": 42.8,
+          "total_ms": 42.2,
+          "db_ms": 28.3,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-career-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 37.2,
+      "median_total_ms": 37.2,
+      "median_db_ms": 29.9,
+      "queries": 11,
+      "bytes": 12724,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 12724,
+          "wall_ms": 37.9,
+          "total_ms": 37.2,
+          "db_ms": 29.9,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12724,
+          "wall_ms": 37.0,
+          "total_ms": 36.3,
+          "db_ms": 29.0,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12724,
+          "wall_ms": 38.4,
+          "total_ms": 37.7,
+          "db_ms": 30.4,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12724,
+          "wall_ms": 38.5,
+          "total_ms": 37.8,
+          "db_ms": 30.2,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12724,
+          "wall_ms": 37.8,
+          "total_ms": 37.1,
+          "db_ms": 29.5,
+          "queries": 11,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-profile-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 30.4,
+      "median_total_ms": 30.2,
+      "median_db_ms": 24.4,
+      "queries": 8,
+      "bytes": 5590,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 5590,
+          "wall_ms": 31.1,
+          "total_ms": 30.4,
+          "db_ms": 24.4,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5590,
+          "wall_ms": 30.4,
+          "total_ms": 29.8,
+          "db_ms": 23.9,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5590,
+          "wall_ms": 30.2,
+          "total_ms": 29.6,
+          "db_ms": 24.2,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5590,
+          "wall_ms": 31.1,
+          "total_ms": 30.4,
+          "db_ms": 24.8,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5590,
+          "wall_ms": 30.9,
+          "total_ms": 30.2,
+          "db_ms": 24.7,
+          "queries": 8,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-games-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 44.6,
+      "median_total_ms": 45.2,
+      "median_db_ms": 27.0,
+      "queries": 7,
+      "bytes": 8601,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 8601,
+          "wall_ms": 45.3,
+          "total_ms": 44.6,
+          "db_ms": 25.7,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8601,
+          "wall_ms": 45.9,
+          "total_ms": 45.2,
+          "db_ms": 27.0,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8601,
+          "wall_ms": 45.4,
+          "total_ms": 44.6,
+          "db_ms": 26.9,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8601,
+          "wall_ms": 45.8,
+          "total_ms": 45.2,
+          "db_ms": 27.5,
+          "queries": 7,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 8601,
+          "wall_ms": 46.4,
+          "total_ms": 45.8,
+          "db_ms": 27.8,
+          "queries": 7,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-1643411",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1643411",
+      "status": 200,
+      "first_total_ms": 1.5,
+      "median_total_ms": 1.2,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 2.0,
+          "total_ms": 1.5,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.7,
+          "total_ms": 1.2,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.7,
+          "total_ms": 1.3,
+          "db_ms": 0.3,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-player-rookie",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 42.2,
+      "median_total_ms": 42.1,
+      "median_db_ms": 28.5,
+      "queries": 9,
+      "bytes": 12698,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 12698,
+          "wall_ms": 42.8,
+          "total_ms": 42.2,
+          "db_ms": 28.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12698,
+          "wall_ms": 43.1,
+          "total_ms": 42.4,
+          "db_ms": 28.5,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12698,
+          "wall_ms": 42.7,
+          "total_ms": 42.1,
+          "db_ms": 28.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12698,
+          "wall_ms": 42.5,
+          "total_ms": 41.9,
+          "db_ms": 28.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12698,
+          "wall_ms": 42.8,
+          "total_ms": 42.1,
+          "db_ms": 28.8,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-bio-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/bio?season=2026-27&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 22.9,
+      "median_total_ms": 22.3,
+      "median_db_ms": 11.5,
+      "queries": 16,
+      "bytes": 7403,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 7403,
+          "wall_ms": 23.5,
+          "total_ms": 22.9,
+          "db_ms": 11.5,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 7403,
+          "wall_ms": 22.3,
+          "total_ms": 21.7,
+          "db_ms": 11.5,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 7403,
+          "wall_ms": 23.1,
+          "total_ms": 22.4,
+          "db_ms": 11.9,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 7403,
+          "wall_ms": 22.9,
+          "total_ms": 22.2,
+          "db_ms": 11.5,
+          "queries": 16,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 7403,
+          "wall_ms": 22.9,
+          "total_ms": 22.3,
+          "db_ms": 11.6,
+          "queries": 16,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-career-1449",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 60.7,
+      "median_total_ms": 59.5,
+      "median_db_ms": 35.4,
+      "queries": 11,
+      "bytes": 113612,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 113612,
+          "wall_ms": 61.4,
+          "total_ms": 60.7,
+          "db_ms": 36.7,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 113612,
+          "wall_ms": 61.0,
+          "total_ms": 60.3,
+          "db_ms": 36.0,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 113612,
+          "wall_ms": 60.2,
+          "total_ms": 59.5,
+          "db_ms": 34.7,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 113612,
+          "wall_ms": 59.6,
+          "total_ms": 58.8,
+          "db_ms": 35.4,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 113612,
+          "wall_ms": 59.1,
+          "total_ms": 58.3,
+          "db_ms": 34.4,
+          "queries": 11,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-games-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 34.4,
+      "median_total_ms": 34.3,
+      "median_db_ms": 26.3,
+      "queries": 6,
+      "bytes": 32562,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 32562,
+          "wall_ms": 35.1,
+          "total_ms": 34.4,
+          "db_ms": 25.8,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 32562,
+          "wall_ms": 34.9,
+          "total_ms": 34.3,
+          "db_ms": 26.4,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 32562,
+          "wall_ms": 34.7,
+          "total_ms": 34.0,
+          "db_ms": 26.2,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 32562,
+          "wall_ms": 35.2,
+          "total_ms": 34.5,
+          "db_ms": 26.3,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 32562,
+          "wall_ms": 34.7,
+          "total_ms": 34.1,
+          "db_ms": 26.4,
+          "queries": 6,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-profile-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "status": 200,
+      "first_total_ms": 37.8,
+      "median_total_ms": 37.5,
+      "median_db_ms": 25.8,
+      "queries": 8,
+      "bytes": 5535,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 5535,
+          "wall_ms": 38.4,
+          "total_ms": 37.8,
+          "db_ms": 26.5,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5535,
+          "wall_ms": 37.7,
+          "total_ms": 37.0,
+          "db_ms": 25.4,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5535,
+          "wall_ms": 37.8,
+          "total_ms": 37.2,
+          "db_ms": 25.7,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5535,
+          "wall_ms": 39.1,
+          "total_ms": 38.4,
+          "db_ms": 26.7,
+          "queries": 8,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5535,
+          "wall_ms": 38.1,
+          "total_ms": 37.5,
+          "db_ms": 25.8,
+          "queries": 8,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+      "status": 200,
+      "first_total_ms": 1.3,
+      "median_total_ms": 1.0,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.8,
+          "total_ms": 1.3,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.6,
+          "total_ms": 1.2,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1990-91",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+      "status": 200,
+      "first_total_ms": 0.9,
+      "median_total_ms": 1.0,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.2,
+          "total_ms": 0.9,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.6,
+          "total_ms": 1.2,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1989-90",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+      "status": 200,
+      "first_total_ms": 1.0,
+      "median_total_ms": 1.0,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.3,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.2,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.2,
+          "total_ms": 0.9,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1988-89",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+      "status": 200,
+      "first_total_ms": 0.9,
+      "median_total_ms": 1.0,
+      "median_db_ms": 0.2,
+      "queries": 1,
+      "bytes": 1561,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.2,
+          "total_ms": 0.9,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.7,
+          "total_ms": 1.3,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.5,
+          "total_ms": 1.1,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.4,
+          "total_ms": 1.0,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 1561,
+          "wall_ms": 1.3,
+          "total_ms": 0.9,
+          "db_ms": 0.2,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "player-bio-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+      "status": 200,
+      "first_total_ms": 48.1,
+      "median_total_ms": 39.0,
+      "median_db_ms": 27.3,
+      "queries": 15,
+      "bytes": 55461,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 55461,
+          "wall_ms": 48.7,
+          "total_ms": 48.1,
+          "db_ms": 35.8,
+          "queries": 15,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 55461,
+          "wall_ms": 45.1,
+          "total_ms": 44.3,
+          "db_ms": 31.1,
+          "queries": 15,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 55461,
+          "wall_ms": 38.3,
+          "total_ms": 37.6,
+          "db_ms": 26.2,
+          "queries": 15,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 55461,
+          "wall_ms": 38.4,
+          "total_ms": 37.8,
+          "db_ms": 26.7,
+          "queries": 15,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 55461,
+          "wall_ms": 39.7,
+          "total_ms": 39.0,
+          "db_ms": 27.3,
+          "queries": 15,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-player-pre2000",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 83.0,
+      "median_total_ms": 60.1,
+      "median_db_ms": 45.3,
+      "queries": 9,
+      "bytes": 12280,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 12280,
+          "wall_ms": 83.7,
+          "total_ms": 83.0,
+          "db_ms": 50.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12280,
+          "wall_ms": 60.1,
+          "total_ms": 59.5,
+          "db_ms": 45.0,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12280,
+          "wall_ms": 58.4,
+          "total_ms": 57.7,
+          "db_ms": 44.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12280,
+          "wall_ms": 60.9,
+          "total_ms": 60.1,
+          "db_ms": 45.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 12280,
+          "wall_ms": 61.1,
+          "total_ms": 60.3,
+          "db_ms": 46.1,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-schedule-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 30.9,
+      "median_total_ms": 28.6,
+      "median_db_ms": 26.0,
+      "queries": 4,
+      "bytes": 6466,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 6466,
+          "wall_ms": 31.6,
+          "total_ms": 30.9,
+          "db_ms": 28.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6466,
+          "wall_ms": 31.5,
+          "total_ms": 30.8,
+          "db_ms": 28.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6466,
+          "wall_ms": 28.8,
+          "total_ms": 28.1,
+          "db_ms": 25.3,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6466,
+          "wall_ms": 28.6,
+          "total_ms": 27.9,
+          "db_ms": 25.4,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6466,
+          "wall_ms": 29.3,
+          "total_ms": 28.6,
+          "db_ms": 26.0,
+          "queries": 4,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-detail-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 34.5,
+      "median_total_ms": 34.1,
+      "median_db_ms": 27.9,
+      "queries": 5,
+      "bytes": 5930,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 5930,
+          "wall_ms": 35.2,
+          "total_ms": 34.5,
+          "db_ms": 28.0,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5930,
+          "wall_ms": 34.7,
+          "total_ms": 34.1,
+          "db_ms": 28.2,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5930,
+          "wall_ms": 35.9,
+          "total_ms": 35.3,
+          "db_ms": 27.8,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5930,
+          "wall_ms": 33.9,
+          "total_ms": 33.3,
+          "db_ms": 27.2,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5930,
+          "wall_ms": 34.6,
+          "total_ms": 34.0,
+          "db_ms": 27.9,
+          "queries": 5,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-peers-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 53.1,
+      "median_total_ms": 52.9,
+      "median_db_ms": 45.0,
+      "queries": 4,
+      "bytes": 9160,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 9160,
+          "wall_ms": 53.8,
+          "total_ms": 53.1,
+          "db_ms": 45.5,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9160,
+          "wall_ms": 53.0,
+          "total_ms": 52.3,
+          "db_ms": 44.7,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9160,
+          "wall_ms": 53.6,
+          "total_ms": 52.9,
+          "db_ms": 45.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9160,
+          "wall_ms": 55.0,
+          "total_ms": 54.3,
+          "db_ms": 45.0,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9160,
+          "wall_ms": 53.3,
+          "total_ms": 52.7,
+          "db_ms": 45.0,
+          "queries": 4,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 59.7,
+      "median_total_ms": 59.9,
+      "median_db_ms": 46.7,
+      "queries": 6,
+      "bytes": 49706,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 49706,
+          "wall_ms": 60.4,
+          "total_ms": 59.7,
+          "db_ms": 46.7,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 49706,
+          "wall_ms": 60.3,
+          "total_ms": 59.6,
+          "db_ms": 46.7,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 49706,
+          "wall_ms": 62.1,
+          "total_ms": 61.4,
+          "db_ms": 48.2,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 49706,
+          "wall_ms": 61.0,
+          "total_ms": 60.4,
+          "db_ms": 47.1,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 49706,
+          "wall_ms": 60.6,
+          "total_ms": 59.9,
+          "db_ms": 46.6,
+          "queries": 6,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-away",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?venue=away&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 59.6,
+      "median_total_ms": 59.6,
+      "median_db_ms": 46.6,
+      "queries": 6,
+      "bytes": 42886,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 42886,
+          "wall_ms": 60.2,
+          "total_ms": 59.6,
+          "db_ms": 46.6,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42886,
+          "wall_ms": 58.8,
+          "total_ms": 58.2,
+          "db_ms": 46.0,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42886,
+          "wall_ms": 59.9,
+          "total_ms": 59.3,
+          "db_ms": 45.8,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42886,
+          "wall_ms": 60.7,
+          "total_ms": 60.0,
+          "db_ms": 46.6,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42886,
+          "wall_ms": 60.9,
+          "total_ms": 60.2,
+          "db_ms": 47.1,
+          "queries": 6,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-home",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?venue=home&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 59.6,
+      "median_total_ms": 60.5,
+      "median_db_ms": 47.2,
+      "queries": 6,
+      "bytes": 42912,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 42912,
+          "wall_ms": 60.3,
+          "total_ms": 59.6,
+          "db_ms": 47.0,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42912,
+          "wall_ms": 60.4,
+          "total_ms": 59.7,
+          "db_ms": 47.2,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42912,
+          "wall_ms": 61.1,
+          "total_ms": 60.5,
+          "db_ms": 47.0,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42912,
+          "wall_ms": 62.0,
+          "total_ms": 61.3,
+          "db_ms": 48.2,
+          "queries": 6,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 42912,
+          "wall_ms": 61.6,
+          "total_ms": 60.9,
+          "db_ms": 48.2,
+          "queries": 6,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-team-lal",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 83.0,
+      "median_total_ms": 74.3,
+      "median_db_ms": 55.6,
+      "queries": 11,
+      "bytes": 253772,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 253772,
+          "wall_ms": 83.7,
+          "total_ms": 83.0,
+          "db_ms": 56.1,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 253772,
+          "wall_ms": 75.0,
+          "total_ms": 74.3,
+          "db_ms": 55.6,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 253772,
+          "wall_ms": 81.5,
+          "total_ms": 80.8,
+          "db_ms": 61.1,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 253772,
+          "wall_ms": 74.9,
+          "total_ms": 74.2,
+          "db_ms": 55.5,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 253772,
+          "wall_ms": 73.8,
+          "total_ms": 73.0,
+          "db_ms": 54.5,
+          "queries": 11,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-schedule-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 32.1,
+      "median_total_ms": 28.1,
+      "median_db_ms": 25.4,
+      "queries": 4,
+      "bytes": 6109,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 6109,
+          "wall_ms": 32.7,
+          "total_ms": 32.1,
+          "db_ms": 29.1,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6109,
+          "wall_ms": 29.2,
+          "total_ms": 28.5,
+          "db_ms": 25.8,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6109,
+          "wall_ms": 28.5,
+          "total_ms": 27.9,
+          "db_ms": 25.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6109,
+          "wall_ms": 28.7,
+          "total_ms": 28.1,
+          "db_ms": 25.4,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 6109,
+          "wall_ms": 28.2,
+          "total_ms": 27.6,
+          "db_ms": 25.0,
+          "queries": 4,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-peers-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 52.7,
+      "median_total_ms": 52.9,
+      "median_db_ms": 45.2,
+      "queries": 4,
+      "bytes": 9188,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 9188,
+          "wall_ms": 53.4,
+          "total_ms": 52.7,
+          "db_ms": 44.7,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9188,
+          "wall_ms": 52.7,
+          "total_ms": 52.1,
+          "db_ms": 44.4,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9188,
+          "wall_ms": 54.2,
+          "total_ms": 53.6,
+          "db_ms": 45.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9188,
+          "wall_ms": 53.6,
+          "total_ms": 52.9,
+          "db_ms": 45.2,
+          "queries": 4,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 9188,
+          "wall_ms": 54.4,
+          "total_ms": 53.7,
+          "db_ms": 45.7,
+          "queries": 4,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "team-detail-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "status": 200,
+      "first_total_ms": 33.0,
+      "median_total_ms": 33.5,
+      "median_db_ms": 27.8,
+      "queries": 5,
+      "bytes": 5461,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 5461,
+          "wall_ms": 33.6,
+          "total_ms": 33.0,
+          "db_ms": 27.1,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5461,
+          "wall_ms": 34.3,
+          "total_ms": 33.6,
+          "db_ms": 28.0,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5461,
+          "wall_ms": 34.1,
+          "total_ms": 33.5,
+          "db_ms": 27.8,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5461,
+          "wall_ms": 34.0,
+          "total_ms": 33.4,
+          "db_ms": 27.8,
+          "queries": 5,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 5461,
+          "wall_ms": 34.4,
+          "total_ms": 33.8,
+          "db_ms": 27.8,
+          "queries": 5,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-team-bos",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 46.8,
+      "median_total_ms": 46.7,
+      "median_db_ms": 29.0,
+      "queries": 9,
+      "bytes": 216882,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 216882,
+          "wall_ms": 47.4,
+          "total_ms": 46.8,
+          "db_ms": 28.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 216882,
+          "wall_ms": 47.5,
+          "total_ms": 46.8,
+          "db_ms": 29.5,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 216882,
+          "wall_ms": 47.3,
+          "total_ms": 46.7,
+          "db_ms": 28.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 216882,
+          "wall_ms": 47.0,
+          "total_ms": 46.3,
+          "db_ms": 29.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 216882,
+          "wall_ms": 47.0,
+          "total_ms": 46.3,
+          "db_ms": 29.0,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "workbench-impact-2025-26",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-07-01",
+      "status": 200,
+      "first_total_ms": 13.0,
+      "median_total_ms": 11.8,
+      "median_db_ms": 0.4,
+      "queries": 1,
+      "bytes": 400061,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 400061,
+          "wall_ms": 13.8,
+          "total_ms": 13.0,
+          "db_ms": 0.5,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 400061,
+          "wall_ms": 12.8,
+          "total_ms": 12.1,
+          "db_ms": 0.4,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 400061,
+          "wall_ms": 12.1,
+          "total_ms": 11.4,
+          "db_ms": 0.4,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 400061,
+          "wall_ms": 11.9,
+          "total_ms": 11.3,
+          "db_ms": 0.4,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 400061,
+          "wall_ms": 12.4,
+          "total_ms": 11.8,
+          "db_ms": 0.5,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "six-factor-2025-26",
+      "method": "GET",
+      "path": "/api/six-factor?season=2025-26&phase=regular_season",
+      "status": 200,
+      "first_total_ms": 6.4,
+      "median_total_ms": 5.6,
+      "median_db_ms": 1.8,
+      "queries": 1,
+      "bytes": 689627,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 689627,
+          "wall_ms": 7.1,
+          "total_ms": 6.4,
+          "db_ms": 1.9,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 689627,
+          "wall_ms": 6.1,
+          "total_ms": 5.6,
+          "db_ms": 1.7,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 689627,
+          "wall_ms": 6.2,
+          "total_ms": 5.6,
+          "db_ms": 1.7,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 689627,
+          "wall_ms": 6.0,
+          "total_ms": 5.4,
+          "db_ms": 1.8,
+          "queries": 1,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 689627,
+          "wall_ms": 5.9,
+          "total_ms": 5.4,
+          "db_ms": 2.0,
+          "queries": 1,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-pts_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 80.2,
+      "median_total_ms": 57.9,
+      "median_db_ms": 30.2,
+      "queries": 9,
+      "bytes": 861123,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 861123,
+          "wall_ms": 81.0,
+          "total_ms": 80.2,
+          "db_ms": 30.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 861123,
+          "wall_ms": 57.8,
+          "total_ms": 56.9,
+          "db_ms": 30.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 861123,
+          "wall_ms": 60.5,
+          "total_ms": 59.7,
+          "db_ms": 30.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 861123,
+          "wall_ms": 58.6,
+          "total_ms": 57.9,
+          "db_ms": 30.1,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 861123,
+          "wall_ms": 58.2,
+          "total_ms": 57.4,
+          "db_ms": 29.3,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-reb_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 61.3,
+      "median_total_ms": 61.3,
+      "median_db_ms": 30.2,
+      "queries": 9,
+      "bytes": 860174,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 860174,
+          "wall_ms": 62.0,
+          "total_ms": 61.3,
+          "db_ms": 30.2,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860174,
+          "wall_ms": 63.3,
+          "total_ms": 62.4,
+          "db_ms": 30.8,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860174,
+          "wall_ms": 65.4,
+          "total_ms": 64.6,
+          "db_ms": 35.8,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860174,
+          "wall_ms": 58.9,
+          "total_ms": 58.2,
+          "db_ms": 30.0,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860174,
+          "wall_ms": 58.1,
+          "total_ms": 57.3,
+          "db_ms": 30.0,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-ast_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 58.7,
+      "median_total_ms": 58.2,
+      "median_db_ms": 30.1,
+      "queries": 9,
+      "bytes": 860033,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 860033,
+          "wall_ms": 59.4,
+          "total_ms": 58.7,
+          "db_ms": 30.1,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860033,
+          "wall_ms": 58.0,
+          "total_ms": 57.3,
+          "db_ms": 29.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860033,
+          "wall_ms": 58.2,
+          "total_ms": 57.3,
+          "db_ms": 30.1,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860033,
+          "wall_ms": 59.0,
+          "total_ms": 58.2,
+          "db_ms": 30.5,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860033,
+          "wall_ms": 58.9,
+          "total_ms": 58.2,
+          "db_ms": 30.4,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-ts_pct",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 90.6,
+      "median_total_ms": 90.6,
+      "median_db_ms": 61.0,
+      "queries": 11,
+      "bytes": 855611,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 855611,
+          "wall_ms": 91.4,
+          "total_ms": 90.6,
+          "db_ms": 61.0,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 855611,
+          "wall_ms": 92.4,
+          "total_ms": 91.6,
+          "db_ms": 62.3,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 855611,
+          "wall_ms": 88.9,
+          "total_ms": 88.1,
+          "db_ms": 59.4,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 855611,
+          "wall_ms": 86.3,
+          "total_ms": 85.6,
+          "db_ms": 56.8,
+          "queries": 11,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 855611,
+          "wall_ms": 97.1,
+          "total_ms": 96.3,
+          "db_ms": 65.0,
+          "queries": 11,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-dpm",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 61.3,
+      "median_total_ms": 60.0,
+      "median_db_ms": 30.8,
+      "queries": 9,
+      "bytes": 859682,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 859682,
+          "wall_ms": 62.2,
+          "total_ms": 61.3,
+          "db_ms": 30.6,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 859682,
+          "wall_ms": 60.7,
+          "total_ms": 60.0,
+          "db_ms": 31.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 859682,
+          "wall_ms": 60.5,
+          "total_ms": 59.7,
+          "db_ms": 30.3,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 859682,
+          "wall_ms": 59.8,
+          "total_ms": 59.1,
+          "db_ms": 31.5,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 859682,
+          "wall_ms": 61.1,
+          "total_ms": 60.3,
+          "db_ms": 30.8,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    },
+    {
+      "name": "query-hero-rank-min_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "status": 200,
+      "first_total_ms": 59.3,
+      "median_total_ms": 59.1,
+      "median_db_ms": 30.4,
+      "queries": 9,
+      "bytes": 860874,
+      "runs": [
+        {
+          "status": 200,
+          "bytes": 860874,
+          "wall_ms": 60.1,
+          "total_ms": 59.3,
+          "db_ms": 30.0,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860874,
+          "wall_ms": 59.9,
+          "total_ms": 59.1,
+          "db_ms": 30.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860874,
+          "wall_ms": 61.9,
+          "total_ms": 61.1,
+          "db_ms": 31.7,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860874,
+          "wall_ms": 59.2,
+          "total_ms": 58.3,
+          "db_ms": 30.4,
+          "queries": 9,
+          "x_cache": null
+        },
+        {
+          "status": 200,
+          "bytes": 860874,
+          "wall_ms": 58.6,
+          "total_ms": 57.8,
+          "db_ms": 29.9,
+          "queries": 9,
+          "x_cache": null
+        }
+      ]
+    }
+  ]
+}

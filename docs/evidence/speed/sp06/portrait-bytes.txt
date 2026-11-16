@@ -1,0 +1,14 @@
+same 2544 ?size=288&crop=face-v6  sha256 8023e789b0f80f5d / 8023e789b0f80f5d  | cache-control: public, max-age=86400 content-length: 20626 content-type: image/webp HTTP/1.1 200 OK 
+same 2544 ?size=64&crop=face-v6  sha256 3010834830045628 / 3010834830045628  | cache-control: public, max-age=86400 content-length: 2464 content-type: image/webp HTTP/1.1 200 OK 
+same 2544 ?size=192&season=2003-04&team=CLE&crop=face-v6  sha256 aea03ac08c6241fc / aea03ac08c6241fc  | cache-control: public, max-age=86400 content-length: 6264 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2007-08 
+same 2544 ?size=128&season=2011-12&team=MIA&crop=face-v6  sha256 8d16a78a63aaae02 / 8d16a78a63aaae02  | cache-control: public, max-age=86400 content-length: 3746 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2010-11 
+same 2544 ?size=96&season=2019-20&team=LAL&crop=face-v6  sha256 258ee942cd873399 / 258ee942cd873399  | cache-control: public, max-age=86400 content-length: 3670 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2019-20 
+same 1449 ?size=288&crop=face-v6  sha256 d44a346c91f20218 / d44a346c91f20218  | cache-control: public, max-age=86400 content-length: 16692 content-type: image/webp HTTP/1.1 200 OK 
+same 1449 ?size=192&season=1991-92&team=BOS&crop=face-v6  sha256 690418f3529f3ef4 / 690418f3529f3ef4  | cache-control: public, max-age=86400 content-length: 9968 content-type: image/webp HTTP/1.1 200 OK 
+same 1643411 ?size=128&crop=face-v6  sha256 19ca8c7304c8aed4 / 19ca8c7304c8aed4  | cache-control: public, max-age=86400 content-length: 5276 content-type: image/webp HTTP/1.1 200 OK 
+same 203999 ?size=96&season=2015-16&team=DEN&crop=face-v6  sha256 6172944f0ca27e31 / 6172944f0ca27e31  | cache-control: public, max-age=86400 content-length: 3328 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2015-16 
+same 201142 ?size=192&season=2007-08&team=SEA&crop=face-v6  sha256 2dabaeef60023516 / 2dabaeef60023516  | cache-control: public, max-age=86400 content-length: 9026 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2009-10 
+same 201142 ?size=64&season=2016-17&team=GSW&crop=face-v6  sha256 ad55fc1004280ee8 / ad55fc1004280ee8  | cache-control: public, max-age=86400 content-length: 2180 content-type: image/webp HTTP/1.1 200 OK x-portrait-season: 2016-17 
+same 2544 ?  sha256 1462f7b731596d3b / 1462f7b731596d3b  | cache-control: public, max-age=86400 content-length: 198447 content-type: image/png HTTP/1.1 200 OK 
+same 1449 ?  sha256 8e5316c428a21ea1 / 8e5316c428a21ea1  | cache-control: public, max-age=86400 content-length: 39835 content-type: image/png HTTP/1.1 200 OK 
+identical: 13, different: 0

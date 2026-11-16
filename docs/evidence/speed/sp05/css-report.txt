@@ -1,0 +1,106 @@
+top-level:
+   549,437 @layer pages
+    85,955 @layer components
+    58,527 @layer foundation
+    13,146 @layer utilities
+     3,780 @layer tokens
+     2,975 @layer base
+     2,505 @layer motion
+       768 @media not all and (min-width:768px)
+       758 @layer properties
+       597 @media (max-width:767px)
+       332 @keyframes kit-beckon
+       265 .research-view .case-study-guarantees-li
+@layer components (85,936):
+     29,418 ui
+      9,265 ask
+      8,868 courtlens
+      4,787 views
+      3,405 lookup
+      2,767 conversation
+      2,666 agent
+      1,910 favorite
+      1,803 entity
+      1,603 account
+      1,333 player
+      1,173 modal
+      1,169 team
+        899 data
+        873 button
+        802 hotkeys
+        791 lineage
+        767 brand
+        717 compare
+        706 related
+        695 darko
+        690 replica
+        684 hybrid
+        629 panel
+        578 notice
+        527 filter
+        505 context
+        431 select:not([multiple
+        427 saved
+        343 back
+@layer pages (549,423):
+     39,416 live
+     24,900 player
+     19,053 rs
+     18,419 pvp
+     18,388 zt
+     17,665 pd
+     17,440 tc
+     17,153 lg
+     16,944 tw
+     16,533 shapes
+     16,453 sn
+     16,339 ctr
+     14,129 ps
+     13,590 wp
+     12,814 ol
+     12,680 team
+     12,545 wowy
+     12,094 pb
+     11,436 pi
+     11,242 dc
+     11,228 sc
+     10,674 fc
+     10,251 lp
+     10,095 sq
+      9,503 wpf
+      9,349 sls
+      9,083 lm
+      8,556 ln
+      8,202 ws
+      7,957 sa
+@layer foundation (58,508):
+     21,449 ui
+     10,817 chart
+      2,791 feed
+      2,302 pc04
+      1,992 pc12
+      1,654 select:not([multiple
+      1,340 zt
+      1,278 wowy
+      1,173 courtlens
+      1,116 table
+      1,072 directory
+        931 player
+        872 rapm
+        791 entity
+        634 lookup
+        624 ol
+        621 rs
+        620 pvp
+        619 percentile
+        541 stats
+        288 shapes
+        260 sq
+        238 roster
+        214 control
+        194 evaluation
+        182 teams
+        176 research
+        174 season
+        167 ctr
+        159 pi

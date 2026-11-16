@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useRef, useState } from "react";
 import { getSavedOperation, operationExportUrl, reproduceOperation, type SavedDetail, type SavedReproduction } from "@/lib/saved-operations";
 import { formatDate } from "@/lib/format-date";
@@ -16,7 +16,7 @@ import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { BackButton } from "./ui/back-button";
 import { StatTile } from "./ui/stat-tile";
-import { TemplateSkeleton } from "./ui/template-skeleton";
+import { ResearchBodySkeleton } from "./research-investigation";
 import { useToast } from "./ui/toast";
 import { Button, ButtonLink } from "./ui/kit";
 
@@ -55,7 +55,7 @@ export function SavedOperationDetail({ id }: { id: string }) {
     <PageHeader title="Saved Investigation" />
     <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</Button>}>{error}</GatedNote></div>
   </PageShell>;
-  if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><TemplateSkeleton template="research" /></>;
+  if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><ResearchBodySkeleton tiles={3} /></>;
   const manifest = detail.manifest;
   const context = manifest.context;
   const entry = publicInvestigation(detail);
@@ -75,7 +75,7 @@ export function SavedOperationDetail({ id }: { id: string }) {
         { label: "Context fingerprint", value: manifest.context_fingerprint, mono: true },
         { label: "Metric version", value: manifest.metric_version, mono: true },
         { label: "Cutoff rule", value: typeof context.before_date === "string" ? `Exclusive: game_date < ${context.before_date}` : "—" },
-        { label: "Lineage", value: <Link href="/data-status">Data lineage and operations</Link> },
+        { label: "Lineage", value: <IntentLink href="/data-status">Data lineage and operations</IntentLink> },
         ...(report ? report.operations.map(step => ({ label: `${step.step_id} result hashes`, value: `Saved ${step.saved_result_sha256} · recomputed ${step.recomputed_result_sha256}`, mono: true })) : [])
       ]}><details className="ui-data-details-section"><summary>Canonical manifest, original plan and retained plan</summary><pre className="research-document">{JSON.stringify(manifest, null, 2)}</pre></details></DataDetailsButton>} />
     {entry && <PlayerIdentity playerId="1630567" name="Scottie Barnes" team="TOR" size="sm" />}

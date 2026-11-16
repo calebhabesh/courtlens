@@ -19,6 +19,8 @@ import {
   DEFAULT_SORT, defensePattern, fixed, leaguePointsPerPossession, playTypeLabel, scopeLabel, share, signedPoints, sortDefenders, whole,
   type DefenseSort, type DefenseSortKey,
 } from "@/lib/zts-defense";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * RD17 (owner, 2026-11-10): zTS → Defense, the defensive half of the old Adjusted Shooting page (its offensive half was a duplicate
@@ -44,7 +46,7 @@ function TeamCodes({ codes, season }: { codes: readonly string[]; season: string
 function candidates(view: PlayTypesView): LookupItem[] {
   return view.players.map(p => ({
     id: p.player_id, kind: "player", canonical_id: p.player_id, display_name: p.player_name, subtitle: p.team_tricodes.join(" · ") || null,
-    match_basis: "substring", match_score: 0, destination_url: `/players/${p.player_id}?season=${view.season}`,
+    match_basis: "substring", match_score: 0, destination_url: playerHref(p.player_id, { season: view.season }),
     availability: { has_current_season: true, status: "served", seasons: [view.season], latest_team_id: null, latest_tricode: teamOf(p) },
   } satisfies LookupItem));
 }
@@ -114,7 +116,7 @@ function DefendersGrid({ view, selected, onSelect }: { view: PlayTypesView; sele
       sort={{ key: sort.key, direction: sort.direction, onSort }}
       lead={{ group: "Defender", label: <GridSearch value={query} onChange={setQuery} placeholder="Search defenders…" label="Search defenders" />,
         cell: p => <GridPlayer playerId={p.player_id} name={p.player_name} team={teamOf(p)} season={view.season} era={seasonEra(view.season, teamOf(p))}
-          href={`/players/${p.player_id}?season=${view.season}`}
+          href={playerHref(p.player_id, { season: view.season })}
           subtitle={<><TeamCodes codes={p.team_tricodes} season={view.season} />{p.qualified ? null : <span className="ztd-thin"> · small sample</span>}</>}
           tools={<IconButton size="xs" variant="ghost" icon="crosshair" pressed={p.player_id === selected} label={`Show ${p.player_name}'s play types`} onClick={() => onSelect(p.player_id)} data-field="select-defender" />} /> }} />
     <p className="rs-note ztd-note" data-field="board-note">Sorted, not ranked: with no interval, neighbouring rows can&apos;t be told apart. Values have no colour. Defenders under
@@ -170,7 +172,7 @@ function DefenderCard({ view, player, rule }: { view: PlayTypesView; player: Pla
     <div className="zt-hero-card ztd-card" data-field="defender-card" data-player={player.player_id}>
       <PlayerAvatar playerId={player.player_id} name={player.player_name} team={team} size="lg" era={seasonEra(view.season, team)} className="zt-avatar" />
       <div className="zt-hero-text">
-        <a className="zt-hero-name" href={`/players/${player.player_id}?season=${view.season}`}>{player.player_name}</a>
+        <Link className="zt-hero-name entity-link" href={playerHref(player.player_id, { season: view.season })} prefetch={false}>{player.player_name}</Link>
         <span className="zt-hero-sub"><TeamCodes codes={player.team_tricodes} season={view.season} /><span>· {scopeLabel(view)}</span></span>
         {rule && <span className="zt-panel-note" data-field="focus-rule">Shown first: the defender with the most play-type possessions.</span>}
       </div>
@@ -252,7 +254,7 @@ export function DefenseTab() {
         </div>
       </Panel>}
       {error && <FeedFailure error={error} retry={retry} what="Play-type defense" />}
-      {loading && !view && <FeedSkeleton label="Loading play-type defense" />}
+      {loading && !view && <FeedSkeleton label="Loading play-type defense" shape="grid" rows={10} density="compact" />}
       {view && <div className="ztd-body" data-loading={loading || undefined}>
         <PatternLine view={view} />
         {view.players.length === 0 ? <GatedNote>No defensive play types are served for the {scopeLabel(view)}.</GatedNote> : <>

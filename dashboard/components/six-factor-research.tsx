@@ -25,6 +25,7 @@ import {
   FACTORS, FACTOR_COPY, NODE_LABELS, UNKNOWN, factorMeta, getImpactTree, getSixFactorPage, intervalDomain, intervalText, sortPlayers, unknownReason,
   type FactorKey, type ImpactNode, type ImpactTreeData, type NodeKey, type Reconstruction, type SixFactorPage, type SixFactorPhase, type SixFactorPlayer,
 } from "@/lib/six-factor-research";
+import { playerHref } from "@/lib/entity-links";
 
 const r2 = (value: number | null | undefined) => value == null ? "—" : value.toFixed(3);
 const phaseLabel = (phase: SixFactorPhase) => phase === "playoffs" ? "Playoffs" : "Regular Season";
@@ -303,11 +304,11 @@ function TreeBody({ page, playerId, onPlayer }: { page: SixFactorPage; playerId:
   return <>
     <div className="sf-tree-head">
       <div className="sf-tree-picker"><EntityField label="Player" value={playerId} season={page.season} phase={page.phase} initialName={data?.player_name} onChange={value => onPlayer(value || null)} /></div>
-      {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={`/players/${data.player_id}?season=${page.season}`}
+      {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={playerHref(data.player_id, { season: page.season })}
         subtitle={data.in_fit ? <>{data.games ?? "—"} GP · {data.minutes == null ? "—" : count(Math.round(data.minutes))} MIN</> : `Not in the ${page.season} fit`} />}
     </div>
     {error && <FeedFailure error={error} retry={retry} what="Impact Tree" />}
-    {loading && <FeedSkeleton label="Loading Impact Tree" />}
+    {loading && <FeedSkeleton label="Loading Impact Tree" shape="profile" rows={0} />}
     {data && <>
       {!data.in_fit && <GatedNote>This player has no stints in the {page.season} {phaseLabel(page.phase).toLowerCase()} fit, so every number is unknown, not zero.{data.rated_seasons.length > 0 ? ` RAPM is served for ${data.rated_seasons.join(", ")}.` : ""}</GatedNote>}
       <ImpactTree tree={data} reconstruction={page.reconstruction} />
@@ -369,7 +370,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
 
     <ResearchSection id="ratings" icon="table" title="All Ratings">
       <ResearchTable label="Six-factor ratings with intervals" rows={players} rowKey={p => p.player_id} name={p => p.player_name} team={p => p.team} season={page.season}
-        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} team={p.team} era={seasonEra(page.season, p.team)} size="sm" href={`/players/${p.player_id}?season=${page.season}`} />}
+        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} team={p.team} era={seasonEra(page.season, p.team)} size="sm" href={playerHref(p.player_id, { season: page.season })} />}
         views={views} trailingColumns={trailing} defaultSort="rapm" noun="players"
         minimum={{ label: "Min MIN", value: p => p.minutes, initial: 0, step: 100 }}
         csv={{ filename: `courtlens-six-factor-${page.season}-${page.phase}.csv`, columns: csvColumns }}
@@ -454,7 +455,7 @@ export function SixFactorResearch() {
       count={data && <CountChip>{count(data.players.length)} rated</CountChip>}
       details={details} />
     {error && <FeedFailure error={error} retry={retry} what="Six-Factor RAPM" />}
-    {loading && <FeedSkeleton label="Loading six-factor ratings" />}
+    {loading && <FeedSkeleton label="Loading six-factor ratings" shape="grid" rows={12} search />}
     {answer?.status === "unavailable" && <GatedNote action={answer.scopes[0] && <ButtonLink size="lg" href={`${pathname}?season=${answer.scopes[0].season}`}>Open {answer.scopes[0].season}</ButtonLink>}>No one-year fit is served for {season} {phaseLabel(phase).toLowerCase()}. RAPM is sealed after a season ends, and history starts in 2014-15.</GatedNote>}
     {data && <Body page={data} factor={factor} playerId={playerId} treeHref={treeHref} statsHref={statsHref} set={set} />}
   </div>;

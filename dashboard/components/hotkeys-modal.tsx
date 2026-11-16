@@ -22,7 +22,8 @@ const SHORTCUTS: ShortcutItem[] = [
   { key: "Tab", description: "Move focus to next interactive control", category: "Global" },
   { key: "G", description: "Open definitions and glossary", category: "Navigation" },
   { key: "Z", description: "Open comparison for selected players", category: "Stats & Table" },
-  { key: "W / E", description: "Compact / standard row density", category: "Stats & Table" },
+  { key: "W / E", description: "Compact / standard row height", category: "Stats & Table" },
+  { key: "[ / ]", description: "Previous / next page", category: "Stats & Table" },
   { key: "A / D", description: "Scroll table horizontally", category: "Stats & Table" },
   { key: "T", description: "Expand / collapse Stats table height", category: "Stats & Table" },
   { key: "F", description: "Show / hide Stats table filters", category: "Stats & Table" },
@@ -61,7 +62,7 @@ export function HotkeysModal({ isOpen, onClose }: HotkeysModalProps) {
       ))}
       <div className="modal-footer">
         <span className="text-xs text-muted">
-          Table shortcuts (T, C, Z, W/E, A/D) require focus on the table container.
+          Table shortcuts (T, C, Z, W/E, A/D, [ / ]) require focus on the table container.
         </span>
         <Button size="lg" onClick={onClose}>
           Got it (Esc)

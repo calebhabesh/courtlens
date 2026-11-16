@@ -15,6 +15,7 @@ import {
 } from "@/lib/roster-shapes";
 import type { SixFactorTeam } from "@/lib/team-six-factors";
 import type { LookupItem } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
 
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 const boxPct = (size: number | null, capacity: number) => size === null ? "—" : `${(size / capacity * 100).toFixed(1)}%`;
@@ -55,7 +56,7 @@ function candidate(player: ShapePlayer, team: ShapeTeam): LookupItem {
     subtitle: `${team.team_name} ${team.team_tricode}`, match_basis: "suggestion", match_score: 1,
     availability: { has_current_season: true, status: "available", seasons: [] },
     team_association: { basis: "selected_scope", teams: [team.team_tricode], observed_through: null, season: null, phase: null, before_date: null },
-    destination_url: `/players/${player.player_id}`,
+    destination_url: playerHref(player.player_id),
     metadata: { caption: `${team.team_tricode} · ${signed(player.dpm)} DPM · ${one(player.minutes_uncapped ?? player.minutes_per_game)} min` },
   };
 }

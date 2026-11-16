@@ -22,6 +22,9 @@ import { PORTRAIT_CROP_VERSION, seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
 import { teamAccent } from "@/lib/team-colors";
 import type { LookupItem } from "@/lib/types";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 /**
  * Research → Models → Lineup Model (R14, designed in RD12). Every number is the frozen courtlens-lineup-model-v1 or courtlens-lineup-backtest-v1 results' or the lineup tool's;
@@ -122,8 +125,8 @@ function Slot({ player, others, items, onPick }: { player: ToolPlayer; others: r
       <LookupInput label={`Replace ${name}`} placeholder="Search players" value={text} onChange={setText} candidates={[...items]} excludedIds={[...others, player.player_id]} limit={12} groupLabel="Players in this fit" portalDropdown dropdownMinWidth={280} autoFocus openOnFocus={false} clearable={false}
         onSelect={item => { close(); onPick(item.canonical_id); }} />
     </div> : <span className="lm-slot-copy">
-      <a className="lm-slot-name" href={`/players/${player.player_id}${player.photo_season ? `?season=${player.photo_season}` : ""}`}>{name}</a>
-      {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} />{team}</span>}
+      <Link className="lm-slot-name entity-link" href={playerHref(player.player_id, { season: player.photo_season })} prefetch={false}>{name}</Link>
+      {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLink team={team} scope={{ season: player.photo_season }} variant="block"><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} /><span className="entity-link-text">{team}</span></TeamLink></span>}
       {player.status && <span className="lm-slot-status" data-field="status" data-status={player.status}>{STATUS_LABEL[player.status]}</span>}
     </span>}
     <span className="lm-slot-rating">
@@ -165,8 +168,8 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
   const { data: fit, error, loading, retry, stale } = useFeed([key, String(ready)], signal => ready ? getLineupFit(five, signal) : Promise.resolve(null));
   const items = useMemo(() => (roster?.players ?? []).map((p): LookupItem => ({
     id: p.player_id, canonical_id: p.player_id, kind: "player", display_name: p.name ?? p.player_id, match_basis: "suggestion", match_score: 1,
-    portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
-    availability: { has_current_season: true, status: "available", seasons: [serving.season] }, destination_url: `/players/${p.player_id}`,
+    portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait.webp?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
+    availability: { has_current_season: true, status: "available", seasons: [serving.season] }, destination_url: playerHref(p.player_id),
     team_association: p.tricode ? { basis: "last_observed", teams: [p.tricode], observed_through: null, season: p.photo_season } : null,
     metadata: { caption: `${p.tricode ?? "No team"} · ${p.status ? STATUS_LABEL[p.status] : "Unknown"}` },
   } as LookupItem)), [roster, serving.season]);
@@ -179,7 +182,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
     {unavailable ? <p className="lm-lead" data-field="tool-unavailable">The lineup tool needs the model&apos;s weights, which aren&apos;t on this server. Everything else on this page still works.</p> : <>
       <p className="lm-lead">Pick any five of {whole(roster?.players.length ?? 0)} players. Both models predict that five&apos;s net rating against {serving.panel_season}&apos;s {serving.panel_size} most-used lineups, from a fit trained on {serving.window[0]} to {serving.window.at(-1)}.</p>
       {rosterError && <FeedFailure error={rosterError} retry={retryRoster} what="The lineup tool's players" />}
-      {rosterLoading && <FeedSkeleton label="Loading the players" />}
+      {rosterLoading && <FeedSkeleton label="Loading the players" shape="cards" count={5} rows={1} />}
       {ready && <>
         <div className="lm-tool-head">
           <p className="lm-note" data-field="five-note">{isDefault ? `Opens on ${serving.panel_season}'s most-used lineup, by possessions together.` : "Your five, in the link so it can be shared."}</p>
@@ -191,7 +194,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
         <p className="lm-note" data-field="rating-gap" data-value={gap}>Each card shows the player&apos;s ridge rating, in points per 100 above an average player, and possessions in the fit. The lineup model&apos;s own additive ratings differ from these by at most {fixed(gap, 4)} across all {whole(roster?.players.length ?? 0)} players.</p>
         <p className="lm-note" data-field="positions">Neither model takes a player&apos;s position as an input, so neither judges a lineup&apos;s balance.</p>
         {error && <FeedFailure error={error} retry={retry} what="This five's prediction" />}
-        {loading && !shown && <FeedSkeleton label="Predicting this five" />}
+        {loading && !shown && <FeedSkeleton label="Predicting this five" shape="bars" rows={3} />}
         {shown && <div className="lm-fit-result" data-result data-stale={loading || undefined} aria-busy={loading}><FitView fit={shown} /></div>}
       </>}
     </>}

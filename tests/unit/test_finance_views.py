@@ -1,6 +1,7 @@
 """PC08 Contracts views over fictional PC06 fixtures: unknown never becomes zero, reads only."""
 
 import json
+from decimal import Decimal
 
 import pytest
 from finance_source_fixtures import THRESHOLDS, finance_capture, roster_capture
@@ -94,3 +95,29 @@ def test_player_contract_keeps_remaining_total_separate_and_rejects_stale_terms(
         changed = {k: v for k, v in reference.items() if k != "remaining_guaranteed"} | change
         enrich_contracts(session, "99001", changed)
         assert "remaining_guaranteed" not in changed
+
+
+def test_remaining_total_marks_seasons_fully_guaranteed_only_when_it_settles_them():
+    from courtlens.services.player_contracts import _seasons_from_total
+
+    context = {"source_url": "https://example.test/contracts/DEN.html", "as_of": "2026-11-13"}
+
+    def seasons(salaries, options, total):
+        reported = [{"season": s, "salary": v} for s, v in salaries.items()]
+        _seasons_from_total(reported, salaries, options, total, context)
+        return {r["season"]: (r.get("guarantee") or {}).get("basis") for r in reported}
+
+    salaries = {"2026-27": "100", "2027-28": "110"}
+    # Every remaining salary: each season is full (no season's guarantee exceeds its salary).
+    assert seasons(salaries, set(), Decimal("210")) == {
+        "2026-27": "total_equals_salaries",
+        "2027-28": "total_equals_salaries",
+    }
+    # Every salary outside the option year: those seasons are full; the option year stays open.
+    assert seasons(salaries, {"2027-28"}, Decimal("100")) == {
+        "2026-27": "total_equals_non_option_salaries",
+        "2027-28": None,
+    }
+    # Any other total is a total: never split among seasons.
+    assert seasons(salaries, set(), Decimal("150")) == {"2026-27": None, "2027-28": None}
+    assert seasons(salaries, {"2027-28"}, Decimal("150")) == {"2026-27": None, "2027-28": None}

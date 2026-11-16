@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import logging
 import uuid
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from courtlens import __version__
+from courtlens.api import read_cache, warm_start
 from courtlens.api.assistant_limits import AssistantRequestLimit
 from courtlens.api.metrics import metrics_response, observe_request
 from courtlens.api.routers import (
@@ -37,16 +40,28 @@ from courtlens.api.routers import (
     workbench,
     zts,
 )
+from courtlens.api.server_timing import install_query_timing
 from courtlens.config import get_settings
 
 
 def create_app() -> FastAPI:
     settings = get_settings()
+    install_query_timing()
     logging.basicConfig(
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        if settings.warm_start:
+            from courtlens.database import SessionLocal
+
+            warm_start.start(app.state, SessionLocal)
+        yield
+
     application = FastAPI(
+        lifespan=lifespan,
         title="CourtLens API",
         version=__version__,
         description=(
@@ -57,6 +72,16 @@ def create_app() -> FastAPI:
         openapi_url="/api/openapi.json",
         redoc_url=None,
     )
+    if settings.read_cache:
+        # Added first, so it sits innermost: directly around the router, inside CORS and the
+        # request context (a hit still gets CORS headers, a fresh X-Request-ID and Server-Timing).
+        from courtlens.database import SessionLocal
+
+        store = read_cache.ReadCacheStore(
+            lambda: read_cache.read_data_stamp(SessionLocal), settings.read_cache_max_bytes
+        )
+        application.state.read_cache = store
+        application.add_middleware(read_cache.ReadCacheMiddleware, store=store, source=application)
     application.add_middleware(AssistantRequestLimit)
     application.add_middleware(
         CORSMiddleware,
@@ -101,6 +126,7 @@ def create_app() -> FastAPI:
     application.include_router(auth.router, prefix="/api")
     application.include_router(account.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
+    application.include_router(read_cache.router, prefix="/api")
     application.add_api_route(
         "/metrics", metrics_response, methods=["GET"], include_in_schema=False
     )

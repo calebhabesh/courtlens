@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { ContractsView } from "@/components/contracts-view";
 import { StatsWorkspace } from "@/components/stats-workspace";
 import { PageShell } from "@/components/ui/page-shell";

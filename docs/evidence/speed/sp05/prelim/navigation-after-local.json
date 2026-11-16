@@ -1,0 +1,652 @@
+{
+  "spec": "dashboard/e2e/speed-navigation.spec.ts",
+  "base_url": "http://localhost:3180",
+  "runs": 5,
+  "summary": {
+    "stats-row-to-player": {
+      "runs": 5,
+      "median_ms": 153,
+      "min_ms": 146,
+      "max_ms": 164
+    },
+    "player-header-to-team": {
+      "runs": 5,
+      "median_ms": 151,
+      "min_ms": 133,
+      "max_ms": 162
+    },
+    "nav-to-stats": {
+      "runs": 5,
+      "median_ms": 189,
+      "min_ms": 160,
+      "max_ms": 221
+    },
+    "back-to-team": {
+      "runs": 5,
+      "median_ms": 129,
+      "min_ms": 122,
+      "max_ms": 131
+    },
+    "stats-row-to-player-prefetched": {
+      "runs": 5,
+      "median_ms": 77,
+      "min_ms": 70,
+      "max_ms": 107
+    },
+    "player-header-to-team-prefetched": {
+      "runs": 5,
+      "median_ms": 121,
+      "min_ms": 112,
+      "max_ms": 151
+    },
+    "nav-to-stats-prefetched": {
+      "runs": 5,
+      "median_ms": 165,
+      "min_ms": 163,
+      "max_ms": 209
+    }
+  },
+  "results": [
+    {
+      "journey": "player-header-to-team-prefetched",
+      "run": 1,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 124,
+      "longTasks": [
+        [
+          41,
+          76
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 11,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "nav-to-stats-prefetched",
+      "run": 1,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 209,
+      "longTasks": [
+        [
+          51,
+          145
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player-prefetched",
+      "run": 1,
+      "from": "/stats",
+      "to": "/players/1641705",
+      "ms": 77,
+      "longTasks": [
+        [
+          22,
+          51
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player",
+      "run": 1,
+      "from": "/stats",
+      "to": "/players/203999",
+      "ms": 164,
+      "longTasks": [
+        [
+          83,
+          75
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 8
+    },
+    {
+      "journey": "player-header-to-team",
+      "run": 1,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 151,
+      "longTasks": [
+        [
+          86,
+          57
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 10
+    },
+    {
+      "journey": "nav-to-stats",
+      "run": 1,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 221,
+      "longTasks": [
+        [
+          18,
+          57
+        ],
+        [
+          97,
+          110
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 7
+    },
+    {
+      "journey": "back-to-team",
+      "run": 1,
+      "from": "/stats",
+      "to": "/teams/1610612743",
+      "ms": 131,
+      "longTasks": [],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 2
+    },
+    {
+      "journey": "player-header-to-team-prefetched",
+      "run": 2,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 118,
+      "longTasks": [
+        [
+          38,
+          71
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 11,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "nav-to-stats-prefetched",
+      "run": 2,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 172,
+      "longTasks": [
+        [
+          42,
+          119
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player-prefetched",
+      "run": 2,
+      "from": "/stats",
+      "to": "/players/1641705",
+      "ms": 70,
+      "longTasks": [
+        [
+          18,
+          51
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player",
+      "run": 2,
+      "from": "/stats",
+      "to": "/players/203999",
+      "ms": 152,
+      "longTasks": [
+        [
+          71,
+          76
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 8
+    },
+    {
+      "journey": "player-header-to-team",
+      "run": 2,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 152,
+      "longTasks": [
+        [
+          21,
+          52
+        ],
+        [
+          90,
+          53
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 10
+    },
+    {
+      "journey": "nav-to-stats",
+      "run": 2,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 160,
+      "longTasks": [
+        [
+          30,
+          102
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 7
+    },
+    {
+      "journey": "back-to-team",
+      "run": 2,
+      "from": "/stats",
+      "to": "/teams/1610612743",
+      "ms": 131,
+      "longTasks": [],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 2
+    },
+    {
+      "journey": "player-header-to-team-prefetched",
+      "run": 3,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 112,
+      "longTasks": [
+        [
+          37,
+          67
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 11,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "nav-to-stats-prefetched",
+      "run": 3,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 165,
+      "longTasks": [
+        [
+          38,
+          116
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player-prefetched",
+      "run": 3,
+      "from": "/stats",
+      "to": "/players/1641705",
+      "ms": 77,
+      "longTasks": [
+        [
+          23,
+          50
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player",
+      "run": 3,
+      "from": "/stats",
+      "to": "/players/203999",
+      "ms": 146,
+      "longTasks": [
+        [
+          69,
+          72
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 8
+    },
+    {
+      "journey": "player-header-to-team",
+      "run": 3,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 143,
+      "longTasks": [
+        [
+          82,
+          54
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 7
+    },
+    {
+      "journey": "nav-to-stats",
+      "run": 3,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 191,
+      "longTasks": [
+        [
+          20,
+          50
+        ],
+        [
+          91,
+          86
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 0
+    },
+    {
+      "journey": "back-to-team",
+      "run": 3,
+      "from": "/stats",
+      "to": "/teams/1610612743",
+      "ms": 122,
+      "longTasks": [],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 2
+    },
+    {
+      "journey": "player-header-to-team-prefetched",
+      "run": 4,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 151,
+      "longTasks": [
+        [
+          67,
+          75
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 11,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "nav-to-stats-prefetched",
+      "run": 4,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 163,
+      "longTasks": [
+        [
+          43,
+          109
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player-prefetched",
+      "run": 4,
+      "from": "/stats",
+      "to": "/players/1641705",
+      "ms": 74,
+      "longTasks": [
+        [
+          18,
+          55
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player",
+      "run": 4,
+      "from": "/stats",
+      "to": "/players/203999",
+      "ms": 153,
+      "longTasks": [
+        [
+          76,
+          73
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 8
+    },
+    {
+      "journey": "player-header-to-team",
+      "run": 4,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 133,
+      "longTasks": [
+        [
+          77,
+          50
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 7
+    },
+    {
+      "journey": "nav-to-stats",
+      "run": 4,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 165,
+      "longTasks": [
+        [
+          29,
+          107
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 0
+    },
+    {
+      "journey": "back-to-team",
+      "run": 4,
+      "from": "/stats",
+      "to": "/teams/1610612743",
+      "ms": 124,
+      "longTasks": [],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 2
+    },
+    {
+      "journey": "player-header-to-team-prefetched",
+      "run": 5,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 121,
+      "longTasks": [
+        [
+          41,
+          71
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 11,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "nav-to-stats-prefetched",
+      "run": 5,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 164,
+      "longTasks": [
+        [
+          45,
+          106
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player-prefetched",
+      "run": 5,
+      "from": "/stats",
+      "to": "/players/1641705",
+      "ms": 107,
+      "longTasks": [
+        [
+          41,
+          62
+        ]
+      ],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 7,
+      "hoverPrefetch": 1
+    },
+    {
+      "journey": "stats-row-to-player",
+      "run": 5,
+      "from": "/stats",
+      "to": "/players/203999",
+      "ms": 154,
+      "longTasks": [
+        [
+          74,
+          74
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 8
+    },
+    {
+      "journey": "player-header-to-team",
+      "run": 5,
+      "from": "/players/203999",
+      "to": "/teams/1610612743",
+      "ms": 162,
+      "longTasks": [
+        [
+          79,
+          72
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 7
+    },
+    {
+      "journey": "nav-to-stats",
+      "run": 5,
+      "from": "/teams/1610612743",
+      "to": "/stats",
+      "ms": 189,
+      "longTasks": [
+        [
+          20,
+          50
+        ],
+        [
+          90,
+          86
+        ]
+      ],
+      "documents": 0,
+      "rsc": 1,
+      "prefetch": 0,
+      "api": 0
+    },
+    {
+      "journey": "back-to-team",
+      "run": 5,
+      "from": "/stats",
+      "to": "/teams/1610612743",
+      "ms": 129,
+      "longTasks": [],
+      "documents": 0,
+      "rsc": 0,
+      "prefetch": 0,
+      "api": 2
+    }
+  ]
+}

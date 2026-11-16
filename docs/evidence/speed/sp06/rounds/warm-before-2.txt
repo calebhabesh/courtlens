@@ -1,0 +1,104 @@
+page home                                   0.004 s
+page stats                                  0.038 s
+page players                                0.011 s
+page teams                                  0.010 s
+page standings                              0.008 s
+page compare                                0.017 s
+page player-star                            0.036 s
+page player-rookie                          0.017 s
+page player-pre2000                         0.025 s
+page team-lal                               0.035 s
+page team-bos                               0.031 s
+page research-rapm                          0.024 s
+api  workbench-catalog                      0.000 s
+api  player-career-2544                     0.001 s
+api  player-profile-2544                    0.000 s
+api  player-games-2544                      0.001 s
+api  workbench-metrics                      0.000 s
+api  workbench-impact-2544                  0.000 s
+api  workbench-impact-2544-2025-26          0.000 s
+api  player-bio-2544                        0.000 s
+api  player-career-1643411                  0.000 s
+api  player-profile-1643411                 0.000 s
+api  player-games-1643411                   0.000 s
+api  workbench-impact-1643411               0.000 s
+api  player-bio-1643411                     0.000 s
+api  player-career-1449                     0.000 s
+api  player-games-1449-1991-92              0.000 s
+api  player-profile-1449-1991-92            0.000 s
+api  workbench-impact-1449-1991-92          0.000 s
+api  workbench-impact-1449-1990-91          0.000 s
+api  workbench-impact-1449-1989-90          0.000 s
+api  workbench-impact-1449-1988-89          0.000 s
+api  player-bio-1449-1991-92                0.000 s
+api  team-schedule-1610612747               0.000 s
+api  team-detail-1610612747                 0.000 s
+api  team-peers-1610612747                  0.000 s
+api  workbench-teams-six-factors            0.000 s
+api  workbench-teams-six-factors-away       0.001 s
+api  workbench-teams-six-factors-home       0.000 s
+api  workbench-workspace                    0.002 s
+api  workbench-draft-classes                0.000 s
+api  team-schedule-1610612738               0.000 s
+api  team-peers-1610612738                  0.000 s
+api  team-detail-1610612738                 0.001 s
+file portrait-2544-288                      0.003 s
+file portrait-2544-288-webp                 0.001 s
+file portrait-1449-192-season-webp          0.001 s
+file team-logo-lal-svg                      0.001 s
+file team-logo-bos-1977-png                 0.001 s
+file flag-us                                0.000 s
+
+wrote /home/ethioking/.cache/courtlens-tmp/sp06/out/rounds/measure-warm-before-2-20261115T211654Z.json
+| Kind | Name | Median first byte | Median total | Min to max total | Wire | Decoded | Cache |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| page | home | 0.004 s | 0.004 s | 0.003 s to 0.006 s | 7.8 KB | 34.3 KB |  |
+| page | stats | 0.008 s | 0.038 s | 0.036 s to 0.039 s | 84.2 KB | 1,632.0 KB |  |
+| page | players | 0.005 s | 0.011 s | 0.010 s to 0.013 s | 32.4 KB | 280.1 KB |  |
+| page | teams | 0.008 s | 0.010 s | 0.009 s to 0.011 s | 24.1 KB | 246.3 KB |  |
+| page | standings | 0.007 s | 0.008 s | 0.007 s to 0.011 s | 12.5 KB | 188.2 KB |  |
+| page | compare | 0.008 s | 0.017 s | 0.017 s to 0.020 s | 47.0 KB | 397.6 KB |  |
+| page | player-star | 0.012 s | 0.036 s | 0.033 s to 0.037 s | 94.9 KB | 924.1 KB |  |
+| page | player-rookie | 0.011 s | 0.017 s | 0.016 s to 0.023 s | 44.5 KB | 332.8 KB |  |
+| page | player-pre2000 | 0.009 s | 0.025 s | 0.023 s to 0.026 s | 62.1 KB | 624.3 KB |  |
+| page | team-lal | 0.013 s | 0.035 s | 0.032 s to 0.040 s | 80.7 KB | 1,131.9 KB |  |
+| page | team-bos | 0.011 s | 0.031 s | 0.029 s to 0.034 s | 77.9 KB | 1,036.9 KB |  |
+| page | research-rapm | 0.020 s | 0.024 s | 0.022 s to 0.028 s | 64.4 KB | 666.8 KB |  |
+| api | workbench-catalog | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 65.6 KB | 65.6 KB | hit |
+| api | player-career-2544 | 0.000 s | 0.001 s | 0.001 s to 0.001 s | 234.0 KB | 234.0 KB | hit |
+| api | player-profile-2544 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 5.6 KB | 5.6 KB | hit |
+| api | player-games-2544 | 0.000 s | 0.001 s | 0.000 s to 0.001 s | 8.6 KB | 8.6 KB | hit |
+| api | workbench-metrics | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 106.8 KB | 106.8 KB | hit |
+| api | workbench-impact-2544 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 1.6 KB | 1.6 KB | hit |
+| api | workbench-impact-2544-2025-26 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 24.7 KB | 24.7 KB | hit |
+| api | player-bio-2544 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 98.6 KB | 98.6 KB | hit |
+| api | player-career-1643411 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 12.7 KB | 12.7 KB | hit |
+| api | player-profile-1643411 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 5.6 KB | 5.6 KB | hit |
+| api | player-games-1643411 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 8.6 KB | 8.6 KB | hit |
+| api | workbench-impact-1643411 | 0.000 s | 0.000 s | 0.000 s to 0.000 s | 1.6 KB | 1.6 KB | hit |
+| api | player-bio-1643411 | 0.000 s | 0.000 s | 0.000 s to 0.000 s | 7.4 KB | 7.4 KB | hit |
+| api | player-career-1449 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 113.6 KB | 113.6 KB | hit |
+| api | player-games-1449-1991-92 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 32.6 KB | 32.6 KB | hit |
+| api | player-profile-1449-1991-92 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 5.6 KB | 5.6 KB | hit |
+| api | workbench-impact-1449-1991-92 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 1.6 KB | 1.6 KB | hit |
+| api | workbench-impact-1449-1990-91 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 1.6 KB | 1.6 KB | hit |
+| api | workbench-impact-1449-1989-90 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 1.6 KB | 1.6 KB | hit |
+| api | workbench-impact-1449-1988-89 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 1.6 KB | 1.6 KB | hit |
+| api | player-bio-1449-1991-92 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 55.5 KB | 55.5 KB | hit |
+| api | team-schedule-1610612747 | 0.000 s | 0.000 s | 0.000 s to 0.000 s | 6.5 KB | 6.5 KB | hit |
+| api | team-detail-1610612747 | 0.000 s | 0.000 s | 0.000 s to 0.000 s | 5.9 KB | 5.9 KB | hit |
+| api | team-peers-1610612747 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 9.2 KB | 9.2 KB | hit |
+| api | workbench-teams-six-factors | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 49.7 KB | 49.7 KB | hit |
+| api | workbench-teams-six-factors-away | 0.000 s | 0.001 s | 0.000 s to 0.001 s | 42.9 KB | 42.9 KB | hit |
+| api | workbench-teams-six-factors-home | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 42.9 KB | 42.9 KB | hit |
+| api | workbench-workspace | 0.002 s | 0.002 s | 0.002 s to 0.002 s | 1.1 KB | 1.1 KB | bypass |
+| api | workbench-draft-classes | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 0.8 KB | 0.8 KB | hit |
+| api | team-schedule-1610612738 | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 6.1 KB | 6.1 KB | hit |
+| api | team-peers-1610612738 | 0.000 s | 0.000 s | 0.000 s to 0.000 s | 9.2 KB | 9.2 KB | hit |
+| api | team-detail-1610612738 | 0.000 s | 0.001 s | 0.001 s to 0.001 s | 5.5 KB | 5.5 KB | hit |
+| file | portrait-2544-288 | 0.003 s | 0.003 s | 0.002 s to 0.003 s | 20.6 KB | 20.6 KB | public, max-age=86400 |
+| file | portrait-2544-288-webp | 0.001 s | 0.001 s | 0.001 s to 0.001 s | 0.0 KB | 0.0 KB |  |
+| file | portrait-1449-192-season-webp | 0.001 s | 0.001 s | 0.001 s to 0.001 s | 0.0 KB | 0.0 KB |  |
+| file | team-logo-lal-svg | 0.001 s | 0.001 s | 0.001 s to 0.001 s | 4.4 KB | 12.3 KB | public, max-age=0 |
+| file | team-logo-bos-1977-png | 0.001 s | 0.001 s | 0.000 s to 0.001 s | 18.7 KB | 18.7 KB | public, max-age=0 |
+| file | flag-us | 0.000 s | 0.000 s | 0.000 s to 0.001 s | 0.8 KB | 0.8 KB | public, max-age=0 |

@@ -333,8 +333,18 @@ export type MetricCatalog = {
   metrics: MetricDefinition[];
 };
 
+export type PositionEstimateCoverage = {
+  version: string;
+  method_url: string;
+  sealed_seasons: string[];
+  provisional_seasons: string[];
+  provisional_observed_at: string | null;
+};
+
 export type WorkbenchCatalog = {
   darko?: { status: string; manifest_sha256: string | null; scopes: { season: string; phase: string; as_of: string; data_date: string }[] } | null;
+  /** Seasons with estimated positions; provisional ones are a season in progress, relabelled daily. */
+  position_estimates?: PositionEstimateCoverage | null;
   impact?: { status: string; scopes: ImpactArtifact[]; manifest_sha256: string | null } | null;
   release_id: string;
   snapshot_id: string;
@@ -540,6 +550,8 @@ export type StatsPresentation = {
   positions?: EstimatedPosition[] | null;
   // NBA draft class (draft year); undrafted players never match.
   draft_year?: number | null;
+  // "sort": each item's metric maps hold only the sort fields (rows, order and cursor unchanged).
+  metrics?: "all" | "sort";
 };
 
 export type EstimatedPosition = "PG" | "SG" | "SF" | "PF" | "C";
@@ -575,6 +587,8 @@ export type WorkbenchQueryResponse = {
   } | null;
   items: PlayerResearchItem[];
   next_cursor: string | null;
+  /** One cursor per page of the shown rows (page 1 is null); presentation queries only. */
+  page_cursors?: (string | null)[] | null;
   has_more: boolean;
   warnings: string[];
 };
@@ -610,6 +624,10 @@ export type PlayerResearchItem = {
   cohort_sample_sizes?: Record<string, number> | null;
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
+  /** The NBA listing (G, F, C, hybrids) the estimate was bounded by. */
+  position_listed?: string | null;
+  /** The estimate is for the season in progress and is relabelled daily. */
+  position_provisional?: boolean | null;
   /** Who the player is on a roster with today; the row's teams stay its games' teams. */
   current_team?: PlayerCurrentTeam | null;
   /** Set instead of current_team when the player is on no NBA roster today. */
@@ -723,6 +741,8 @@ export type PlayerResearchResponse = {
   total_eligible_players: number;
   items: PlayerResearchItem[];
   next_cursor: string | null;
+  /** One cursor per page of the shown rows (page 1 is null); presentation queries only. */
+  page_cursors?: (string | null)[] | null;
   has_more: boolean;
   warnings: string[];
 };
@@ -827,7 +847,11 @@ export type PlayerProfile = {
     policy_name?: string;
   };
   warnings: string[];
+  /** The page season's estimated position; absent when the season has none. */
+  position_estimate?: PositionEstimate | null;
 };
+
+export type PositionEstimate = { position: EstimatedPosition; listed: string | null; provisional: boolean; season: string };
 
 export type PlayerGameLogItem = {
   game_id: string;
@@ -2351,18 +2375,48 @@ export type PlayerCurrentStatus = {
 export type PlayerGuarantee = {
   amount: string | null; status: "full" | "partial" | "none" | null;
   source_url: string; as_of: string;
+  /** Null when reported for the season; else settled exactly by the remaining guaranteed total. */
+  basis?: "total_equals_salaries" | "total_equals_non_option_salaries" | null;
 };
 
 export type PlayerSalary = {
   season: string; team: string | null; team_code: string | null; salary: string | null;
   salary_note?: string | null; league?: string | null; option?: "player" | "team" | null;
   share_of_cap?: number | null; cap_source_url?: string | null; cap_as_of?: string | null;
+  /** The official NBA release when retained, else Basketball-Reference's salary cap history. */
+  cap_source?: "nba_release" | "basketball_reference" | null;
   guarantee?: PlayerGuarantee | null;
 };
 
 export type PlayerReferenceEvent = {
   date: string | null; type: string; description: string;
   from_team_code: string | null; to_team_code: string | null;
+};
+
+/** Seasons one contract covers, placed only where both its ends are known (contract_spans.py). */
+export type PlayerContractSpan = {
+  start_season: string; end_season: string;
+  end_basis: "stated_length" | "next_contract" | "current_contract" | "last_reported_season" | null;
+  /** signed: its signing season; previous_contract: after the one in force; current_contract: counted back from the current contract's last season. */
+  start_basis?: "signed" | "previous_contract" | "current_contract";
+  signed_date: string; kind: "signing" | "extension"; length_stated: boolean;
+  /** Where the length comes from: the source's "N-yr", the CBA (rookie scale, 10-day, Exhibit 10) or Wikipedia. */
+  length_source?: PlayerContractLengthSource | null;
+  team_code: string | null; description: string; current: boolean;
+  /** Wikipedia's terms ("4-yr/$164.3M") when they supplied a length Basketball-Reference left out. */
+  terms?: string | null;
+  /** wikipedia: a signing Basketball-Reference does not list, from the player's article. */
+  source?: "basketball_reference" | "wikipedia";
+  source_url?: string | null;
+};
+
+export type PlayerContractLengthSource = "stated" | "rookie_scale" | "ten_day" | "exhibit_10" | "wikipedia";
+
+/** A signing no bracket could be placed for: what is known, and which end is missing. */
+export type PlayerUnplacedSigning = {
+  signed_date: string; season: string; kind: "signing" | "extension"; description: string;
+  years?: number | null; length_source?: PlayerContractLengthSource | null; terms?: string | null;
+  source?: "basketball_reference" | "wikipedia"; source_url?: string | null;
 };
 
 export type PlayerGameHighs = {
@@ -2385,7 +2439,7 @@ export type PlayerBio = {
   age: number | null;
   country: string | null;
   college: string | null;
-  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null } | null;
+  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null; organization_type?: string | null } | null;
   undrafted: boolean;
   combine: {
     draft_year: number;
@@ -2406,7 +2460,16 @@ export type PlayerBio = {
     honours: string[]; awards: Record<string, string[]>; all_star_seasons: string[];
     salary_history?: PlayerSalary[]; career_earnings?: string | null;
     current_contract?: PlayerSalary[]; remaining_guaranteed?: PlayerGuarantee | null;
+    /** The last college Basketball-Reference lists; location (Sports-Reference) and logo (ESPN)
+     *  where the school could be placed. */
+    college?: { name: string; school: string | null; location: string | null; logo_url: string | null;
+      source_url: string | null; attribution: string | null } | null;
     contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
+    contract_spans?: PlayerContractSpan[];
+    /** Signings no span could be placed for (an extension's start or a contract's end unknown). */
+    unplaced_signings?: PlayerUnplacedSigning[];
+    /** The Wikipedia article reading that supplied contract terms (CC BY-SA 4.0). */
+    contract_terms_source?: { name: string; title: string; url: string; revision_id: number | null; as_of: string } | null;
     game_highs?: PlayerGameHighs[];
   } | null;
   limitations: string[];

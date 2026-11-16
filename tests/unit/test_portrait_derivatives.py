@@ -108,3 +108,14 @@ def test_portrait_endpoint_serves_sized_derivatives(
         assert image.size == (128, 128)
 
     assert api_client.get("/api/workbench/players/100/portrait?size=100").status_code == 422
+
+    # SP06: the `.webp` path (which Cloudflare caches by extension) is the same handler.
+    for params in ({"size": 64}, {"size": 128}, {"size": 288}, {}):
+        old = api_client.get("/api/workbench/players/100/portrait", params=params)
+        new = api_client.get("/api/workbench/players/100/portrait.webp", params=params)
+        assert new.status_code == old.status_code == 200
+        assert new.content == old.content
+        for header in ("content-type", "cache-control", "content-length"):
+            assert new.headers[header] == old.headers[header]
+    assert api_client.get("/api/workbench/players/100/portrait.webp?size=100").status_code == 422
+    assert api_client.get("/api/workbench/players/999/portrait.webp?size=64").status_code == 404

@@ -37,10 +37,13 @@ def close_application_pool() -> Generator[None, None, None]:
 def fresh_stats_cohort_cache() -> Generator[None, None, None]:
     """Tests reuse synthetic dataset IDs; never serve one test's cohort to another."""
     from courtlens.services import stats_cohort_cache
+    from courtlens.services.player_contracts import clear_book_memo
 
     stats_cohort_cache.clear()
+    clear_book_memo()
     yield
     stats_cohort_cache.clear()
+    clear_book_memo()
 
 
 @pytest.fixture

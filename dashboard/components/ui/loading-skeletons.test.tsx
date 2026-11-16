@@ -20,6 +20,30 @@ import DataStatusLoading from "@/app/data-status/loading";
 import ForecastsLoading from "@/app/forecasts/loading";
 import SettingsLoading from "@/app/settings/loading";
 import InvestigationsLoading from "@/app/investigations/loading";
+import TeamCompareLoading from "@/app/team-compare/loading";
+import MatchupsLoading from "@/app/matchups/loading";
+import SeriesLoading from "@/app/playoffs/[seriesId]/loading";
+import ContractsTeamLoading from "@/app/contracts/[team]/loading";
+import FreeAgencyLoading from "@/app/free-agency/loading";
+import RosterShapesLoading from "@/app/roster-shapes/loading";
+import CalculatorLoading from "@/app/calculator/loading";
+import EvaluationLoading from "@/app/evaluation/loading";
+import ShowcaseLoading from "@/app/showcase/loading";
+import RapmLoading from "@/app/research/rapm/loading";
+import ShootingLoading from "@/app/research/shooting/loading";
+import CaseStudiesLoading from "@/app/research/case-studies/loading";
+import BacktestLoading from "@/app/research/backtest/loading";
+import SignalNoiseLoading from "@/app/research/signal-noise/loading";
+import LineupModelLoading from "@/app/research/lineup-model/loading";
+import ProjectedImpactLoading from "@/app/research/projected-impact/loading";
+import WinProbabilityLoading from "@/app/research/win-probability/loading";
+import ZtsLoading from "@/app/research/zts/loading";
+import ShotQualityLoading from "@/app/research/shot-quality/loading";
+import DraftLoading from "@/app/draft/loading";
+import WingspanLoading from "@/app/wingspan/loading";
+import StandingsLoading from "@/app/standings/loading";
+import LastGamesLoading from "@/app/last-games/loading";
+import StatLineShiftLoading from "@/app/stat-line-shift/loading";
 
 describe("Route Loading Skeletons", () => {
   const skeletons = [
@@ -41,6 +65,30 @@ describe("Route Loading Skeletons", () => {
     { name: "ForecastsLoading", component: ForecastsLoading },
     { name: "SettingsLoading", component: SettingsLoading },
     { name: "InvestigationsLoading", component: InvestigationsLoading },
+    { name: "TeamCompareLoading", component: TeamCompareLoading },
+    { name: "MatchupsLoading", component: MatchupsLoading },
+    { name: "SeriesLoading", component: SeriesLoading },
+    { name: "ContractsTeamLoading", component: ContractsTeamLoading },
+    { name: "FreeAgencyLoading", component: FreeAgencyLoading },
+    { name: "RosterShapesLoading", component: RosterShapesLoading },
+    { name: "CalculatorLoading", component: CalculatorLoading },
+    { name: "EvaluationLoading", component: EvaluationLoading },
+    { name: "ShowcaseLoading", component: ShowcaseLoading },
+    { name: "RapmLoading", component: RapmLoading },
+    { name: "ShootingLoading", component: ShootingLoading },
+    { name: "CaseStudiesLoading", component: CaseStudiesLoading },
+    { name: "BacktestLoading", component: BacktestLoading },
+    { name: "SignalNoiseLoading", component: SignalNoiseLoading },
+    { name: "LineupModelLoading", component: LineupModelLoading },
+    { name: "ProjectedImpactLoading", component: ProjectedImpactLoading },
+    { name: "WinProbabilityLoading", component: WinProbabilityLoading },
+    { name: "ZtsLoading", component: ZtsLoading },
+    { name: "ShotQualityLoading", component: ShotQualityLoading },
+    { name: "DraftLoading", component: DraftLoading },
+    { name: "WingspanLoading", component: WingspanLoading },
+    { name: "StandingsLoading", component: StandingsLoading },
+    { name: "LastGamesLoading", component: LastGamesLoading },
+    { name: "StatLineShiftLoading", component: StatLineShiftLoading },
   ];
 
   for (const { name, component: Component } of skeletons) {

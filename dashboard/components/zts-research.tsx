@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useState, type CSSProperties, type ReactNode } from "react";
 import { EntityField } from "./entity-picker";
 import { DefenseTab } from "./zts-defense";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
@@ -25,6 +25,9 @@ import {
   type Leaderboard, type PlayerZts, type RoleMoves, type TeamBoard, type TeamPlayer, type ValidationBlock, type ZtsRow, type ZtsStatus,
   type ZtsSummary, type ZtsTeam,
 } from "@/lib/zts";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /*
  * Research → zTS (R04 analysis; RD03 design after the reference site's zTS explainer). The reference site's layout: an article hero, one
@@ -56,7 +59,7 @@ function Player({ row, season }: { row: Pick<ZtsRow, "player_id" | "player_name"
   const [main, ...others] = row.teams;
   const team = main?.tricode ?? null;
   return <GridPlayer playerId={row.player_id} name={row.player_name} team={team} season={season} era={seasonEra(season, team)}
-    href={`/players/${row.player_id}?season=${season}`}
+    href={playerHref(row.player_id, { season })}
     subtitle={others.length ? <>{[main, ...others].map(t => t.tricode ?? t.team_id).join(" · ")}</> : team ?? undefined} />;
 }
 
@@ -225,7 +228,7 @@ function Moves({ season }: { season: string }) {
   const { data, error, loading, retry } = useFeed([season], signal => getRoleMoves(season, signal));
   const [chosen, setChosen] = useState<string | null>(null);
   if (error) return <FeedFailure error={error} retry={retry} what="Role moves" />;
-  if (loading || !data) return <FeedSkeleton label="Loading role moves" />;
+  if (loading || !data) return <FeedSkeleton label="Loading role moves" shape="grid" rows={8} density="compact" />;
   if (data.status !== "available") return <GatedNote>{data.reason}</GatedNote>;
   const moves = data as RoleMoves;
   if (!moves.players.length) return <GatedNote>No player meets the role-moves rule for {moves.window[0]} to {moves.window.at(-1)}.</GatedNote>;
@@ -244,7 +247,7 @@ function Teams({ season }: { season: string }) {
   const [open, setOpen] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; direction: "asc" | "desc" }>({ key: "difficulty", direction: "desc" });
   if (error) return <FeedFailure error={error} retry={retry} what="Team playtype difficulty" />;
-  if (loading || !data) return <FeedSkeleton label="Loading team playtype difficulty" />;
+  if (loading || !data) return <FeedSkeleton label="Loading team playtype difficulty" shape="grid" rows={10} lead="team" density="compact" />;
   if (data.status !== "available") return <GatedNote>{data.reason}</GatedNote>;
   const board = data as TeamBoard;
   const value = (t: ZtsTeam) => sort.key === "synergy_ts" ? t.synergy_ts : t.difficulty;
@@ -273,7 +276,7 @@ function Teams({ season }: { season: string }) {
     {team && <StatsGrid<TeamPlayer> label={`${team.tricode ?? team.team_id} player roles, ${board.season}`} name="zts-team-players" density="compact" height="scroll" leadWidth="md" minWidth="narrow"
       rows={team.players} rowKey={p => p.player_id}
       lead={{ label: "Player", cell: p => <GridPlayer playerId={p.player_id} name={p.player_name} team={team.tricode} season={board.season} era={seasonEra(board.season, team.tricode)}
-        href={`/players/${p.player_id}?season=${board.season}`} subtitle={p.multi_team ? "Season Role, all teams" : undefined} /> }}
+        href={playerHref(p.player_id, { season: board.season })} subtitle={p.multi_team ? "Season Role, all teams" : undefined} /> }}
       columns={[
         { key: "share", label: "Share", title: "Share of the team's listed scoring possessions", width: "xs", cell: p => <GridValue text={formatShare(p.share)} />, data: p => ({ field: "share", value: p.share }) },
         { key: "difficulty", label: "Role", width: "xs", cell: p => <GridValue text={p.zts_status === "known" || known(p.difficulty) ? formatPoints(p.difficulty) : "—"} identity={signTone(p.difficulty)} />, data: p => ({ field: "difficulty", value: p.difficulty ?? undefined }) },
@@ -411,7 +414,7 @@ function About({ summary }: { summary: ZtsSummary }) {
       <Calculation board={board} />
     </ResearchSection>
     {error && <FeedFailure error={error} retry={retry} what="The season's zTS" />}
-    {loading && <FeedSkeleton label="Loading the season's zTS" />}
+    {loading && <FeedSkeleton label="Loading the season's zTS" shape="chart" height={420} />}
     {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
     {board && <BoardSections board={board} summary={summary} season={season} setSeason={setSeason} x={x} y={y} ext={ext!} setAxes={(nx, ny) => set({ x: nx === "rts" ? null : nx, y: ny === "difficulty" ? null : ny })} />}
     <ResearchSection className="zt-section" title="What the Test Measures">
@@ -546,7 +549,7 @@ function TopSeasons({ summary }: { summary: ZtsSummary }) {
     </div>
     {glossary && <Glossary summary={summary} />}
     {error && <FeedFailure error={error} retry={retry} what="Top 200" />}
-    {loading && <FeedSkeleton label="Loading Top 200" />}
+    {loading && <FeedSkeleton label="Loading Top 200" shape="grid" rows={12} search />}
     {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
     {board && <StatsGrid label="Top 200 seasons" name="zts-top" rows={rows} rowKey={r => `${r.season}:${r.player_id}`} height="scroll" leadWidth="md" className="zt-top-grid"
       sort={{ key: sort, direction: "desc", onSort: key => set({ rank: key === "zts" ? "zts" : null }) }}
@@ -583,13 +586,13 @@ function PlayerTab({ summary }: { summary: ZtsSummary }) {
     {cleared && <GatedNote action={<Button size="lg" variant="secondary" onClick={() => set({ player: null, playerSeason: null })}>Open the default player</Button>}>
       No player chosen. Search for one above, or open the default: the highest zTS add/100 in {LATEST}.</GatedNote>}
     {error && <FeedFailure error={error} retry={retry} what="The player's zTS" />}
-    {loading && <FeedSkeleton label="Loading the player's zTS" />}
+    {loading && <FeedSkeleton label="Loading the player's zTS" shape="profile" />}
     {data && <>
       <div className="zt-hero-card" data-player={data.player_id}>
         <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={seasonEra(data.season, team)} className="zt-avatar" />
         <span className="zt-hero-text">
-          <a className="zt-hero-name" href={`/players/${data.player_id}?season=${data.season}`}>{data.player_name}</a>
-          <span className="zt-hero-sub">{team && <TeamLogo team={team} season={data.season} size={16} />}{team ?? ""}{team ? " · " : ""}{data.season} regular season</span>
+          <Link className="zt-hero-name entity-link" href={playerHref(data.player_id, { season: data.season })} prefetch={false}>{data.player_name}</Link>
+          <span className="zt-hero-sub">{team && <TeamLink team={team} scope={{ season: data.season }} variant="block"><TeamLogo team={team} season={data.season} size={16} /><span className="entity-link-text">{team}</span></TeamLink>}{team ? " · " : ""}{data.season} regular season</span>
         </span>
       </div>
       {data.selection_rule && <p className="zt-note">{data.selection_rule}</p>}
@@ -600,7 +603,7 @@ function PlayerTab({ summary }: { summary: ZtsSummary }) {
         <StatsGrid label="Season history" name="zts-history" density="compact" height="auto" leadWidth="sm" rows={data.history} rowKey={r => r.season} rowData={r => ({ season: r.season })}
           lead={{ label: "Season", cell: r => <span className="zt-season-cell">{r.season}</span> }}
           columns={[
-            { key: "team", label: "Team", width: "sm", cell: r => <span className="zt-team-cell">{r.teams.map(t => t.tricode ? <TeamLogo key={t.team_id} team={t.tricode} season={r.season} size={16} /> : null)}{r.teams.map(t => t.tricode ?? t.team_id).join(" · ")}</span> },
+            { key: "team", label: "Team", width: "sm", cell: r => <span className="zt-team-cell">{r.teams.map(t => t.tricode ? <TeamLogo key={t.team_id} team={t.tricode} season={r.season} size={16} /> : null)}{r.teams.map((t, i) => <Fragment key={t.team_id}>{i ? " · " : ""}<TeamLink team={t.team_id} scope={{ season: r.season }}>{t.tricode ?? t.team_id}</TeamLink></Fragment>)}</span> },
             { key: "minutes", label: "MIN", width: "xs", cell: r => <GridValue text={formatWhole(r.minutes)} /> },
             usageColumn, pointsColumn("rts", "rTS"), pointsColumn("difficulty", "Role"), pointsColumn("zts", "zTS"),
             { key: "status", label: "Status", width: "md", cell: r => <GridValue text={r.zts_status === "known" ? "Served" : STATUS_LABELS[r.zts_status]} muted={r.zts_status !== "known"} />, data: r => ({ status: r.zts_status }) },

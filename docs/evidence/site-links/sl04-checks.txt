@@ -1,0 +1,13 @@
+SITE_LINKS_NESTED {"pages":45,"problems":[]}
+SITE_LINKS_AXE {"/live/2026-11-13":{"violations":[],"passed":[{"id":"nested-interactive","nodes":30}]},"/live":{"violations":[],"passed":[{"id":"nested-interactive","nodes":22}]},"game":[]}
+SITE_LINKS_BACK {"name":"Stats","url":"/stats?season=2024-25&phase=regular_season&sort=pts&order=desc&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&beforeDate=2025-04-14&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d","scrolled":100,"restored":100}
+SITE_LINKS_BACK {"name":"Standings","url":"/standings?season=2018-19","scrolled":240,"restored":240}
+SITE_LINKS_BACK {"name":"Live","url":"/live/2026-11-13","scrolled":240,"restored":240}
+SITE_LINKS_GATE {"name":"stats","width":1440,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_GATE {"name":"live-card","width":1440,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_GATE {"name":"research-wingspan","width":1440,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_GATE {"name":"stats","width":390,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_GATE {"name":"live-card","width":390,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_GATE {"name":"research-wingspan","width":390,"hovered":{"color":"rgb(255, 209, 102)","decoration":"underline"}}
+SITE_LINKS_PREFETCH {"route":"/stats","links":2,"requests":2,"entity":0}
+SITE_LINKS_PREFETCH {"route":"/draft","links":183,"requests":75,"entity":0}

@@ -2,17 +2,23 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { HotkeysModal } from "./hotkeys-modal";
+import dynamic from "next/dynamic";
+import { useOpenedOnce } from "@/lib/use-opened-once";
+
+// The shortcuts sheet loads on its first opening (speed plan SP05).
+const HotkeysModal = dynamic(() => import("./hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
 import { Button, ButtonLink, Chip, MenuTrigger } from "./ui/kit";
 import { Menu, MenuItem } from "./ui/menu";
 import { Modal } from "./ui/modal";
 import { TeamLogo } from "./team-logo";
 import { NBA_TEAMS } from "@/lib/stats-presets";
+import type { PositionChipStatus } from "@/lib/position-estimates";
 
 /** the reference site's help row under the page title: how-to, glossary and hotkeys. */
 export function StatsHelpRow() {
   const [howToOpen, setHowToOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
+  const hotkeysMounted = useOpenedOnce(hotkeysOpen);
   return (
     <div className="stats-help-row" role="group" aria-label="Page help">
       <Button size="sm" tone="console" icon="help" onClick={() => setHowToOpen(true)}>How to Use This Page</Button>
@@ -30,7 +36,7 @@ export function StatsHelpRow() {
           <li>Columns with no values yet for the season are hidden; the eye button shows them.</li>
         </ul>
       </Modal>
-      <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />}
     </div>
   );
 }
@@ -92,11 +98,20 @@ const POSITIONS = [
   { value: "SF", label: "Small Forwards" }, { value: "PF", label: "Power Forwards" }, { value: "C", label: "Centers" }
 ] as const;
 
+function positionChipsTitle(status: PositionChipStatus, seasons: string[]) {
+  const named = seasons.length === 1 ? seasons[0] : "these seasons";
+  if (status === "none") return `No estimated positions for ${named} yet.`;
+  const base = "Estimated positions for this season from listed position, size and box-score rates (not a roster listing).";
+  return status === "provisional" ? `${base} ${named} is in progress: these are provisional, relabelled daily from the season so far.` : base;
+}
+
 /**
  * the reference site's PG · SG · SF · PF · C chips. Positions are CourtLens estimates for the shown season
- * (position-estimates-v1): the free NBA index lists only G, F and C.
+ * (position-estimates-v1): the free NBA index lists only G, F and C. A season in progress has
+ * provisional labels; a season with none disables the chips (a pressed chip stays clearable)
+ * instead of filtering every player out.
  */
-export function StatsPositionChips() {
+export function StatsPositionChips({ status = "sealed", seasons = [] }: { status?: PositionChipStatus; seasons?: string[] }) {
   const { searchParams, set } = useScopeFilter();
   const current = searchParams.get("positions") ?? "";
   // Pressed state follows the click at once; the URL catches up when the table lands.
@@ -112,10 +127,12 @@ export function StatsPositionChips() {
   };
   return (
     <div className="stats-position-chips" role="group" aria-label="Estimated positions"
-      title="Estimated positions for this season from listed position, size and box-score rates (not a roster listing).">
+      data-status={status} title={positionChipsTitle(status, seasons)}>
       {POSITIONS.map(position => (
         <Chip key={position.value} size="sm" tone="console" pressed={active.has(position.value)}
-          aria-label={position.label} onClick={() => toggle(position.value)}>{position.value}</Chip>
+          disabled={status === "none" && !active.has(position.value)}
+          aria-label={status === "provisional" ? `${position.label} (provisional)` : position.label}
+          onClick={() => toggle(position.value)}>{position.value}</Chip>
       ))}
     </div>
   );

@@ -13,6 +13,7 @@ import { DarkoSourceLink } from "./darko-source-link";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { phaseLabel } from "@/lib/scope-labels";
 import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+import { PlayerLink } from "./entity-link";
 
 const MAX_PLAYERS = 4;
 const SEASON_CONCURRENCY = 3;
@@ -149,7 +150,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
           {players.map((player, index) => (
             <div key={player.player_id} className="stats-trend-player" data-series={index + 1}>
               <PlayerPortrait playerId={player.player_id} name={player.player_name} portraitUrl={player.portrait_url} size="md" />
-              <span><span className="stats-trend-swatch" aria-hidden="true" />{player.player_name}</span>
+              <span><span className="stats-trend-swatch" aria-hidden="true" /><PlayerLink id={player.player_id}>{player.player_name}</PlayerLink></span>
               {players.length > 1 && <button type="button" className="stats-trend-remove" aria-label={`Remove ${player.player_name}`}
                 onClick={() => setPlayers(list => list.filter(entry => entry.player_id !== player.player_id))}><Icon name="close" size={14} /></button>}
             </div>
