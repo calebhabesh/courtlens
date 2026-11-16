@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button, IconButton, MenuTrigger } from "../ui/kit";
 import { Menu, MenuItem, Popover } from "../ui/menu";
+import { Modal } from "../ui/modal";
 import { useAccount } from "../../lib/account-context";
 import { FavoritePlayersList } from "./favorite-players";
 
@@ -28,9 +29,39 @@ export function FavoritesPopover() {
   );
 }
 
+/** Confirms deleting the signed-in account (accounts plan); the demo account has none. */
+function DeleteAccountDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { deleteAccount } = useAccount();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const confirm = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await deleteAccount();
+      onClose();
+    } catch (failure) {
+      setError(failure instanceof Error ? failure.message : "Something went wrong. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Modal isOpen={open} onClose={onClose} title="Delete account" className="account-dialog"
+      description="Your account, favourite players and Ask conversations are deleted now. This can't be undone.">
+      {error && <p className="account-error" role="alert">{error}</p>}
+      <div className="account-confirm">
+        <Button variant="secondary" size="md" disabled={busy} onClick={onClose}>Cancel</Button>
+        <Button variant="danger" size="md" loading={busy} onClick={() => void confirm()}>Delete account</Button>
+      </div>
+    </Modal>
+  );
+}
+
 /** Header account control: "Sign in", or the account's name with Sign out. */
 export function AccountMenu() {
   const { status, user, openSignIn, signOut } = useAccount();
+  const [deleting, setDeleting] = useState(false);
   if (status === "loading") return null;
   if (status === "signed-out" || !user) {
     return (
@@ -48,7 +79,9 @@ export function AccountMenu() {
       )}>
         <div className="account-menu-who">{user.is_demo ? "Shared demo account" : user.email}</div>
         <MenuItem label="Sign out" onClick={() => void signOut()} />
+        {!user.is_demo && <MenuItem label="Delete account" onClick={() => setDeleting(true)} />}
       </Menu>
+      <DeleteAccountDialog open={deleting} onClose={() => setDeleting(false)} />
     </span>
   );
 }
@@ -56,12 +89,17 @@ export function AccountMenu() {
 /** The phone drawer's account row. */
 export function DrawerAccount({ onDone }: { onDone: () => void }) {
   const { status, user, openSignIn, signOut } = useAccount();
+  const [deleting, setDeleting] = useState(false);
   if (status === "loading") return null;
   if (status === "signed-in" && user) {
     return (
       <div className="account-drawer-row">
         <span className="account-drawer-who"><span>{user.name}</span>{!user.is_demo && <small>{user.email}</small>}</span>
-        <Button variant="secondary" size="md" onClick={() => { onDone(); void signOut(); }}>Sign out</Button>
+        <span className="account-drawer-actions">
+          {!user.is_demo && <Button variant="text" size="md" onClick={() => setDeleting(true)}>Delete</Button>}
+          <Button variant="secondary" size="md" onClick={() => { onDone(); void signOut(); }}>Sign out</Button>
+        </span>
+        <DeleteAccountDialog open={deleting} onClose={() => { setDeleting(false); }} />
       </div>
     );
   }

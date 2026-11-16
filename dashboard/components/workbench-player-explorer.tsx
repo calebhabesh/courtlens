@@ -1281,7 +1281,7 @@ export function WorkbenchPlayerExplorer({
         </div>
         <div className="stats-footer-controls">
           {/* Row height in words (was a cryptic −W ▮▯ E+); the W and E keys are in each tooltip. */}
-          <Segmented label="Row height" size="xs" dense value={tableDensity} onChange={handleDensityChange}
+          <Segmented label="Row height" size="xs" value={tableDensity} onChange={handleDensityChange}
             options={[
               { value: "compact", title: "Compact rows: more players on screen (W)",
                 label: "Compact" },

@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { AssistantPageContext } from "./assistant-v2.generated";
+import { humanLabel } from "./route-availability";
 
 type DisplayedPage = { context: AssistantPageContext; label: string };
 const PageContext = createContext<{ page: DisplayedPage | null; setPage: (page: DisplayedPage | null) => void }>({ page: null, setPage: () => {} });
@@ -33,5 +34,5 @@ export function useAssistantPage() {
 }
 
 export function pageContextLabel(page: AssistantPageContext, label = "This page"): string {
-  return `${label} · ${page.selections.season} · ${page.selections.phase?.replaceAll("_", " ")}`;
+  return [label, page.selections.season, page.selections.phase ? humanLabel(page.selections.phase) : null].filter(Boolean).join(" · ");
 }

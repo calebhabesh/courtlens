@@ -36,6 +36,8 @@ For links to a player, team, game or playoff series page (href builders, `Player
 
 For load times (the API read cache and its data stamp, the warm crawl, link prefetching, page weight, image and static-file caching, Cloudflare cache settings), read the [speed plan](docs/speed-plan.md) first. Execute its blocks in order, stop at its owner gates, and record evidence in the [speed progress log](docs/speed-progress.md). Its SP03 revised the site links prefetch rule (prefetch on intent, never on entering the viewport); it keeps every analytical, data and source contract.
 
+For accounts (password sign-up, email links, Google sign-in, deleting an account) or putting a feature behind an account, such as Ask, read the [accounts plan](docs/accounts-plan.md) first and record evidence in the [accounts progress log](docs/accounts-progress.md). It revises the finish plan's F04 "invite-only" decision and keeps the rest of F04.
+
 For the hosted demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys, the scheduled `jobs` service, backups and disk budget), read [the deployment guide](docs/deployment.md) first; the owner's one-page summary is [Running the hosted demo](docs/operations/hosted-operations.md). Since 2026-11-13 the VPS is the system of record: it runs every scheduled job and holds the only live database and `data/`. The PC develops against copies pulled with `scripts/pull-from-vps.sh` and never pushes data to the VPS. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack

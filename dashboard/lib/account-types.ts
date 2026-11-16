@@ -5,6 +5,15 @@ export interface AccountUser {
   /** Null for the shared demo account. */
   email: string | null;
   is_demo: boolean;
+  /** How the account signs in ("password", "google"); empty for the demo account. */
+  methods?: string[];
+}
+
+/** Which ways in this server offers (accounts plan). */
+export interface AccountOptions {
+  google: boolean;
+  sign_up: boolean;
+  demo: boolean;
 }
 
 /** A favourite with its latest season and team, for the season photo and logo. */

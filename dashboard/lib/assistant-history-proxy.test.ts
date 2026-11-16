@@ -5,7 +5,8 @@ import { DELETE, GET, POST } from "../app/api/assistant-v2/[[...path]]/route";
 const id = "11111111-1111-4111-8111-111111111111";
 const context = (path: string[]) => ({ params: Promise.resolve({ path }) });
 function incoming(path: string, method = "GET", origin?: string, body?: string) {
-  return new NextRequest(`http://localhost:3000/api/assistant-v2/${path}`, { method, headers: { host: "localhost:3000", ...(origin ? { origin } : {}) }, ...(body ? { body } : {}) });
+  // Signed in: asking needs an account (accounts plan), which public-ask-proxy.test covers.
+  return new NextRequest(`http://localhost:3000/api/assistant-v2/${path}`, { method, headers: { host: "localhost:3000", cookie: "courtlens-session=aaa.bbb.ccc", ...(origin ? { origin } : {}) }, ...(body ? { body } : {}) });
 }
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 

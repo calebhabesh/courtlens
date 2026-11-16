@@ -11,7 +11,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from courtlens.api.routers.account import Limits
-from courtlens.config import get_settings
+from courtlens.config import Settings, get_settings
 from courtlens.models import User, UserFavoritePlayer
 from courtlens.security import create_access_token, hash_password
 from courtlens.services import accounts
@@ -32,7 +32,9 @@ def client_key(name: str) -> dict[str, str]:
 
 
 @pytest.fixture(autouse=True)
-def fresh_limits() -> Generator[None, None, None]:
+def fresh_limits(monkeypatch: pytest.MonkeyPatch) -> Generator[None, None, None]:
+    # The developer's .env (dev account, Google, SMTP) must not leak in: start from defaults.
+    monkeypatch.setitem(Settings.model_config, "env_file", None)
     get_settings.cache_clear()
     Limits.build()
     yield
@@ -87,6 +89,7 @@ def test_operator_creates_an_account_that_can_sign_in(
         "name": "Owner",
         "email": "owner@example.com",
         "is_demo": False,
+        "methods": ["password"],
     }
     assert body["expires_in"] == 12 * 3600
     assert api_client.get("/api/me", headers=bearer(response)).json()["name"] == "Owner"
@@ -339,6 +342,7 @@ def test_demo_visitors_share_one_list(
         "name": "Demo account",
         "email": None,
         "is_demo": True,
+        "methods": [],
     }
     one, two = (
         bearer(first),

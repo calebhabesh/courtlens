@@ -527,6 +527,20 @@ def delete_history(session: Session, thread_id: UUID | None = None) -> dict[str,
         return {"cleared": True}
 
 
+def delete_visitor_history(session: Session, visitor: str) -> int:
+    """Delete every thread one Ask owner holds (a deleted account's conversations)."""
+    with lifecycle(session):
+        threads = select(AssistantThread.id).where(AssistantThread.visitor == visitor)
+        ids = select(AssistantTurn.id).where(AssistantTurn.thread_id.in_(threads))
+        session.execute(
+            delete(AssistantAgentTranscript).where(AssistantAgentTranscript.turn_id.in_(ids))
+        )
+        session.execute(delete(AssistantTurnInput).where(AssistantTurnInput.turn_id.in_(ids)))
+        session.execute(delete(AssistantTurn).where(AssistantTurn.thread_id.in_(threads)))
+        result = session.execute(delete(AssistantThread).where(AssistantThread.visitor == visitor))
+        return int(getattr(result, "rowcount", 0) or 0)
+
+
 def list_threads(
     session: Session, limit: int = 20, cursor: UUID | None = None, visitor: str | None = None
 ) -> ThreadHistoryPage:

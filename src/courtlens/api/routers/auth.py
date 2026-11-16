@@ -29,7 +29,11 @@ def local_only() -> None:
 @router.post("/token", response_model=TokenResponse, dependencies=[Depends(local_only)])
 def login(payload: LoginRequest, session: Session = Depends(get_db)) -> TokenResponse:
     user = session.scalar(select(User).where(func.lower(User.email) == payload.email.lower()))
-    if user is None or not verify_password(payload.password, user.password_hash):
+    if (
+        user is None
+        or user.password_hash is None
+        or not verify_password(payload.password, user.password_hash)
+    ):
         raise HTTPException(status_code=401, detail="invalid email or password")
     return TokenResponse(access_token=create_access_token(user.id))
 

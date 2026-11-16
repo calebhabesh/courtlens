@@ -1,10 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { isSameBrowserOrigin } from "../../../../lib/same-origin";
+import { SESSION_COOKIE, validSession } from "../../../../lib/account-server";
 
 const uuid = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
 const allowedPaths = new RegExp(`^(?:limits|turn(?:/stream)?|threads(?:/${uuid}(?:/turns(?:/${uuid}/cancel)?)?)?)$`);
 const visitorCookie = "courtlens-ask-visitor";
+const SIGN_IN_TO_ASK = "Sign in, or use the demo account, to ask questions.";
 
 /**
  * Public Ask (hosted demo): who is asking, as two salted hashes the API can't reverse. The browser
@@ -42,6 +44,10 @@ async function proxy(request: NextRequest, context: Context) {
   const publicAsk = process.env.COURTLENS_PUBLIC_ASK === "true";
   // The hosted build never forwards an Ask write unless public Ask (with its limits) is on.
   if (mutates && process.env.NEXT_PUBLIC_COURTLENS_HOSTED === "true" && !(publicAsk && process.env.COURTLENS_PUBLIC_ASK_TOKEN)) return NextResponse.json({ detail: "Ask is turned off on the hosted demo." }, { status: 403 });
+  // Accounts plan: asking needs an account or the demo account, wherever Ask runs. The session
+  // goes to the API, which checks it again in public mode and keys conversations to the account.
+  const session = validSession(request.cookies.get(SESSION_COOKIE)?.value);
+  if (mutates && !session) return NextResponse.json({ detail: SIGN_IN_TO_ASK, code: "sign_in" }, { status: 401 });
   // Public Ask holds only the Ask token; local use keeps the operator token.
   const credential: Record<string, string> = !mutates ? {} : publicAsk ? { "X-CourtLens-Ask-Token": process.env.COURTLENS_PUBLIC_ASK_TOKEN || "" } : { "X-Operator-Token": process.env.COURTLENS_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy" };
   const apiUrl = process.env.COURTLENS_API_INTERNAL_URL || process.env.NEXT_PUBLIC_COURTLENS_API_URL || "http://localhost:8000";
@@ -70,7 +76,7 @@ async function proxy(request: NextRequest, context: Context) {
   try {
     const response = await fetch(target, {
       method: request.method,
-      headers: { "Content-Type": "application/json", ...who.headers, ...credential },
+      headers: { "Content-Type": "application/json", ...who.headers, ...credential, ...(session ? { Authorization: `Bearer ${session}` } : {}) },
       body: bytes ? Buffer.concat(chunks) : undefined,
       redirect: "error", cache: "no-store", signal: AbortSignal.timeout(55000),
     });
