@@ -22,8 +22,9 @@
 	# Route handlers owned by Next.js: reads only, except public Ask and accounts. Their writes
 	# would carry server-side credentials (jobs, workspace, live leases). Ask's proxy holds only
 	# an Ask token, and the API limits each visitor and the site. The account proxy holds only the
-	# account token: sign-in (rate-limited), the demo account, sign-out and the signed-in user's
-	# own favourites (docs/deployment.md).
+	# account token: sign-in, sign-up, email links and password resets (all rate-limited), the
+	# demo account, sign-out, the signed-in user's own favourites and deleting their own account
+	# (docs/deployment.md). Google sign-in is two GETs (start, callback).
 	@nextApi path /api/assistant-v2 /api/assistant-v2/* /api/live /api/live/* /api/workspace /api/workspace/* /api/jobs /api/jobs/* /api/finance-import /api/finance-import/* /api/account /api/account/*
 	handle @nextApi {
 		@write {
@@ -34,7 +35,11 @@
 			}
 			not {
 				method POST
-				path /api/account/session /api/account/demo /api/account/sign-out
+				path /api/account/session /api/account/demo /api/account/sign-out /api/account/sign-up /api/account/confirm /api/account/forgot-password /api/account/reset-password
+			}
+			not {
+				method DELETE
+				path /api/account/me
 			}
 			not {
 				method POST DELETE

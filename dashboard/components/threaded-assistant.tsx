@@ -18,6 +18,7 @@ import { Button, IconButton } from "./ui/kit";
 import { isPublicAsk } from "@/lib/hosted";
 import { askLimits, isLimitRefusal, limitLine, refusalMessage, type AskLimits } from "@/lib/public-ask";
 import { WorkbenchApiError } from "@/lib/workbench-api";
+import { useAccount } from "@/lib/account-context";
 
 function mergeTurns(previous: DurableTurnRecord[], fresh: DurableTurnRecord[]) {
   const replacements = new Map(fresh.map(turn => [turn.turn_id, turn]));
@@ -44,6 +45,9 @@ function turnSelections(turn: DurableTurnRecord) {
 // AR06: full-height chat on /ask; "panel" is the header drawer, where conversations always overlay.
 export function ThreadedAssistant({ initialContext = {}, variant = "page", pageContext, pageLabel }: { initialContext?: ConversationContext; variant?: "page" | "panel"; pageContext?: AssistantPageContext; pageLabel?: string }) {
   const id = useId();
+  // Accounts plan: asking needs an account or the demo account.
+  const account = useAccount();
+  const signedOut = account.status === "signed-out";
   const [removedPage, setRemovedPage] = useState<string | null>(null);
   const pageKey = JSON.stringify(pageContext);
   const attachedPage = pageContext && removedPage !== pageKey ? pageContext : undefined;
@@ -81,6 +85,22 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
   const tailCursor = useRef<string | undefined>(undefined);
 
   function notifyHistory() { announceHistoryChange(instance.current, currentThread.current); }
+  // Conversations belong to the account (or, on the demo account, to this browser): another
+  // account sees its own list, so signing in or out starts over with that list.
+  const accountKey = account.status === "loading" ? null : account.user?.id ?? "";
+  const lastAccount = useRef<string | null>(null);
+  useEffect(() => {
+    if (accountKey === null) return;
+    const previous = lastAccount.current;
+    lastAccount.current = accountKey;
+    if (previous === null || previous === accountKey) return;
+    epoch.current += 1;
+    currentThread.current = null; remember(null);
+    queueMicrotask(() => { setThread(null); setTurns([]); setTurnCursor(null); setError(null); });
+    tailCursor.current = undefined;
+    void refreshThreads().catch(() => undefined);
+    readLimits();
+  }, [accountKey]);
   const narrow = useSyncExternalStore(subscribeNarrow, () => window.matchMedia(narrowQuery).matches, () => false);
   useEffect(() => {
     let stored = false;
@@ -245,6 +265,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
     }
   }
   async function submit(message = question, retryOf?: string) {
+    if (signedOut) { account.openSignIn("Sign in, or use the demo account, to ask questions."); return; }
     if (lock.current || pending || turnCursor || !message.trim()) return;
     let tid = currentThread.current;
     if (!tid) {
@@ -306,7 +327,17 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
   const title = threads.find(header => header.thread_id === thread)?.title ?? "New chat";
   const sidebarId = `${id}-conversations`;
   const isEmpty = ready && turns.length === 0 && !turnCursor;
-  const composer = (
+  const composer = signedOut ? (
+    <div className="ask-composer-block">
+      <div className="ask-sign-in" data-field="ask-sign-in">
+        <p>Sign in, or use the demo account, to ask questions.</p>
+        <div className="ask-sign-in-actions">
+          <Button size="md" variant="primary" onClick={() => account.openSignIn("Sign in, or use the demo account, to ask questions.")}>Sign in</Button>
+          <Button size="md" variant="secondary" icon="user" onClick={() => void account.signInDemo().catch(cause => setError(messageOf(cause)))}>Use the demo account</Button>
+        </div>
+      </div>
+    </div>
+  ) : (
         <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
           <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
           <textarea disabled={!ready} ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />

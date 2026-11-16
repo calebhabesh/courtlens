@@ -3,6 +3,9 @@ import path from "node:path";
 import { expect, test } from "@playwright/test";
 import measured from "./fixtures/im07-owner-warehouse.json";
 import { waitForStreamedPage } from "./workbench-navigation";
+import { signInForAsk } from "./ask-session";
+
+test.beforeEach(async ({ context, baseURL }) => { await signInForAsk(context, baseURL); });
 
 // Real read-only warehouse response with authored transport, not live language accuracy.
 for (const width of [1440, 375]) {

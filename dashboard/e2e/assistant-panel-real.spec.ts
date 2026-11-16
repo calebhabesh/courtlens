@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import type { AgentTurnResponse } from "../lib/assistant-v3.generated";
 import { waitForStreamedPage } from "./workbench-navigation";
+import { signInForAsk } from "./ask-session";
+
+test.beforeEach(async ({ context, baseURL }) => { await signInForAsk(context, baseURL); });
 
 // Launched by the isolated PostgreSQL/FastAPI pytest harness, with a scripted V3 tool provider.
 const release = process.env.COURTLENS_AR07_RELEASE_ID;

@@ -92,6 +92,8 @@ def register(app: typer.Typer) -> None:
                             "name": user.display_name,
                             "enabled": user.account_enabled,
                             "demo": user.is_demo,
+                            "confirmed": user.email_verified_at is not None,
+                            "password": user.password_hash is not None,
                             "favorites": len(accounts.favorite_ids(session, user)),
                         }
                     )
@@ -117,7 +119,15 @@ def register(app: typer.Typer) -> None:
             except AccountError as error:
                 _fail(error)
                 return
-            typer.echo(json.dumps({"demo_favorites": count}))
+            # The same nightly run clears sign-ups never confirmed and spent email links.
+            pruned = accounts.prune_accounts(session)
+            typer.echo(json.dumps({"demo_favorites": count, "pruned": pruned}))
+
+    @app.command("prune-accounts")
+    def prune_accounts_command() -> None:
+        """Delete sign-ups never confirmed within a week, and used or expired email links."""
+        with SessionLocal() as session:
+            typer.echo(json.dumps(accounts.prune_accounts(session)))
 
     @app.command("import-workspace-favorites")
     def import_workspace_favorites_command(

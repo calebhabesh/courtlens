@@ -173,6 +173,25 @@ class Settings(BaseSettings):
     sign_in_window_minutes: int = Field(default=15, ge=1, le=1440)
     demo_sign_ins_per_client_hour: int = Field(default=20, ge=1, le=10_000)
     favorite_writes_per_hour: int = Field(default=120, ge=1, le=100_000)
+    # Accounts plan: sign-up, email links and Google sign-in. Email links and the Google redirect
+    # URI are built from the public site URL.
+    public_site_url: str = Field(default="http://localhost:3100", max_length=200)
+    google_client_id: str | None = Field(default=None, max_length=255)
+    google_client_secret: SecretStr | None = None
+    # Plain SMTP for confirmation and reset emails. Unset: development logs the links and
+    # production turns password sign-up and reset off.
+    smtp_host: str | None = Field(default=None, max_length=255)
+    smtp_port: int = Field(default=587, ge=1, le=65535)
+    smtp_username: str | None = Field(default=None, max_length=255)
+    smtp_password: SecretStr | None = None
+    # "starttls" (port 587), "ssl" (port 465) or "none" (a local relay only).
+    smtp_security: Literal["starttls", "ssl", "none"] = "starttls"
+    email_from: str = Field(default="CourtLens <no-reply@courtlens.local>", max_length=255)
+    # Stays under free-tier sending limits; past it, sign-up and reset say to try tomorrow.
+    emails_per_day: int = Field(default=90, ge=1, le=100_000)
+    emails_per_address_hour: int = Field(default=3, ge=1, le=100)
+    sign_ups_per_client_hour: int = Field(default=5, ge=1, le=1000)
+    google_sign_ins_per_client_hour: int = Field(default=30, ge=1, le=10_000)
     assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
     assistant_max_tokens: int = Field(default=60000, ge=1024, le=1_000_000)
     assistant_turn_timeout_seconds: int = Field(default=60, ge=1, le=300)
@@ -329,6 +348,12 @@ class Settings(BaseSettings):
                     "COURTLENS_ACCOUNT_PROXY_TOKEN must be a unique 32+ character value "
                     "in production"
                 )
+        uses_site_url = bool(self.smtp_host or self.google_client_id)
+        if uses_site_url and not self.public_site_url.startswith("https://"):
+            raise ValueError(
+                "COURTLENS_PUBLIC_SITE_URL must be the site's https URL in production when "
+                "email or Google sign-in is configured"
+            )
         if "*" in self.cors_origins:
             raise ValueError("wildcard CORS is not permitted in production")
         return self

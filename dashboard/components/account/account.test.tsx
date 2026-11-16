@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { AccountProvider, useAccount } from "../../lib/account-context";
 import { SignInDialog } from "./sign-in-dialog";
 import { FavoritePlayersList } from "./favorite-players";
@@ -51,7 +51,8 @@ describe("accounts (finish plan F04)", () => {
     fireEvent.click(screen.getByText("toggle"));
     expect(await screen.findByRole("dialog", { name: "Sign in" })).toBeTruthy();
     expect(screen.getByText("Sign in, or use the demo account, to save favourite players.")).toBeTruthy();
-    expect(fetch).toHaveBeenCalledTimes(1);
+    // Nothing is written; the dialog only reads which ways in the server offers.
+    expect(fetch.mock.calls.every(call => (call[1]?.method ?? "GET") === "GET")).toBe(true);
   });
 
   it("signs in with a password, loads favourites and refreshes server pages", async () => {
@@ -141,5 +142,99 @@ describe("accounts (finish plan F04)", () => {
   it("outside a provider, components read as signed out", () => {
     render(<FavoritePlayersList />);
     expect(screen.getByRole("button", { name: "Use the demo account" })).toBeTruthy();
+  });
+});
+
+describe("sign-up, email links and Google (accounts plan)", () => {
+  const ALL = { google: true, sign_up: true, demo: true };
+
+  async function openDialog() {
+    await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-out"));
+    fireEvent.click(screen.getAllByRole("button", { name: "Sign in" })[0]);
+    return screen.findByRole("dialog", { name: "Sign in" });
+  }
+
+  it("shows only the ways in the server offers", async () => {
+    api({ "GET me": () => Response.json({ user: null }), "GET options": () => Response.json({ google: false, sign_up: false, demo: true }) });
+    mount();
+    const dialog = await openDialog();
+    await waitFor(() => expect(within(dialog).getByRole("button", { name: "Use the demo account" })).toBeTruthy());
+    expect(screen.queryByRole("button", { name: "Continue with Google" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Create an account" })).toBeNull();
+    expect(screen.queryByText(/invitation/)).toBeNull();
+  });
+
+  it("creates an account and says to check email, without signing in", async () => {
+    const fetch = api({
+      "GET me": () => Response.json({ user: null }),
+      "GET options": () => Response.json(ALL),
+      "POST sign-up": () => Response.json({ status: "check_email", message: "Check your email for a link to finish." }, { status: 202 }),
+    });
+    mount();
+    await openDialog();
+    fireEvent.click(await screen.findByRole("button", { name: "Create an account" }));
+    const dialog = await screen.findByRole("dialog", { name: "Create account" });
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Grace" } });
+    fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: "grace@example.com" } });
+    fireEvent.change(dialog.querySelector("input[type=password]")!, { target: { value: "a long password" } });
+    await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
+    expect(await screen.findByRole("dialog", { name: "Check your email" })).toBeTruthy();
+    expect(screen.getByRole("status").textContent).toContain("grace@example.com");
+    const call = fetch.mock.calls.find(entry => String(entry[0]).endsWith("sign-up"))!;
+    expect(JSON.parse(String(call[1]!.body))).toEqual({ email: "grace@example.com", password: "a long password", name: "Grace" });
+    expect(screen.getByTestId("status").textContent).toBe("signed-out");
+    expect(document.body.innerHTML).not.toContain("a long password");
+  });
+
+  it("asks for a reset link by email", async () => {
+    const fetch = api({
+      "GET me": () => Response.json({ user: null }),
+      "GET options": () => Response.json(ALL),
+      "POST forgot-password": () => Response.json({ status: "check_email", message: "Check your email for a link to finish." }, { status: 202 }),
+    });
+    mount();
+    await openDialog();
+    fireEvent.click(await screen.findByRole("button", { name: "Forgot password?" }));
+    const dialog = await screen.findByRole("dialog", { name: "Reset password" });
+    expect(dialog.querySelector("input[type=password]")).toBeNull();
+    fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: "grace@example.com" } });
+    await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
+    expect(await screen.findByRole("dialog", { name: "Check your email" })).toBeTruthy();
+    expect(fetch.mock.calls.some(entry => String(entry[0]).endsWith("forgot-password"))).toBe(true);
+  });
+
+  it("sends Google sign-in through the proxy and back to this page", async () => {
+    api({ "GET me": () => Response.json({ user: null }), "GET options": () => Response.json(ALL) });
+    const assign = vi.fn();
+    vi.stubGlobal("location", { ...window.location, href: "http://localhost:3000/stats?season=2025-26", assign });
+    mount();
+    await openDialog();
+    fireEvent.click(await screen.findByRole("button", { name: "Continue with Google" }));
+    expect(assign).toHaveBeenCalledWith("/api/account/google/start?next=%2Fstats%3Fseason%3D2025-26");
+  });
+
+  it("opens the dialog with the reason a Google sign-in came back", async () => {
+    window.history.replaceState(null, "", "/players?signin=google-cancelled");
+    api({ "GET me": () => Response.json({ user: null }), "GET options": () => Response.json(ALL) });
+    mount();
+    expect(await screen.findByText("Google sign-in was cancelled.")).toBeTruthy();
+    expect(window.location.search).toBe("");
+  });
+
+  it("deletes the account after confirming", async () => {
+    let deleted = false;
+    api({
+      "GET me": () => Response.json({ user: OWNER }),
+      "GET favorites": () => Response.json(list([])),
+      "DELETE me": () => { deleted = true; return Response.json({ deleted: true }); },
+    });
+    mount();
+    await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-in"));
+    fireEvent.click(screen.getByRole("button", { name: /Owner/ }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Delete account" }));
+    const confirm = await screen.findByRole("dialog", { name: "Delete account" });
+    await act(async () => { fireEvent.click(within(confirm).getByRole("button", { name: "Delete account" })); });
+    await waitFor(() => expect(deleted).toBe(true));
+    expect(screen.getByTestId("status").textContent).toBe("signed-out");
   });
 });
