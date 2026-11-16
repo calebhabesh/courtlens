@@ -45,7 +45,7 @@ dev = [
 ]
 warehouse = ["dbt-postgres>=1.9,<2"]
 # Face matching for the Wikimedia Commons photo acquisition; the API never imports it.
-photos = ["opencv-python-headless>=4.13,<5"]
+photos = ["opencv-python-headless>=4.13,<6"]
 # Lineup model training and its similarity map (R14); the API serves it with numpy only.
 # Install torch from the CPU index: pip install --index-url https://download.pytorch.org/whl/cpu
 research-ml = ["torch==2.15.0", "umap-learn==0.5.12"]
