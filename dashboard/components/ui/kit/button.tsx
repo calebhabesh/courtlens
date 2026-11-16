@@ -90,13 +90,16 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(functio
   );
 });
 
-export interface ButtonSummaryProps extends ControlLookProps, Omit<HTMLAttributes<HTMLElement>, "className"> {}
+export interface ButtonSummaryProps extends ControlLookProps, Omit<HTMLAttributes<HTMLElement>, "className"> {
+  /** Never wider than its container: a long label ends in an ellipsis (the Ask scope summary). */
+  truncate?: boolean;
+}
 
 /** The `<summary>` of a `<details>` disclosure (for example "Why?"), with button geometry. */
-export function ButtonSummary({ size = "xs", variant = "ghost", tone, icon, iconAfter, dense, className, children, ...props }: ButtonSummaryProps) {
+export function ButtonSummary({ size = "xs", variant = "ghost", tone, icon, iconAfter, dense, truncate = false, className, children, ...props }: ButtonSummaryProps) {
   return (
-    <summary data-kit="button" className={cx(controlClasses({ size, variant, tone, dense }), "kit:list-none kit:[&::-webkit-details-marker]:hidden", className)} {...props}>
-      <Content size={size} icon={icon} iconAfter={iconAfter}>{children}</Content>
+    <summary data-kit="button" className={cx(controlClasses({ size, variant, tone, dense }), "kit:list-none kit:[&::-webkit-details-marker]:hidden", truncate && "kit:max-w-full kit:min-w-0", className)} {...props}>
+      <Content size={size} icon={icon} iconAfter={iconAfter}>{truncate ? <span className="kit:min-w-0 kit:truncate">{children}</span> : children}</Content>
     </summary>
   );
 }
@@ -118,11 +121,13 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
   beckon?: boolean;
   /** Sits inside a text field's box (a search clear ×): a 24 px square with the `xs` icon. */
   inField?: boolean;
+  /** A circle, for an action seated inside a pill-shaped field (the Ask composer's send). */
+  round?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, inField = false, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, inField = false, round = false, className, type = "button", disabled, ...props },
   ref,
 ) {
   const disclosure = expanded !== undefined && !loading;
@@ -137,7 +142,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-pressed={pressed}
       aria-expanded={expanded}
       data-kit="icon-button"
-      className={cx(controlClasses({ size, variant, tone, square: true, inField, identity, beckon: beckon && !pressed && !disabled }), className)}
+      className={cx(controlClasses({ size, variant, tone, square: true, inField, round, identity, beckon: beckon && !pressed && !disabled }), className)}
       {...props}
     >
       <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading}

@@ -93,7 +93,7 @@ async function mock(page: Page, options: { response?: (request: HybridTurnReques
 const live = (scope: Page | Locator) => "goto" in scope ? scope.locator("#content") : scope;
 const messages = (scope: Page | Locator) => live(scope).getByLabel("Messages");
 const composer = (scope: Page | Locator) => live(scope).getByLabel("Your question", { exact: true });
-const openScope = (page: Page) => live(page).locator("summary",{hasText:"Edit scope for the next question"}).click();
+const openScope = (page: Page) => live(page).locator(".ask-scope > summary").click();
 async function send(page: Page, message: string) {
   await composer(page).fill(message);
   await page.getByRole("button",{name:"Send question",exact:true}).click();
@@ -104,17 +104,17 @@ test("standalone defaults, reload, new chat, history and deletion keep durable q
   await expect(messages(page)).toContainText("pairs a screen"); expect(state.requests[0].context).toBeUndefined();
   await reloadPage(page); await expect(messages(page)).toContainText("Explain pick and roll");
   await expect(page.getByLabel("Messages",{exact:true})).toHaveCount(1);
-  await page.getByRole("button",{name:"New chat",exact:true}).click(); await expect(messages(page)).toBeEmpty();
+  await page.getByRole("button",{name:"New Chat",exact:true}).click(); await expect(messages(page)).toBeEmpty();
   await send(page,"Explain assists");
   await page.getByRole("navigation",{name:"Conversation history"}).getByRole("button",{name:/Explain pick and roll/}).click();
   await expect(messages(page)).toContainText("Explain pick and roll");
-  await page.getByRole("button",{name:"Delete chat",exact:true}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Saved findings remain");
-  await page.getByRole("button",{name:"Confirm deletion"}).click(); await expect.poll(()=>state.records.size).toBe(1);
+  await page.getByRole("button",{name:"Delete Chat",exact:true}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Saved findings remain");
+  await page.getByRole("button",{name:"Confirm Deletion"}).click(); await expect.poll(()=>state.records.size).toBe(1);
   // AR06 moved clearing all history and the privacy notice to Settings.
   await expect(page.getByRole("button",{name:"Clear History"})).toHaveCount(0);
-  await page.getByRole("link",{name:"History and privacy settings"}).click(); const settings = page.getByRole("region",{name:"Assistant history and privacy"});
+  await page.getByRole("link",{name:"History and Privacy Settings"}).click(); const settings = page.getByRole("region",{name:"Assistant history and privacy"});
   await expect(settings).toContainText("History stays in this local installation");
-  await settings.getByRole("button",{name:"Clear History",exact:true}).click(); await settings.getByRole("button",{name:"Confirm deletion"}).click();
+  await settings.getByRole("button",{name:"Clear History",exact:true}).click(); await settings.getByRole("button",{name:"Confirm Deletion"}).click();
   await expect(settings.getByRole("status")).toContainText("deleted"); expect(state.records.size).toBe(0);
 });
 
@@ -134,7 +134,7 @@ test("transport replay preserves request identity; intentional retry links a new
   const state = await mock(page,{lost:true,response:()=>({status:"unable",blocks:[{kind:"inability",reason:"provider_quota",text:"The provider quota is exhausted.",next_action:"Wait before retrying, or open Stats."}]})});
   await openPage(page, path); await send(page,"Show observations"); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Response lost");
   await expect(composer(page)).toHaveValue("Show observations");
-  await page.getByRole("button",{name:"Check or replay request"}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toHaveCount(0);
+  await page.getByRole("button",{name:"Check or Replay Request"}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toHaveCount(0);
   await expect.poll(()=>state.requests.length).toBe(2); expect(state.requests[1]).toEqual(state.requests[0]); expect(state.records.get(state.requests[0].thread_id!)!).toHaveLength(1);
   await page.getByRole("button",{name:"Retry question"}).click(); await expect.poll(()=>state.requests.length).toBe(3);
   expect(state.requests[2].request_id).not.toBe(state.requests[0].request_id); expect(state.requests[2].retry_of).toBe(state.requests[0].request_id);
@@ -143,7 +143,7 @@ test("transport replay preserves request identity; intentional retry links a new
 test("Stop is durable, releases controls and fences a late response",async({page})=>{
   const state = await mock(page,{deferred:true}); await openPage(page, path); await send(page,"Question to stop");
   await expect(page.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await page.getByRole("button",{name:"Stop",exact:true}).click();
-  await expect(messages(page)).toContainText("Stopped this question"); await expect(page.getByRole("button",{name:"New chat",exact:true})).toBeEnabled();
+  await expect(messages(page)).toContainText("Stopped this question"); await expect(page.getByRole("button",{name:"New Chat",exact:true})).toBeEnabled();
   state.release(); await reloadPage(page); await expect(messages(page)).toContainText("Stopped this question");
   await expect(messages(page)).not.toContainText("pairs a screen");
 });
@@ -151,7 +151,7 @@ test("Stop is durable, releases controls and fences a late response",async({page
 test("closing drawer retains pending history and full-page link preserves scope",async({page})=>{
   const state = await mock(page,{deferred:true}); await openPage(page, playerPage); await page.getByRole("button",{name:"Ask",exact:true}).click(); const dialog = page.getByRole("dialog");
   await composer(dialog).fill("Retain me"); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
-  await expect(dialog.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await expect(dialog.getByRole("link",{name:"Open full research page"})).toHaveAttribute("href",/\/research\/ask\?.*season=2025-26/);
+  await expect(dialog.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await expect(dialog.getByRole("link",{name:"Open Full Page"})).toHaveAttribute("href",/\/research\/ask\?.*season=2025-26/);
   await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible(); state.release(); await openPage(page, path);
   await expect(messages(page)).toContainText("Retain me"); await expect(messages(page)).toContainText("pairs a screen");
 });
@@ -165,8 +165,8 @@ test("clarifications, external citations and hostile text render safely",async({
 
 test("paginated turns are loaded without losing earlier questions",async({page})=>{
   const state = await mock(page,{paginated:true}); await openPage(page, path); await send(page,"First question"); await expect(messages(page)).toContainText("First question");
-  await send(page,"Second question"); await expect(messages(page)).toContainText("Second question"); await reloadPage(page); await expect(page.getByRole("button",{name:"Load newer turns"})).toBeVisible(); await expect(page.getByRole("button",{name:"Send question",exact:true})).toBeDisabled();
-  await page.getByRole("button",{name:"Load newer turns"}).click(); await expect(messages(page)).toContainText("Second question"); expect(state.records.size).toBe(1);
+  await send(page,"Second question"); await expect(messages(page)).toContainText("Second question"); await reloadPage(page); await expect(page.getByRole("button",{name:"Load Newer Turns"})).toBeVisible(); await expect(page.getByRole("button",{name:"Send question",exact:true})).toBeDisabled();
+  await page.getByRole("button",{name:"Load Newer Turns"}).click(); await expect(messages(page)).toContainText("Second question"); expect(state.records.size).toBe(1);
 });
 
 const leaders = Array.from({length:12},(_,i)=>({player_id:String(i),player_name:i===0?"Nikola Jokić":`Fixture Guard ${i}`,team_tricode:"DEN",ast_per_game:Number((10.7-i*0.4).toFixed(1)),games_played:65-i}));
@@ -219,7 +219,7 @@ test("verified local results preserve zero, unknown, scope and equivalent action
 test("default assistant and manual entry are available without preview selection",async({page})=>{
   await mock(page); await openPage(page, '/research/ask'); await send(page,'Explain pick and roll');
   await expect(messages(page)).toContainText('pairs a screen');
-  await page.getByRole('link',{name:'Open manual research',exact:true}).click();
+  await page.getByRole('link',{name:'Open Manual Research',exact:true}).click();
   await expect(page.getByLabel('Run manually without AI')).toBeVisible();
 });
 
@@ -235,8 +235,8 @@ test("page and panel share retained updates and deletion across navigation",asyn
   await page.keyboard.press('Escape'); await openPage(page, path);
   await expect(messages(page)).toContainText('Drawer question');
   await openPage(page, playerPage); await page.getByRole('button',{name:'Ask',exact:true}).click();
-  await dialog.getByRole('button',{name:'Delete chat',exact:true}).click();
-  await dialog.getByRole('button',{name:'Confirm deletion'}).click();
+  await dialog.getByRole('button',{name:'Delete Chat',exact:true}).click();
+  await dialog.getByRole('button',{name:'Confirm Deletion'}).click();
   await expect(messages(dialog)).toBeEmpty();
   await page.keyboard.press('Escape'); await openPage(page, path);
   await expect(messages(page)).toBeEmpty();
@@ -368,7 +368,7 @@ test("Enter sends, Shift+Enter adds a line and an example prompt sends directly"
   await box.press("Enter"); await expect.poll(() => state.requests.length).toBe(1);
   expect(state.requests[0].message).toBe("First line\nsecond line");
   await expect(messages(page).locator(".ask-bubble")).toContainText("second line");
-  await page.getByRole("button", { name: "New chat", exact: true }).click();
+  await page.getByRole("button", { name: "New Chat", exact: true }).click();
   await page.getByRole("button", { name: /Show the registered points forecast/ }).click();
   await expect.poll(() => state.requests.length).toBe(2); expect(state.requests[1].message).toBe("Show the registered points forecast for Nikola Jokić.");
 });
@@ -408,7 +408,7 @@ test("an old thread without narrative renders its template answer in the new lay
 
 test("mobile conversations open as a drawer and close after choosing a thread", async ({ page }) => {
   await mock(page); await page.setViewportSize({ width: 375, height: 812 }); await openPage(page, path);
-  await send(page, "Explain pick and roll"); await page.getByRole("button", { name: "New chat", exact: true }).click();
+  await send(page, "Explain pick and roll"); await page.getByRole("button", { name: "New Chat", exact: true }).click();
   const history = page.getByRole("navigation", { name: "Conversation history" });
   await expect(history).toBeHidden();
   const toggle = page.getByRole("button", { name: "Conversations", exact: true });
@@ -434,7 +434,7 @@ test("clearing history in Settings empties an open chat in another tab", async (
   await panel.getByRole("button", { name: "Clear History", exact: true }).click();
   // The other tab re-reads history as soon as the change is announced; the server is already empty.
   state.headers.length = 0; state.records.clear();
-  await panel.getByRole("button", { name: "Confirm deletion" }).click(); await expect(panel.getByRole("status")).toContainText("deleted");
+  await panel.getByRole("button", { name: "Confirm Deletion" }).click(); await expect(panel.getByRole("status")).toContainText("deleted");
   await expect(messages(page)).toBeEmpty(); await expect(page.getByRole("heading", { name: "What do you want to know?" })).toBeVisible();
 });
 

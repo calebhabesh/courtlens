@@ -20,8 +20,8 @@ for (const width of [1440, 375]) {
       await page.getByRole("button",{name:"Ask",exact:true}).click();
       const panel = page.getByRole("dialog");
       await expect(panel.getByLabel("Attached page context")).toContainText(field === "player_id" ? "Scottie Barnes" : "Toronto Raptors");
-      await expect(panel.getByRole("button",{name:"New chat",exact:true})).toBeEnabled();
-      await panel.getByRole("button",{name:"New chat",exact:true}).click();
+      await expect(panel.getByRole("button",{name:"New Chat",exact:true})).toBeEnabled();
+      await panel.getByRole("button",{name:"New Chat",exact:true}).click();
       await panel.getByLabel("Your question",{exact:true}).fill(question);
       const final = page.waitForResponse(response => response.url().endsWith("/turn/stream"));
       await panel.getByRole("button",{name:"Send question",exact:true}).click();

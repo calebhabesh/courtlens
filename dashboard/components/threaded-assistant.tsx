@@ -2,7 +2,7 @@
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { IntentLink } from "@/components/intent-link";
 import { pageContextLabel } from "@/lib/assistant-page-context";
 import type { AssistantPageContext, ConversationContext, DurableThreadHeader, HybridTurnRequest } from "@/lib/assistant-v2.generated";
@@ -14,7 +14,10 @@ import { CatalogScopeFields } from "./catalog-scope-fields";
 import { BrandMark } from "./brand";
 import { HybridAnswer } from "./hybrid-answer";
 import { AgentAnswer } from "./agent-answer";
-import { Button, IconButton } from "./ui/kit";
+import { Button, ButtonSummary, IconButton } from "./ui/kit";
+import { Icon } from "./ui/icon";
+import { Field } from "./ui/field";
+import { Select } from "./ui/select";
 import { isPublicAsk } from "@/lib/hosted";
 import { askLimits, isLimitRefusal, limitLine, refusalMessage, type AskLimits } from "@/lib/public-ask";
 import { WorkbenchApiError } from "@/lib/workbench-api";
@@ -43,7 +46,8 @@ function turnSelections(turn: DurableTurnRecord) {
 }
 
 // AR06: full-height chat on /ask; "panel" is the header drawer, where conversations always overlay.
-export function ThreadedAssistant({ initialContext = {}, variant = "page", pageContext, pageLabel }: { initialContext?: ConversationContext; variant?: "page" | "panel"; pageContext?: AssistantPageContext; pageLabel?: string }) {
+// `headerActions` (the drawer's expand and close) end the top bar, so the panel has one header row.
+export function ThreadedAssistant({ initialContext = {}, variant = "page", pageContext, pageLabel, headerActions }: { initialContext?: ConversationContext; variant?: "page" | "panel"; pageContext?: AssistantPageContext; pageLabel?: string; headerActions?: ReactNode }) {
   const id = useId();
   // Accounts plan: asking needs an account or the demo account.
   const account = useAccount();
@@ -324,9 +328,13 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
   const lastTurn = turns.at(-1);
   // Follow new turns and streamed prose to the bottom of the transcript.
   useEffect(() => { const node = scroller.current; if (node) node.scrollTop = node.scrollHeight; }, [turns.length, lastTurn?.state, live?.text, live?.phase, live?.step]);
-  const title = threads.find(header => header.thread_id === thread)?.title ?? "New chat";
+  // The server names an untitled thread "New chat"; the top bar is a label, so it reads in Title Case.
+  const storedTitle = threads.find(header => header.thread_id === thread)?.title;
+  const title = !storedTitle || storedTitle === "New chat" ? "New Chat" : storedTitle;
   const sidebarId = `${id}-conversations`;
   const isEmpty = ready && turns.length === 0 && !turnCursor;
+  const canSend = ready && !turnCursor && !!question.trim();
+  const scopeLabel = `${scopeChipLabel(shownContext)}${scopeEdited ? " · Edited" : ""}`;
   const composer = signedOut ? (
     <div className="ask-composer-block">
       <div className="ask-sign-in" data-field="ask-sign-in">
@@ -338,41 +346,52 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       </div>
     </div>
   ) : (
-        <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
-          <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
-          <textarea disabled={!ready} ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />
-          {busy || pending ? <IconButton size="md" variant="secondary" icon="stop" label="Stop" disabled={!pending} onClick={() => void stop()} /> : <IconButton size="md" variant="primary" type="submit" icon="up" label="Send question" disabled={!ready || !!turnCursor || !question.trim()} />}
-        </form>
+    <div className="ask-composer-block">
+      <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
+        <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
+        <textarea disabled={!ready} ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question…" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />
+        {busy || pending
+          ? <IconButton size="md" variant="secondary" round icon="stop" label="Stop" disabled={!pending} onClick={() => void stop()} />
+          : <IconButton size="md" variant={canSend ? "primary" : "secondary"} round type="submit" icon="up" label="Send question" disabled={!canSend} />}
+      </form>
+      <div className="ask-composer-meta">
+        {attachedPage && <div className="ask-page-context" role="group" aria-label="Attached page context"><Icon name="page" size={14} /><span>{pageContextLabel(attachedPage, pageLabel)}</span><IconButton size="xs" round icon="close" label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)} /></div>}
+        <details className="ask-scope"><ButtonSummary size="xs" variant="ghost" icon="sliders" iconAfter="chevron-down" truncate aria-label={`Scope: ${scopeLabel} · Edit scope for the next question`}>{scopeLabel}</ButtonSummary><div className="ask-scope-pop"><p className="text-muted">Applies to the next question. Earlier answers keep their scope, and relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend className="sr-only">Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><Field label="Window"><Select aria-label="Window" value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or Use Default</option><option value="season">Season to Date</option><option value="last_10">Last 10 Appearances</option><option value="last_5">Last 5 Appearances</option></Select></Field></fieldset></div></details>
+      </div>
+    </div>
   );
   return <section className="ask-chat" data-variant={variant} data-collapsed={collapsed} data-drawer={drawer ? "open" : "closed"} aria-label="CourtLens assistant">
     {drawer && <div className="ask-backdrop" aria-hidden="true" onClick={() => setDrawer(false)} />}
     <aside className="ask-sidebar" id={sidebarId} aria-label="Conversations">
-      <div className="ask-sidebar-head"><h2>Conversations</h2>{overlay && <IconButton size="sm" variant="secondary" icon="close" label="Close conversations" onClick={() => setDrawer(false)} />}</div>
+      <div className="ask-sidebar-head"><h2>Conversations</h2>{overlay && <IconButton size="sm" variant="ghost" icon="close" label="Close Conversations" onClick={() => setDrawer(false)} />}</div>
       <nav aria-label="Conversation history" className="ask-history">
         {groupThreads(threads).map(group => <div key={group.label} className="ask-history-group"><h3>{group.label}</h3>{group.threads.map(header => <button type="button" key={header.thread_id} className="ask-history-item" disabled={blocked} aria-current={header.thread_id === thread ? "true" : undefined} title={new Date(header.updated_at).toLocaleString()} onClick={() => void openThread(header.thread_id)}>{header.title}</button>)}</div>)}
-        {threads.length === 0 && <p className="text-muted">No saved conversations yet.</p>}
-        {threadCursor && <Button size="sm" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load more conversations</Button>}
+        {threads.length === 0 && <p className="ask-history-empty">No saved conversations yet. Your questions will appear here.</p>}
+        {threadCursor && <Button size="sm" variant="ghost" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load More Conversations</Button>}
       </nav>
-      <div className="ask-sidebar-foot"><IntentLink href="/research/ask?experience=manual">Open manual research</IntentLink>{!isPublicAsk && <IntentLink href="/settings#history">History and privacy settings</IntentLink>}</div>
+      <div className="ask-sidebar-foot"><IntentLink href="/research/ask?experience=manual"><Icon name="table" size={14} />Open Manual Research</IntentLink>{!isPublicAsk && <IntentLink href="/settings#history"><Icon name="settings" size={14} />History and Privacy Settings</IntentLink>}</div>
     </aside>
     <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">
-        <IconButton size="sm" variant="secondary" icon="sidebar" label="Conversations" aria-expanded={overlay ? drawer : !collapsed} aria-controls={sidebarId} onClick={toggleSidebar} />
+        <IconButton size="sm" variant="ghost" icon="sidebar" label="Conversations" aria-expanded={overlay ? drawer : !collapsed} aria-controls={sidebarId} onClick={toggleSidebar} />
         <p className="ask-title" title={title}>{title}</p>
-        <Button size="sm" variant="ghost" icon="compose" disabled={blocked} onClick={() => void createThread()}>New chat</Button>
-        {!isPublicAsk && <IconButton size="sm" variant="secondary" icon="trash" label="Delete chat" disabled={blocked || !thread} onClick={() => setConfirmDelete(true)} />}
+        <div className="ask-topbar-actions">
+          <IconButton size="sm" variant="ghost" icon="compose" label="New Chat" disabled={blocked} onClick={() => void createThread()} />
+          {!isPublicAsk && <IconButton size="sm" variant="ghost" icon="trash" label="Delete Chat" disabled={blocked || !thread} onClick={() => setConfirmDelete(true)} />}
+          {headerActions && <><span className="ask-topbar-divider" aria-hidden="true" />{headerActions}</>}
+        </div>
       </div>
       <div className="ask-scroll" ref={scroller}>
         <div className="ask-column">
           {!ready && <p role="status">Reading local history…</p>}
           {isEmpty && <div className="ask-empty">
-            <BrandMark size={44} />
-            <h2>What do you want to know?</h2>
+            <span className="ask-empty-mark"><BrandMark size={40} /></span>
+            <h2>What Do You Want to Know?</h2>
             <p className="text-muted">{isPublicAsk
               ? "Ask about NBA stats, players, history and rules. Answers use CourtLens data first; very recent news may be missing."
               : "Ask about NBA stats, history and news. Answers use CourtLens data first, then cited web sources."}</p>
             {composer}
-            <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span>{example.label}</span>{example.prompt}</button>)}</div>
+            <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span className="ask-example-label">{example.label}</span><span className="ask-example-prompt">{example.prompt}</span></button>)}</div>
           </div>}
           <div role="region" aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
             <div className="ask-user"><p className="ask-bubble"><span className="sr-only">You: </span>{turn.request.message}</p></div>
@@ -382,14 +401,12 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
                 : <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} />
               : <div className="thread-live" aria-busy="true"><p className="ask-phase">{live?.requestId === turn.request.request_id ? live.step?.label ?? (live.phase ? phaseLabels[live.phase] : "Working on your question…") : turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>{live?.requestId === turn.request.request_id && live.text && <p className="hybrid-narrative">{live.text}</p>}</div>}</div></div>
           </article>)}</div>
-          {turnCursor && <div className="ask-notice"><p>Load newer turns before adding a question.</p><Button size="sm" disabled={blocked} onClick={() => void readTurns(thread!, epoch.current, turnCursor).catch(cause => setError(messageOf(cause)))}>Load newer turns</Button></div>}
+          {turnCursor && <div className="ask-notice"><p>Load newer turns before adding a question.</p><Button size="sm" disabled={blocked} onClick={() => void readTurns(thread!, epoch.current, turnCursor).catch(cause => setError(messageOf(cause)))}>Load Newer Turns</Button></div>}
         </div>
       </div>
       <div className="ask-dock">
-        {confirmDelete && <div role="alert" className="ask-notice"><p>Delete this local conversation? Saved findings remain available.</p><div className="ask-notice-actions"><Button size="sm" disabled={blocked} onClick={() => void remove()}>Confirm deletion</Button><Button size="sm" onClick={() => setConfirmDelete(false)}>Keep history</Button></div></div>}
-        {error && <div role="alert" className="ask-notice"><p>{error}</p><div className="ask-notice-actions">{transportRetry && <Button size="sm" disabled={blocked} onClick={() => void execute(transportRetry)}>Check or replay request</Button>}<Button size="sm" disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload history</Button></div></div>}
-        {attachedPage && <div className="ask-composer-meta"><div className="ask-page-context" role="group" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><IconButton size="xs" icon="close" label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)} /></div></div>}
-            <details className="ask-scope"><summary>Scope: {scopeChipLabel(shownContext)}{scopeEdited ? " · edited" : ""}<span className="sr-only"> · Edit scope for the next question</span></summary><div className="ask-scope-pop"><p className="text-muted">Applies to the next question. Earlier answers keep their scope, and relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend>Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><label>Window<select value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or Use Default</option><option value="season">Season to Date</option><option value="last_10">Last 10 Appearances</option><option value="last_5">Last 5 Appearances</option></select></label></fieldset></div></details>
+        {confirmDelete && <div role="alert" className="ask-notice"><p>Delete this local conversation? Saved findings remain available.</p><div className="ask-notice-actions"><Button size="sm" variant="danger" disabled={blocked} onClick={() => void remove()}>Confirm Deletion</Button><Button size="sm" variant="ghost" onClick={() => setConfirmDelete(false)}>Keep History</Button></div></div>}
+        {error && <div role="alert" className="ask-notice"><p>{error}</p><div className="ask-notice-actions">{transportRetry && <Button size="sm" disabled={blocked} onClick={() => void execute(transportRetry)}>Check or Replay Request</Button>}<Button size="sm" disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload History</Button></div></div>}
         {!isEmpty && composer}
         {limits && limitLine(limits) && <p className="ask-limit" data-field="ask-limit" data-remaining={limits.remaining} data-site-open={limits.site_open}>{limitLine(limits)}</p>}
         <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{busy || pending ? live?.step?.label ?? (live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…") : "Ready"}</p>

@@ -1,15 +1,15 @@
 "use client";
 
-import { IntentLink } from "@/components/intent-link";
 import { useSearchParams } from "next/navigation";
 import { AskCourtLens } from "./ask-courtlens";
 import { useEffect, useRef } from "react";
 import { ThreadedAssistant } from "./threaded-assistant";
 import type { AssistantPageContext } from "@/lib/assistant-v2.generated";
-import { Button } from "./ui/kit";
+import { IconButton, IconButtonLink } from "./ui/kit";
 
 export function AskDrawer({ onClose, pageContext, pageLabel }: {onClose: () => void; pageContext: AssistantPageContext; pageLabel: string}) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
   const manual = useSearchParams().get("experience") === "manual";
   const scopeParams = new URLSearchParams();
   for (const [key, value] of Object.entries(pageContext.selections)) {
@@ -20,9 +20,19 @@ export function AskDrawer({ onClose, pageContext, pageLabel }: {onClose: () => v
   useEffect(() => {
     const node=dialog.current;
     node?.showModal();
+    // Focus starts on Close, as it did when the drawer had its own header row.
+    closeButton.current?.focus();
   }, []);
-  return <dialog ref={dialog} className="conversation-dialog" aria-labelledby="ask-drawer-title" onClose={onClose}>
-    <div className="conversation-row"><h2 id="ask-drawer-title">Research conversation</h2><Button size="lg" onClick={() => dialog.current?.close()}>Close research conversation</Button><IntentLink href={fullPageUrl} onClick={() => dialog.current?.close()}>Open full research page</IntentLink></div>
-    {manual ? <AskCourtLens variant="panel" initialReleaseId={pageContext.selections.release_id ?? undefined} initialSeason={pageContext.selections.season ?? undefined} initialPhase={pageContext.selections.phase} initialBeforeDate={pageContext.selections.before_date ?? undefined} initialWindow={pageContext.selections.window} /> : <ThreadedAssistant variant="panel" initialContext={pageContext.selections} pageContext={pageContext} pageLabel={pageLabel} />}
+  const close = () => dialog.current?.close();
+  // The panel's expand and close end the chat's own top bar, so the drawer has one header row.
+  const actions = <>
+    <IconButtonLink size="sm" variant="ghost" icon="expand" label="Open Full Page" href={fullPageUrl} onClick={close} />
+    <IconButton ref={closeButton} size="sm" variant="ghost" icon="close" label="Close Ask" onClick={close} />
+  </>;
+  return <dialog ref={dialog} className="conversation-dialog ask-drawer" aria-labelledby="ask-drawer-title" onClose={onClose}>
+    <h2 id="ask-drawer-title" className="sr-only">Ask</h2>
+    {manual
+      ? <><div className="ask-drawer-head">{actions}</div><AskCourtLens variant="panel" initialReleaseId={pageContext.selections.release_id ?? undefined} initialSeason={pageContext.selections.season ?? undefined} initialPhase={pageContext.selections.phase} initialBeforeDate={pageContext.selections.before_date ?? undefined} initialWindow={pageContext.selections.window} /></>
+      : <ThreadedAssistant variant="panel" initialContext={pageContext.selections} pageContext={pageContext} pageLabel={pageLabel} headerActions={actions} />}
   </dialog>;
 }

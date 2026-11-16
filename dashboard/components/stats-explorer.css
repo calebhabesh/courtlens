@@ -82,6 +82,8 @@
 .stats-workspace .density-compact .dense-stats-table tbody td { height: 44px; padding: 0 var(--space-1); font-size: var(--text-sm); }
 .stats-workspace .dense-stats-table .player-cell { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .stats-workspace .stats-identity-copy { flex: 1; min-width: 0; line-height: var(--text-sm-lh); }
+/* The name link is as wide as its name and subtitle, so hovering the empty cell beside it does nothing. */
+.stats-workspace .stats-identity-copy .stats-player-link { display: flex; flex-direction: column; width: fit-content; max-width: 100%; }
 .stats-workspace .stats-row-tools { display: flex; flex-shrink: 0; align-items: center; }
 /* A split-season row carries one more button: tighter gaps keep its caption whole. */
 .stats-workspace .dense-stats-table .player-cell.is-split { gap: var(--space-1); }
@@ -130,6 +132,8 @@
 .stats-workspace .stats-preview-rail { min-width: 0; background: var(--color-surface-2); border-radius: var(--radius-md); display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: thin; }
 .stats-workspace .stats-preview-heading { display: flex; align-items: center; gap: var(--space-1); padding: var(--space-1); font-size: var(--text-xs); color: var(--color-text-secondary); }
 .stats-workspace .stats-preview-heading > span { flex: 1; }
+/* Collapsed, the rail is one 32px strip: centre its toggle instead of padding it past the right edge. */
+.stats-workspace .stats-preview-rail.is-collapsed .stats-preview-heading { justify-content: center; padding-inline: 0; }
 .stats-workspace .stats-preview-identity { padding: var(--space-2) var(--space-2) var(--space-3); display: flex; align-items: center; gap: var(--space-2); border-bottom: 1px solid var(--color-hairline); }
 .stats-workspace .stats-preview-identity > div { min-width: 0; }
 .stats-workspace .stats-preview-identity .player-portrait, .stats-workspace .stats-preview-identity .player-portrait-fallback { width: 44px; height: 44px; min-width: 44px; min-height: 44px; border: 0; }
