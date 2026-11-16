@@ -80,7 +80,8 @@ METHOD = (
     "and the three before it. Nothing at or after the trip is read.",
 )
 REFERENCE_NOTE = (
-    "Design reference: a saved copy of the reference site's ShotQuality RAPM page. Reproduced: the offence, "
+    "Design reference: a saved copy of the reference site's ShotQuality RAPM page. Reproduced: "
+    "the offence, "
     "defence and combined views, the oTS / oSQ / oMake / oFT columns, the minimum and team "
     "filters, the CSV, How to Read, the glossary, the four regressions, the foul baselines and the "
     "second-stage check. Added: intervals and the persistence check. Different: one-season fits, "
@@ -88,8 +89,9 @@ REFERENCE_NOTE = (
     "Not reproduced: the reference site's table values."
 )
 CREDIT = (
-    "The four regressions, foul-type baselines and second-stage check are the reference site's method "
-    "(the reference site ShotQuality RAPM page); the expected-value concept is ShotQuality's. CourtLens "
+    "The four regressions, foul-type baselines and second-stage check are the reference "
+    "site's method (its ShotQuality RAPM page); the expected-value concept is ShotQuality's. "
+    "CourtLens "
     "does not use the paid ShotQuality feed, and its numbers are its own. Data: NBA Stats via "
     "shufinskiy/nba_data."
 )

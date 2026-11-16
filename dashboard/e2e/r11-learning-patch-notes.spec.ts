@@ -163,7 +163,7 @@ test.describe("R11 Patch Notes (RD07 design)", () => {
     await expect(page.locator('.pn-releases a[href^="http"]')).toHaveCount(0);
     await expect(page.locator(".pn-releases")).not.toContainText(/commit|progress log|branch|merged|unmerged|PR #/i);
     await expect(page.getByRole("link", { name: /blog/i })).toHaveCount(0);
-    await expect(page.locator("#about")).toContainText("The reference site");
+    await expect(page.locator("#about")).toContainText("the reference site");
   });
 
   test("the release column stays in view on a desktop and sits above its entries on a phone", async ({ page }) => {

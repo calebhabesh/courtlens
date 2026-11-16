@@ -75,6 +75,8 @@ ignore = ["B008"]
 
 [tool.ruff.lint.per-file-ignores]
 "migrations/*" = ["E501"]
+# Frozen legacy prompt: its bytes are recorded by the AG06 evaluation evidence.
+"src/courtlens/services/assistant/agent/prompt_v1.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

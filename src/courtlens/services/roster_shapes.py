@@ -26,11 +26,13 @@ from courtlens.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame
 
 VERSION = "courtlens-roster-shapes-v2"
 SEASON = "2026-27"
-# the reference site's sizing: DPM above a -2.0 replacement level to the power 2.2, times minutes per game.
+# the reference site's sizing: DPM above a -2.0 replacement level to the power 2.2, times minutes
+# per game.
 REPLACEMENT_LEVEL = -2.0
 EXPONENT = 2.2
 TEAM_MINUTES = 240.0
-# The box is a team whose 240 minutes are all played by +BOX_NET/5 DPM players (the reference site's +17.4).
+# The box is a team whose 240 minutes are all played by +BOX_NET/5 DPM players (the reference
+# site's +17.4).
 BOX_NET = 17.4
 # Equal-count bands of the fit-ease score, 0 = plugs in anywhere ... 7 = hardest to fit.
 FIT_BANDS = 8

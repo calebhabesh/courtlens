@@ -1,7 +1,8 @@
 """Player Twins (alignment row 17): nearest player-seasons by a standardized eight-number profile.
 
 Each mode reads four groups of two dimensions from pbpstats season totals. Shot mode is
-the reference site's Shot Profile Twin: free throws, rim, mid-range and threes, each as attempts per 100
+the reference site's Shot Profile Twin: free throws, rim, mid-range and threes, each as attempts
+per 100
 offensive possessions (volume) and make rate (efficiency). Box mode applies the same method to
 scoring, playmaking, rebounding and defense per 100 possessions; combined mode uses all sixteen.
 

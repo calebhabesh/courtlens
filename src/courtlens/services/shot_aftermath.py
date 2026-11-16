@@ -89,7 +89,8 @@ LIMITATIONS = (
     "comparison with the all-possession average carries that start.",
 )
 CREDIT = (
-    "The views, zones, first chance and cost formula follow the reference site's Shot Aftermath page. "
+    "The views, zones, first chance and cost formula follow the reference site's Shot Aftermath "
+    "page. "
     "CourtLens computes them from its own sealed NBA play-by-play possessions, so its numbers "
     "are its own. Data: NBA play-by-play and shot charts via shufinskiy/nba_data."
 )

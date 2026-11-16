@@ -90,7 +90,6 @@ class AnthropicProvider:
                     "name": "web_search",
                     "max_uses": remaining_web_searches,
                     "allowed_callers": ["direct"],
-                    "blocked_domains": [],
                 }
             )
         request: dict[str, Any] = {

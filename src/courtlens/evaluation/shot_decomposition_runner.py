@@ -1,6 +1,7 @@
 """Run `courtlens-shot-decomposition-v1` (Research R06, Part A).
 
-Four parallel ridge regressions on the R01 possessions (the reference site's ShotQuality RAPM method, on
+Four parallel ridge regressions on the R01 possessions (the reference site's ShotQuality RAPM
+method, on
 CourtLens' own expected-shot model): TS, SQ, MAKE and FT, offence and defence, one regular
 season at a time, with one fixed penalty for all four targets. Then game-bootstrap intervals,
 the second-stage WLS check (oTS on oSQ + oMake + oFT) and the registered persistence check
