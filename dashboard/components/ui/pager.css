@@ -1,0 +1,16 @@
+@layer components {
+/* Numbered table paging (components/ui/pager.tsx). Layout only: the controls are kit controls. */
+.ui-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-0-5);
+  font-variant-numeric: tabular-nums;
+}
+.ui-pager-page { min-inline-size: var(--kit-control-xs); justify-content: center; }
+.ui-pager-gap {
+  min-inline-size: var(--space-4);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+}

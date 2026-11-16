@@ -1,0 +1,129 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T07:28:01+00:00",
+  "pages": [
+    {
+      "name": "compare",
+      "path": "/compare?playerA=2544&playerB=203999",
+      "status": 200,
+      "bytes": 532509,
+      "seconds": 3.851,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/analytics/catalog",
+          "status": 200,
+          "start": 0.0087,
+          "end": 0.0474,
+          "seconds": 0.0387,
+          "server_timing": "total;dur=37.9, db;dur=3.0, queries;desc=\"5\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0487,
+          "end": 2.056,
+          "seconds": 2.0073,
+          "server_timing": "total;dur=2006.5, db;dur=269.1, queries;desc=\"10\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/compare?playerA=2544&playerB=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 2.0575,
+          "end": 2.2147,
+          "seconds": 0.1572,
+          "server_timing": "total;dur=156.5, db;dur=114.5, queries;desc=\"23\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 2.2159,
+          "end": 3.4134,
+          "seconds": 1.1975,
+          "server_timing": "total;dur=1196.7, db;dur=1074.2, queries;desc=\"17\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 2
+              },
+              "predicates": null
+            },
+            "presentation": {
+              "player_ids": [
+                "2544",
+                "203999"
+              ],
+              "table_percentiles": true
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 3.4144,
+          "end": 3.4167,
+          "seconds": 0.0023,
+          "server_timing": "total;dur=1.2, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/player-seasons?phase=regular_season&playerId=2544&playerId=203999&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 3.4159,
+          "end": 3.6805,
+          "seconds": 0.2646,
+          "server_timing": "total;dur=263.2, db;dur=246.2, queries;desc=\"12\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 3.4154,
+          "end": 3.8326,
+          "seconds": 0.4172,
+          "server_timing": "total;dur=416.2, db;dur=259.6, queries;desc=\"18\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/203999/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 3.4156,
+          "end": 3.8367,
+          "seconds": 0.4211,
+          "server_timing": "total;dur=419.9, db;dur=59.6, queries;desc=\"18\""
+        }
+      ]
+    }
+  ]
+}

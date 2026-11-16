@@ -5,9 +5,10 @@ import { ReplicaNav } from "@/components/replica-nav";
 import { NavTrailRecorder } from "@/components/ui/back-button";
 import { WorkspaceProvider } from "@/lib/workspace-context";
 import { AccountProvider } from "@/lib/account-context";
-import { SignInDialog } from "@/components/account/sign-in-dialog";
+import { LazySignInDialog } from "@/components/account/lazy-sign-in-dialog";
 import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
+import { ScrollMemory } from "@/components/scroll-memory";
 import "./globals.css";
 
 const switzer = localFont({
@@ -83,7 +84,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </Suspense>
             </main>
           </div>
-          <SignInDialog />
+          <LazySignInDialog />
+          <ScrollMemory />
         </ToastProvider></AssistantPageProvider></WorkspaceProvider></AccountProvider>
       </body>
     </html>

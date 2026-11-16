@@ -1,11 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { Suspense, type CSSProperties } from "react";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, liveRead, nearestGameDate, predictionCall, seasonOf, teamCode, teamFullName, validSlate, type LiveGame, type LiveSlateData, type LiveTeam } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
 import { band, metric, signed, type HeadToHead, type TrialRead, type WinProbabilityPage, type WorkedExample } from "@/lib/win-probability";
 import { CourtLensSays } from "./brand";
+import { Skeleton } from "./ui/skeleton";
+import { SkelLines, SkelText } from "./ui/content-skeletons";
 import { DateStrip } from "./live-board";
 import { teamColors } from "./live-game";
 import { logoTeam } from "./live-panel";
@@ -18,6 +20,7 @@ import { GatedNote } from "./ui/gated-note";
 import { ButtonSummary } from "./ui/kit";
 import { CalibrationChart } from "./win-probability-research";
 import { ModelFlow, type FlowOption } from "./win-probability-flow";
+import { gameHref } from "@/lib/entity-links";
 
 /**
  * W5: the v4 sections above the evidence. Every number is served: the head-to-head summary the
@@ -76,10 +79,10 @@ export function PredictionCard({ game }: { game: LiveGame }) {
   const call = predictionCall(game);
   const fav = sealed == null ? null : sealed >= 0.5 ? home : away;
   const line = game.status === "scheduled" ? lineFavourite(game.odds, game.teams) : null;
-  const href = `/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame&from=win-probability`;
+  const href = gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame", params: { from: "win-probability" } })!;
   const outs = game.status === "scheduled" ? [away, home].filter(t => t.out) : [];
   const withLine = call?.withLine ? { team: call.withLine.side === "home" ? home : away, percent: call.withLine.percent } : null;
-  return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
+  return <IntentLink className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
     aria-label={`${away.name} at ${home.name}, ${gameStatus(game)}${fav && sealed != null ? `. CourtLens: ${teamCode(fav)} ${Math.round(Math.max(sealed, 1 - sealed) * 100)}% to win` : ""}. Open the game and why.`}
     style={teamColors(game.teams, season)}>
     <span className="wpc-head">
@@ -107,13 +110,13 @@ export function PredictionCard({ game }: { game: LiveGame }) {
         {outs.length > 0 && <span className="wpc-out" title="Players ESPN lists as Out">{outs.map(t => <span key={t.side} className="wpc-out-team"><TeamLogo team={logoTeam(t)} season={season} size={16} /><span>{t.out} out</span></span>)}</span>}
       </span>}
     </span>
-  </Link>;
+  </IntentLink>;
 }
 
 function Board({ board, loading, error, day }: { board: Board | null; loading: boolean; error: string | undefined; day: string | null }) {
   const href = (d: string) => `/research/win-probability?day=${d}`;
   const label = !board ? "Tonight's games" : board.today ? "Tonight's games" : formatDate(board.day);
-  return <ResearchSection id="slate" icon="activity" title={label} aside={<Link href={board ? `/live/${board.day}` : "/live"} className="wp-link">Open on Live</Link>}>
+  return <ResearchSection id="slate" icon="activity" title={label} aside={<IntentLink href={board ? `/live/${board.day}` : "/live"} className="wp-link">Open on Live</IntentLink>}>
     {board && <DateStrip slate={board.day} calendar={board.calendar} href={href} />}
     {loading && !board ? <p className="wp-note" role="status">Loading the games…</p>
       : error ? <GatedNote tone="warning">The games are unavailable right now.</GatedNote>
@@ -141,14 +144,14 @@ export function TrackRecord({ data }: { data: WinProbabilityPage }) {
   const rec = h?.record_of_calls;
   const graded = !!rec && rec.games > 0;
   const tossUps = rec ? rec.toss_ups_by_model?.original ?? rec.toss_ups : 0;
-  return <ResearchSection id="track-record" icon="target" title="Track record">
+  return <ResearchSection id="track-record" icon="target" title="Track Record">
     {graded ? <p className="wp-lead" data-field="record" data-games={rec.games} data-market={rec.market_informed} data-original={rec.original}>
       On {whole(rec.games)} {rec.games === 1 ? "game" : "games"} since the Market-informed model&apos;s freeze, CourtLens&apos; own read picked the winner {whole(rec.original)} times ({pct(rec.original, rec.games)}).
     </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each game is graded within 30 minutes of its final buzzer.</p>}
     <dl className="wp-tiles" data-field="record-table">
-      <RecordTile name="CourtLens' own read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
-      <RecordTile name="With the betting line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
-      <RecordTile name="The betting line" sub="its favourite" icon="trend" right={graded && rec.line.games ? rec.line.right : null} games={rec?.line.games ?? 0} tone="plain" />
+      <RecordTile name="CourtLens' Own Read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
+      <RecordTile name="With the Betting Line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
+      <RecordTile name="The Betting Line" sub="its favourite" icon="trend" right={graded && rec.line.games ? rec.line.right : null} games={rec?.line.games ?? 0} tone="plain" />
     </dl>
     {graded && <p className="wp-note">An even call counts half.{tossUps ? ` ${whole(tossUps)} ${tossUps === 1 ? "game was a toss-up" : "games were toss-ups"} (45% to 55%).` : ""}</p>}
     {cal && <>
@@ -183,7 +186,7 @@ export function HowItWorks({ data, games }: { data: WinProbabilityPage; games: L
       <p className="wp-note" data-field="example-rule">Chosen by rule: {example.rule.replace(/^./, c => c.toLowerCase())}</p>
       <div className="wp-example" data-field="example" data-game={game.source_id}>
         <PredictionBody why={example.why} game={game} />
-        <Link className="wp-link" href={`/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame`}>Open this game on Live</Link>
+        <IntentLink className="wp-link" href={gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame" })!} prefetch={false}>Open this game on Live</IntentLink>
       </div>
     </Toggle> : <p className="wp-note" data-field="example-empty">Worked example: {example?.rule.replace(/^The first/, "the first").replace(/\.$/, "") ?? "the first graded game that meets the rule"}. None yet.</p>}
   </ResearchSection>;
@@ -251,4 +254,28 @@ function V4Inner({ data }: { data: WinProbabilityPage }) {
 
 export function WinProbabilityV4({ data }: { data: WinProbabilityPage }) {
   return <Suspense fallback={null}><V4Inner data={data} /></Suspense>;
+}
+
+/** The page body's loading state: tonight's games (date strip and game cards), then the track record tiles. */
+export function WinProbabilityV4Skeleton() {
+  const heading = (width: number) => <div className="rs-section-head"><span className="rs-heading"><Skeleton width={20} height={20} /><SkelText size="2xl" width={width} /></span></div>;
+  return <>
+    <section className="rs-section ui-skel-section-first" aria-hidden="true">
+      {heading(200)}
+      <div className="live-strip"><ol className="live-strip-days">{Array.from({ length: 7 }, (_, index) => <li key={index}><Skeleton width={52} height={56} /></li>)}</ol></div>
+      <ol className="wpc-grid">{Array.from({ length: 6 }, (_, index) => <li key={index}><div className="wpc">
+        <span className="wpc-head"><SkelText size="xs" width={40} /><SkelText size="xs" width={32} /></span>
+        <span className="wpc-teams">
+          <span className="wpc-team"><Skeleton variant="circle" width={52} height={52} /><span className="wpc-team-text"><SkelText size="sm" width={110} /><SkelText size="lg" width={36} /></span></span>
+          <span className="wpc-team" data-side="home"><span className="wpc-team-text"><SkelText size="sm" width={110} /><SkelText size="lg" width={36} /></span><Skeleton variant="circle" width={52} height={52} /></span>
+        </span>
+        <span className="wpc-foot"><SkelText size="xs" width={180} /></span>
+      </div></li>)}</ol>
+    </section>
+    <section className="rs-section" aria-hidden="true">
+      {heading(160)}
+      <SkelLines lines={1} size="sm" className="ui-skel-measure" />
+      <dl className="wp-tiles">{[0, 1, 2].map(index => <div key={index} className="wp-tile"><Skeleton width={32} height={32} /><SkelText size="xl" width={72} /><SkelText size="sm" width={172} /></div>)}</dl>
+    </section>
+  </>;
 }

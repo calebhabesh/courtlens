@@ -1,6 +1,25 @@
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
 const playerReference = JSON.parse(readFileSync(new URL("../lib/player-reference-fixture.json", import.meta.url), "utf8"));
+const bosDepthFixture = JSON.parse(readFileSync(new URL("./fixtures/team-bos-depth-2025-26.json", import.meta.url), "utf8"));
+// The served profile places its contracts as the API does (services/contract_spans.py): the
+// current contract counted back from its last season with Wikipedia's terms, and a signing only
+// the article lists.
+const articleUrl = "https://en.wikipedia.org/wiki/Fixture_Player";
+const servedReference = {
+  ...playerReference,
+  contract_spans: [
+    { start_season: "2026-27", end_season: "2028-29", end_basis: "stated_length", start_basis: "current_contract", signed_date: "2026-09-22",
+      kind: "extension", length_stated: true, length_source: "wikipedia", team_code: "TOR", description: "Signed extension", terms: "3-yr/$6M",
+      source: "basketball_reference", source_url: articleUrl, current: true },
+    { start_season: "2025-26", end_season: "2025-26", end_basis: "next_contract", start_basis: "signed", signed_date: "2025-07-25",
+      kind: "signing", length_stated: true, length_source: "wikipedia", team_code: "BOS", description: "Signed 2-yr/$2M contract", terms: null,
+      source: "wikipedia", source_url: articleUrl, current: false },
+  ],
+  unplaced_signings: [{ signed_date: "2024-08-01", season: "2024-25", kind: "extension", description: "Signed a contract extension", years: null,
+    length_source: null, terms: null, source: "basketball_reference", source_url: null }],
+  contract_terms_source: { name: "Wikipedia", title: "Fixture Player", url: articleUrl, revision_id: 1, as_of: "2026-11-14T12:00:00Z" },
+};
 import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 
 // Recorded real retained finding, no question/provider prose. Other public examples stay
@@ -995,7 +1014,7 @@ createServer(async (request, response) => {
     return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
       listing_source: "season_roster", combine: null,
       current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z" },
-      reference: bioMatch[1] === "24" ? playerReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
+      reference: bioMatch[1] === "24" ? servedReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));
@@ -1023,6 +1042,11 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   if (url.pathname === "/api/workbench/teams/1610612760") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612760", tricode: "OKC", name: "Oklahoma City Thunder" } });
+  // The depth chart reads its team on the server since speed plan SP04, so the depth-chart specs
+  // (roster-shapes, advanced-research, visual-baselines) get their 3-player Boston here, at their scope.
+  // roster-shapes "reported non-appearances": the same Boston before 2026-03-01, plus a player with only non-appearances.
+  if (url.pathname === "/api/workbench/teams/1610612738" && url.searchParams.get("season") === "2025-26" && url.searchParams.get("beforeDate") === "2026-03-01") return json(response, 200, { ...bosDepthFixture, context: { ...bosDepthFixture.context, before_date: "2026-03-01" }, player_cohort: [...bosDepthFixture.player_cohort, { player_id: "14", player_name: "Fixture Inactive", games_played: 0, total_minutes: null, pts_per_game: null, reb_per_game: null, ast_per_game: null }] });
+  if (url.pathname === "/api/workbench/teams/1610612738" && url.searchParams.get("season") === "2025-26" && url.searchParams.get("phase") === "regular_season") return json(response, 200, bosDepthFixture);
   if (url.pathname === "/api/workbench/teams/1610612738") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612738", tricode: "BOS", name: "Boston Celtics" }, record: { games_played: 72, wins: 55, losses: 17, win_pct: 0.764 }, player_cohort: [{ player_id: "24", player_name: "Fixture Guard", games_played: 68, min_per_game: 33.5, total_minutes: 2278, points: 1500, pts_per_game: 22.0, reb_per_game: 4.5, ast_per_game: 6.0 }] });
   // FO11: one deliberately missing-data opponent for descriptive comparison guards.
   if (url.pathname === "/api/workbench/teams/200") return json(response,200,{

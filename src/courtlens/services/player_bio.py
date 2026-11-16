@@ -20,8 +20,11 @@ from sqlalchemy.orm import Session
 from courtlens.domain.teams import franchise_of, team_identity
 from courtlens.reference_models import BbrefPlayerSeason
 from courtlens.services.bbref_bio import player_reference
+from courtlens.services.college_schools import player_school
+from courtlens.services.contract_spans import contract_spans, unplaced_signings
 from courtlens.services.player_contracts import enrich_contracts
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
+from courtlens.services.wikipedia_contracts import player_entry
 from courtlens.services.workbench_analytics import resolve_workbench_context
 from courtlens.workbench_models import WorkbenchPlayerGame
 
@@ -166,7 +169,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
     draft_rows = _rows(
         session,
         f"""SELECT draft_year, round_number, round_pick, overall_pick, drafting_team_id,
-            organization FROM {_mart("mart_stats_draft_history")}
+            organization, organization_type FROM {_mart("mart_stats_draft_history")}
         WHERE player_id = :pid ORDER BY draft_year DESC LIMIT 1""",
         pid=player_id,
     )
@@ -190,6 +193,8 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
             "team_id": team,
             "team_tricode": team_tricode(team) if team else None,
             "organization": row["organization"],
+            # "College/University", "High School" or "Other Team/Club", as NBA.com classes it.
+            "organization_type": row["organization_type"] or None,
         }
     elif bio is not None and bio["draft_year"] is not None:
         draft = {
@@ -221,7 +226,23 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
 
     reference = player_reference(session, player_id)
     if reference is not None:
+        reference["college"] = player_school(player_id)
         enrich_contracts(session, player_id, reference)
+        # Contract terms the player's Wikipedia article states fill what the source leaves out.
+        wikipedia = player_entry(reference.get("bbref_id"))
+        spans = contract_spans(reference, wikipedia, draft)
+        reference["contract_spans"] = spans
+        reference["unplaced_signings"] = unplaced_signings(reference, spans, wikipedia, draft)
+        if wikipedia is not None and any(
+            row["source_url"] for row in [*spans, *reference["unplaced_signings"]]
+        ):
+            reference["contract_terms_source"] = {
+                "name": "Wikipedia",
+                "title": wikipedia["title"],
+                "url": wikipedia["article_url"],
+                "revision_id": wikipedia["revision_id"],
+                "as_of": wikipedia["observed_at"],
+            }
     last_team = None
     # Off every roster now: the team of his final season, else the index's last (or listed) team.
     last_id = bio and (bio.get("last_team_id") or bio.get("listed_team_id"))

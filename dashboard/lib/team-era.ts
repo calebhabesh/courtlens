@@ -1,6 +1,7 @@
 // Franchises' earlier identities (Seattle SuperSonics for the Thunder), mirrored from
 // `courtlens.domain.teams.TEAM_ERAS` into team-branding.json by scripts/team_branding_assets.py.
-import catalog from "./team-branding.json";
+// The browser reads its team-branding.client.json copy (no provenance; speed plan SP05).
+import catalog from "./team-branding.client.json";
 
 /** An earlier identity. `franchise_id` is null for a team that folded; `asset` is absent when no
  * free source has its logo. `brand_color` is the logo's own main color, for eras without a

@@ -1,0 +1,41 @@
+/* Site links SL05: the Related row at the end of each hub page. On the page background, in the
+   quiet voice of the scope note; each item is an entity link (D1: surrounding colour, accent and
+   underline on hover and focus). */
+@layer components {
+.related-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--color-hairline);
+}
+.related-row-title {
+  margin: 0;
+  color: var(--color-on-bg-tertiary);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.related-row-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 32px tall: above the 24px table floor, without the 40px phone rule (list links are exempt). */
+.related-row-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-8);
+  color: var(--color-on-bg-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+}
+.related-row-logo { display: inline-flex; }
+}

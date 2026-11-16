@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useSearchParams } from "next/navigation";
 import type { PlayoffBracketResponse, PlayoffSeriesSummary } from "@/lib/types";
 import { getSeriesStatusBadge } from "@/lib/playoffs";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { ContextBar } from "./context-bar";
 import { PageHeader } from "./ui/panel";
@@ -16,6 +15,7 @@ import { ButtonLink, Segmented } from "./ui/kit";
 import { buildBracket } from "@/lib/playoffs-bracket";
 import { splitTeamName } from "@/lib/playoffs";
 import { PlayoffsBracket } from "./playoffs-bracket";
+import { seriesHref as buildSeriesHref, teamHref } from "@/lib/entity-links";
 
 interface PlayoffsBracketViewProps {
   bracket: PlayoffBracketResponse | null;
@@ -35,7 +35,8 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
   const [activeTab, setActiveTab] = useState<BracketView>("bracket");
   const [roundFilter, setRoundFilter] = useState<RoundFilter>("all");
   const [conferenceFilter, setConferenceFilter] = useState<ConferenceFilter>("all");
-  const seriesHref = (slug: string) => buildPreservedContextUrl(`/playoffs/${slug}`, searchParams);
+  // The series page reads the bracket's cutoff and release, so a series opens at the bracket's scope.
+  const seriesHref = (slug: string) => buildSeriesHref(slug, { beforeDate: searchParams.get("beforeDate") ?? searchParams.get("cutoff_date"), releaseId: searchParams.get("releaseId") });
 
   // Filter rounds
   const displayedRounds = useMemo(() => {
@@ -194,12 +195,12 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
                             <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
-                            <Link
-                              href={`/teams/${st.team_id}?season=${season}&phase=regular_season`}
-                              className="font-semibold text-accent"
+                            <IntentLink
+                              href={teamHref(st.team_id, { season })}
+                              className="font-semibold text-accent entity-link"
                             >
                               {st.team_name}
-                            </Link>
+                            </IntentLink>
                           </div>
                         </td>
                         <td className="num font-mono">
@@ -253,12 +254,12 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
                             <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
-                            <Link
-                              href={`/teams/${st.team_id}?season=${season}&phase=regular_season`}
-                              className="font-semibold text-accent"
+                            <IntentLink
+                              href={teamHref(st.team_id, { season })}
+                              className="font-semibold text-accent entity-link"
                             >
                               {st.team_name}
-                            </Link>
+                            </IntentLink>
                           </div>
                         </td>
                         <td className="num font-mono">

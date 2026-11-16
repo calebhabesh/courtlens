@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "../../intent-link";
 import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 import { Icon, type IconName } from "../icon";
 import { controlClasses, cx, disclosureIconClasses, disclosureOpenClasses, kitIconSize, trailingChevronClasses, type KitIdentity, type KitSize, type KitTone, type KitVariant } from "./recipes";
@@ -65,17 +65,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
 export interface ButtonLinkProps extends ControlLookProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> {
   href: string;
+  /** The page is prefetched on intent (speed plan SP03); `false` turns even that off. */
+  prefetch?: false;
   /** Current route or section: sets `aria-current` and the selected look. */
   current?: boolean;
 }
 
-/** A link with button geometry (Next `Link`, so client navigation and prefetch still apply). */
+/** A link with button geometry (Next `Link`: client navigation, prefetch on intent, never on entering the viewport). */
 export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(function ButtonLink(
   { size = "md", variant = "secondary", tone, icon, iconAfter, dense, current, className, href, children, ...props },
   ref,
 ) {
   return (
-    <Link
+    <IntentLink
       ref={ref}
       href={href}
       aria-current={current ? "page" : undefined}
@@ -84,7 +86,7 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(functio
       {...props}
     >
       <Content size={size} icon={icon} iconAfter={iconAfter}>{children}</Content>
-    </Link>
+    </IntentLink>
   );
 });
 
@@ -114,11 +116,13 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
   identity?: KitIdentity;
   /** Pulses to invite the next press (the second pick of a pair); still ring under reduced motion. */
   beckon?: boolean;
+  /** Sits inside a text field's box (a search clear ×): a 24 px square with the `xs` icon. */
+  inField?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, inField = false, className, type = "button", disabled, ...props },
   ref,
 ) {
   const disclosure = expanded !== undefined && !loading;
@@ -133,7 +137,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-pressed={pressed}
       aria-expanded={expanded}
       data-kit="icon-button"
-      className={cx(controlClasses({ size, variant, tone, square: true, identity, beckon: beckon && !pressed && !disabled }), className)}
+      className={cx(controlClasses({ size, variant, tone, square: true, inField, identity, beckon: beckon && !pressed && !disabled }), className)}
       {...props}
     >
       <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading}
@@ -154,7 +158,7 @@ export const IconButtonLink = forwardRef<HTMLAnchorElement, IconButtonLinkProps>
   ref,
 ) {
   return (
-    <Link
+    <IntentLink
       ref={ref}
       href={href}
       aria-label={label}
@@ -165,6 +169,6 @@ export const IconButtonLink = forwardRef<HTMLAnchorElement, IconButtonLinkProps>
       {...props}
     >
       <Icon name={icon} size={kitIconSize[size]} />
-    </Link>
+    </IntentLink>
   );
 });

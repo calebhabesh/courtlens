@@ -1,0 +1,137 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T08:14:00+00:00",
+  "pages": [
+    {
+      "name": "player-rookie",
+      "path": "/players/1643411",
+      "status": 200,
+      "bytes": 343878,
+      "seconds": 2.761,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0134,
+          "end": 0.0226,
+          "seconds": 0.0093,
+          "server_timing": "total;dur=2.3, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0132,
+          "end": 2.1527,
+          "seconds": 2.1395,
+          "server_timing": "total;dur=2138.4, db;dur=271.4, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1643411",
+          "status": 200,
+          "start": 2.1556,
+          "end": 2.1743,
+          "seconds": 0.0186,
+          "server_timing": "total;dur=14.8, db;dur=1.4, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+          "status": 200,
+          "start": 2.1552,
+          "end": 2.2635,
+          "seconds": 0.1083,
+          "server_timing": "total;dur=105.8, db;dur=67.3, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+          "status": 200,
+          "start": 2.1553,
+          "end": 2.2672,
+          "seconds": 0.1118,
+          "server_timing": "total;dur=108.9, db;dur=66.8, queries;desc=\"8\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 2.1539,
+          "end": 2.4403,
+          "seconds": 0.2863,
+          "server_timing": "total;dur=285.6, db;dur=213.2, queries;desc=\"15\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1643411/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 2.1558,
+          "end": 2.4515,
+          "seconds": 0.2957,
+          "server_timing": "total;dur=291.5, db;dur=61.5, queries;desc=\"19\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 2.1561,
+          "end": 2.7512,
+          "seconds": 0.5951,
+          "server_timing": "total;dur=590.5, db;dur=243.4, queries;desc=\"15\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1643411"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 // Team accent colors for identity treatments (frontend overhaul D10). These are each franchise's
 // most recognizable brand color, keyed by the tricodes in team-branding.json. Decorative only:
 // like the logos, they describe current franchise branding, not era-specific identity.
-import catalog from "./team-branding.json";
+import catalog from "./team-branding.client.json";
 import { teamEra } from "./team-era";
 
 const BRAND: Record<string, string> = {

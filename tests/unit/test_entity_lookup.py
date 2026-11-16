@@ -636,3 +636,57 @@ def test_empty_player_search_suggests_season_leaders(test_db_session: Session):
     assert len(mixed.items) == 10 and mixed.items[2].kind != "player"
     # Games on or after the cutoff never count.
     assert season_leaders(test_db_session, "d", None, None, date(2025, 1, 2), 5)[0] == "1631114"
+
+
+def test_player_link_opens_a_played_season_and_unplayed_players_are_hidden(
+    test_db_session: Session,
+):
+    """A search link never opens a season the player did not play, or a player with no page."""
+    test_db_session.add_all([_game("203999", day, 30) for day in range(1, 3)])
+    test_db_session.commit()
+
+    played = lookup_entities(
+        test_db_session, query="Jokic", dataset_id="d", release_id="r", season="2024-25"
+    ).items[0]
+    assert "season=2024-25" in played.destination_url
+
+    # From a season they did not play, the link opens the player page's own latest season.
+    other = lookup_entities(
+        test_db_session,
+        query="Jokic",
+        dataset_id="d",
+        release_id="r",
+        season="2026-27",
+        phase="regular_season",
+        before_date=date(2026, 11, 13),
+    ).items[0]
+    assert other.destination_url == "/players/203999?release_id=r"
+    assert other.availability.status == "no_current_games"
+
+    # Neither games nor season totals in the dataset: no page, so not a result.
+    assert lookup_entities(test_db_session, query="Rookie Phenom", dataset_id="d").items == []
+    luka = lookup_entities(test_db_session, query="Luka", dataset_id="d", kinds=["player"])
+    assert luka.items == []
+
+
+def test_first_name_forms_find_the_player(test_db_session: Session):
+    """Ron finds Ronald (and the reverse), with the suffix dropped; other names are untouched."""
+    holland = generate_player_aliases("Ronald Holland II")
+    assert {"ron holland", "ronnie holland"} <= set(holland)
+    assert "ron holland ii" not in holland
+    assert "michael conley" in generate_player_aliases("Mike Conley")
+    assert "christopher dudley" in generate_player_aliases("Chris Dudley")
+    assert generate_player_aliases("Nene") == ["nene"]
+    jokic = generate_player_aliases("Nikola Jokic")
+    assert jokic == ["nikola jokic", "nikolajokic", "nikola", "jokic"]
+
+    test_db_session.add(
+        WorkbenchIdentity(
+            namespace="nba", kind="player", external_id="1641842", display_name="Ronald Holland II"
+        )
+    )
+    test_db_session.commit()
+    found = lookup_entities(test_db_session, query="ron holland", kinds=["player"]).items[0]
+    assert (found.display_name, found.match_basis) == ("Ronald Holland II", "exact")
+    # A generated form is matched silently, never shown as an "aka" nickname.
+    assert found.nicknames == [] and found.matched_alias is None

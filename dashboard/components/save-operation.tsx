@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useId, useRef, useState } from "react";
 import type { Turn } from "@/lib/conversation";
 import { canSaveTurn, makeSaveRequest, saveOperation, type SaveRequest, type SavedDetail } from "@/lib/saved-operations";
@@ -26,7 +26,7 @@ export function SaveOperation({ turn, disabled = false }: { turn: Turn; disabled
     catch (cause) { setError(cause instanceof Error ? cause.message : "Saving failed. Execute this operation again if the conversation expired."); requestAnimationFrame(() => errorRef.current?.focus()); }
     finally { busy.current = false; setPending(false); }
   }
-  if (saved) return <p role="status">Saved permanently: <Link href={`/investigations/saved/${saved.id}`}>{saved.title}</Link>. Clearing the conversation keeps this investigation.</p>;
+  if (saved) return <p role="status">Saved permanently: <IntentLink href={`/investigations/saved/${saved.id}`}>{saved.title}</IntentLink>. Clearing the conversation keeps this investigation.</p>;
   return <form className="saved-operation-form" onSubmit={event => { event.preventDefault(); void save(); }}>
     <h3>Save this investigation</h3>
     <p>Retain an immutable manifest, complete Stats cohort (up to 2,000 eligible rows) and each other operation’s declared bounds. Saving uses pinned inputs without AI. Images are presentation artifacts.</p>

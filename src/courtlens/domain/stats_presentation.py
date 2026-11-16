@@ -24,6 +24,11 @@ class StatsPresentation(BaseModel):
     # draft class. Both resolve to player IDs before execution; None means all.
     positions: list[Position] | None = Field(default=None, max_length=5)
     draft_year: int | None = Field(default=None, ge=1947, le=2100)
+    # "sort" narrows each item's metric maps (metrics, sample sizes, percentiles, support) to the
+    # query's sort fields, for callers that read only the server's ordering (the player page's
+    # hero ranks, speed plan SP05). Rows, their order, counts and cursors are unchanged, and it is
+    # not part of the presentation hash: it shapes the response, not the result.
+    metrics: Literal["all", "sort"] = "all"
 
     @field_validator("version")
     @classmethod

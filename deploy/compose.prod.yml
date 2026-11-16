@@ -156,6 +156,9 @@ services:
     environment:
       <<: *api-environment
       COURTLENS_WIN_PROBABILITY_LOCAL_SEALING: "false"
+      # Speed plan SP02: the warm crawl requests pages from the dashboard and reads the API status.
+      COURTLENS_WARM_BASE_URL: http://dashboard:3000
+      COURTLENS_WARM_API_URL: http://api:8000
       # The daily refresh publishes a statistics release with dbt; the image's /app/warehouse
       # belongs to the image user, so dbt's working files go to the container's /tmp.
       DBT_TARGET_PATH: /tmp/dbt-target
@@ -163,10 +166,17 @@ services:
     command:
       - sh
       - -c
+      # After the jobs, the warm crawl (speed plan SP02) refills the API read cache when the data
+      # generation changed. It runs as its own step with stdout sent to stderr, bounded by
+      # `timeout`, and its time is taken off the sleep, so it never shifts a job's wake.
       - >-
         while :; do
         wait=$$(courtlens run-jobs --next-wake | tail -n 1);
         case "$$wait" in ''|*[!0-9]*) echo 'jobs run gave no wake time' >&2; wait=1800;; esac;
+        began=$$(date +%s);
+        timeout 1500 courtlens warm-site >&2 || echo 'warm-site did not complete' >&2;
+        wait=$$((wait - $$(date +%s) + began));
+        [ "$$wait" -gt 0 ] || wait=1;
         sleep "$$wait";
         done
     volumes:
@@ -182,7 +192,13 @@ services:
     # The 12-season impact bundle peaks near 2.3 GB while serving (measured 2026-11-10).
     mem_limit: 3g
     cpus: 2.0
-    environment: *api-environment
+    environment:
+      <<: *api-environment
+      # Speed plan SP01: in-memory read cache, at most 128 MiB (COURTLENS_READ_CACHE_MAX_BYTES).
+      COURTLENS_READ_CACHE: "true"
+      # Speed plan SP04: load the catalog's bundles, tracking fingerprint and finance book as the
+      # API starts, in the background, so the first visitor after a deploy does not wait for them.
+      COURTLENS_WARM_START: "true"
     volumes:
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
       - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro
@@ -203,9 +219,12 @@ services:
       - ./data/derived/darko-dpm-v2:/app/data/derived/darko-dpm-v2:ro
       - ./data/derived/espn-rosters-v1:/app/data/derived/espn-rosters-v1:ro
       - ./data/derived/wikipedia-transactions-v1:/app/data/derived/wikipedia-transactions-v1:ro
+      - ./data/derived/wikipedia-contracts-v1:/app/data/derived/wikipedia-contracts-v1:ro
+      - ./data/derived/college-schools-v1:/app/data/derived/college-schools-v1:ro
       - ./data/derived/free-agency-v1:/app/data/derived/free-agency-v1:ro
       - ./data/derived/shot-zones-v1:/app/data/derived/shot-zones-v1:ro
       - ./data/derived/position-estimates-v1:/app/data/derived/position-estimates-v1:ro
+      - ./data/derived/position-estimates-provisional-v1:/app/data/derived/position-estimates-provisional-v1:ro
       - ./data/derived/contracts-checks:/app/data/derived/contracts-checks:ro
       - ./data/derived/stint-box-v1:/app/data/derived/stint-box-v1:ro
       - ./data/artifacts/research-runs:/app/data/artifacts/research-runs:ro

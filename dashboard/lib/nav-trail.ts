@@ -1,6 +1,7 @@
 import { analyticalNavItems, moreLinks } from "./nav-model";
 import { mergedPagePath, TABBED_PAGES } from "./route-consolidation";
 import { storageKeys } from "./storage-keys";
+import { ENTITY_ROUTES } from "@/lib/entity-links";
 
 /**
  * The tab's trail of pages (back navigation, app shell row 0): every Back button returns to the
@@ -31,12 +32,13 @@ export function pageLabel(href: string): string {
   if (exact) return exact.label;
   const tabbed = Object.values(TABBED_PAGES).find(page => page.tabs.some(tab => tab.href === path));
   if (tabbed) return tabbed.title;
-  if (path.startsWith("/players/")) return "Player";
-  if (path.startsWith("/teams/")) return "Team";
+  if (path.startsWith(ENTITY_ROUTES.player)) return "Player";
+  if (path.startsWith(ENTITY_ROUTES.team)) return "Team";
   if (path === "/contracts/books") return "Source Books";
   if (path.startsWith("/contracts/")) return "Contracts";
-  if (path.startsWith("/playoffs/")) return "Series";
+  if (path.startsWith(ENTITY_ROUTES.series)) return "Series";
   if (path.startsWith("/live")) return "Live";
+  if (path === "/investigations") return "Saved Investigations";
   if (path.startsWith("/investigations/saved/")) return "Investigation";
   if (path.startsWith("/stats")) return "Stats";
   return "Previous Page";

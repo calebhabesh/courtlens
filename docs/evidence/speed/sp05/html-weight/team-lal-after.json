@@ -1,0 +1,302 @@
+{
+ "url": "http://localhost:3180/teams/1610612747",
+ "total": 1130813,
+ "markup": 847223,
+ "rsc_scripts": 279802,
+ "other_scripts": 3788,
+ "rsc_payload_chars": 247147,
+ "markup_style_attrs": 28947,
+ "markup_class_attrs": 337600,
+ "markup_svg": 70399,
+ "rows_by_tag": {
+  "json": 234985,
+  "I": 2805,
+  "C": 0,
+  "n": 6,
+  "T": 8284
+ },
+ "client_components": [
+  {
+   "component": "WorkbenchPlayerExplorer",
+   "count": 1,
+   "prop_bytes": 97383
+  },
+  {
+   "component": "RosterAllocationView",
+   "count": 1,
+   "prop_bytes": 63911
+  },
+  {
+   "component": "",
+   "count": 44,
+   "prop_bytes": 6926
+  },
+  {
+   "component": "TeamScheduleSection",
+   "count": 1,
+   "prop_bytes": 4920
+  },
+  {
+   "component": "default",
+   "count": 12,
+   "prop_bytes": 3600
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "count": 3,
+   "prop_bytes": 2257
+  },
+  {
+   "component": "ContextBar",
+   "count": 1,
+   "prop_bytes": 1604
+  },
+  {
+   "component": "AssistantPageSelection",
+   "count": 1,
+   "prop_bytes": 609
+  },
+  {
+   "component": "RelatedRow",
+   "count": 1,
+   "prop_bytes": 520
+  },
+  {
+   "component": "TeamLogo",
+   "count": 21,
+   "prop_bytes": 336
+  },
+  {
+   "component": "SkelText",
+   "count": 43,
+   "prop_bytes": 266
+  },
+  {
+   "component": "ReplaceUrl",
+   "count": 1,
+   "prop_bytes": 239
+  },
+  {
+   "component": "ButtonLink",
+   "count": 3,
+   "prop_bytes": 97
+  },
+  {
+   "component": "SkelGrid",
+   "count": 2,
+   "prop_bytes": 62
+  },
+  {
+   "component": "SkelFilterBar",
+   "count": 1,
+   "prop_bytes": 48
+  },
+  {
+   "component": "BackButton",
+   "count": 1,
+   "prop_bytes": 48
+  },
+  {
+   "component": "SkelSegmented",
+   "count": 1,
+   "prop_bytes": 28
+  },
+  {
+   "component": "ButtonSummary",
+   "count": 1,
+   "prop_bytes": 24
+  },
+  {
+   "component": "StatsPositionChips",
+   "count": 1,
+   "prop_bytes": 24
+  },
+  {
+   "component": "NavLabel",
+   "count": 1,
+   "prop_bytes": 20
+  },
+  {
+   "component": "SkelLines",
+   "count": 3,
+   "prop_bytes": 15
+  },
+  {
+   "component": "TeamDivisionStandings",
+   "count": 1,
+   "prop_bytes": 14
+  },
+  {
+   "component": "SkelHeader",
+   "count": 1,
+   "prop_bytes": 11
+  },
+  {
+   "component": "SkelControl",
+   "count": 2,
+   "prop_bytes": 10
+  },
+  {
+   "component": "ControlScope",
+   "count": 1,
+   "prop_bytes": 9
+  },
+  {
+   "component": "StatsTableSkeleton",
+   "count": 1,
+   "prop_bytes": 1
+  }
+ ],
+ "props": [
+  {
+   "component": "WorkbenchPlayerExplorer",
+   "prop": "data",
+   "bytes": 75870
+  },
+  {
+   "component": "RosterAllocationView",
+   "prop": "catalog",
+   "bytes": 58399
+  },
+  {
+   "component": "WorkbenchPlayerExplorer",
+   "prop": "metricHints",
+   "bytes": 20190
+  },
+  {
+   "component": "RosterAllocationView",
+   "prop": "initial",
+   "bytes": 5374
+  },
+  {
+   "component": "TeamScheduleSection",
+   "prop": "log",
+   "bytes": 4878
+  },
+  {
+   "component": "",
+   "prop": "href",
+   "bytes": 3426
+  },
+  {
+   "component": "",
+   "prop": "title",
+   "bytes": 2515
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "prop": "loading",
+   "bytes": 2257
+  },
+  {
+   "component": "default",
+   "prop": "icon",
+   "bytes": 1661
+  },
+  {
+   "component": "ContextBar",
+   "prop": "detailRows",
+   "bytes": 1391
+  },
+  {
+   "component": "default",
+   "prop": "notFound",
+   "bytes": 1259
+  },
+  {
+   "component": "WorkbenchPlayerExplorer",
+   "prop": "querySpec",
+   "bytes": 1027
+  },
+  {
+   "component": "",
+   "prop": "className",
+   "bytes": 661
+  },
+  {
+   "component": "AssistantPageSelection",
+   "prop": "scope",
+   "bytes": 556
+  },
+  {
+   "component": "RelatedRow",
+   "prop": "links",
+   "bytes": 516
+  },
+  {
+   "component": "ReplaceUrl",
+   "prop": "href",
+   "bytes": 239
+  },
+  {
+   "component": "WorkbenchPlayerExplorer",
+   "prop": "canonicalHref",
+   "bytes": 239
+  },
+  {
+   "component": "",
+   "prop": "prefetch",
+   "bytes": 220
+  },
+  {
+   "component": "TeamLogo",
+   "prop": "season",
+   "bytes": 189
+  },
+  {
+   "component": "SkelText",
+   "prop": "size",
+   "bytes": 173
+  },
+  {
+   "component": "default",
+   "prop": "className",
+   "bytes": 132
+  },
+  {
+   "component": "RosterAllocationView",
+   "prop": "scope",
+   "bytes": 122
+  },
+  {
+   "component": "default",
+   "prop": "template",
+   "bytes": 116
+  },
+  {
+   "component": "TeamLogo",
+   "prop": "team",
+   "bytes": 105
+  },
+  {
+   "component": "",
+   "prop": "data-tone",
+   "bytes": 104
+  },
+  {
+   "component": "SkelText",
+   "prop": "width",
+   "bytes": 93
+  },
+  {
+   "component": "ButtonLink",
+   "prop": "href",
+   "bytes": 79
+  },
+  {
+   "component": "default",
+   "prop": "ref",
+   "bytes": 72
+  },
+  {
+   "component": "ContextBar",
+   "prop": "filters",
+   "bytes": 64
+  },
+  {
+   "component": "BackButton",
+   "prop": "parent",
+   "bytes": 48
+  }
+ ]
+}

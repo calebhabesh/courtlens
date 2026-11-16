@@ -1,0 +1,13 @@
+page | before | after | after - before | portrait URLs | 5 x URLs | identical once .webp? -> ?
+home | 34,347 | 34,347 | +0 | 0 | 0 | False
+stats | 1,631,968 | 1,640,968 | +9,000 | 1800 | 9,000 | False
+players | 280,081 | 247,530 | -32,551 | 300 | 1,500 | False
+teams | 246,310 | 246,310 | +0 | 0 | 0 | False
+standings | 188,163 | 188,163 | +0 | 0 | 0 | False
+compare | 397,645 | 396,337 | -1,308 | 26 | 130 | False
+player-star | 924,091 | 924,107 | +16 | 11 | 55 | False
+player-rookie | 332,774 | 332,714 | -60 | 11 | 55 | False
+player-pre2000 | 624,342 | 624,282 | -60 | 11 | 55 | False
+team-lal | 1,131,898 | 1,136,098 | +4,200 | 840 | 4,200 | False
+team-bos | 1,036,875 | 1,040,445 | +3,570 | 714 | 3,570 | False
+research-rapm | 666,800 | 667,550 | +750 | 150 | 750 | False

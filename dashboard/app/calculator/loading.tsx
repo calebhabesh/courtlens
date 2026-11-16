@@ -1,3 +1,3 @@
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { OrtgLabPageSkeleton } from "@/components/ortg-lab-view";
 
-export default function Loading() { return <TemplateSkeleton template="research" />; }
+export default function Loading() { return <OrtgLabPageSkeleton />; }

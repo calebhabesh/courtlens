@@ -1,4 +1,5 @@
 import type { WorkbenchCatalog } from "./types";
+import { ASKED_PARAM } from "./link-scope";
 
 export type ScopeKey = "season" | "phase" | "beforeDate" | "window";
 
@@ -44,5 +45,7 @@ export function applyScopeChange(current: URLSearchParams | string, key: ScopeKe
   else params.delete(key);
   if (releaseId && !params.has("releaseId") && !params.has("release_id")) params.set("releaseId", releaseId);
   params.delete("cursor");
+  // A changed scope is no longer the one a rewritten link asked for (site links SL02).
+  params.delete(ASKED_PARAM);
   return params;
 }

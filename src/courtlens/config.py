@@ -33,6 +33,12 @@ class Settings(BaseSettings):
     access_token_minutes: int = Field(default=720, ge=5, le=10_080)
     cors_origins: list[str] = ["http://localhost:3000"]
     log_level: str = "INFO"
+    # Speed plan SP01: the API's in-memory read cache (off unless set; on in compose.prod.yml).
+    read_cache: bool = False
+    read_cache_max_bytes: int = Field(default=128 * 1024 * 1024, ge=1024 * 1024)
+    # Load the catalog's bundles, the tracking fingerprint and the finance book as the API starts
+    # (speed plan SP04); off by default so tests and local runs are untouched.
+    warm_start: bool = False
 
     balldontlie_api_key: SecretStr | None = Field(
         default=None, validation_alias="BALLDONTLIE_API_KEY"
@@ -49,6 +55,11 @@ class Settings(BaseSettings):
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
     )
+    # The season in progress, labelled daily by that sealed model (`refresh-position-estimates`);
+    # the newest `.current` file is served.
+    position_estimates_provisional_dir: Path | None = Path(
+        "data/derived/position-estimates-provisional-v1"
+    )
     # Sealed by `courtlens refresh-darko` and the daily `refresh-darko-daily`; a directory serves
     # its newest bundle, a file pins one. Absent means DPM columns stay unknown.
     darko_manifest: Path | None = Path("data/derived/darko-dpm-v2")
@@ -58,6 +69,11 @@ class Settings(BaseSettings):
     contracts_check_dir: Path | None = Path("data/derived/contracts-checks")
     # `courtlens refresh-wikipedia-transactions` seals here; Free Agency reads the newest bundle.
     wikipedia_transactions_dir: Path | None = Path("data/derived/wikipedia-transactions-v1")
+    # `courtlens acquire-wikipedia-contracts` seals here; player pages read the newest bundle.
+    wikipedia_contracts_dir: Path | None = Path("data/derived/wikipedia-contracts-v1")
+    # `courtlens refresh-college-schools` writes colleges.json and logos/ here; player headers
+    # read it.
+    college_schools_dir: Path | None = Path("data/derived/college-schools-v1")
     # Sealed by `courtlens refresh-free-agency`; absent means the tracker reads not_configured.
     free_agency_manifest: Path | None = Path(
         "data/derived/free-agency-v1/9af16a45e65bd0ac876c635afe65e856545415c27538da8077d6212b136fda58.json"

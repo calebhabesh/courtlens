@@ -10,6 +10,7 @@ import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { TeamLogo } from "./team-logo";
 import { ButtonLink, Segmented } from "./ui/kit";
+import { playerHref, teamHref } from "@/lib/entity-links";
 
 interface CaseStudy {
   id: string;
@@ -104,8 +105,8 @@ const CASE_STUDIES: CaseStudy[] = [
       "Check the Teams view for Toronto (/teams/1610612761?season=2023-24) to verify that only 39 games and 867 points enter the Raptors team statistics."
     ],
     actionLinks: [
-      { label: "View Siakam Profile", href: "/players/1627783?season=2023-24", primary: true },
-      { label: "Inspect Raptors Roster", href: "/teams/1610612761?season=2023-24" }
+      { label: "View Siakam Profile", href: playerHref("1627783", { season: "2023-24" }), primary: true },
+      { label: "Inspect Raptors Roster", href: teamHref("1610612761", { season: "2023-24" }) }
     ]
   },
   {
@@ -170,7 +171,7 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     actionLinks: [
       { label: "View Barnes Forecasts", href: "/forecasts?playerId=1630567", primary: true },
-      { label: "View Barnes Profile", href: "/players/1630567" }
+      { label: "View Barnes Profile", href: playerHref("1630567") }
     ]
   },
   {
@@ -266,13 +267,13 @@ export function CaseStudiesView() {
       <ResearchLayout findings={selected.dataEvidence.map(row => <StatTile key={row.label} label={row.label} value={known(row.ptsG)} unit={row.ptsG > 0 ? (row.games > 1 ? " PTS/G" : " PTS") : undefined} footnote={`${row.games} ${row.games === 1 ? "game" : "games"} · ${row.team}`} />)}>
         <section className="panel research-section case-study-hero" aria-label={`Case ${selected.number}`}>
           {selected.subjectKind === "player"
-            ? <PlayerIdentity playerId={selected.subjectId} name={selected.subject} team={selected.subjectTeam} subtitle={selected.season} size="lg" href={`/players/${selected.subjectId}`} />
+            ? <PlayerIdentity playerId={selected.subjectId} name={selected.subject} team={selected.subjectTeam} subtitle={selected.season} size="lg" href={playerHref(selected.subjectId)} />
             : <TeamIdentity team={selected.subjectId} name={selected.subject} subtitle={selected.season} size="lg" />}
           <div className="case-study-heading">
             <h2>{selected.title}</h2>
             <p className="research-caption">{selected.subtitle}</p>
           </div>
-          <div className="research-result-actions">{selected.actionLinks.map(link => <ButtonLink size="lg" variant={link.primary ? "primary" : "secondary"} key={link.label} href={link.href}>{link.label}</ButtonLink>)}</div>
+          <div className="research-result-actions">{selected.actionLinks.map(link => <ButtonLink size="lg" variant={link.primary ? "primary" : "secondary"} key={link.label} href={link.href} prefetch={false}>{link.label}</ButtonLink>)}</div>
         </section>
         <div className="table-wrapper research-table" role="region" aria-label="Case study observations" tabIndex={0}>
           <table className="data-table"><caption>Observed real-data evidence</caption>

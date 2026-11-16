@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { CSSProperties, ReactNode } from "react";
 import { FeedFailure, FeedSkeleton, useFeed } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
@@ -12,7 +12,7 @@ export function PlayerTrackingPanel({ playerId, name, season, phase }: { playerI
   const { data, error, loading, retry } = useFeed([playerId, season, feedPhase], signal => getPlayerTracking(playerId, { season, phase: feedPhase }, signal).catch(() =>
     // The profile's season may predate the tracking feeds; fall back to the latest observed scope.
     getPlayerTracking(playerId, {}, signal)));
-  if (loading) return <FeedSkeleton label="Loading tracking" />;
+  if (loading) return <FeedSkeleton label="Loading tracking" shape="tiles-grid" count={4} rows={0} />;
   if (error || !data) return <FeedFailure error={error} retry={retry} what="Tracking" />;
   const scope = `${data.season} · ${PHASE_LABELS[data.phase]}`;
   if (!data.observed) return <GatedNote why="NBA tracking lists players who appeared in this scope; a missing row is unknown, not zero.">No tracking row for {name} in {scope}.</GatedNote>;
@@ -34,7 +34,7 @@ export function PlayerTrackingPanel({ playerId, name, season, phase }: { playerI
         </section>)}
       </div>
     </section>
-    <p className="research-caption">Source: NBA optical tracking season totals (hoopR mirror). Bars are percentiles among {cohort}. <Link href={`/stats/tracking?season=${data.season}&phase=${data.phase}`}>League tracking table</Link></p>
+    <p className="research-caption">Source: NBA optical tracking season totals (hoopR mirror). Bars are percentiles among {cohort}. <IntentLink href={`/stats/tracking?season=${data.season}&phase=${data.phase}`}>League tracking table</IntentLink></p>
   </div>;
 }
 
@@ -63,7 +63,7 @@ function StatRow({ label, value, percentile, qualified, cohort }: { label: strin
 /** PC11 profile Measurements tab: the player's official Draft Combine record, if any. */
 export function PlayerCombinePanel({ playerId, name }: { playerId: string; name: string }) {
   const { data, error, loading, retry } = useFeed([playerId], signal => getCombine({ playerId }, signal));
-  if (loading) return <FeedSkeleton label="Loading combine measurements" />;
+  if (loading) return <FeedSkeleton label="Loading combine measurements" shape="tiles-grid" count={4} rows={0} />;
   if (error || !data) return <FeedFailure error={error} retry={retry} what="Combine measurements" />;
   // Rows without an NBA id have player_id null; only an explicit match is this player's record.
   const row = data.selected_player_id ? data.rows.find(r => r.player_id === data.selected_player_id) : undefined;
@@ -106,6 +106,6 @@ export function PlayerCombinePanel({ playerId, name }: { playerId: string; name:
         </section>
       </div>
     </section>
-    <p className="research-caption">Source: official NBA Draft Combine (hoopR mirror). Percentiles among {cohort}. <Link href={`/wingspan?playerId=${playerId}`}>Compare with the {row.draft_year} class</Link></p>
+    <p className="research-caption">Source: official NBA Draft Combine (hoopR mirror). Percentiles among {cohort}. <IntentLink href={`/wingspan?playerId=${playerId}`}>Compare with the {row.draft_year} class</IntentLink></p>
   </div>;
 }

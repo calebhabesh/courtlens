@@ -1,26 +1,31 @@
 @layer components {
 /* Skeleton */
-/* The shimmer is a highlight sliding across on transform alone, so it composites instead of
-   repainting every skeleton each frame (DL Loading: 1.2 s linear). */
+/* A faint white ghost of the content rather than a charcoal box: it reads the same on the blue
+   page, on cards and on the table well (Research pattern: light panels, never dark boxes). The
+   shimmer is a highlight sliding across on transform alone, so it composites instead of repainting
+   every skeleton each frame (DL Loading: 1.2 s linear). */
 .ui-skeleton {
+  --skeleton-tone: color-mix(in srgb, var(--color-white) 10%, transparent);
   position: relative;
   overflow: hidden;
+  flex: none;
   width: var(--skeleton-width, 100%);
+  max-width: 100%;
   height: var(--skeleton-height, var(--space-4));
-  background-color: var(--color-surface-2);
+  background-color: var(--skeleton-tone);
   border-radius: var(--radius-sm);
 }
 .ui-skeleton::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-surface-3) 80%, transparent), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-white) 5%, transparent), transparent);
   transform: translateX(-100%);
   animation: skeletonSweep calc(var(--dur-slow) * 4) linear infinite;
 }
 
 .ui-skeleton-text {
-  height: var(--space-3);
+  height: var(--skeleton-height, var(--space-3));
   border-radius: var(--radius-xs);
 }
 
@@ -28,113 +33,162 @@
   border-radius: var(--radius-pill);
 }
 
-/* Layout Skeleton Helpers */
-.ui-skeleton-layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  width: 100%;
+/* A loading region (every loading.tsx root and in-page loader is role="status" aria-busy="true")
+   stays transparent for --delay-skeleton, then fades in, so a response faster than that never
+   shows a skeleton (speed plan SP03). Fill mode "backwards" holds opacity 0 through the delay and
+   leaves nothing behind. Opacity only, over --dur-fast, which reduced motion keeps (DL Motion);
+   the delay is a wait rather than motion, so it stays under reduced motion too. */
+[role="status"][aria-busy="true"] {
+  animation: skeletonReveal var(--dur-fast) var(--ease-out) var(--delay-skeleton) backwards;
 }
 
-.ui-skeleton-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
+/* ---------- Content-shaped parts (content-skeletons.tsx) ---------- */
 
-.ui-skeleton-bar {
+/* A text line: a box of the real line height holding a bar of the font's cap height. */
+.ui-skel-line {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--color-surface-1);
-  border-radius: var(--radius-md);
+  min-width: 0;
+  height: var(--skel-lh);
 }
+.ui-skel-line > .ui-skeleton { height: var(--skel-cap); }
+.ui-skel-line[data-size="2xs"] { --skel-lh: var(--text-2xs-lh); --skel-cap: 7px; }
+.ui-skel-line[data-size="xs"] { --skel-lh: var(--text-xs-lh); --skel-cap: 9px; }
+.ui-skel-line[data-size="sm"] { --skel-lh: var(--text-sm-lh); --skel-cap: 10px; }
+.ui-skel-line[data-size="md"] { --skel-lh: var(--text-md-lh); --skel-cap: 11px; }
+.ui-skel-line[data-size="lg"] { --skel-lh: var(--text-lg-lh); --skel-cap: 12px; }
+.ui-skel-line[data-size="xl"] { --skel-lh: var(--text-xl-lh); --skel-cap: 15px; }
+.ui-skel-line[data-size="2xl"] { --skel-lh: var(--text-2xl-lh); --skel-cap: 18px; }
+.ui-skel-line[data-size="3xl"] { --skel-lh: var(--text-3xl-lh); --skel-cap: 24px; }
+.ui-skel-line[data-size="xl"] > .ui-skeleton,
+.ui-skel-line[data-size="2xl"] > .ui-skeleton,
+.ui-skel-line[data-size="3xl"] > .ui-skeleton { border-radius: var(--radius-sm); }
 
-.ui-skeleton-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+.ui-skel-lines { display: grid; min-width: 0; }
+
+/* Controls at the control kit's heights. */
+.ui-skel-control { border-radius: var(--radius-sm); }
+.ui-skel-control[data-size="xs"] { height: var(--kit-control-xs); }
+.ui-skel-control[data-size="sm"] { height: var(--kit-control-sm); }
+.ui-skel-control[data-size="md"] { height: var(--kit-control-md); }
+.ui-skel-control[data-size="lg"] { height: var(--kit-control-lg); }
+.ui-skel-labeled { display: inline-flex; align-items: center; gap: var(--space-2); }
+.ui-skel-labeled > .ui-skel-line { flex: none; }
+.ui-skel-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-0-5);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-white) 4%, transparent);
 }
-
-.ui-skeleton-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
-}
-
-.ui-skeleton-grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
-}
-
-@media (max-width: 900px) {
-  .ui-skeleton-grid-2,
-  .ui-skeleton-grid-3,
-  .ui-skeleton-grid-4 {
-    grid-template-columns: 1fr;
-  }
-}
-
-.ui-skeleton-panel {
+.ui-skel-segmented[data-size="xs"] { height: var(--kit-control-xs); }
+.ui-skel-segmented[data-size="sm"] { height: var(--kit-control-sm); }
+.ui-skel-segmented[data-size="md"] { height: var(--kit-control-md); }
+.ui-skel-segment { height: 100%; border-radius: var(--radius-xs); }
+.ui-skel-segmented[data-stretch] { display: flex; width: 100%; }
+.ui-skel-segmented[data-stretch] > .ui-skel-segment { flex: 1 1 0; width: auto; }
+.ui-skel-controls {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+.ui-skel-controls[data-align="center"] { justify-content: center; }
+.ui-skel-push { margin-left: auto; }
+
+/* Header: the skeleton title keeps the header's row height; a centred header centres its lines. */
+.ui-skel-header .ui-skel-line { max-width: 100%; }
+.ui-skel-header.research-hero .ui-skel-line { justify-content: center; }
+.ui-skel-icon { border-radius: var(--radius-sm); }
+
+/* Stat tiles in a row, as the pages lay theirs out. */
+.ui-skel-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
+.ui-skel-tiles .ui-stat-tile { gap: var(--space-1); }
+
+/* Table cells. */
+.ui-skel-player-cell { width: 100%; }
+.ui-skel-portrait { width: 40px; height: 40px; }
+.ui-skel-identity { display: grid; flex: 1; gap: var(--space-0-5); min-width: 0; }
+.ui-skel-cell { display: inline-block; height: 10px; vertical-align: middle; }
+.ui-skel-search { width: 100%; border-radius: var(--radius-sm); }
+.ui-skel-grid .stats-table-row:hover { background: none; }
+.ui-skel-grid[data-group-bars] .stats-group-th::after {
+  content: "";
+  display: inline-block;
+  width: 56px;
+  height: 7px;
+  vertical-align: middle;
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--color-white) 10%, transparent);
+}
+
+/* Research figures: the light panel with a soft rim the Research pages use. */
+.ui-skel-chart-card {
+  display: grid;
   gap: var(--space-4);
+  min-width: 0;
   padding: var(--space-5);
-  background-color: var(--color-surface-1);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-white) 4%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
 }
-
-.ui-skeleton-table {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background-color: var(--color-surface-1);
-  border-radius: var(--radius-md);
+.ui-skel-chart-bare { display: grid; gap: var(--space-3); min-width: 0; }
+.ui-skel-bars { display: grid; gap: var(--space-4); }
+.ui-skel-chart-bare .ui-skel-bars { gap: var(--space-2); }
+.ui-skel-chart-bare .ui-skel-bar-row { grid-template-columns: 160px minmax(0, 1fr) 40px; }
+.ui-skel-bar-row {
+  display: grid;
+  grid-template-columns: minmax(96px, 1.1fr) 3fr 48px;
+  align-items: center;
+  gap: var(--space-4);
 }
-
-.ui-skeleton-table-head {
+.ui-skel-track { height: 8px; border-radius: var(--radius-pill); }
+.ui-skel-plot { border-radius: var(--radius-md); }
+.ui-skel-center { justify-content: center; }
+.ui-skel-card { border-radius: var(--radius-lg); }
+.ui-skel-row { width: 100%; padding-block: var(--space-2); }
+.ui-skel-narrow { width: min(100%, 322px); }
+.ui-skel-box { width: 100%; height: auto; aspect-ratio: 1; border-radius: var(--radius-xs); }
+.ui-skel-narrow .ui-skel-line { justify-content: center; }
+.ui-skel-narrow.ui-skel-wide { width: min(100%, 416px); }
+.ui-skel-rotation { display: flex; align-items: center; gap: var(--space-3); min-height: 38px; padding: var(--space-1) var(--space-2); }
+.ui-skel-rotation[data-mirror] { flex-direction: row-reverse; }
+.ui-skel-rotation[data-mirror] .ui-skel-line { justify-content: flex-start; }
+.ui-skel-rotation:not([data-mirror]) .ui-skel-identity .ui-skel-line { justify-content: flex-end; }
+.ui-skel-rail-body { display: grid; gap: var(--space-2); padding-top: var(--space-6); }
+.ui-skel-header .ui-page-header-title-row > .ui-skel-line { flex: none; }
+.ui-skel-fill { width: 100%; height: 100%; border-radius: inherit; }
+.ui-skel-header-center { display: grid; justify-items: center; gap: var(--space-1); }
+.ui-skel-header-center .ui-skel-line { justify-content: center; width: 100%; }
+.ui-skel-chart-card.ui-skel-plain { padding: 0; background: none; box-shadow: none; }
+.ui-skel-bar { border-radius: var(--radius-pill); }
+.ui-skel-measure { max-width: 720px; }
+.ui-skel-article { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); min-width: 0; }
+.ui-skel-section-first { padding-top: 0; border-top: 0; }
+.ui-skel-section .rs-heading { min-width: 0; }
+.ui-skel-profile-card {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-hairline);
+  min-width: 0;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-white) 4%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
 }
+.feed-loading { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+/* In a Research column the skeleton's sections keep the column's own spacing. */
+.rs-column > .feed-loading { gap: inherit; }
 
-.ui-skeleton-table-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding-block: var(--space-2);
-  border-bottom: 1px solid var(--color-hairline);
-}
-
-.ui-skeleton-hero {
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
-  padding: var(--space-6);
-  background-color: var(--color-surface-1);
-  border-radius: var(--radius-md);
-}
-
-.ui-skeleton-hero-avatar {
-  flex-shrink: 0;
-}
-
-.ui-skeleton-hero-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  flex: 1;
-}
-
-.ui-skeleton-tabs {
-  display: flex;
-  gap: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-hairline);
-}
+/* Section index rows (Draft Classes' aside). */
+.ui-skel-index { height: 26px; }
+/* A tab in an underlined tab list (`ui-tabs-list`): the trigger's height and side padding. */
+.ui-skel-tab { display: inline-flex; align-items: center; height: 34px; padding-inline: var(--space-3); }
+/* Standings: a 40 px header and 36 px rows on the table surface, as the conference tables draw them. */
+.ui-skel-standings { display: grid; gap: var(--space-2); min-width: 0; }
+.ui-skel-dense-table { display: grid; padding-bottom: var(--space-2); overflow: hidden; border-radius: var(--radius-md); background: var(--color-table-well); }
+.ui-skel-dense-row { display: grid; grid-template-columns: 150px repeat(12, minmax(0, 1fr)); align-items: center; height: 36px; padding-inline: var(--space-2); }
+.ui-skel-dense-head { height: 40px; background: var(--color-table-lift); }
 }

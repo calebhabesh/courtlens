@@ -113,17 +113,7 @@ def match_players(entries: list[IndexEntry], players: list[NbaPlayer]) -> dict[s
         if player.birth_date is not None:
             found = [c for c in candidates if c.birth_date == player.birth_date]
         else:
-            found = [
-                c
-                for c in candidates
-                if c.year_min is not None
-                and c.year_max is not None
-                and player.from_year is not None
-                and player.to_year is not None
-                # Basketball-Reference labels a season by its ending year, the NBA by its start.
-                and c.year_min <= player.to_year + 1
-                and player.from_year + 1 <= c.year_max
-            ]
+            found = [c for c in candidates if _seasons_overlap(c, player)]
             if len(candidates) != 1:
                 found = []
         if len(found) == 1:
@@ -133,6 +123,84 @@ def match_players(entries: list[IndexEntry], players: list[NbaPlayer]) -> dict[s
     for bbref_id in matched.values():
         counts[bbref_id] = counts.get(bbref_id, 0) + 1
     return {pid: bid for pid, bid in matched.items() if counts[bid] == 1}
+
+
+def _seasons_overlap(entry: IndexEntry, player: NbaPlayer) -> bool:
+    # Basketball-Reference labels a season by its ending year, the NBA by its start.
+    return (
+        entry.year_min is not None
+        and entry.year_max is not None
+        and player.from_year is not None
+        and player.to_year is not None
+        and entry.year_min <= player.to_year + 1
+        and player.from_year + 1 <= entry.year_max
+    )
+
+
+def _one_field_apart(first: date, second: date) -> bool:
+    """Exactly one of year, month and day differs: a typo in one source, not another person."""
+    return (first.year != second.year) + (first.month != second.month) + (
+        first.day != second.day
+    ) == 1
+
+
+def match_near(
+    entries: list[IndexEntry], players: list[NbaPlayer], taken: set[str]
+) -> dict[str, tuple[str, str]]:
+    """Matches ``match_players`` misses because the two sources disagree on one detail.
+
+    NBA player ID -> (Basketball-Reference ID, match basis), for players with a birth date whose
+    single candidate has overlapping seasons and either
+
+    - the same name and a birth date one field apart (NBA.com lists Jamal Shead as born July 24,
+      2002, Basketball-Reference June 24): ``name+near_birth_date``, or
+    - the same surname and birth date, one first name starting the other ("Ronald Holland II" is
+      "Ron Holland"): ``surname+birth_date+first_name_prefix``. Twins share a surname and birth
+      date, so that candidate must be the only one with both, and its first name a prefix, not
+      just a few shared letters (Marcus and Markieff Morris).
+
+    Pages already matched (``taken``) are never offered again, and two players claiming one page
+    leave both unmatched.
+    """
+    by_name: dict[str, list[IndexEntry]] = {}
+    by_surname: dict[str, list[IndexEntry]] = {}
+    for entry in entries:
+        if entry.bbref_id in taken or not (words := normalize_name(entry.name).split()):
+            continue
+        by_name.setdefault(" ".join(words), []).append(entry)
+        by_surname.setdefault(words[-1], []).append(entry)
+    found: dict[str, tuple[str, str]] = {}
+    for player in players:
+        words = normalize_name(player.name).split()
+        if player.birth_date is None or len(words) < 2:
+            continue
+        same_name = [e for e in by_name.get(" ".join(words), []) if _seasons_overlap(e, player)]
+        if (
+            len(same_name) == 1
+            and same_name[0].birth_date is not None
+            and _one_field_apart(same_name[0].birth_date, player.birth_date)
+        ):
+            found[player.player_id] = (same_name[0].bbref_id, "name+near_birth_date")
+            continue
+        same_day = [
+            e
+            for e in by_surname.get(words[-1], [])
+            if e.birth_date == player.birth_date and _seasons_overlap(e, player)
+        ]
+        first = words[0]
+        prefixed = [
+            e
+            for e in same_day
+            if (other := normalize_name(e.name).split()[0]) != first
+            and min(len(other), len(first)) >= 3
+            and (other.startswith(first) or first.startswith(other))
+        ]
+        if len(same_day) == 1 and len(prefixed) == 1:
+            found[player.player_id] = (prefixed[0].bbref_id, "surname+birth_date+first_name_prefix")
+    counts: dict[str, int] = {}
+    for bbref_id, _ in found.values():
+        counts[bbref_id] = counts.get(bbref_id, 0) + 1
+    return {pid: match for pid, match in found.items() if counts[match[0]] == 1}
 
 
 def match_by_seasons(

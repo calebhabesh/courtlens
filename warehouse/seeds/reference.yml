@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: nba_salary_cap_history
+    description: >
+      The NBA salary cap for every season from 1984-85, as published by Basketball-Reference's
+      salary cap history table (https://www.basketball-reference.com/contracts/salary-cap-history.html),
+      retrieved 2026-11-14 (page bytes sha256
+      06d620a1825d7c16bcd2f8d974f2db1a22a26ef6fe2fd854f942f828dc3fe9b5). Cap shares use the
+      official NBA release where one is retained (finance_thresholds) and this table for every
+      other season. Its 2026-27 value equals the retained official release.
+    config:
+      tags: ['player_reference']
+      column_types:
+        season: text
+        cap_dollars: bigint
+    columns:
+      - name: season
+        data_tests: [unique, not_null]
+      - name: cap_dollars
+        data_tests: [not_null]

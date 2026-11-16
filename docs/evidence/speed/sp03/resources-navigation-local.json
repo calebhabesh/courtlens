@@ -1,0 +1,639 @@
+{
+ "interval": 0.5,
+ "pids": {
+  "api": 1097926,
+  "dashboard": 1137315
+ },
+ "peaks": {
+  "api": {
+   "peak_rss_mb": 1654.0,
+   "peak_cpu_pct": 6.0,
+   "start_rss_mb": 1654.0,
+   "end_rss_mb": 1654.0
+  },
+  "dashboard": {
+   "peak_rss_mb": 312.1,
+   "peak_cpu_pct": 38.0,
+   "start_rss_mb": 194.6,
+   "end_rss_mb": 301.3
+  }
+ },
+ "samples": [
+  {
+   "t": 0.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 194.6,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 1.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 206.3,
+    "cpu_pct": 38.0
+   }
+  },
+  {
+   "t": 1.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 6.0
+   },
+   "dashboard": {
+    "rss_mb": 213.0,
+    "cpu_pct": 14.0
+   }
+  },
+  {
+   "t": 2.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 214.5,
+    "cpu_pct": 8.0
+   }
+  },
+  {
+   "t": 2.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 214.2,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 3.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 217.9,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 3.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 217.9,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 4.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 217.2,
+    "cpu_pct": 28.0
+   }
+  },
+  {
+   "t": 4.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 217.2,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 5.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 218.6,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 5.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 4.0
+   },
+   "dashboard": {
+    "rss_mb": 217.3,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 6.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 221.0,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 6.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 6.0
+   },
+   "dashboard": {
+    "rss_mb": 218.1,
+    "cpu_pct": 28.0
+   }
+  },
+  {
+   "t": 7.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 223.8,
+    "cpu_pct": 10.0
+   }
+  },
+  {
+   "t": 7.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 223.8,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 8.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 234.4,
+    "cpu_pct": 8.0
+   }
+  },
+  {
+   "t": 8.5,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 232.1,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 9.0,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 232.1,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 9.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 4.0
+   },
+   "dashboard": {
+    "rss_mb": 268.9,
+    "cpu_pct": 36.0
+   }
+  },
+  {
+   "t": 10.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 269.0,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 10.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 270.7,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 11.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 272.2,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 11.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 276.0,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 12.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 256.3,
+    "cpu_pct": 24.0
+   }
+  },
+  {
+   "t": 12.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 262.0,
+    "cpu_pct": 12.0
+   }
+  },
+  {
+   "t": 13.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 263.4,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 13.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 263.4,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 14.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 261.1,
+    "cpu_pct": 16.0
+   }
+  },
+  {
+   "t": 14.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 261.1,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 15.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 267.1,
+    "cpu_pct": 24.0
+   }
+  },
+  {
+   "t": 15.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 268.5,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 16.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 268.5,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 16.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 269.9,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 17.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 273.6,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 17.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 4.0
+   },
+   "dashboard": {
+    "rss_mb": 295.2,
+    "cpu_pct": 26.0
+   }
+  },
+  {
+   "t": 18.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 301.1,
+    "cpu_pct": 10.0
+   }
+  },
+  {
+   "t": 18.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 302.7,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 19.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 302.7,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 19.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 284.8,
+    "cpu_pct": 12.0
+   }
+  },
+  {
+   "t": 20.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 285.5,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 20.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 283.5,
+    "cpu_pct": 26.0
+   }
+  },
+  {
+   "t": 21.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 284.9,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 21.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 284.9,
+    "cpu_pct": 0.0
+   }
+  },
+  {
+   "t": 22.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 290.1,
+    "cpu_pct": 8.0
+   }
+  },
+  {
+   "t": 22.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 301.4,
+    "cpu_pct": 24.0
+   }
+  },
+  {
+   "t": 23.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 301.4,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 23.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 4.0
+   },
+   "dashboard": {
+    "rss_mb": 307.0,
+    "cpu_pct": 8.0
+   }
+  },
+  {
+   "t": 24.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 308.4,
+    "cpu_pct": 6.0
+   }
+  },
+  {
+   "t": 24.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 312.1,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 25.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 301.7,
+    "cpu_pct": 10.0
+   }
+  },
+  {
+   "t": 25.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 301.4,
+    "cpu_pct": 26.0
+   }
+  },
+  {
+   "t": 26.01,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 301.4,
+    "cpu_pct": 2.0
+   }
+  },
+  {
+   "t": 26.51,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 302.9,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 27.02,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 304.3,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 27.52,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 0.0
+   },
+   "dashboard": {
+    "rss_mb": 308.0,
+    "cpu_pct": 4.0
+   }
+  },
+  {
+   "t": 28.02,
+   "api": {
+    "rss_mb": 1654.0,
+    "cpu_pct": 2.0
+   },
+   "dashboard": {
+    "rss_mb": 301.3,
+    "cpu_pct": 12.0
+   }
+  }
+ ]
+}

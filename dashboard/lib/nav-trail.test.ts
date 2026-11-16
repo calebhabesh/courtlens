@@ -21,6 +21,7 @@ describe("nav trail", () => {
   it("names pages from the nav, merged pages and drill-in paths", () => {
     expect(pageLabel("/roster-shapes?season=2025-26")).toBe("Roster Shapes");
     expect(pageLabel("/stats?season=2025-26")).toBe("Stats");
+    expect(pageLabel("/investigations")).toBe("Saved Investigations");
     expect(pageLabel("/players")).toBe("Player Dashboard");
     expect(pageLabel("/research/rapm")).toBe("Six-Factor RAPM");
     expect(pageLabel("/teams/1610612759")).toBe("Team");

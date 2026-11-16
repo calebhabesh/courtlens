@@ -14,6 +14,7 @@ import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
 import { Segmented, Select } from "./ui/kit";
 import { DataDetailsButton } from "./ui/data-details";
+import { teamHref } from "@/lib/entity-links";
 
 type Sort = { key: StandingsColumn | "seed"; direction: "asc" | "desc" };
 
@@ -53,7 +54,7 @@ function Table({ table, season, sort, onSort }: { table: StandingsTable; season:
                 <span className="standings-rank">{i + 1}</span>
                 {row.tricode && <TeamLogo team={row.tricode} season={season} size={20} />}
                 {/* Side by side, the short name ("Pistons") keeps every column in view. */}
-                {row.tricode ? <Link href={`/teams/${row.tricode}?season=${season}`} title={row.name ?? undefined}><span className="standings-name-full">{row.name}</span><span className="standings-name-short" aria-hidden="true">{row.short_name ?? row.name}</span></Link>
+                {row.tricode ? <Link className="entity-link" href={teamHref(row.tricode, { season })} prefetch={false} title={row.name ?? undefined}><span className="standings-name-full">{row.name}</span><span className="standings-name-short" aria-hidden="true">{row.short_name ?? row.name}</span></Link>
                   : <span>{row.name}</span>}
                 {mark && <abbr className="standings-clinch" title={CLINCH_MARKS[mark]}>{mark}</abbr>}
               </span>

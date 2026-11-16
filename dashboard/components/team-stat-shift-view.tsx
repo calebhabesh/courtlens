@@ -6,8 +6,10 @@ import { DEFAULT_SHIFT_STATS, SHIFT_STATS, clearShift, floorCsv, formatShift, sh
 import { formatDate } from "@/lib/format-date";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamGrid, teamDisplayName } from "./team-grid";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelGrid, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { Modal } from "./ui/modal";
 import { OverlayPortal } from "./ui/overlay-portal";
 import { PageHeader } from "./ui/panel";
@@ -18,6 +20,7 @@ import { PlayerAvatar } from "./ui/identity";
 import { Checkbox } from "./ui/checkbox";
 import { Icon } from "./ui/icon";
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
+import { PlayerLink } from "./entity-link";
 
 const BLURB = "Analyze how individual player stats change when playing with or without specific teammates";
 const TEAM_CATALOG = branding.teams;
@@ -86,8 +89,8 @@ function ShiftTable({ data, subject, stats, view, sort, onSort, onSubject, names
   return <section className="sls-table player-glass" aria-label={`Per 75 stats without and with ${subject.name}`}>
     <header className="sls-table-head">
       <PlayerAvatar playerId={subject.player_id} name={subject.name ?? subject.player_id} team={data.team_id} era={era} size="md" />
-      <h2>{view === "shift" ? <>Per 75 stats <strong>without</strong> and <strong>with {subject.name}</strong></>
-        : <>Per 75 stats <strong>{view === "with" ? "with" : "without"} {subject.name}</strong></>}</h2>
+      <h2>{view === "shift" ? <>Per 75 stats <strong>without</strong> and <strong>with <PlayerLink id={subject.player_id} scope={{ season: era.season }}>{subject.name}</PlayerLink></strong></>
+        : <>Per 75 stats <strong>{view === "with" ? "with" : "without"} <PlayerLink id={subject.player_id} scope={{ season: era.season }}>{subject.name}</PlayerLink></strong></>}</h2>
     </header>
     <div className="player-ref-grid-frame"><div className="player-ref-grid-scroll" role="region" aria-label="Teammate stat shifts" tabIndex={0}>
       <table className="player-ref-grid sls-grid" style={{ "--columns": stats.length } as CSSProperties}>
@@ -171,6 +174,21 @@ function PairCard({ result, focal, other, season, stats }: { result: FloorRespon
         </div>;
       })}
     </dl>
+  </article>;
+}
+
+/** A pair card's loading state: the card head with both faces, the with/without sides, one row per stat. */
+function PairCardSkeleton({ rows }: { rows: number }) {
+  return <article className="sls-card" aria-hidden="true">
+    <header className="sls-card-head">
+      <SkelText size="sm" width={72} /><SkelText size="xs" width={48} />
+      <span className="sls-card-faces"><Skeleton variant="circle" width={80} height={80} /></span>
+      <SkelText size="xl" width={160} /><SkelText size="xs" width={120} />
+    </header>
+    <div className="sls-card-sides"><SkelText size="sm" width="70%" /><SkelText size="sm" width="70%" /></div>
+    <div className="sls-card-rows">{Array.from({ length: rows }, (_, index) => <div key={index} className="sls-card-row">
+      <span className="sls-pill-slot" /><SkelText size="md" width={40} /><SkelText size="xs" width={56} /><SkelText size="md" width={40} /><span className="sls-pill-slot" />
+    </div>)}</div>
   </article>;
 }
 
@@ -299,7 +317,11 @@ export function TeamStatShiftView() {
     <CustomizeStats open={customize} current={statKeys} onClose={() => setCustomize(false)}
       onSave={keys => { set({ stats: keys.join(",") === DEFAULT_SHIFT_STATS.join(",") ? null : keys.join(",") }); setCustomize(false); }} />
     {primary.error && <FeedFailure error={primary.error} retry={primary.retry} what="Stat Line Shift" />}
-    {primary.loading && <FeedSkeleton label="Loading stat line shift" />}
+    {primary.loading && <FeedSkeleton label="Loading stat line shift">
+      {players.length === 0 && <div className="sls-empty"><SkelText size="md" width={380} /></div>}
+      {players.length === 1 && <><div className="sls-crumbs"><SkelSegmented options={[92, 120, 124]} /><SkelText size="xs" width={320} /></div><SkelGrid label="Teammate stat shifts" rows={10} columns={statKeys.length} lead="player" density="compact" /></>}
+      {players.length >= 2 && <div className="sls-cards"><PairCardSkeleton rows={statKeys.length} /><PairCardSkeleton rows={statKeys.length} /></div>}
+    </FeedSkeleton>}
     {data && !team && <div className="sls-empty"><p>Select a team to begin</p><Button size="md" variant="primary" onClick={() => setPicker(true)}>Select Team</Button></div>}
     {data && team && !covered && <GatedNote why="Stat Line Shift reads IM03's accepted stints, which cover 2023-24 to 2025-26.">No stints for {team} in {season} {PHASES[scope.phase] ?? scope.phase}.</GatedNote>}
     {data && covered && <>
@@ -313,7 +335,7 @@ export function TeamStatShiftView() {
       {subjects.length === 0 && <div className="sls-empty"><p>Select one or two players to analyze their combined statistics</p></div>}
       {subjects.length === 1 && <ShiftTable data={data} subject={subjects[0]} stats={stats} view={view} sort={sort} names={names}
         onSort={key => set({ sort: key })} onSubject={id => set({ players: id, sort: null })} />}
-      {subjects.length === 2 && (secondary.loading ? <FeedSkeleton label="Loading the second player" /> : <div className="sls-cards">
+      {subjects.length === 2 && (secondary.loading ? <FeedSkeleton label="Loading the second player"><div className="sls-cards"><PairCardSkeleton rows={stats.length} /><PairCardSkeleton rows={stats.length} /></div></FeedSkeleton> : <div className="sls-cards">
         {[[subjects[0], subjects[1], secondary.data], [subjects[1], subjects[0], primary.data]].map(([focal, other, response]) => {
           const result = cross(focal as RosterPlayer, response as StatShiftRosterResponse | null);
           return result ? <PairCard key={(focal as RosterPlayer).player_id} result={result} focal={focal as RosterPlayer} other={other as RosterPlayer} season={season} stats={stats} /> : null;

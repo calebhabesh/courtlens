@@ -1,0 +1,164 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T07:27:40+00:00",
+  "pages": [
+    {
+      "name": "player-pre2000",
+      "path": "/players/1449",
+      "status": 200,
+      "bytes": 738546,
+      "seconds": 3.526,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0103,
+          "end": 2.0383,
+          "seconds": 2.028,
+          "server_timing": "total;dur=2027.0, db;dur=266.5, queries;desc=\"10\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 2.0398,
+          "end": 3.1903,
+          "seconds": 1.1505,
+          "server_timing": "total;dur=1149.7, db;dur=1114.2, queries;desc=\"17\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+          "status": 200,
+          "start": 3.1919,
+          "end": 3.2364,
+          "seconds": 0.0445,
+          "server_timing": "total;dur=39.0, db;dur=28.9, queries;desc=\"7\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+          "status": 200,
+          "start": 3.1914,
+          "end": 3.2402,
+          "seconds": 0.0488,
+          "server_timing": "total;dur=48.1, db;dur=29.8, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 3.2425,
+          "end": 3.2473,
+          "seconds": 0.0048,
+          "server_timing": "total;dur=3.1, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+          "status": 200,
+          "start": 3.2412,
+          "end": 3.2484,
+          "seconds": 0.0072,
+          "server_timing": "total;dur=6.6, db;dur=0.7, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+          "status": 200,
+          "start": 3.249,
+          "end": 3.2512,
+          "seconds": 0.0022,
+          "server_timing": "total;dur=1.7, db;dur=0.3, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+          "status": 200,
+          "start": 3.2925,
+          "end": 3.2991,
+          "seconds": 0.0065,
+          "server_timing": "total;dur=4.3, db;dur=0.9, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+          "status": 200,
+          "start": 3.2999,
+          "end": 3.3047,
+          "seconds": 0.0048,
+          "server_timing": "total;dur=3.3, db;dur=1.5, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+          "status": 200,
+          "start": 3.2422,
+          "end": 3.4633,
+          "seconds": 0.2211,
+          "server_timing": "total;dur=220.1, db;dur=53.2, queries;desc=\"16\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 3.242,
+          "end": 3.4676,
+          "seconds": 0.2257,
+          "server_timing": "total;dur=224.9, db;dur=69.9, queries;desc=\"11\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "1991-92",
+              "phase": "regular_season",
+              "before_date": "1992-04-20",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1449"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

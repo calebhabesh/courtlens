@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { assertCurrentEnvironment } from "./server-env";
 import type { SixFactorsResponse } from "./team-six-factors";
 import type { SavedDetail } from "./saved-operations";
@@ -106,14 +107,17 @@ export function getRetainedOperation(id: string): Promise<SavedDetail> {
   return wbFetch(`/api/workbench/assistant/investigations/${encodeURIComponent(id)}`);
 }
 
-export async function getWorkbenchCatalog(releaseId?: string): Promise<WorkbenchCatalog> {
+// wbFetch passes a timeout signal, which opts out of Next's fetch memoization, so a page and the
+// components it renders each read the catalog again. `cache` shares one read per server render
+// (speed plan SP04); in the browser it is a pass-through.
+export const getWorkbenchCatalog = cache(async (releaseId?: string): Promise<WorkbenchCatalog> => {
   const query = releaseId ? `?releaseId=${encodeURIComponent(releaseId)}` : "";
   return wbFetch<WorkbenchCatalog>(`/api/workbench/catalog${query}`);
-}
+});
 
-export async function getMetricCatalog(): Promise<MetricCatalog> {
+export const getMetricCatalog = cache(async (): Promise<MetricCatalog> => {
   return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v4");
-}
+});
 
 /** Wikimedia Commons photos in use, with the credit their licences require. */
 export interface PortraitCredits {
@@ -125,9 +129,9 @@ export async function getPortraitCredits(): Promise<PortraitCredits> {
   return wbFetch<PortraitCredits>("/api/workbench/portrait-credits");
 }
 
-export async function getDraftClasses(): Promise<DraftClassesResponse> {
+export const getDraftClasses = cache(async (): Promise<DraftClassesResponse> => {
   return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
-}
+});
 
 /**
  * Each player's team in a season's six-factor fit (the same served GET the Six-Factor tab reads). The RAPM

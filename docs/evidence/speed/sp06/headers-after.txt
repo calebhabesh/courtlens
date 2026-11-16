@@ -1,0 +1,82 @@
+### GET http://localhost:8180/api/workbench/players/2544/portrait?size=288&crop=face-v6
+HTTP/1.1 200 OK
+server: uvicorn
+cache-control: public, max-age=86400
+content-length: 20626
+content-type: image/webp
+x-cache: bypass
+server-timing: total;dur=3.4, db;dur=0.8, queries;desc="1"
+x-request-id: 69e11b92-8fcb-4d85-ad98-b8bd514b0375
+x-content-type-options: nosniff
+referrer-policy: same-origin
+
+### GET http://localhost:8180/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6
+HTTP/1.1 200 OK
+server: uvicorn
+cache-control: public, max-age=86400
+content-length: 20626
+content-type: image/webp
+x-cache: bypass
+server-timing: total;dur=1.8, db;dur=0.6, queries;desc="1"
+x-request-id: ce2aba28-eb2d-4b8b-bef1-f2656cb38962
+x-content-type-options: nosniff
+referrer-policy: same-origin
+
+### GET http://localhost:3180/team-logos/1610612747-5b68f7b92ba7d058.svg
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Sun, 15 Nov 2026 21:11:55 GMT
+ETag: W/"3008-1a1e10d6ab2"
+Content-Type: image/svg+xml
+Content-Length: 12296
+Vary: Accept-Encoding
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### GET http://localhost:3180/team-logos/bos-1977-4571e077bce6b1e7.png
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Sun, 15 Nov 2026 21:11:55 GMT
+ETag: W/"492b-1a1e10d6ab2"
+Content-Type: image/png
+Content-Length: 18731
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### GET http://localhost:3180/flags/us.png
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: public, max-age=2592000
+Accept-Ranges: bytes
+Last-Modified: Sun, 15 Nov 2026 21:11:55 GMT
+ETag: W/"305-1a1e10d6ab1"
+Content-Type: image/png
+Content-Length: 773
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+### GET http://localhost:3180/_next/static/chunks/2evgu094glu3w.js
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: public, max-age=31536000, immutable
+Accept-Ranges: bytes
+Last-Modified: Sun, 15 Nov 2026 21:11:55 GMT
+ETag: W/"5dfe-1a1e10d6ab7"
+Content-Type: application/javascript; charset=UTF-8
+Content-Length: 24062
+Vary: Accept-Encoding
+Connection: keep-alive
+Keep-Alive: timeout=5
+

@@ -1,0 +1,67 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T07:28:14+00:00",
+  "pages": [
+    {
+      "name": "players",
+      "path": "/players",
+      "status": 200,
+      "bytes": 748179,
+      "seconds": 3.337,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0088,
+          "end": 2.0453,
+          "seconds": 2.0365,
+          "server_timing": "total;dur=2035.6, db;dur=268.8, queries;desc=\"10\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 2.0475,
+          "end": 3.3212,
+          "seconds": 1.2737,
+          "server_timing": "total;dur=1272.8, db;dur=1083.0, queries;desc=\"17\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2025-26",
+              "phase": "regular_season",
+              "before_date": "2026-04-13",
+              "window": {
+                "kind": "season"
+              },
+              "sample_filters": {
+                "min_minutes": 400
+              },
+              "sort": [
+                {
+                  "field": "dpm",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "page": {
+                "limit": 50
+              },
+              "view_state": {
+                "view_id": "player-dashboard-carousel",
+                "columns": [
+                  "dpm"
+                ]
+              },
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "table_percentiles": false
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

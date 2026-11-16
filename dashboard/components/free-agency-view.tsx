@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import {
   FILTERS, OPTION_LABELS, getFreeAgency, isRosterStale, isStale, matchesFilter, matchesSearch, sortAgents,
   type CurrentStatus, type FreeAgencyFilter, type FreeAgencySort, type FreeAgent, type MovesIndex, type RosterIndex,
 } from "@/lib/free-agency";
 import "./stats-explorer.css";
+import { SkelControl, SkelControls, SkelGrid, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
@@ -19,6 +21,8 @@ import { PageHeader } from "./ui/panel";
 import { Icon } from "./ui/icon";
 import { SearchField } from "./ui/input";
 import { Chip, Segmented, Select } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 const TEAMS = [...branding.teams].sort((a, b) => a.artwork_name.localeCompare(b.artwork_name));
 type Klass = "all" | "ufa" | "rfa";
@@ -58,10 +62,10 @@ function MoveNote({ player, roster, moves }: { player: FreeAgent; roster: Roster
 
 function Movement({ player }: { player: FreeAgent }) {
   return <span className="fa-move">
-    {player.old_team_id ? <TeamLogo team={player.old_team_id} size={20} /> : <span>—</span>}
+    {player.old_team_id ? <TeamLink team={player.old_team_id} variant="block"><TeamLogo team={player.old_team_id} size={20} /></TeamLink> : <span>—</span>}
     <Icon name="right" size={14} />
     {player.current_team_id
-      ? <><TeamLogo team={player.current_team_id} size={20} /><strong>{player.current_team_tricode}</strong></>
+      ? <TeamLink team={player.current_team_id} variant="block"><TeamLogo team={player.current_team_id} size={20} /><strong className="entity-link-text">{player.current_team_tricode}</strong></TeamLink>
       : <span>{player.current_status === "abroad" ? "Abroad" : "Open market"}</span>}
   </span>;
 }
@@ -79,7 +83,7 @@ function Row({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex
       <span className="player-cell">
         {team ? <TeamLogo team={team} size={20} /> : <span className="fa-logo-gap" />}
         <PlayerPortrait playerId={player.player_id} name={player.name} size="sm" />
-        <span className="stats-identity-copy"><Link className="stats-player-link fa-player" href={`/players/${player.player_id}`} title={player.name}>
+        <span className="stats-identity-copy"><Link className="stats-player-link fa-player entity-link" href={playerHref(player.player_id)} prefetch={false} title={player.name}>
           <span className="player-cell-name font-semibold">{player.name}</span>
           <span className="player-cell-teams">{tags.join(" · ")}</span>
         </Link></span>
@@ -112,6 +116,20 @@ const GROUPS: { label: string; columns: { key: string; label: string; sort?: Fre
 ];
 
 /** Free Agency (alignment row 14): NBA.com's 2026 tracker in the reference site's one large table. */
+/** The tracker's loading state: the summary card, status chips, search row and the movement table. */
+export function FreeAgencySkeleton() {
+  return <>
+    <section className="fa-summary" aria-hidden="true">
+      <dl>{[64, 72, 56, 72, 56, 150].map((width, index) => <div key={index}><SkelText size="xs" width={width} /><SkelText size="3xl" width={index === 0 ? 56 : 40} /></div>)}</dl>
+      <div className="fa-summary-foot"><div className="fa-market"><SkelText size="xs" width={92} /><Skeleton className="ui-skel-bar" height={4} /><SkelText size="xl" width={40} /></div></div>
+    </section>
+    <SkelControls items={[64, 101, 86, 99, 89, 84, 103, 184, 82]} />
+    <div className="fa-filters" aria-hidden="true"><span className="fa-search"><SkelControl width="100%" size="lg" /></span><SkelControl width={99} size="lg" /><SkelSegmented options={[40, 44, 44]} size="md" /></div>
+    <SkelGrid label="Free agents" rows={10} leadLabel="Name" leadGroup="Player" labels={["Status", "Team", "PTS", "REB", "AST", "Age", "Exp", "Terms", "Source"]}
+      groups={["Movement", "Movement", "2025-26", "2025-26", "2025-26", "Profile", "Profile", "Deal", "Deal"]} />
+  </>;
+}
+
 export function FreeAgencyView() {
   const { get, set } = useUrlState();
   const filter = (FILTERS.find(f => f.value === get("status"))?.value ?? "all") as FreeAgencyFilter;
@@ -156,7 +174,7 @@ export function FreeAgencyView() {
       </div>}
     </header>
     {feed.error && <FeedFailure error={feed.error} retry={feed.retry} what="Free Agency" />}
-    {feed.loading && <FeedSkeleton label="Loading free agency" />}
+    {feed.loading && <FeedSkeleton label="Loading free agency"><FreeAgencySkeleton /></FeedSkeleton>}
     {data?.status === "not_configured" && <GatedNote why={data.limitations[0]}>No free-agent tracker snapshot is installed yet. An operator imports NBA.com&apos;s tracker with <code>courtlens import-free-agency</code>.</GatedNote>}
     {data?.status === "available" && <>
       <section className="fa-summary" aria-label="Tracker summary">

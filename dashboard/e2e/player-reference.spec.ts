@@ -6,9 +6,14 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await openWorkbench(page, "/players/24");
     const table = page.getByRole("table", { name: "Contract and salary history by season" });
-    await expect(table.getByText("Current Contract", { exact: true })).toBeVisible();
-    await expect(table.getByText("Salary History", { exact: true })).toBeVisible();
-    for (const text of ["$2,000,000", "1.2%", "Player option", "Team option", "$0", "$1,000,000", "Signed extension."]) await expect(table).toContainText(text);
+    // Seasons are bracketed by contract: the current one counted back with Wikipedia's terms, a
+    // signing only the article lists, and a signing whose length and start are unknown.
+    await expect(table.getByText("Current ·", { exact: false }).first()).toBeVisible();
+    await expect(table.getByRole("link", { name: "3-yr/$6M", exact: true })).toHaveAttribute("href", "https://en.wikipedia.org/wiki/Fixture_Player");
+    await expect(table.getByRole("link", { name: "from Wikipedia", exact: true })).toBeVisible();
+    await expect(table).toContainText("Length and first season not reported");
+    for (const text of ["$2,000,000", "1.2%", "Player Option", "Team Option", "$0", "$1,000,000"]) await expect(table).toContainText(text);
+    await expect(page.getByRole("link", { name: "Wikipedia: Fixture Player", exact: true })).toBeVisible();
     await expect(table.getByRole("row", { name: /^Remaining Guaranteed/ }).getByRole("link", { name: "$123.45", exact: true })).toBeVisible();
     const transactions = page.getByRole("region", { name: "Transaction News", exact: true });
     await expect(transactions.locator("time").first()).toHaveAttribute("datetime", "2026-09-22");
@@ -23,7 +28,7 @@ for (const width of [1440, 390]) {
       const scroller = page.getByRole("region", { name: "Contract table scroll area", exact: true });
       expect(await scroller.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
       await scroller.evaluate(el => { el.scrollLeft = el.scrollWidth; });
-      await expect(table.getByText("Signed extension.", { exact: true })).toBeVisible();
+      await expect(table.getByText("Traded from BOS to TOR.", { exact: true })).toBeVisible();
     }
   });
 }

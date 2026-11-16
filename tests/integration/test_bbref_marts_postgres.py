@@ -82,6 +82,14 @@ def test_reference_marts_select_newest_parse_flatten_and_keep_temporal_money_sem
             )
         )
     session.flush()
+    # The seeded cap history (seeds/nba_salary_cap_history.csv): used where no release is retained.
+    session.execute(text("CREATE TABLE nba_salary_cap_history (season text, cap_dollars bigint)"))
+    session.execute(
+        text(
+            "INSERT INTO nba_salary_cap_history VALUES "
+            "('2024-25', 140588000), ('2025-26', 154647000), ('2026-27', 164961000)"
+        )
+    )
     _model(session, "staging", "stg_bbref_player_profiles")
     for mart in ["awards", "honours", "salaries", "transactions"]:
         _model(session, "marts", f"mart_player_{mart}")
@@ -109,10 +117,26 @@ def test_reference_marts_select_newest_parse_flatten_and_keep_temporal_money_sem
     assert current[0]["salary"] == Decimal("2000000")
     assert current[0]["share_of_cap"] == Decimal("0.1")
     assert current[0]["cap_share_known_at"] == datetime(2026, 10, 2, tzinfo=UTC)
+    # A retained official release outranks the published history for its season.
+    assert current[0]["cap_source"] == "nba_release"
     assert current[1]["option"] == "player" and current[1]["share_of_cap"] is None
     assert current[2]["option"] == "team" and current[2]["share_of_cap"] is None
     history = [r for r in salaries if r["record_kind"] == "salary_history"]
-    assert history[0]["salary"] == Decimal("1000000") and history[0]["share_of_cap"] is None
+    # Every other NBA season with a reported salary takes its cap from the published history.
+    for row in history:
+        if (
+            row["league"] == "NBA"
+            and row["salary"] is not None
+            and row["season"]
+            in {
+                "2024-25",
+                "2025-26",
+            }
+        ):
+            cap = {"2024-25": 140588000, "2025-26": 154647000}[row["season"]]
+            assert abs(row["share_of_cap"] - row["salary"] / cap) < Decimal("1e-12")
+            assert row["cap_source"] == "basketball_reference"
+    assert history[0]["salary"] == Decimal("1000000") and history[0]["share_of_cap"] is not None
     assert history[1]["salary"] is None
     assert history[2]["league"] == "ABA" and history[2]["share_of_cap"] is None
     events = session.execute(

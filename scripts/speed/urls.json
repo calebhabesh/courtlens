@@ -1,0 +1,1946 @@
+{
+  "_about": "Fixed URL set for the speed plan (docs/speed-plan.md, SP00). pages: what measure.py times; expect is text a page holds only when its data rendered. api: the GET reads the player and team pages make, as captured by capture_reads.py. snapshot: every read behind the pages, for snapshot.py; {releaseId}, {season} and {beforeDate} are the target's release and default scope. static (SP06): one file of each kind the pages load, for their cache headers; origin api means the API origin.",
+  "version": 1,
+  "pages": [
+    {
+      "name": "home",
+      "path": "/"
+    },
+    {
+      "name": "stats",
+      "path": "/stats",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "players",
+      "path": "/players",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "teams",
+      "path": "/teams",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "standings",
+      "path": "/standings"
+    },
+    {
+      "name": "compare",
+      "path": "/compare?playerA=2544&playerB=203999",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "player-star",
+      "path": "/players/2544",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "player-rookie",
+      "path": "/players/1643411",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "player-pre2000",
+      "path": "/players/1449",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "team-lal",
+      "path": "/teams/1610612747",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "team-bos",
+      "path": "/teams/1610612738",
+      "expect": "{releaseId}"
+    },
+    {
+      "name": "research-rapm",
+      "path": "/research/rapm",
+      "expect": "courtlens-impact-serving-v1"
+    }
+  ],
+  "api": [
+    {
+      "name": "workbench-catalog",
+      "path": "/api/workbench/catalog",
+      "pages": [
+        "player-star",
+        "player-rookie",
+        "player-pre2000",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "player-career-2544",
+      "path": "/api/workbench/players/2544/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-profile-2544",
+      "path": "/api/workbench/players/2544?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-games-2544",
+      "path": "/api/workbench/players/2544/games?season={season}&phase=regular_season&beforeDate={beforeDate}&limit=50",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "workbench-metrics",
+      "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+      "pages": [
+        "player-star",
+        "player-rookie",
+        "player-pre2000",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-impact-2544",
+      "path": "/api/workbench/impact?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&playerId=2544",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "workbench-impact-2544-2025-26",
+      "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-bio-2544",
+      "path": "/api/workbench/players/2544/bio?season={season}&beforeDate={beforeDate}",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-career-1643411",
+      "path": "/api/workbench/players/1643411/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-profile-1643411",
+      "path": "/api/workbench/players/1643411?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-games-1643411",
+      "path": "/api/workbench/players/1643411/games?season={season}&phase=regular_season&beforeDate={beforeDate}&limit=50",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "workbench-impact-1643411",
+      "path": "/api/workbench/impact?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&playerId=1643411",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-bio-1643411",
+      "path": "/api/workbench/players/1643411/bio?season={season}&beforeDate={beforeDate}",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-career-1449",
+      "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-games-1449-1991-92",
+      "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-profile-1449-1991-92",
+      "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1991-92",
+      "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1990-91",
+      "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1989-90",
+      "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1988-89",
+      "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-bio-1449-1991-92",
+      "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "team-schedule-1610612747",
+      "path": "/api/workbench/teams/1610612747/schedule?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "team-detail-1610612747",
+      "path": "/api/workbench/teams/1610612747?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "team-peers-1610612747",
+      "path": "/api/workbench/teams/1610612747/peers?limit=6&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors",
+      "path": "/api/workbench/teams/six-factors?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-away",
+      "path": "/api/workbench/teams/six-factors?venue=away&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-home",
+      "path": "/api/workbench/teams/six-factors?venue=home&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-workspace",
+      "path": "/api/workbench/workspace?workspaceId=default",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-draft-classes",
+      "path": "/api/workbench/draft-classes",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "team-schedule-1610612738",
+      "path": "/api/workbench/teams/1610612738/schedule?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "team-peers-1610612738",
+      "path": "/api/workbench/teams/1610612738/peers?limit=6&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "team-detail-1610612738",
+      "path": "/api/workbench/teams/1610612738?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    }
+  ],
+  "static": [
+    {
+      "name": "portrait-2544-288",
+      "origin": "api",
+      "path": "/api/workbench/players/2544/portrait?size=288&crop=face-v6"
+    },
+    {
+      "name": "portrait-2544-288-webp",
+      "origin": "api",
+      "path": "/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6"
+    },
+    {
+      "name": "portrait-1449-192-season-webp",
+      "origin": "api",
+      "path": "/api/workbench/players/1449/portrait.webp?size=192&season=1991-92&team=BOS&crop=face-v6"
+    },
+    {
+      "name": "team-logo-lal-svg",
+      "path": "/team-logos/1610612747-5b68f7b92ba7d058.svg"
+    },
+    {
+      "name": "team-logo-bos-1977-png",
+      "path": "/team-logos/bos-1977-4571e077bce6b1e7.png"
+    },
+    {
+      "name": "flag-us",
+      "path": "/flags/us.png"
+    }
+  ],
+  "snapshot": [
+    {
+      "name": "workbench-workspace",
+      "method": "GET",
+      "path": "/api/workbench/workspace?workspaceId=default",
+      "unpinned": "takes no release or date; the shared workspace changes when it is saved (SP01 class never)",
+      "pages": [
+        "stats",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-catalog",
+      "method": "GET",
+      "path": "/api/workbench/catalog?releaseId={releaseId}",
+      "pages": [
+        "stats",
+        "players",
+        "teams",
+        "compare",
+        "player-star",
+        "player-rookie",
+        "player-pre2000",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-metrics",
+      "method": "GET",
+      "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+      "unpinned": "takes no release or date: the metric catalog is versioned by its `version` parameter",
+      "pages": [
+        "stats",
+        "compare",
+        "player-star",
+        "player-rookie",
+        "player-pre2000",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-draft-classes",
+      "method": "GET",
+      "path": "/api/workbench/draft-classes",
+      "unpinned": "takes no release or date",
+      "pages": [
+        "stats",
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "query-stats",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "view_id": "overview",
+            "columns": [
+              "gp",
+              "min",
+              "min_per_game",
+              "on_ball_pct",
+              "dpm",
+              "o_dpm",
+              "d_dpm",
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "pts_created_per_game",
+              "rim_ast_per_game",
+              "tov_per_game",
+              "ts_pct",
+              "impact_rts",
+              "efg_pct",
+              "ctov_pct",
+              "fg2_pct",
+              "fg3_pct",
+              "fg3a_per_game",
+              "ft_pct",
+              "fta_per_game",
+              "oreb_per_game",
+              "dreb_per_game",
+              "stl_per_game",
+              "blk_per_game"
+            ]
+          },
+          "page": {
+            "limit": 50,
+            "cursor": null
+          },
+          "predicates": null,
+          "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "table_percentiles": true,
+          "player_ids": null,
+          "positions": null,
+          "draft_year": null
+        }
+      },
+      "pages": [
+        "stats"
+      ]
+    },
+    {
+      "name": "query-players",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-04-13",
+          "window": {
+            "kind": "season"
+          },
+          "sample_filters": {
+            "min_minutes": 400
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "page": {
+            "limit": 50
+          },
+          "view_state": {
+            "view_id": "player-dashboard-carousel",
+            "columns": [
+              "dpm"
+            ]
+          },
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "table_percentiles": false
+        }
+      },
+      "pages": [
+        "players"
+      ]
+    },
+    {
+      "name": "analytics-catalog",
+      "method": "GET",
+      "path": "/api/analytics/catalog?snapshotId={releaseId}",
+      "pages": [
+        "compare"
+      ]
+    },
+    {
+      "name": "workbench-compare",
+      "method": "GET",
+      "path": "/api/workbench/compare?playerA=2544&playerB=203999&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "compare"
+      ]
+    },
+    {
+      "name": "query-compare",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc"
+            }
+          ],
+          "view_state": null,
+          "page": {
+            "limit": 2
+          },
+          "predicates": null
+        },
+        "presentation": {
+          "player_ids": [
+            "2544",
+            "203999"
+          ],
+          "table_percentiles": true
+        }
+      },
+      "pages": [
+        "compare"
+      ]
+    },
+    {
+      "name": "workbench-player-seasons-203999",
+      "method": "GET",
+      "path": "/api/workbench/player-seasons?phase=regular_season&playerId=2544&playerId=203999&releaseId={releaseId}",
+      "pages": [
+        "compare"
+      ]
+    },
+    {
+      "name": "player-bio-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/bio?season={season}&beforeDate={beforeDate}",
+      "unpinned": "takes season and beforeDate (pinned) but no release",
+      "pages": [
+        "compare",
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-bio-203999",
+      "method": "GET",
+      "path": "/api/workbench/players/203999/bio?season={season}&beforeDate={beforeDate}",
+      "unpinned": "takes season and beforeDate (pinned) but no release",
+      "pages": [
+        "compare"
+      ]
+    },
+    {
+      "name": "player-career-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-profile-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&releaseId={releaseId}",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-games-2544",
+      "method": "GET",
+      "path": "/api/workbench/players/2544/games?season={season}&phase=regular_season&beforeDate={beforeDate}&limit=50&releaseId={releaseId}",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "workbench-impact-2544",
+      "method": "GET",
+      "path": "/api/workbench/impact?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&playerId=2544",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "workbench-impact-2544-2025-26",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "query-player-star",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 1
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": [
+            "2544"
+          ]
+        }
+      },
+      "pages": [
+        "player-star"
+      ]
+    },
+    {
+      "name": "player-career-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-profile-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&releaseId={releaseId}",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-games-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/games?season={season}&phase=regular_season&beforeDate={beforeDate}&limit=50&releaseId={releaseId}",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "workbench-impact-1643411",
+      "method": "GET",
+      "path": "/api/workbench/impact?season={season}&phase=regular_season&beforeDate={beforeDate}&window=season&playerId=1643411",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "query-player-rookie",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 1
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": [
+            "1643411"
+          ]
+        }
+      },
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-bio-1643411",
+      "method": "GET",
+      "path": "/api/workbench/players/1643411/bio?season={season}&beforeDate={beforeDate}",
+      "unpinned": "takes season and beforeDate (pinned) but no release",
+      "pages": [
+        "player-rookie"
+      ]
+    },
+    {
+      "name": "player-career-1449",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId={releaseId}",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-games-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50&releaseId={releaseId}",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-profile-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&releaseId={releaseId}",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1990-91",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1989-90",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "workbench-impact-1449-1988-89",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "player-bio-1449-1991-92",
+      "method": "GET",
+      "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+      "unpinned": "takes season and beforeDate (pinned) but no release",
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "query-player-pre2000",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "1991-92",
+          "phase": "regular_season",
+          "before_date": "1992-04-20",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 1
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": [
+            "1449"
+          ]
+        }
+      },
+      "pages": [
+        "player-pre2000"
+      ]
+    },
+    {
+      "name": "team-schedule-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747/schedule?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "team-detail-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "team-peers-1610612747",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612747/peers?limit=6&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-away",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?venue=away&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-teams-six-factors-home",
+      "method": "GET",
+      "path": "/api/workbench/teams/six-factors?venue=home&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-lal",
+        "team-bos"
+      ]
+    },
+    {
+      "name": "query-team-lal",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": "1610612747",
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "view_id": "overview",
+            "columns": [
+              "gp",
+              "min",
+              "min_per_game",
+              "on_ball_pct",
+              "dpm",
+              "o_dpm",
+              "d_dpm",
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "pts_created_per_game",
+              "rim_ast_per_game",
+              "tov_per_game",
+              "ts_pct",
+              "impact_rts",
+              "efg_pct",
+              "ctov_pct",
+              "fg2_pct",
+              "fg3_pct",
+              "fg3a_per_game",
+              "ft_pct",
+              "fta_per_game",
+              "oreb_per_game",
+              "dreb_per_game",
+              "stl_per_game",
+              "blk_per_game"
+            ]
+          },
+          "page": {
+            "limit": 50,
+            "cursor": null
+          },
+          "predicates": null,
+          "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "table_percentiles": true,
+          "player_ids": null,
+          "positions": null,
+          "draft_year": null
+        }
+      },
+      "pages": [
+        "team-lal"
+      ]
+    },
+    {
+      "name": "team-schedule-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738/schedule?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "team-peers-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738/peers?limit=6&releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "team-detail-1610612738",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612738?releaseId={releaseId}&season={season}&phase=regular_season&beforeDate={beforeDate}",
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "query-team-bos",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": "1610612738",
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc"
+            }
+          ],
+          "view_state": {
+            "view_id": "overview",
+            "columns": [
+              "gp",
+              "min",
+              "min_per_game",
+              "on_ball_pct",
+              "dpm",
+              "o_dpm",
+              "d_dpm",
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "pts_created_per_game",
+              "rim_ast_per_game",
+              "tov_per_game",
+              "ts_pct",
+              "impact_rts",
+              "efg_pct",
+              "ctov_pct",
+              "fg2_pct",
+              "fg3_pct",
+              "fg3a_per_game",
+              "ft_pct",
+              "fta_per_game",
+              "oreb_per_game",
+              "dreb_per_game",
+              "stl_per_game",
+              "blk_per_game"
+            ]
+          },
+          "page": {
+            "limit": 50,
+            "cursor": null
+          },
+          "predicates": null,
+          "impact_manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "table_percentiles": true,
+          "player_ids": null,
+          "positions": null,
+          "draft_year": null
+        }
+      },
+      "pages": [
+        "team-bos"
+      ]
+    },
+    {
+      "name": "workbench-impact-2025-26",
+      "method": "GET",
+      "path": "/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-07-01",
+      "unpinned": "takes season and beforeDate (pinned) but no release; serves the impact bundle",
+      "pages": [
+        "research-rapm"
+      ]
+    },
+    {
+      "name": "six-factor-2025-26",
+      "method": "GET",
+      "path": "/api/six-factor?season=2025-26&phase=regular_season",
+      "unpinned": "takes season and phase only; serves the sealed six-factor fit",
+      "pages": [
+        "research-rapm"
+      ]
+    },
+    {
+      "name": "query-hero-rank-pts_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-reb_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "reb_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-ast_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ast_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-ts_pct",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ts_pct",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-dpm",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-min_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "min_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-players-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-04-13",
+          "window": {
+            "kind": "season"
+          },
+          "sample_filters": {
+            "min_minutes": 400
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "page": {
+            "limit": 50
+          },
+          "view_state": {
+            "view_id": "player-dashboard-carousel",
+            "columns": [
+              "dpm"
+            ]
+          },
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "table_percentiles": false,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "players"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-pts_per_game-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-reb_per_game-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "reb_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-ast_per_game-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ast_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-ts_pct-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ts_pct",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-dpm-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    },
+    {
+      "name": "query-hero-rank-min_per_game-sort-only",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "min_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null,
+          "metrics": "sort"
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "SP05: the body the page sends since SP05 (presentation.metrics \"sort\": each item carries only the sort field); the entry without -sort-only is the same read with every metric"
+    }
+  ]
+}

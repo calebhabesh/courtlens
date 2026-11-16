@@ -1,0 +1,65 @@
+{
+ "player-header-to-team-prefetched": {
+  "before_ms": 118.5,
+  "after_ms": 120.5,
+  "before_longest_task_ms": 71.0,
+  "after_longest_task_ms": 71.5,
+  "before_long_task_total_ms": 71.0,
+  "after_long_task_total_ms": 71.5,
+  "runs": 10
+ },
+ "nav-to-stats-prefetched": {
+  "before_ms": 184.5,
+  "after_ms": 164.5,
+  "before_longest_task_ms": 118.0,
+  "after_longest_task_ms": 112.5,
+  "before_long_task_total_ms": 118.0,
+  "after_long_task_total_ms": 112.5,
+  "runs": 10
+ },
+ "stats-row-to-player-prefetched": {
+  "before_ms": 77.5,
+  "after_ms": 75.5,
+  "before_longest_task_ms": 55.0,
+  "after_longest_task_ms": 51.0,
+  "before_long_task_total_ms": 55.0,
+  "after_long_task_total_ms": 51.0,
+  "runs": 10
+ },
+ "stats-row-to-player": {
+  "before_ms": 162.5,
+  "after_ms": 148.5,
+  "before_longest_task_ms": 74.0,
+  "after_longest_task_ms": 73.0,
+  "before_long_task_total_ms": 74.0,
+  "after_long_task_total_ms": 73.0,
+  "runs": 10
+ },
+ "player-header-to-team": {
+  "before_ms": 147.0,
+  "after_ms": 143.5,
+  "before_longest_task_ms": 55.0,
+  "after_longest_task_ms": 57.0,
+  "before_long_task_total_ms": 55.0,
+  "after_long_task_total_ms": 58.0,
+  "runs": 10
+ },
+ "nav-to-stats": {
+  "before_ms": 193.5,
+  "after_ms": 187.0,
+  "before_longest_task_ms": 104.0,
+  "after_longest_task_ms": 99.0,
+  "before_long_task_total_ms": 107.0,
+  "after_long_task_total_ms": 107.0,
+  "runs": 10
+ },
+ "back-to-team": {
+  "before_ms": 138.5,
+  "after_ms": 130.0,
+  "before_longest_task_ms": 0.0,
+  "after_longest_task_ms": 0.0,
+  "before_long_task_total_ms": 0.0,
+  "after_long_task_total_ms": 0.0,
+  "runs": 10
+ }
+}

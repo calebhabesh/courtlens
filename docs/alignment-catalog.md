@@ -15,7 +15,7 @@ Rows are in working order.
 | # | The reference site | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
-| 1 | Stats | `/stats` | ✅ | Owner approved 2026-11-03 (all core pages done); follow-up 84 (in-season default sort, empty columns) approved 2026-11-10; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
+| 1 | Stats | `/stats` | ✅ | Owner approved 2026-11-03 (all core pages done); follow-up 84 (in-season default sort, empty columns) approved 2026-11-10; follow-up 85 (numbered paging, readable footer) approved 2026-11-15; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
 | 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-11-03 the team rankings follow-up (rank strip, Scoring view, search, season calendar, comparison ranks); first approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
@@ -678,6 +678,26 @@ suggested optimal fixes."
       (the "Index refreshed" tooltip spec fails identically without this change).
       [Evidence](evidence/alignment/stats/default-sort/README.md).
 
+Follow-up instruction (owner, 2026-11-15, with screenshots of the footer): "what does the w- and e+
+mean here? Also, why does it go first page, and next page only? Isn't there a better way for a page
+based navigation console (instead of only two buttons we can have multiple, a button for going all
+the way to the first, or end, etc.)" Then: "Yes, go ahead. And make these things clear."
+
+85. [x] Numbered paging and a readable footer. Approved by the owner 2026-11-15 ("you can approve all slices we have worked on up until now"). — The −W ▮▯ E+ density control
+    (1f) becomes a "Compact | Standard" row-height switch (kit `Segmented`; W and E stay as keys and
+    are named in each tooltip); the expand button reads "Expand" / "Shrink" beside T.
+    - First Page / Next Page become a pager (`components/ui/pager.tsx`, kit controls only): first,
+      previous, page numbers with gaps (`1 … 4 5 6 … 11`), next, last; the current page carries
+      `aria-current`. `[` and `]` page from the table; the hotkeys list names them.
+    - The query response gains `page_cursors`: the same opaque cursors it already issued, one per
+      page of the shown rows (page 1 is null), for presentation queries only. No spec field, hash or
+      cursor format changed; cursor URLs stay shareable.
+    - Below 1,800 px the footer is two rows (records and pager, then the table controls) instead
+      of wrapping three to five rows; at 1920 it stays one row. Phones stack records, controls, pager.
+    - Measured on the owner's servers (2025-26, 528 shown): page 5 shows 201–250, Last 501–528 with
+      next/last disabled; footer 49 px at 1920, 85 px at 1280–1600 (was 81–189). Postgres presentation
+      tests 24/24 (new last-page asserts); pager Vitest 6/6; dashboard lint/typecheck clean.
+
 ### 2 Dashboard (player) — ✅ aligned (first revision)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
@@ -956,6 +976,16 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
 71. [x] Now that the logos are larger and easier to see, undo the contrast effect. (Owner,
     2026-10-15.) Plain logo at 42% opacity with no filter, at the 115% size; share image too.
     [Evidence](evidence/alignment/players/team-header/README.md#contrast-treatment-removed-instruction-71).
+72. [ ] "What should we do for these start not reported? … Did we determine there is no other way to
+    get reliable contract data for our table?" then "You can build all three. We're trying to make
+    sure we have good coverage here, and the contract data is as coherent as possible." (Owner,
+    2026-11-14.) Spotrac still refuses (403) and HoopsHype's contract grouping is wrong for
+    Durant, so the player's Wikipedia article (matched by Wikidata's Basketball-Reference ID, not by
+    name) fills lengths Basketball-Reference leaves out and adds signings it does not list; the
+    CBA fixes 10-day and Exhibit 10 lengths; trailing extensions are counted back from the current
+    contract's last season; notes still unbracketed say what is known and which end is missing.
+    `courtlens acquire-wikipedia-contracts`, `services/contract_spans.py`.
+    [Evidence](evidence/alignment/players/contract-terms/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

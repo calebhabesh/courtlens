@@ -29,7 +29,8 @@ export function PercentileCell({ value, percentile, qualified, label, cohort, co
       title={`${label}; ${percentile == null ? "percentile unknown" : `${percentile.toFixed(0)} percentile`}; ${cohort}; ${qualified ? "qualified" : "small sample"}`}>
       <strong className="stat-main-value">{observed ? value : "—"}</strong>
       {showPercentile && ranked && <small className="stat-pct-sublabel" style={percentileTextVars(percentile)}>{percentile.toFixed(0)}</small>}
-      <span className="sr-only">{label}; {cohort}; {!observed ? "unknown" : !qualified ? "small sample, not ranked" : ranked ? `${percentile.toFixed(0)} percentile` : "rank unknown"}.</span>
+      {/* One text node: the same words without React's text separators in every cell's HTML (SP05). */}
+      <span className="sr-only">{`${label}; ${cohort}; ${!observed ? "unknown" : !qualified ? "small sample, not ranked" : ranked ? `${percentile.toFixed(0)} percentile` : "rank unknown"}.`}</span>
     </span>;
   }
   return <span className={`chart-percentile-cell${compact ? " table-percentile-compact" : ""}`} data-qualified={qualified}
@@ -37,6 +38,6 @@ export function PercentileCell({ value, percentile, qualified, label, cohort, co
     style={chartVars({ "--chart-cell": band ? `var(--color-percentile-${band})` : "var(--color-surface-2)" })}>
     <strong className="stat-main-value">{observed ? value : "—"}</strong>
     {showPercentile && <small className={compact ? "stat-pct-sublabel" : undefined}>{!observed ? "Unknown" : !qualified ? compact ? `${percentile == null ? "—" : percentile.toFixed(0)} pct · small` : "Small sample" : band ? `${percentile!.toFixed(0)} pct` : "Rank unknown"}</small>}
-    <span className="sr-only">{label}; {cohort}; {qualified ? "qualified" : "unqualified"}. Higher oriented percentile has stronger blue shading.</span>
+    <span className="sr-only">{`${label}; ${cohort}; ${qualified ? "qualified" : "unqualified"}. Higher oriented percentile has stronger blue shading.`}</span>
   </span>;
 }

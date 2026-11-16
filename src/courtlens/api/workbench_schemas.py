@@ -279,6 +279,8 @@ class WorkbenchCatalogResponse(BaseModel):
     warnings: list[str]
     impact: dict[str, Any] | None = None
     darko: dict[str, Any] | None = None
+    # Seasons with estimated positions (sealed or provisional); the Stats position chips use it.
+    position_estimates: dict[str, Any] | None = None
 
 
 class ResearchQuerySchema(BaseModel):
@@ -348,6 +350,10 @@ class PlayerResearchItem(BaseModel):
     table_cohort_sample_sizes: dict[str, int] | None = None
     # Estimated five-position label for the queried season (position-estimates-v1).
     position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+    # The NBA listing (G, F, C, hybrids) that estimate was bounded by, and whether the estimate
+    # is provisional (the season in progress, relabelled daily).
+    position_listed: str | None = None
+    position_provisional: bool | None = None
     # Who the player is listed with today (active players); the row's teams stay its games' teams.
     current_team: PlayerBioCurrentTeam | None = None
     # Set instead when the player is on no NBA roster today (free agent, abroad or retired).
@@ -459,6 +465,8 @@ class WorkbenchQueryResponse(BaseModel):
     table_cohort: dict[str, Any] | None = None
     items: list[PlayerResearchItem]
     next_cursor: str | None = None
+    # One cursor per page of the shown rows (page 1 is null); presentation queries only.
+    page_cursors: list[str | None] | None = None
     has_more: bool
     warnings: list[str] = Field(default_factory=list)
     impact: dict[str, Any] | None = None
@@ -684,6 +692,7 @@ class PlayerBioDraft(BaseModel):
     team_id: str | None
     team_tricode: str | None
     organization: str | None
+    organization_type: str | None = None
 
 
 class PlayerBioCombine(BaseModel):
@@ -700,6 +709,9 @@ class PlayerGuarantee(BaseModel):
     status: Literal["full", "partial", "none"] | None
     source_url: str
     as_of: datetime
+    # How a season's guarantee is known: reported for the season (None), or settled exactly by
+    # the contract's remaining guaranteed total (every salary, or every non-option salary).
+    basis: Literal["total_equals_salaries", "total_equals_non_option_salaries"] | None = None
 
 
 class PlayerSalary(BaseModel):
@@ -712,6 +724,8 @@ class PlayerSalary(BaseModel):
     option: Literal["player", "team"] | None = None
     share_of_cap: float | None = None
     cap_source_url: str | None = None
+    # The official NBA release when retained, else Basketball-Reference's cap history.
+    cap_source: Literal["nba_release", "basketball_reference"] | None = None
     cap_as_of: datetime | None = None
     guarantee: PlayerGuarantee | None = None
 
@@ -722,6 +736,55 @@ class PlayerReferenceEvent(BaseModel):
     description: str
     from_team_code: str | None
     to_team_code: str | None
+
+
+class PlayerContractSpan(BaseModel):
+    """Seasons one contract covers, placed only where both ends are known (contract_spans.py)."""
+
+    start_season: str
+    end_season: str
+    # stated_length, next_contract (the next one began), current_contract, last_reported_season
+    end_basis: str | None
+    # signed (its signing season), previous_contract (after the one in force), current_contract
+    # (counted back from the current contract's last season)
+    start_basis: str = "signed"
+    signed_date: date
+    kind: Literal["signing", "extension"]
+    length_stated: bool
+    # stated, rookie_scale, ten_day, exhibit_10 (by the CBA) or wikipedia
+    length_source: str | None = None
+    team_code: str | None
+    description: str
+    # Wikipedia's terms ("4-yr/$164.3M") when they supplied a length the source left out.
+    terms: str | None = None
+    # wikipedia: a signing Basketball-Reference does not list, from the player's article.
+    source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
+    source_url: str | None = None
+    current: bool
+
+
+class PlayerUnplacedSigning(BaseModel):
+    """A signing whose contract could not be bracketed (an extension's start or an end unknown)."""
+
+    signed_date: date
+    season: str
+    kind: Literal["signing", "extension"]
+    description: str
+    years: int | None = None
+    length_source: str | None = None
+    terms: str | None = None
+    source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
+    source_url: str | None = None
+
+
+class PlayerContractTermsSource(BaseModel):
+    """The Wikipedia article reading that supplied contract terms (CC BY-SA 4.0)."""
+
+    name: str
+    title: str
+    url: str
+    revision_id: int | None
+    as_of: datetime
 
 
 class PlayerGameHighValue(BaseModel):
@@ -735,6 +798,18 @@ class PlayerGameHighs(BaseModel):
     scope: Literal["career", "season"]
     season: str | None
     values: dict[str, PlayerGameHighValue]
+
+
+class PlayerCollege(BaseModel):
+    """The last college Basketball-Reference lists, placed in Sports-Reference's schools index
+    (location) with ESPN's logo where both are known; unplaced colleges keep only the name."""
+
+    name: str
+    school: str | None = None
+    location: str | None = None
+    logo_url: str | None = None
+    source_url: str | None = None
+    attribution: str | None = None
 
 
 class PlayerBioReference(BaseModel):
@@ -756,8 +831,12 @@ class PlayerBioReference(BaseModel):
     current_contract: list[PlayerSalary] = Field(default_factory=list)
     contract_events: list[PlayerReferenceEvent] = Field(default_factory=list)
     transactions: list[PlayerReferenceEvent] = Field(default_factory=list)
+    contract_spans: list[PlayerContractSpan] = Field(default_factory=list)
+    unplaced_signings: list[PlayerUnplacedSigning] = Field(default_factory=list)
+    contract_terms_source: PlayerContractTermsSource | None = None
     game_highs: list[PlayerGameHighs] = Field(default_factory=list)
     remaining_guaranteed: PlayerGuarantee | None = None
+    college: PlayerCollege | None = None
 
 
 class PlayerBioResponse(BaseModel):
@@ -834,6 +913,8 @@ class PlayerProfileResponse(BaseModel):
     last_observed_date: str | None = None
     forecast_status: dict[str, Any]
     warnings: list[str]
+    # The season's estimated position: {position, listed, provisional, season}; absent when none.
+    position_estimate: dict[str, Any] | None = None
 
 
 class PlayerGameLogItem(BaseModel):

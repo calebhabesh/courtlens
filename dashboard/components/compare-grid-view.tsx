@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -183,7 +183,7 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
           </>} />
         {columns.length > 0 && <CompareTrendTray playerIds={ids} context={context} />}
       </div>
-      {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <Link href="/investigations">Open saved investigations</Link>}</p>}
+      {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <IntentLink href="/investigations">Open saved investigations</IntentLink>}</p>}
       {active === "sixfactor" && <GatedNote why="These are descriptive box-score proxies, not six-factor RAPM coefficients or defensive impact.">Box-score factor proxies.</GatedNote>}
     </div>
     {columns.length > 0 && <div className="pvp-export" aria-hidden="true">

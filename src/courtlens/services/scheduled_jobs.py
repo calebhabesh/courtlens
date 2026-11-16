@@ -75,7 +75,8 @@ class Job:
         return self.last_slot(probe)
 
 
-# The PC's timers (scripts/install_data_refresh.sh), in the order they run each morning.
+# The PC's timers (scripts/install_data_refresh.sh), in the order they run each morning, then
+# the jobs added on the VPS.
 JOBS: tuple[Job, ...] = (
     Job(
         "rosters",
@@ -116,6 +117,25 @@ JOBS: tuple[Job, ...] = (
         _daily(time(15, 0)),
         timedelta(days=1),
         timedelta(hours=30),
+    ),
+    # Basketball-Reference pages (contracts, transactions, career highs) for every player on a
+    # roster: new players' first pages and a weekly refresh, about 4 s a page (~40 min).
+    Job(
+        "player-pages",
+        ("acquire-bbref-bios", "--active-only", "--max-age-days", "6"),
+        timedelta(hours=2),
+        _daily(time(16, 0), UTC, weekday=1),
+        timedelta(days=7),
+        timedelta(days=8),
+    ),
+    # Each player's college, its location and logo (player header), after the pages it reads.
+    Job(
+        "college-schools",
+        ("refresh-college-schools",),
+        timedelta(hours=1),
+        _daily(time(17, 0), UTC, weekday=1),
+        timedelta(days=7),
+        timedelta(days=8),
     ),
 )
 BY_NAME = {job.name: job for job in JOBS}
