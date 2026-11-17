@@ -2397,8 +2397,8 @@ export type PlayerReferenceEvent = {
 export type PlayerContractSpan = {
   start_season: string; end_season: string;
   end_basis: "stated_length" | "next_contract" | "current_contract" | "last_reported_season" | null;
-  /** signed: its signing season; previous_contract: after the one in force; current_contract: counted back from the current contract's last season. */
-  start_basis?: "signed" | "previous_contract" | "current_contract";
+  /** signed: its signing season; previous_contract: after the one in force; salary_rise: where the salary rose more than one contract allows; current_contract: counted back from the current contract's last season. */
+  start_basis?: "signed" | "previous_contract" | "salary_rise" | "current_contract";
   signed_date: string; kind: "signing" | "extension"; length_stated: boolean;
   /** Where the length comes from: the source's "N-yr", the CBA (rookie scale, 10-day, Exhibit 10) or Wikipedia. */
   length_source?: PlayerContractLengthSource | null;
@@ -2408,6 +2408,8 @@ export type PlayerContractSpan = {
   /** wikipedia: a signing Basketball-Reference does not list, from the player's article. */
   source?: "basketball_reference" | "wikipedia";
   source_url?: string | null;
+  /** wikipedia: Basketball-Reference lists a plain signing; the player's article calls it an extension. */
+  extension_source?: "wikipedia" | null;
 };
 
 export type PlayerContractLengthSource = "stated" | "rookie_scale" | "ten_day" | "exhibit_10" | "wikipedia";
@@ -2417,6 +2419,7 @@ export type PlayerUnplacedSigning = {
   signed_date: string; season: string; kind: "signing" | "extension"; description: string;
   years?: number | null; length_source?: PlayerContractLengthSource | null; terms?: string | null;
   source?: "basketball_reference" | "wikipedia"; source_url?: string | null;
+  extension_source?: "wikipedia" | null;
 };
 
 export type PlayerGameHighs = {

@@ -97,6 +97,43 @@ assume no unlisted signing; now only an overrun counts back).
 or date, and contracts before an extension neither source places (LeBron James's December 2020
 extension is undated in both, so his August 2022 extension reads "first season not reported").
 
+## Extensions the source calls signings (2026-11-17)
+
+Giannis Antetokounmpo's table bracketed only 2013-14 to 2019-20, a season early, and left his 2020
+and 2023 extensions as "first season not reported". Basketball-Reference lists his September 2016
+4-yr/$100M extension as "Signed a multi-year contract", so it was read as a new contract starting
+in 2016-17; the extensions after it then had nothing to follow. The article calls it an extension.
+
+- A dated article statement calling a signing an extension makes it one when the source's wording
+  is generic (no stated length, no rookie scale). Articles also say "extension" for re-signings
+  after an opt-out (Julius Randle and Naz Reid, 2025): the source's stated "Signed 3-yr/$100M
+  contract" stays a signing, one signed after the contract before had ended is a new contract,
+  and one that would leave the current contract overrun with no reading that fits reverts to the
+  source's signing (James Harden, 2026).
+- Inside one contract a salary rises at most 12.5% a season (the CBA since 1999) plus a 15% trade
+  bonus. A larger rise marks where a contract began: an extension signed earlier starts there
+  (Donovan Mitchell's 2024 extension, 2025-26, +31%), and counting back stops short of a reading
+  that would put such a rise inside one contract (Joel Embiid's 2021 extension starts 2023-24,
+  +42%; counting back both later extensions would have started it in 2022-23). Kevin Durant's
+  count-back is unchanged: no rise rules it out.
+- The extension just before a counted-back one is cut short, not dropped, when its start is known
+  (signed in it, the season after signing, or a rise above): Giannis's 2020 extension is
+  2021-22 to 2024-25. Where its start rests only on the contract before running its full length
+  (Jrue Holiday's 2021 extension) it stays a note.
+- A deal the source lists as a transaction and as a contract event (no team) a day apart is one
+  signing (Zach Collins's 2023 extension, Oct 22 and 23; 7 players).
+
+Across all 3,340 players with a salary (local database, Wikipedia bundle of 2026-11-16), 20
+players' brackets change. Salary seasons inside a bracket go from 12,472 to 12,518 of 19,773;
+unbracketed signings from 1,160 to 1,147. Checked against their contract histories and salaries:
+Antetokounmpo, Rudy Gobert, Steven Adams, Devin Booker (all four of his were a season early),
+Luka Dončić, Embiid, Mitchell, Jayson Tatum, Andrew Wiggins, Gary Harris, Andrew Nembhard and
+Scottie Barnes are now right; the seven duplicate-listing players lose a duplicate bracket. One
+player loses brackets: Josh Richardson's 2017 extension (Basketball-Reference "Signed a
+multi-year contract") was bracketed a season early and now follows a 2015 deal of unknown length,
+so it is a note. Robert Covington stays wrong in a new way: the article's "reported five-year"
+2014 deal was four seasons.
+
 ## Verification
 
 Screenshots from the owner's running dev servers (read-only GETs; they hot-reload this working

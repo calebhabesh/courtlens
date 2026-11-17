@@ -17,17 +17,24 @@ known and never guessed:
 - Counting forward can overrun the current contract when an extension replaced the final year of
   the deal before it (Durant's 2021 extension took over his 2022-23 option year). Only then are
   the trailing extensions counted back from the current contract's last season, which the source
-  reports, as far as their lengths are stated.
+  reports, as far as their lengths are stated. Which extension replaced the option year is not
+  stated; a reading that puts a raise no contract allows inside one contract (Embiid's 42% in
+  2023-24) is passed over for one counting back fewer, and the contract just before the
+  counted-back ones ends where they begin.
 - An extension whose start cannot be placed is left out of the spans; it stays a dated note. The
   contract before it then has no known end unless its length was stated, so it is left out too.
 
-Wikipedia (services/wikipedia_contracts.py) fills two gaps, and Basketball-Reference's own wording
-stays primary wherever it states a term:
+Wikipedia (services/wikipedia_contracts.py) fills three gaps, and Basketball-Reference's own
+wording stays primary wherever it states a term:
 
 - A statement within three weeks of a Basketball-Reference signing (or, undated, in its season or
   calendar year), naming that season's team when it names one, gives that signing its length when
   the source left it out, or when the source's stated length would put the yearly average above
   the CBA's maximum salary (35% of the cap), which only a typo can.
+- A dated statement calling a signing an extension makes it one, when the source's wording is
+  generic ("Signed a multi-year contract", no stated length): Giannis Antetokounmpo's 2016 deal
+  started in 2017-18, not 2016-17. Articles also say "extension" for a re-signing after the
+  contract before ended; one signed after that contract's end stays a new contract.
 - A dated statement with a length adds a signing the source does not list, only when the team it
   names paid him that season and the source lists no signing with that team that season.
 """
@@ -35,7 +42,7 @@ stays primary wherever it states a term:
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date
 from typing import Any
 
@@ -47,6 +54,9 @@ ROOKIE_SCALE_SINCE = 1999
 # The CBA's maximum salary is 35% of the cap; a stated length implying more is a typo.
 MAX_SHARE_OF_CAP = 0.35
 _STATED_VALUE = re.compile(r"\b(\d+)-yr/\$(\d+(?:\.\d+)?)M\b")
+# Inside one contract a season's salary rises at most 12.5% (the CBA since 1999) plus a trade
+# bonus (at most 15%); a larger rise means a new contract began that season.
+MAX_RISE_IN_CONTRACT = 1.125 * 1.15
 # A matched statement may be dated this far from the source's signing (announcement vs. official).
 MATCH_DAYS = 21
 MONTH_MATCH_DAYS = 35
@@ -80,6 +90,8 @@ class Signing:
     source: str = "basketball_reference"  # or wikipedia: a signing the source does not list
     terms: str | None = None  # "4-yr/$164.3M", Wikipedia's terms for a source signing
     source_url: str | None = None  # the Wikipedia article when it supplied anything
+    # wikipedia: the source lists a plain signing and the article calls it an extension
+    extension_source: str | None = None
 
 
 def _as_date(value: Any) -> date | None:
@@ -115,8 +127,17 @@ def _source_length(texts: list[str]) -> tuple[int | None, str | None]:
     return None, None
 
 
+def _is_extension(events: list[dict[str, Any]]) -> bool:
+    return any(
+        e.get("type") == "extended" or "extension" in (e.get("description") or "").lower()
+        for e in events
+    )
+
+
 def _source_signings(reference: dict[str, Any]) -> list[Signing]:
-    """Signing and extension events, one per date (the source often lists a date twice)."""
+    """Signing and extension events, one per deal. The source often lists a deal twice: on one
+    date, or as a transaction and a contract event (no team) a day apart (Zach Collins's 2023
+    extension, Oct 22 and 23)."""
     by_day: dict[date, list[dict[str, Any]]] = {}
     for event in [
         *(reference.get("contract_events") or []),
@@ -129,13 +150,19 @@ def _source_signings(reference: dict[str, Any]) -> list[Signing]:
             continue
         if kind in {"signed", "extended"} or (kind == "other" and _SIGNING_TEXT.match(text)):
             by_day.setdefault(day, []).append(event)
-    found = []
+    groups: list[tuple[date, list[dict[str, Any]]]] = []
     for day, events in sorted(by_day.items()):
+        if groups and (day - groups[-1][0]).days == 1:
+            earlier = groups[-1][1]
+            teams = [{e.get("to_team_code") for e in g} - {None} for g in (earlier, events)]
+            if (not teams[0] or not teams[1]) and _is_extension(earlier) == _is_extension(events):
+                earlier.extend(events)
+                continue
+        groups.append((day, events))
+    found = []
+    for day, events in groups:
         texts = [e.get("description") or "" for e in events]
-        extension = any(
-            e.get("type") == "extended" or "extension" in t.lower()
-            for e, t in zip(events, texts, strict=True)
-        )
+        extension = _is_extension(events)
         length, length_source = _source_length(texts)
         # The most informative wording: a stated length, then a rookie deal, then any.
         best = (
@@ -316,9 +343,19 @@ def signings(
         ]
         if not options:
             continue
-        _, chosen = min(options)
+        gap, chosen = min(options)
         used.add(chosen)
         statement = statements[chosen]
+        if (
+            not signing.extension
+            and signing.length_source is None
+            and statement.get("kind") == "extension"
+            and gap <= MONTH_MATCH_DAYS
+        ):
+            # The source's wording is generic ("Signed a multi-year contract"); a dated article
+            # statement calling it an extension says it starts after the contract in force.
+            signing.extension, signing.extension_source = True, "wikipedia"
+            signing.source_url = url
         years = statement.get("years")
         if not years or statement.get("term") == "rest_of_season":
             continue
@@ -368,19 +405,53 @@ class _Placed:
     blocked: bool = False
 
 
-def _forward(found: list[Signing]) -> list[_Placed]:
+def _salaries(reference: dict[str, Any]) -> dict[int, float]:
+    """Each season's reported salary (the larger where two rows share a season)."""
+    out: dict[int, float] = {}
+    for kind in ("salary_history", "current_contract"):
+        for row in reference.get(kind) or []:
+            if row.get("season") and row.get("salary"):
+                year = _start_year(row["season"])
+                out[year] = max(out.get(year, 0.0), float(row["salary"]))
+    return out
+
+
+def _new_contract(salaries: dict[int, float], year: int) -> bool:
+    """A salary rising more than any one contract allows: a new contract began that season."""
+    before, now = salaries.get(year - 1), salaries.get(year)
+    return (
+        year >= ROOKIE_SCALE_SINCE
+        and before is not None
+        and now is not None
+        and now > before * MAX_RISE_IN_CONTRACT
+    )
+
+
+def _forward(found: list[Signing], salaries: dict[int, float]) -> list[_Placed]:
     placed: list[_Placed] = []
     for signing in found:
         signed = season_of(signing.day)
+        previous = placed[-1] if placed else None
+        # The article's "extension" for a deal signed after the contract before it had ended
+        # (or with none before it) is a new contract in loose wording.
+        loose = signing.extension_source == "wikipedia" and (
+            previous is None or (previous.end is not None and previous.end < signed)
+        )
+        if loose:
+            signing.extension, signing.extension_source = False, None
         if signing.extension:
             # It extends the contract in force when signed; it starts once that one ends.
-            previous = placed[-1] if placed else None
             if previous is None or previous.end is None or previous.end < signed:
                 if previous is not None and previous.end is None:
                     # Somewhere inside its run an extension took over: its end is unknown.
                     previous.blocked = True
                 continue
             start, start_basis = previous.end + 1, "previous_contract"
+            # A rise no contract allows, after it was signed and before that, is where it took
+            # over the rest of the contract before (Mitchell's 2024 extension, 2025-26).
+            rise = next((y for y in range(signed + 1, start) if _new_contract(salaries, y)), None)
+            if rise is not None:
+                start, start_basis = rise, "salary_rise"
         else:
             start, start_basis = signed, "signed"
         end = start + signing.length - 1 if signing.length else None
@@ -397,8 +468,24 @@ def _forward(found: list[Signing]) -> list[_Placed]:
     return placed
 
 
-def _count_back(found: list[Signing], placed: list[_Placed], last: int) -> list[_Placed]:
-    """Place the extensions after the newest signing back from the current contract's end."""
+def _raise_fits(span: _Placed, salaries: dict[int, float]) -> bool:
+    """No season inside one contract rises more than the CBA's raises (12.5% since 1999) plus
+    the largest trade bonus (15%) allow; a larger rise is where a new contract began."""
+    if span.end is None or span.start < ROOKIE_SCALE_SINCE:
+        return True
+    return not any(_new_contract(salaries, y) for y in range(span.start + 1, span.end + 1))
+
+
+def _count_back(
+    found: list[Signing], placed: list[_Placed], last: int, salaries: dict[int, float]
+) -> list[_Placed]:
+    """Place the extensions after the newest signing back from the current contract's end.
+
+    Counting forward overran the current contract, so some extension replaced the final season
+    of the deal before it. Which one is not stated: counting back all of them assumes the oldest
+    did (Durant's 2021 extension), counting back only the newest assumes it did (Embiid's 2024
+    one). The deepest reading whose re-placed contracts show no impossible raise is used.
+    """
     newest_signing = max((i for i, s in enumerate(found) if not s.extension), default=-1)
     tail = found[newest_signing + 1 :]
     if not tail:
@@ -408,7 +495,7 @@ def _count_back(found: list[Signing], placed: list[_Placed], last: int) -> list[
     # extension is the current contract, and a signing neither source lists would misplace it.
     if not placed or placed[-1].end is None or placed[-1].end <= last:
         return placed
-    back: list[_Placed] = []
+    chain: list[_Placed] = []
     end = last
     for signing in reversed(tail):
         if signing.length is None:
@@ -417,33 +504,83 @@ def _count_back(found: list[Signing], placed: list[_Placed], last: int) -> list[
         # An extension takes over after the season it was signed in.
         if start <= season_of(signing.day):
             break
-        back.append(_Placed(signing, start, end, "stated_length", "current_contract"))
+        chain.append(_Placed(signing, start, end, "stated_length", "current_contract"))
         end = start - 1
-    if not back:
-        return placed
-    back.reverse()
+    fallback: list[_Placed] | None = None
+    for depth in range(len(chain), 0, -1):
+        reading = _counted_back(found, placed, chain[:depth][::-1], newest_signing, salaries)
+        if reading is None:
+            continue
+        spans, changed = reading
+        if all(_raise_fits(span, salaries) for span in changed):
+            return spans
+        fallback = fallback or spans
+    return fallback or placed
+
+
+def _start_known(span: _Placed, salaries: dict[int, float]) -> bool:
+    """Signed in the season it began, began the season after it was signed, or began where the
+    salary rose more than one contract allows."""
+    return (
+        span.start_basis in ("signed", "salary_rise")
+        or span.start == season_of(span.signing.day) + 1
+        or _new_contract(salaries, span.start)
+    )
+
+
+def _counted_back(
+    found: list[Signing],
+    placed: list[_Placed],
+    back: list[_Placed],
+    newest_signing: int,
+    salaries: dict[int, float],
+) -> tuple[list[_Placed], list[_Placed]] | None:
+    """The spans with these extensions counted back, and the spans that reading re-placed."""
     first = back[0].start
     if newest_signing >= 0 and season_of(found[newest_signing].day) >= first:
-        return placed  # It would begin before the newest signing: the lengths do not fit.
+        return None  # It would begin before the newest signing: the lengths do not fit.
     backed = {id(p.signing) for p in back}
-    tail_ids = {id(s) for s in tail}
-    kept = [
-        p
-        for p in placed
-        if id(p.signing) not in backed
-        and p.start < first
-        and not (id(p.signing) in tail_ids and (p.end is None or p.end >= first))
-    ]
-    before = found[found.index(back[0].signing) - 1] if found.index(back[0].signing) > 0 else None
+    kept = [replace(p) for p in placed if id(p.signing) not in backed and p.start < first]
+    index = found.index(back[0].signing)
+    before = found[index - 1] if index > 0 else None
+    changed = list(back)
+    if kept and kept[-1].signing is before and not _start_known(kept[-1], salaries):
+        # Its start rests on the contract before it running its full length, which an option
+        # year it replaced would also cut short: it stays a note (Holiday's 2021 extension).
+        kept.pop()
     if kept and before is not None and kept[-1].signing is before:
         # The contract just before ends where the counted-back one begins.
         previous = kept[-1]
         if previous.end is None or previous.blocked or previous.end >= first:
             previous.end, previous.end_basis, previous.blocked = first - 1, "next_contract", False
+            changed.append(previous)
     elif kept and (kept[-1].end is None or kept[-1].end >= first):
         # An unplaced extension sits between them: the earlier contract's end is unknown.
         kept[-1].end, kept[-1].blocked = None, True
-    return kept + back
+    return kept + back, changed
+
+
+def _place(
+    found: list[Signing], salaries: dict[int, float], last: int, current: bool
+) -> list[_Placed]:
+    """Count forward, then back where that overran the current contract. An article's
+    "extension" that leaves the current contract overrun with no reading that fits is read as
+    the source's plain signing instead (Harden's 2026 deal, a new contract from 2026-27)."""
+    placed = _forward(found, salaries)
+    if current:
+        placed = _count_back(found, placed, last, salaries)
+    for signing in reversed(found):
+        if not (current and placed and placed[-1].end is not None and placed[-1].end > last):
+            break
+        if signing.extension_source != "wikipedia":
+            continue
+        signing.extension, signing.extension_source = False, None
+        retry = _count_back(found, _forward(found, salaries), last, salaries)
+        if retry and retry[-1].end is not None and retry[-1].end <= last:
+            placed = retry
+        else:
+            signing.extension, signing.extension_source = True, "wikipedia"
+    return placed
 
 
 def contract_spans(
@@ -463,9 +600,8 @@ def contract_spans(
     last_reported = max(_start_year(s) for s in seasons)
     current = bool(reference.get("current_contract"))
     found = signings(reference, wikipedia, draft)
-    placed = _forward(found)
-    if current:
-        placed = _count_back(found, placed, last_reported)
+    salaries = _salaries(reference)
+    placed = _place(found, salaries, last_reported, current)
     spans = []
     for i, span in enumerate(placed):
         if span.end is None:
@@ -492,6 +628,7 @@ def contract_spans(
                 "terms": signed_by.terms,
                 "source": signed_by.source,
                 "source_url": signed_by.source_url,
+                "extension_source": signed_by.extension_source,
                 "current": current and i == len(placed) - 1 and end == last_reported,
             }
         )
@@ -517,6 +654,7 @@ def unplaced_signings(
             "terms": s.terms,
             "source": s.source,
             "source_url": s.source_url,
+            "extension_source": s.extension_source,
         }
         for s in signings(reference, wikipedia, draft)
         if s.day not in placed
