@@ -20,20 +20,21 @@ async function shot(page: Page, name: string) {
 }
 
 const header = (page: Page) => page.locator("header");
-const dialog = (page: Page) => page.getByRole("dialog", { name: "Sign in" });
+const dialog = (page: Page) => page.getByRole("dialog", { name: "Sign In" });
 
 async function signInWithPassword(page: Page, password = "correct horse battery") {
-  await header(page).getByRole("button", { name: "Sign in" }).click();
+  await header(page).getByRole("button", { name: "Sign In" }).click();
+  await dialog(page).getByRole("button", { name: "Continue with Email" }).click();
   await dialog(page).getByLabel("Email").fill("owner@example.com");
   await dialog(page).getByLabel("Password").fill(password);
-  await dialog(page).getByRole("button", { name: "Sign in", exact: true }).click();
+  await dialog(page).getByRole("button", { name: "Sign In", exact: true }).click();
 }
 
 test("signed out, the site works and favourite controls invite a sign-in", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openWorkbench(page, "/stats");
   await expect(page.locator(".stats-table-row").first()).toBeVisible();
-  await expect(header(page).getByRole("button", { name: "Sign in" })).toBeVisible();
+  await expect(header(page).getByRole("button", { name: "Sign In" })).toBeVisible();
 
   await header(page).getByRole("button", { name: "Favorite players" }).click();
   const panel = page.getByRole("dialog", { name: "Favorite players" });
@@ -59,8 +60,8 @@ test("signed out, the site works and favourite controls invite a sign-in", async
 test("the demo account is one click, shows the shared list and keeps the session out of reach of scripts", async ({ page, context }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openWorkbench(page, "/stats");
-  await header(page).getByRole("button", { name: "Sign in" }).click();
-  await dialog(page).getByRole("button", { name: "Use the demo account" }).click();
+  await header(page).getByRole("button", { name: "Sign In" }).click();
+  await dialog(page).getByRole("button", { name: "Use the Demo Account" }).click();
   await expect(dialog(page)).toHaveCount(0);
   await expect(header(page).getByRole("button", { name: "Demo account" })).toBeVisible();
 
@@ -88,7 +89,7 @@ test("an invited account signs in, saves favourites from Stats and filters to th
   await signInWithPassword(page, "not the password");
   await expect(dialog(page).getByRole("alert")).toHaveText("That email and password don't match an account.");
   await dialog(page).getByLabel("Password").fill("correct horse battery");
-  await dialog(page).getByRole("button", { name: "Sign in", exact: true }).click();
+  await dialog(page).getByRole("button", { name: "Sign In", exact: true }).click();
   await expect(header(page).getByRole("button", { name: "Owner" })).toBeVisible();
 
   // Add Fixture Guard from the Stats detail drawer.
@@ -112,7 +113,7 @@ test("an invited account signs in, saves favourites from Stats and filters to th
   await header(page).getByRole("button", { name: "Owner" }).click();
   await expect(page.getByRole("menu")).toContainText("owner@example.com");
   await page.getByRole("menuitem", { name: "Sign out" }).click();
-  await expect(header(page).getByRole("button", { name: "Sign in" })).toBeVisible();
+  await expect(header(page).getByRole("button", { name: "Sign In" })).toBeVisible();
   await expect(page.getByText("Favourites belong to an account.")).toBeVisible();
 });
 
@@ -132,8 +133,8 @@ test("favourites persist across a reload and belong to the account", async ({ pa
   const visitor = await other.newPage();
   await visitor.setViewportSize({ width: 1440, height: 900 });
   await openWorkbench(visitor, "/stats");
-  await header(visitor).getByRole("button", { name: "Sign in" }).click();
-  await dialog(visitor).getByRole("button", { name: "Use the demo account" }).click();
+  await header(visitor).getByRole("button", { name: "Sign In" }).click();
+  await dialog(visitor).getByRole("button", { name: "Use the Demo Account" }).click();
   await header(visitor).getByRole("button", { name: "Favorite players (1)" }).click();
   const panel = visitor.getByRole("dialog", { name: "Favorite players" });
   await expect(panel.getByRole("link", { name: /Fixture Star/ })).toBeVisible();
@@ -147,7 +148,7 @@ test("a player page saves the player to the account's favourites", async ({ page
   const star = page.locator(".workbench-content, main").getByRole("button", { name: "Add to favorites" }).first();
   await star.click();
   await expect(dialog(page)).toContainText("Sign in, or use the demo account, to save favourite players.");
-  await dialog(page).getByRole("button", { name: "Use the demo account" }).click();
+  await dialog(page).getByRole("button", { name: "Use the Demo Account" }).click();
   await expect(header(page).getByRole("button", { name: "Demo account" })).toBeVisible();
   await page.locator("main").getByRole("button", { name: "Add to favorites" }).first().click();
   await expect(page.locator("main").getByRole("button", { name: "Remove from favorites" }).first()).toBeVisible();
@@ -158,27 +159,28 @@ test("a player page saves the player to the account's favourites", async ({ page
 test("too many failed sign-ins are refused with the wait in words", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openWorkbench(page, "/stats");
-  await header(page).getByRole("button", { name: "Sign in" }).click();
+  await header(page).getByRole("button", { name: "Sign In" }).click();
+  await dialog(page).getByRole("button", { name: "Continue with Email" }).click();
   await dialog(page).getByLabel("Email").fill("owner@example.com");
   for (let attempt = 0; attempt < 5; attempt += 1) {
     await dialog(page).getByLabel("Password").fill(`guess ${attempt}`);
-    await dialog(page).getByRole("button", { name: "Sign in", exact: true }).click();
+    await dialog(page).getByRole("button", { name: "Sign In", exact: true }).click();
     await expect(dialog(page).getByRole("alert")).toHaveText("That email and password don't match an account.");
   }
   await dialog(page).getByLabel("Password").fill("correct horse battery");
-  await dialog(page).getByRole("button", { name: "Sign in", exact: true }).click();
+  await dialog(page).getByRole("button", { name: "Sign In", exact: true }).click();
   await expect(dialog(page).getByRole("alert")).toHaveText("Too many attempts. Try again in 9 minutes.");
 });
 
 test("on a phone, favourites and the account are in the drawer", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openWorkbench(page, "/stats");
-  await expect(header(page).getByRole("button", { name: "Sign in" })).toBeHidden();
+  await expect(header(page).getByRole("button", { name: "Sign In" })).toBeHidden();
   await expect(header(page).getByRole("button", { name: "Favorite players" })).toBeHidden();
   await page.getByRole("button", { name: "Toggle navigation drawer" }).click();
   const drawer = page.getByRole("dialog").filter({ has: page.getByRole("navigation", { name: "Drawer navigation" }) });
   await expect(drawer.getByRole("region", { name: "Favorite players" })).toContainText("Keep a list of favourite players");
-  await drawer.getByRole("button", { name: "Use the demo account" }).click();
+  await drawer.getByRole("button", { name: "Use the Demo Account" }).click();
   await page.getByRole("button", { name: "Toggle navigation drawer" }).click();
   await expect(drawer.getByRole("link", { name: /Fixture Star/ })).toBeVisible();
   await expect(drawer).toContainText("Demo account");
@@ -201,23 +203,25 @@ test("the sign-in dialog fits a phone", async ({ page }) => {
 });
 
 // Accounts plan: Google and password sign-up beside sign-in and the demo; Ask needs an account.
-test("the dialog offers Google, sign-up and the demo, and sign-up says to check email", async ({ page }) => {
+test("the dialog opens on Google, email and the demo, and sign-up says to check email", async ({ page }) => {
   await openWorkbench(page, "/stats");
-  await header(page).getByRole("button", { name: "Sign in" }).click();
+  await header(page).getByRole("button", { name: "Sign In" }).click();
   await expect(dialog(page).getByRole("button", { name: "Continue with Google" })).toBeVisible();
-  await expect(dialog(page).getByRole("button", { name: "Use the demo account" })).toBeVisible();
+  await expect(dialog(page).getByRole("button", { name: "Use the Demo Account" })).toBeVisible();
   await expect(dialog(page)).not.toContainText("invitation");
   await expect(dialog(page)).not.toContainText("reset each night");
   await shot(page, "sign-in-dialog");
-  await dialog(page).getByRole("button", { name: "Create an account" }).click();
-  const create = page.getByRole("dialog", { name: "Create account" });
+  await expect(dialog(page)).toContainText("Don't have an account?");
+  await dialog(page).getByRole("button", { name: "Sign Up" }).click();
+  const create = page.getByRole("dialog", { name: "Create Account" });
+  await create.getByRole("button", { name: "Continue with Email" }).click();
   await create.getByLabel("Email").fill("new@example.com");
   await create.getByLabel("Password").fill("a long enough password");
   await shot(page, "create-account");
-  await create.getByRole("button", { name: "Create account" }).click();
-  const sent = page.getByRole("dialog", { name: "Check your email" });
+  await create.getByRole("button", { name: "Create Account", exact: true }).click();
+  const sent = page.getByRole("dialog", { name: "Check Your Email" });
   await expect(sent).toContainText("new@example.com");
-  await expect(header(page).getByRole("button", { name: "Sign in" })).toBeVisible();
+  await expect(header(page).getByRole("button", { name: "Sign In" })).toBeVisible();
 });
 
 test("signed out, Ask shows the way in instead of the composer", async ({ page }) => {
@@ -226,7 +230,7 @@ test("signed out, Ask shows the way in instead of the composer", async ({ page }
   await expect(prompt).toContainText("Sign in, or use the demo account, to ask questions.");
   await expect(page.locator(".ask-composer textarea")).toHaveCount(0);
   await shot(page, "ask-signed-out");
-  await prompt.getByRole("button", { name: "Use the demo account" }).click();
+  await prompt.getByRole("button", { name: "Use the Demo Account" }).click();
   await expect(page.locator(".ask-composer textarea")).toBeVisible();
   await expect(header(page).getByRole("button", { name: "Demo account" })).toBeVisible();
 });

@@ -49,7 +49,7 @@ describe("accounts (finish plan F04)", () => {
     await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-out"));
     expect(screen.getByText("Keep a list of favourite players and filter Stats to them.")).toBeTruthy();
     fireEvent.click(screen.getByText("toggle"));
-    expect(await screen.findByRole("dialog", { name: "Sign in" })).toBeTruthy();
+    expect(await screen.findByRole("dialog", { name: "Sign In" })).toBeTruthy();
     expect(screen.getByText("Sign in, or use the demo account, to save favourite players.")).toBeTruthy();
     // Nothing is written; the dialog only reads which ways in the server offers.
     expect(fetch.mock.calls.every(call => (call[1]?.method ?? "GET") === "GET")).toBe(true);
@@ -64,8 +64,9 @@ describe("accounts (finish plan F04)", () => {
     });
     mount();
     await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-out"));
-    fireEvent.click(screen.getAllByRole("button", { name: "Sign in" })[0]);
-    const dialog = await screen.findByRole("dialog", { name: "Sign in" });
+    fireEvent.click(screen.getAllByRole("button", { name: "Sign In" })[0]);
+    const dialog = await screen.findByRole("dialog", { name: "Sign In" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue with Email" }));
     fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: " owner@example.com " } });
     fireEvent.change(dialog.querySelector("input[type=password]")!, { target: { value: "a long password" } });
     await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
@@ -87,8 +88,9 @@ describe("accounts (finish plan F04)", () => {
     });
     mount();
     await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-out"));
-    fireEvent.click(screen.getAllByRole("button", { name: "Sign in" })[0]);
-    const dialog = await screen.findByRole("dialog", { name: "Sign in" });
+    fireEvent.click(screen.getAllByRole("button", { name: "Sign In" })[0]);
+    const dialog = await screen.findByRole("dialog", { name: "Sign In" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue with Email" }));
     fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: "a@b.co" } });
     fireEvent.change(dialog.querySelector("input[type=password]")!, { target: { value: "x" } });
     await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
@@ -141,7 +143,7 @@ describe("accounts (finish plan F04)", () => {
 
   it("outside a provider, components read as signed out", () => {
     render(<FavoritePlayersList />);
-    expect(screen.getByRole("button", { name: "Use the demo account" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Use the Demo Account" })).toBeTruthy();
   });
 });
 
@@ -150,17 +152,20 @@ describe("sign-up, email links and Google (accounts plan)", () => {
 
   async function openDialog() {
     await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("signed-out"));
-    fireEvent.click(screen.getAllByRole("button", { name: "Sign in" })[0]);
-    return screen.findByRole("dialog", { name: "Sign in" });
+    fireEvent.click(screen.getAllByRole("button", { name: "Sign In" })[0]);
+    return screen.findByRole("dialog", { name: "Sign In" });
   }
 
   it("shows only the ways in the server offers", async () => {
     api({ "GET me": () => Response.json({ user: null }), "GET options": () => Response.json({ google: false, sign_up: false, demo: true }) });
     mount();
     const dialog = await openDialog();
-    await waitFor(() => expect(within(dialog).getByRole("button", { name: "Use the demo account" })).toBeTruthy());
+    await waitFor(() => expect(within(dialog).getByRole("button", { name: "Use the Demo Account" })).toBeTruthy());
     expect(screen.queryByRole("button", { name: "Continue with Google" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Create an account" })).toBeNull();
+    // Without email the footer cannot offer Sign Up, and the password form has no Forgot Password?.
+    expect(screen.queryByRole("button", { name: "Sign Up" })).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue with Email" }));
+    expect(screen.queryByRole("button", { name: "Forgot Password?" })).toBeNull();
     expect(screen.queryByText(/invitation/)).toBeNull();
   });
 
@@ -172,13 +177,17 @@ describe("sign-up, email links and Google (accounts plan)", () => {
     });
     mount();
     await openDialog();
-    fireEvent.click(await screen.findByRole("button", { name: "Create an account" }));
-    const dialog = await screen.findByRole("dialog", { name: "Create account" });
+    fireEvent.click(await screen.findByRole("button", { name: "Sign Up" }));
+    const dialog = await screen.findByRole("dialog", { name: "Create Account" });
+    expect(within(dialog).getByText("Already have an account?")).toBeTruthy();
+    // Creating an account offers Google and email, not the shared demo.
+    expect(within(dialog).queryByRole("button", { name: "Use the Demo Account" })).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue with Email" }));
     fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Grace" } });
     fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: "grace@example.com" } });
     fireEvent.change(dialog.querySelector("input[type=password]")!, { target: { value: "a long password" } });
     await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
-    expect(await screen.findByRole("dialog", { name: "Check your email" })).toBeTruthy();
+    expect(await screen.findByRole("dialog", { name: "Check Your Email" })).toBeTruthy();
     expect(screen.getByRole("status").textContent).toContain("grace@example.com");
     const call = fetch.mock.calls.find(entry => String(entry[0]).endsWith("sign-up"))!;
     expect(JSON.parse(String(call[1]!.body))).toEqual({ email: "grace@example.com", password: "a long password", name: "Grace" });
@@ -193,14 +202,29 @@ describe("sign-up, email links and Google (accounts plan)", () => {
       "POST forgot-password": () => Response.json({ status: "check_email", message: "Check your email for a link to finish." }, { status: 202 }),
     });
     mount();
-    await openDialog();
-    fireEvent.click(await screen.findByRole("button", { name: "Forgot password?" }));
-    const dialog = await screen.findByRole("dialog", { name: "Reset password" });
+    fireEvent.click(within(await openDialog()).getByRole("button", { name: "Continue with Email" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Forgot Password?" }));
+    const dialog = await screen.findByRole("dialog", { name: "Reset Password" });
     expect(dialog.querySelector("input[type=password]")).toBeNull();
     fireEvent.change(dialog.querySelector("input[type=email]")!, { target: { value: "grace@example.com" } });
     await act(async () => { fireEvent.submit(dialog.querySelector("form")!); });
-    expect(await screen.findByRole("dialog", { name: "Check your email" })).toBeTruthy();
+    expect(await screen.findByRole("dialog", { name: "Check Your Email" })).toBeTruthy();
     expect(fetch.mock.calls.some(entry => String(entry[0]).endsWith("forgot-password"))).toBe(true);
+  });
+
+  it("opens on a choice, and email leads to the form and back", async () => {
+    api({ "GET me": () => Response.json({ user: null }), "GET options": () => Response.json(ALL) });
+    mount();
+    const dialog = await openDialog();
+    await waitFor(() => expect(within(dialog).getByRole("button", { name: "Continue with Google" })).toBeTruthy());
+    expect(dialog.querySelector("input")).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue with Email" }));
+    expect(dialog.querySelector("input[type=password]")).toBeTruthy();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Back to Options" }));
+    expect(dialog.querySelector("input")).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Sign Up" }));
+    fireEvent.click(within(await screen.findByRole("dialog", { name: "Create Account" })).getByRole("button", { name: "Sign In" }));
+    expect(await screen.findByRole("dialog", { name: "Sign In" })).toBeTruthy();
   });
 
   it("sends Google sign-in through the proxy and back to this page", async () => {

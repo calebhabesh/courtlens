@@ -15,6 +15,8 @@ export interface ModalProps {
   title?: ReactNode;
   description?: ReactNode;
   className?: string;
+  /** A 36 px filled close button instead of the 28 px ghost one (the sign-in dialog). */
+  prominentClose?: boolean;
   children: ReactNode;
 }
 
@@ -24,6 +26,7 @@ export function Modal({
   title,
   description,
   className = "",
+  prominentClose = false,
   children,
 }: ModalProps) {
   const titleId = useId();
@@ -128,8 +131,8 @@ export function Modal({
                 <IconButton
                   icon="close"
                   label="Close dialog"
-                  size="xs"
-                  variant="ghost"
+                  size={prominentClose ? "md" : "xs"}
+                  variant={prominentClose ? "secondary" : "ghost"}
                   onClick={onClose}
                 />
               </div>
