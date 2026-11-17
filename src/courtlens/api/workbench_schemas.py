@@ -745,8 +745,9 @@ class PlayerContractSpan(BaseModel):
     end_season: str
     # stated_length, next_contract (the next one began), current_contract, last_reported_season
     end_basis: str | None
-    # signed (its signing season), previous_contract (after the one in force), current_contract
-    # (counted back from the current contract's last season)
+    # signed (its signing season), previous_contract (after the one in force), salary_rise (where
+    # the salary rose more than one contract allows), current_contract (counted back from the
+    # current contract's last season)
     start_basis: str = "signed"
     signed_date: date
     kind: Literal["signing", "extension"]
@@ -760,6 +761,8 @@ class PlayerContractSpan(BaseModel):
     # wikipedia: a signing Basketball-Reference does not list, from the player's article.
     source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
     source_url: str | None = None
+    # wikipedia: the source lists a plain signing; the player's article calls it an extension.
+    extension_source: Literal["wikipedia"] | None = None
     current: bool
 
 
@@ -775,6 +778,7 @@ class PlayerUnplacedSigning(BaseModel):
     terms: str | None = None
     source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
     source_url: str | None = None
+    extension_source: Literal["wikipedia"] | None = None
 
 
 class PlayerContractTermsSource(BaseModel):
