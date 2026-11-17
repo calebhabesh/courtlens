@@ -240,6 +240,24 @@
   margin-top: var(--space-3);
 }
 
+.account-legal {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-text-smoke);
+  text-align: center;
+}
+
+.account-legal a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.account-legal a:hover {
+  color: var(--color-text);
+}
+
 .account-confirm,
 .account-drawer-actions {
   display: flex;

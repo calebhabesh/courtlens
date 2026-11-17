@@ -5,6 +5,7 @@ import { Button } from "../ui/kit";
 import { Modal } from "../ui/modal";
 import { Field } from "../ui/field";
 import { Input } from "../ui/input";
+import { IntentLink } from "../intent-link";
 import { AccountRequestError, useAccount } from "../../lib/account-context";
 
 type Mode = "sign-in" | "sign-up" | "forgot" | "sent";
@@ -185,6 +186,12 @@ export function SignInDialog() {
                 </Button>
               </div>
             </>
+          )}
+          {mode !== "forgot" && (
+            <p className="account-legal">
+              By continuing you agree to the <IntentLink href="/terms" onClick={close}>Terms</IntentLink> and{" "}
+              <IntentLink href="/privacy" onClick={close}>Privacy Policy</IntentLink>.
+            </p>
           )}
         </>
       )}
