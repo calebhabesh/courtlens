@@ -340,8 +340,8 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       <div className="ask-sign-in" data-field="ask-sign-in">
         <p>Sign in, or use the demo account, to ask questions.</p>
         <div className="ask-sign-in-actions">
-          <Button size="md" variant="primary" onClick={() => account.openSignIn("Sign in, or use the demo account, to ask questions.")}>Sign in</Button>
-          <Button size="md" variant="secondary" icon="user" onClick={() => void account.signInDemo().catch(cause => setError(messageOf(cause)))}>Use the demo account</Button>
+          <Button size="md" variant="primary" onClick={() => account.openSignIn("Sign in, or use the demo account, to ask questions.")}>Sign In</Button>
+          <Button size="md" variant="secondary" icon="user" onClick={() => void account.signInDemo().catch(cause => setError(messageOf(cause)))}>Use the Demo Account</Button>
         </div>
       </div>
     </div>
