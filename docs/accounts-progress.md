@@ -47,3 +47,12 @@ link; not deployed.
   lands on the public origin.
 - **Open:** the VPS `secrets.env` has no Google or SMTP values yet, so production offers the demo
   account only (`/api/account/options` reports `google: false, sign_up: false`).
+
+## 2026-11-17: Google branding verification
+
+Google's branding check rejected the consent screen: the home page domain wasn't verified to the
+owner, and `/privacy` "does not have sufficient content". The terms link pointed at another
+project. Fixes: `/privacy` rewritten as a full policy (operator, what is collected, use, Google
+user data with the Limited Use statement, processors, cookies, retention, security, choices,
+children, changes, contact `privacy@calebhabesh.com`); a new `/terms`; the sign-in dialog links
+both. Domain ownership needs a Search Console DNS TXT record on `calebhabesh.com`.
