@@ -29,6 +29,12 @@
   --color-danger-hover: var(--kit-danger-hover);
   --color-console: var(--color-table-lift);
   --color-console-hover: var(--kit-console-hover);
+  --color-provider: var(--kit-provider);
+  --color-provider-hover: var(--kit-provider-hover);
+  --color-on-provider: var(--kit-on-provider);
+  --color-provider-ring: var(--kit-provider-ring);
+  --color-link: var(--kit-link);
+  --color-link-hover: var(--kit-link-hover);
   --color-identity-a: var(--color-identity-a);
   --color-identity-b: var(--color-identity-b);
   --color-identity-a-soft: var(--color-identity-a-soft);

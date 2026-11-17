@@ -187,13 +187,114 @@
   .courtlens-drawer-account { display: none; }
 }
 
-/* Sign-in dialog */
-.account-dialog { width: min(400px, calc(100vw - var(--space-8))); }
+/* Sign-in dialog (accounts plan, 2026-11-17): the owner's linewatchto dialog. A near-black panel
+   with a sheen and rim light over a deep blurred scrim, a heavy title, white provider buttons, an
+   uppercase "or" rule, inset fields with uppercase labels, and a lighter footer band that
+   switches between signing in and creating an account. */
+.ui-scrim:has(> .account-dialog) {
+  background-color: var(--account-scrim);
+  backdrop-filter: blur(var(--account-scrim-blur)) saturate(170%);
+}
+
+.ui-modal-panel.account-dialog {
+  width: min(420px, 100%);
+  background: var(--account-panel-sheen), var(--account-panel);
+  border-radius: var(--account-panel-radius);
+  box-shadow: var(--account-panel-shadow);
+}
+
+.account-dialog .ui-modal-header {
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) var(--space-1);
+  border-bottom: 0;
+}
+
+.account-dialog .ui-modal-title {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl-lh);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.account-dialog .ui-modal-desc {
+  max-width: 350px;
+  margin-top: var(--space-1);
+  color: var(--color-text-smoke);
+}
+
+.account-dialog .ui-modal-body { padding: var(--space-4) var(--space-5); }
+
+/* Each step slides in from the side, as linewatchto's does. */
+.account-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  animation: account-view-enter var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes account-view-enter {
+  from { opacity: 0; transform: translate3d(var(--space-2), 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Columns, so the buttons fill the dialog's width. */
+.account-stack,
+.account-wide {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-stack { gap: var(--space-3); }
+
+.account-google-mark {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.account-or {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs-lh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.account-or::before,
+.account-or::after {
+  content: "";
+  height: 1px;
+  background: var(--color-hairline-strong);
+}
 
 .account-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
+}
+
+.account-dialog .ui-field-label {
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text-smoke);
+}
+
+.account-dialog .ui-input-wrapper {
+  border-radius: var(--radius-md);
+  background-color: var(--account-field);
+  box-shadow: inset 0 0 0 1px var(--account-field-ring);
+}
+
+.account-dialog .ui-input-wrapper:focus-within { box-shadow: inset 0 0 0 1px var(--account-field-ring), var(--focus-ring); }
+
+/* Inline text actions (Forgot Password?, Back to Options) sit at the start of the column. */
+.account-links {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .account-error {
@@ -203,48 +304,11 @@
   color: var(--color-negative);
 }
 
-.account-or {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin: var(--space-4) 0;
-  font-size: var(--text-xs);
-  color: var(--color-text-smoke);
-}
-
-.account-or::before,
-.account-or::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--color-hairline);
-}
-
-/* A column, so the Google and demo buttons fill the dialog's width. */
-.account-wide {
-  display: flex;
-  flex-direction: column;
-}
-
-.account-google-mark {
-  width: 16px;
-  height: 16px;
-  flex: none;
-}
-
-.account-switch {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-}
-
 .account-legal {
-  margin: var(--space-4) 0 0;
+  margin: 0;
   font-size: var(--text-xs);
   line-height: var(--text-xs-lh);
-  color: var(--color-text-smoke);
+  color: var(--color-text-tertiary);
   text-align: center;
 }
 
@@ -254,9 +318,30 @@
   text-underline-offset: 2px;
 }
 
-.account-legal a:hover {
+.account-legal a:hover { color: var(--color-text); }
+
+/* The footer band runs to the panel's edges, under the body's padding. */
+.account-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) calc(var(--space-5) * -1) calc(var(--space-4) * -1);
+  padding: var(--space-3) var(--space-5);
+  background-color: var(--account-footer);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  font-weight: 700;
   color: var(--color-text);
 }
+
+.account-sent {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-text-secondary);
+}
+
+.account-sent strong { color: var(--color-text); }
 
 .account-confirm,
 .account-drawer-actions {
@@ -280,18 +365,4 @@
   color: var(--color-text-secondary);
 }
 
-.account-sent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.account-sent p {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: var(--text-sm-lh);
-  color: var(--color-text-secondary);
-}
-
-.account-sent strong { color: var(--color-text); }
 }

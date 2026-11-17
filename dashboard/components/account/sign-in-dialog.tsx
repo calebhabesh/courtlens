@@ -8,15 +8,17 @@ import { Input } from "../ui/input";
 import { IntentLink } from "../intent-link";
 import { AccountRequestError, useAccount } from "../../lib/account-context";
 
-type Mode = "sign-in" | "sign-up" | "forgot" | "sent";
+/** `choice`: Google, email or the demo; `email`: the password form; then reset and "check your email". */
+type Mode = "choice" | "email" | "forgot" | "sent";
+/** Whether the person is signing in or creating an account; the footer switches it. */
+type Intent = "sign-in" | "sign-up";
 type Busy = "form" | "demo" | "google" | null;
 
-const TITLES: Record<Mode, string> = {
-  "sign-in": "Sign in",
-  "sign-up": "Create account",
-  forgot: "Reset password",
-  sent: "Check your email",
-};
+function title(mode: Mode, intent: Intent): string {
+  if (mode === "forgot") return "Reset Password";
+  if (mode === "sent") return "Check Your Email";
+  return intent === "sign-up" ? "Create Account" : "Sign In";
+}
 
 function message(error: unknown): string {
   if (error instanceof AccountRequestError && error.status === 429) {
@@ -39,15 +41,17 @@ function GoogleMark() {
 }
 
 /**
- * Accounts plan: Google, a password (sign in, create an account, reset it) and the one-click
- * demo account. Only the ways this server offers are shown.
+ * Accounts plan: the sign-in dialog, after the owner's linewatchto dialog (2026-11-17). It opens on
+ * a choice (Google, email, the demo account); email leads to the password form. A footer band
+ * switches between signing in and creating an account. Only the ways this server offers are shown.
  */
 export function SignInDialog() {
   const {
     signInOpen, signInReason, closeSignIn, signIn, signInDemo, signUp, forgotPassword,
     options, loadOptions, googleHref,
   } = useAccount();
-  const [mode, setMode] = useState<Mode>("sign-in");
+  const [mode, setMode] = useState<Mode>("choice");
+  const [intent, setIntent] = useState<Intent>("sign-in");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,16 +66,15 @@ export function SignInDialog() {
     if (signInOpen && !options) void loadOptions();
   }, [signInOpen, options, loadOptions]);
 
-  const switchTo = (next: Mode) => {
+  const go = (next: Mode, nextIntent: Intent = intent) => {
     setMode(next);
+    setIntent(nextIntent);
     setError(null);
     setPassword("");
   };
 
   const close = () => {
-    setError(null);
-    setPassword("");
-    setMode("sign-in");
+    go("choice", "sign-in");
     closeSignIn();
   };
 
@@ -85,14 +88,14 @@ export function SignInDialog() {
     const secret = password;
     setPassword("");
     try {
-      if (mode === "sign-in") {
-        await signIn(email.trim(), secret);
-      } else if (mode === "sign-up") {
-        setSent(await signUp(email.trim(), secret, name.trim() || undefined));
-        setMode("sent");
-      } else if (mode === "forgot") {
+      if (mode === "forgot") {
         setSent(await forgotPassword(email.trim()));
         setMode("sent");
+      } else if (intent === "sign-up") {
+        setSent(await signUp(email.trim(), secret, name.trim() || undefined));
+        setMode("sent");
+      } else {
+        await signIn(email.trim(), secret);
       }
     } catch (failure) {
       setError(message(failure));
@@ -121,80 +124,97 @@ export function SignInDialog() {
   };
 
   const signUpOn = options?.sign_up ?? false;
+  const signingUp = intent === "sign-up";
   const description = mode === "sent" ? undefined
     : mode === "forgot" ? "We'll email you a link to choose a new password."
-    : mode === "sign-up" ? "Save favourite players and ask CourtLens questions."
-    : signInReason ?? "Sign in to keep favourite players and ask questions.";
-  const needsPassword = mode === "sign-in" || mode === "sign-up";
+    : signingUp ? "Create a free account to save favourite players and ask CourtLens questions."
+    : signInReason ?? "Sign in to keep your favourite players and ask CourtLens questions.";
+  const needsPassword = mode === "email";
   const ready = email.trim() && (!needsPassword || password);
+  const errorLine = error && <p className="account-error" role="alert">{error}</p>;
 
   return (
-    <Modal isOpen={signInOpen} onClose={close} title={TITLES[mode]} className="account-dialog" description={description}>
-      {mode === "sent" ? (
-        <div className="account-sent">
-          <p role="status">{sent} We sent it to <strong>{email.trim()}</strong>.</p>
-          <div className="account-wide">
-            <Button variant="secondary" size="lg" onClick={() => switchTo("sign-in")}>Back to sign in</Button>
-          </div>
-        </div>
-      ) : (
-        <>
-          {mode !== "forgot" && options?.google && (
-            <>
-              <div className="account-wide">
-                <Button variant="secondary" size="lg" loading={busy === "google"} disabled={busy !== null} onClick={google}>
-                  {busy !== "google" && <GoogleMark />}
-                  Continue with Google
-                </Button>
-              </div>
-              <div className="account-or" aria-hidden="true"><span>or</span></div>
-            </>
-          )}
-          <form className="account-form" onSubmit={submit} noValidate>
-            {mode === "sign-up" && (
-              <Field label="Name" htmlFor={nameId} hint="Optional. Shown in the header.">
-                <Input id={nameId} autoComplete="name" maxLength={80} value={name} onChange={event => setName(event.target.value)} disabled={busy !== null} />
-              </Field>
-            )}
-            <Field label="Email" htmlFor={emailId}>
-              <Input id={emailId} type="email" autoComplete={mode === "sign-up" ? "email" : "username"} inputMode="email" required
-                value={email} onChange={event => setEmail(event.target.value)} disabled={busy !== null} />
-            </Field>
-            {needsPassword && (
-              <Field label="Password" htmlFor={passwordId} hint={mode === "sign-up" ? "12 characters or more." : undefined}>
-                <Input id={passwordId} type="password" autoComplete={mode === "sign-up" ? "new-password" : "current-password"} required
-                  minLength={mode === "sign-up" ? 12 : undefined} maxLength={128}
-                  value={password} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
-              </Field>
-            )}
-            {error && <p className="account-error" role="alert">{error}</p>}
-            <Button type="submit" variant="primary" size="lg" loading={busy === "form"} disabled={busy !== null || !ready}>
-              {mode === "sign-in" ? "Sign in" : mode === "sign-up" ? "Create account" : "Email me a link"}
-            </Button>
-          </form>
-          <div className="account-switch">
-            {mode === "sign-in" && signUpOn && <Button variant="text" size="sm" onClick={() => switchTo("forgot")}>Forgot password?</Button>}
-            {mode === "sign-in" && signUpOn && <Button variant="text" size="sm" onClick={() => switchTo("sign-up")}>Create an account</Button>}
-            {mode !== "sign-in" && <Button variant="text" size="sm" onClick={() => switchTo("sign-in")}>Back to sign in</Button>}
-          </div>
-          {mode === "sign-in" && options?.demo !== false && (
-            <>
-              <div className="account-or" aria-hidden="true"><span>or</span></div>
-              <div className="account-wide">
+    <Modal isOpen={signInOpen} onClose={close} title={title(mode, intent)} className="account-dialog" description={description} prominentClose>
+      <div key={`${mode}-${intent}`} className="account-view" data-account-view={mode}>
+        {mode === "sent" ? (
+          <>
+            <p className="account-sent" role="status">{sent} We sent it to <strong>{email.trim()}</strong>.</p>
+            <div className="account-wide">
+              <Button variant="secondary" size="lg" onClick={() => go("email", "sign-in")}>Back to Sign In</Button>
+            </div>
+          </>
+        ) : mode === "choice" ? (
+          <>
+            <div className="account-stack">
+              {options?.google && (
+                <>
+                  <Button variant="provider" size="lg" loading={busy === "google"} disabled={busy !== null} onClick={google}>
+                    {busy !== "google" && <GoogleMark />}
+                    Continue with Google
+                  </Button>
+                  <div className="account-or" aria-hidden="true"><span>or</span></div>
+                </>
+              )}
+              <Button variant="provider" size="lg" icon="mail" disabled={busy !== null} onClick={() => go("email")}>
+                Continue with Email
+              </Button>
+              {!signingUp && options?.demo !== false && (
                 <Button variant="secondary" size="lg" icon="user" loading={busy === "demo"} disabled={busy !== null} onClick={demo}>
-                  Use the demo account
+                  Use the Demo Account
                 </Button>
-              </div>
-            </>
-          )}
-          {mode !== "forgot" && (
+              )}
+            </div>
+            {errorLine}
             <p className="account-legal">
               By continuing you agree to the <IntentLink href="/terms" onClick={close}>Terms</IntentLink> and{" "}
               <IntentLink href="/privacy" onClick={close}>Privacy Policy</IntentLink>.
             </p>
-          )}
-        </>
-      )}
+            {signUpOn && (
+              <div className="account-footer">
+                <span>{signingUp ? "Already have an account?" : "Don't have an account?"}</span>
+                <Button variant="link" size="sm" onClick={() => go("choice", signingUp ? "sign-in" : "sign-up")}>
+                  {signingUp ? "Sign In" : "Sign Up"}
+                </Button>
+              </div>
+            )}
+          </>
+        ) : (
+          <form className="account-form" onSubmit={submit} noValidate>
+            {mode === "email" && signingUp && (
+              <Field label="Name" htmlFor={nameId} hint="Optional. Shown in the header.">
+                <Input id={nameId} inputSize="lg" autoComplete="name" maxLength={80} value={name} onChange={event => setName(event.target.value)} disabled={busy !== null} />
+              </Field>
+            )}
+            <Field label="Email" htmlFor={emailId}>
+              <Input id={emailId} inputSize="lg" type="email" autoComplete={signingUp ? "email" : "username"} inputMode="email" required
+                value={email} onChange={event => setEmail(event.target.value)} disabled={busy !== null} />
+            </Field>
+            {needsPassword && (
+              <Field label="Password" htmlFor={passwordId} hint={signingUp ? "12 characters or more." : undefined}>
+                <Input id={passwordId} inputSize="lg" type="password" autoComplete={signingUp ? "new-password" : "current-password"} required
+                  minLength={signingUp ? 12 : undefined} maxLength={128}
+                  value={password} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
+              </Field>
+            )}
+            {mode === "email" && !signingUp && signUpOn && (
+              <div className="account-links">
+                <Button variant="link" size="sm" onClick={() => go("forgot")}>Forgot Password?</Button>
+              </div>
+            )}
+            {errorLine}
+            <div className="account-wide">
+              <Button type="submit" variant="primary" size="lg" loading={busy === "form"} disabled={busy !== null || !ready}>
+                {mode === "forgot" ? "Email Me a Link" : signingUp ? "Create Account" : "Sign In"}
+              </Button>
+            </div>
+            <div className="account-links">
+              {mode === "forgot"
+                ? <Button variant="link" size="sm" onClick={() => go("email", "sign-in")}>Back to Sign In</Button>
+                : <Button variant="link" size="sm" onClick={() => go("choice")}>Back to Options</Button>}
+            </div>
+          </form>
+        )}
+      </div>
     </Modal>
   );
 }
