@@ -66,7 +66,7 @@ export function AccountMenu() {
   if (status === "signed-out" || !user) {
     return (
       <span className="account-header-control">
-        <Button variant="ghost" tone="onBackground" size="md" icon="user" onClick={() => openSignIn()}><span className="account-label">Sign in</span></Button>
+        <Button variant="ghost" tone="onBackground" size="md" icon="user" onClick={() => openSignIn()}><span className="account-label">Sign In</span></Button>
       </span>
     );
   }
@@ -105,7 +105,7 @@ export function DrawerAccount({ onDone }: { onDone: () => void }) {
   }
   return (
     <div className="account-drawer-row">
-      <Button variant="secondary" size="md" icon="user" onClick={() => { onDone(); openSignIn(); }}>Sign in</Button>
+      <Button variant="secondary" size="md" icon="user" onClick={() => { onDone(); openSignIn(); }}>Sign In</Button>
     </div>
   );
 }

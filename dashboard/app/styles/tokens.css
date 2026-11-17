@@ -89,6 +89,18 @@
     --shadow-menu: 0 8px 24px rgb(0 0 0 / 35%);
     --shadow-3: 0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%);
 
+    /* Sign-in dialog (accounts plan, 2026-11-17, from the owner's linewatchto dialog): a near-black
+       panel with a top sheen and rim light, a lighter footer band, inset fields and a deeper scrim. */
+    --account-panel: #0e1016;
+    --account-panel-sheen: linear-gradient(180deg, rgb(255 255 255 / 4%) 0%, rgb(255 255 255 / 1%) 50%, rgb(0 0 0 / 20%) 100%);
+    --account-panel-shadow: 0 24px 80px rgb(0 0 0 / 60%), 0 10px 32px rgb(0 0 0 / 48%), inset 0 1px 1.5px 0 rgb(255 255 255 / 14%), inset 0 -1px 2px 0 rgb(0 0 0 / 45%);
+    --account-panel-radius: 16px;
+    --account-footer: rgb(255 255 255 / 8%);
+    --account-field: rgb(15 23 42 / 82%);
+    --account-field-ring: rgb(255 255 255 / 14%);
+    --account-scrim: rgb(2 6 23 / 68%);
+    --account-scrim-blur: 24px;
+
     /* Spacing Tokens */
     --space-0: 0;
     --space-0-5: 2px;
@@ -125,6 +137,15 @@
     --kit-primary-hover: color-mix(in srgb, var(--color-accent) 88%, var(--color-white));
     --kit-danger-hover: color-mix(in srgb, var(--color-negative) 15%, var(--color-surface-2));
     --kit-console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
+    /* `provider` (accounts plan, 2026-11-17): a white third-party sign-in button (Google, email),
+       as Google's branding asks and as the owner's linewatchto dialog draws it. `link`: an inline
+       text action in the accent-free info blue (Forgot Password?, Back to Options, Sign Up). */
+    --kit-provider: #ffffff;
+    --kit-provider-hover: #f1f3f6;
+    --kit-on-provider: #1f1f1f;
+    --kit-provider-ring: #dadce0;
+    --kit-link: var(--color-info);
+    --kit-link-hover: color-mix(in srgb, var(--color-info) 70%, var(--color-white));
     /* Select chevron glyph sizes, for its optical end offset (instruction 71). */
     --kit-chevron-sm: 14px;
     --kit-chevron: 16px;

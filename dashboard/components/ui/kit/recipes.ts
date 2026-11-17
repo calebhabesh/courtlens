@@ -6,7 +6,7 @@ import type { IconSize } from "../icon";
  * so every class must appear as a complete literal string.
  */
 export type KitSize = "xs" | "sm" | "md" | "lg";
-export type KitVariant = "primary" | "secondary" | "ghost" | "danger" | "text";
+export type KitVariant = "primary" | "secondary" | "ghost" | "danger" | "text" | "provider" | "link";
 /** `console`: the Stats/reference control console on the table lift; `onBackground`: ghost controls on the page background (header). */
 export type KitTone = "default" | "console" | "onBackground";
 
@@ -51,6 +51,8 @@ const variants: Record<KitVariant, string> = {
   ghost: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:bg-surface-hover kit:hoverable:text-text",
   danger: "kit:bg-surface-2 kit:font-medium kit:text-negative kit:hoverable:bg-danger-hover",
   text: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:text-text",
+  provider: "kit:bg-provider kit:font-semibold kit:text-on-provider kit:inset-ring kit:inset-ring-provider-ring kit:hoverable:bg-provider-hover",
+  link: "kit:bg-transparent kit:font-semibold kit:text-link kit:hoverable:text-link-hover kit:hoverable:underline kit:underline-offset-2",
 };
 
 /** A tone replaces its variant's colours: `console` for secondary, `onBackground` for ghost. */
@@ -108,7 +110,7 @@ export function controlClasses({ size, variant, tone = "default", square = false
     pressable,
     field ? inFieldSquare : sizes[size],
     tight ? "kit:gap-1" : "kit:gap-2",
-    field ? false : square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
+    field ? false : square ? squares[size] : variant === "text" || variant === "link" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
     beckon ? beckonClasses[identity ?? "accent"] : tone === "default" ? variants[variant] : tones[tone],
     variant !== "primary" && (identity ? identitySelected[identity] : selectedClasses),
     round && square ? "kit:rounded-full" : "kit:rounded-sm",

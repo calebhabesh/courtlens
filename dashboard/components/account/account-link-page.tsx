@@ -22,7 +22,7 @@ export function AccountLinkPage({ kind, token }: { kind: "verify" | "reset"; tok
     return (
       <div className="account-link">
         <p>This link is incomplete. Open it again from the email, or ask for a new one.</p>
-        <div><Button variant="secondary" size="md" onClick={() => openSignIn()}>Sign in</Button></div>
+        <div><Button variant="secondary" size="md" onClick={() => openSignIn()}>Sign In</Button></div>
       </div>
     );
   }

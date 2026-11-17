@@ -22,9 +22,9 @@ export function FavoritePlayersList({ onNavigate }: { onNavigate?: () => void })
       <div className="favorite-players-signed-out">
         <p>Keep a list of favourite players and filter Stats to them.</p>
         <div className="favorite-players-actions">
-          <Button variant="primary" size="sm" onClick={() => { onNavigate?.(); openSignIn(); }}>Sign in</Button>
+          <Button variant="primary" size="sm" onClick={() => { onNavigate?.(); openSignIn(); }}>Sign In</Button>
           <Button variant="secondary" size="sm" icon="user" onClick={() => { onNavigate?.(); void signInDemo().catch(() => openSignIn()); }}>
-            Use the demo account
+            Use the Demo Account
           </Button>
         </div>
       </div>

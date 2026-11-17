@@ -56,3 +56,17 @@ project. Fixes: `/privacy` rewritten as a full policy (operator, what is collect
 user data with the Limited Use statement, processors, cookies, retention, security, choices,
 children, changes, contact `privacy@calebhabesh.com`); a new `/terms`; the sign-in dialog links
 both. Domain ownership needs a Search Console DNS TXT record on `calebhabesh.com`.
+
+## 2026-11-17: sign-in dialog after linewatchto
+
+Owner: imitate the sign-in flow and container of their linewatchto dialog. The dialog now opens on
+a choice (white Continue with Google and Continue with Email buttons with an uppercase "or" rule,
+then Use the Demo Account); email leads to the password form (uppercase field labels, Forgot
+Password?, Back to Options). A footer band switches between Sign In and Create Account ("Don't have
+an account? Sign Up"). The panel is near-black with a sheen and rim light, a 16 px corner, a heavy
+title and a 36 px close button, over a deeper blurred scrim; each step slides in. Built through the
+control kit: two new variants, `provider` and `link` (control kit v1), `Modal`'s `prominentClose`,
+and `account-*` tokens. CourtLens keeps its gold primary for the submit button and Title Case
+labels. Header, drawer, Favorites and Ask prompts read "Sign In" / "Use the Demo Account".
+Vitest 15/15 (account), Playwright 163 passed (f04-accounts, fo14-accessibility,
+threaded-assistant, control-kit, visual-baselines, im07-agent) on a scratch production build.

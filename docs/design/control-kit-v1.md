@@ -79,6 +79,8 @@ inner radii and gaps between kit controls of one size. The controls themselves a
 | `ghost` | transparent, `--color-text-secondary` | `--color-surface-hover`, `--color-text` | toolbars, table rows, header (on the page background the text is `--color-on-bg-secondary`) |
 | `danger` | `--color-surface-2`, `--color-negative` text | negative mixed 15% into surface-2 | destructive actions |
 | `text` | transparent, `--color-text-secondary`, no inline padding | `--color-text` only, no fill | an inline disclosure that sits flush with the content it follows (player Earlier Transactions) |
+| `provider` | `--kit-provider` white fill, `--kit-on-provider` text, 1 px inset `--kit-provider-ring` | `--kit-provider-hover` | a third-party or email sign-in choice (Continue with Google, Continue with Email); white as Google's sign-in branding asks. Added 2026-11-17 (accounts plan, owner's linewatchto dialog) |
+| `link` | transparent, `--kit-link` (info blue) text, weight 600, no inline padding | `--kit-link-hover`, underlined | an inline text action inside a form or dialog (Forgot Password?, Back to Options, Sign Up). Added 2026-11-17 |
 
 **Selected** (`aria-pressed`, `aria-checked`, `aria-selected` or `aria-current` true) applies to every
 variant except `primary`: `--color-accent-soft` fill, `--color-accent` text, a 1 px inset accent ring,
