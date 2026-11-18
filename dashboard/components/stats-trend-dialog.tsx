@@ -1,26 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { Icon } from "./ui/icon";
 import { Modal } from "./ui/modal";
 import { Select } from "./ui/select";
 import { ValueDot, valueDotRadius, valueDotsFit } from "./charts/value-dot";
-import { executeWorkbenchQuery, getPlayerSeasons } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getPlayerCareer, getPlayerSeasons } from "@/lib/workbench-api";
 import { DARKO_COLUMNS, formatColumnValue, TRACKING_COLUMNS, usesImpactManifest, type ColumnDefinition } from "@/lib/stats-presets";
 import { DarkoSourceLink } from "./darko-source-link";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { phaseLabel } from "@/lib/scope-labels";
-import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+import type { PlayerCareerResponse, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
 import { PlayerLink } from "./entity-link";
 
 const MAX_PLAYERS = 4;
 const SEASON_CONCURRENCY = 3;
+/** Phases the career read serves; play-in and Cup trends keep one query per season. */
+const CAREER_PHASES = new Set(["regular_season", "playoffs"]);
 
 type TrendPlayer = { player_id: string; player_name: string; portrait_url?: string | null };
-/** failed: the season query errored, so its values are unavailable (not "no games"). */
-type SeasonRows = { season: string; items: PlayerResearchItem[]; failed?: boolean };
+/** failed: players whose read errored, so their values are unavailable (not "no games"). */
+type SeasonRows = { season: string; items: PlayerResearchItem[]; failed?: string[] };
+/** One player's career read; seasons is absent when the read failed. */
+export type CareerRead = { player_id: string; seasons?: PlayerCareerResponse["seasons"] };
 
 /** The loaded seasons from the first to the last one any player appeared in; gaps inside stay. */
 export function careerSeasons(loaded: string[], played: string[]): string[] {
@@ -46,6 +50,17 @@ export async function settleLimited<T, R>(items: T[], limit: number, run: (item:
   return results;
 }
 
+/** Season rows from each player's career read, over the career span any player covers. */
+export function careerRows(loaded: string[], reads: CareerRead[]): SeasonRows[] {
+  const bySeason = new Map<string, PlayerResearchItem[]>();
+  for (const read of reads) for (const entry of read.seasons ?? []) {
+    if (entry.item) bySeason.set(entry.season, [...bySeason.get(entry.season) ?? [], entry.item]);
+  }
+  const failed = reads.filter(read => !read.seasons).map(read => read.player_id);
+  return careerSeasons(loaded, [...bySeason.keys()])
+    .map(season => ({ season, items: bySeason.get(season) ?? [], ...(failed.length ? { failed } : {}) }));
+}
+
 export type TrendTarget = { player: PlayerResearchItem; columnKey: string };
 
 /** The value a column shows, as a number for plotting; GP and MIN use the row-level fields. */
@@ -58,8 +73,10 @@ function plotValue(column: ColumnDefinition, item: PlayerResearchItem): number |
 
 /**
  * the reference site's stat trend dialog: one stat across the loaded seasons for up to four players.
- * Each season is its own server query in the same phase, window and release; a season without a
- * row for a player is a gap (unknown), never zero.
+ * Whole-season trends read each player's career once (every season row with every column, from
+ * the stored season cohorts), so switching the statistic needs no request. Other windows and
+ * phases query each season in the same phase, window and release. A season without a row for a
+ * player is a gap (unknown), never zero.
  */
 export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, onClose }: {
   target: TrendTarget | null;
@@ -74,6 +91,8 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   const [players, setPlayers] = useState<TrendPlayer[]>([]);
   const [lookup, setLookup] = useState("");
   const [result, setResult] = useState<{ key: string; rows?: SeasonRows[]; error?: string } | null>(null);
+  // Career reads by player, phase and release: reopening or adding a player reuses them.
+  const careers = useRef(new Map<string, Promise<PlayerCareerResponse>>());
 
   // Each opening starts from the clicked cell.
   if (target !== opened) {
@@ -93,11 +112,34 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   const impact = Boolean(column && usesImpactManifest(column.key));
   // Box stats arrive with every row; impact and tracking values join only for a named column.
   const joined = column && (impact || column.key in TRACKING_COLUMNS) ? column.key : null;
-  const requestKey = JSON.stringify({ ids, seasons, phase: querySpec.phase, open: Boolean(target), joined });
+  // A career row is the whole-season row, so only season-window trends can read careers.
+  const career = CAREER_PHASES.has(querySpec.phase) && (querySpec.window?.kind ?? "season") === "season";
+  const requestKey = JSON.stringify({ ids, seasons, phase: querySpec.phase, release: querySpec.release_id, open: Boolean(target),
+    career, joined: career ? null : joined });
 
   useEffect(() => {
     if (!target || ids.length === 0) return;
     let active = true;
+    const failure = { key: requestKey, error: "Trend unavailable: the season queries failed. Try again." };
+    if (career) {
+      const readCareer = (id: string) => {
+        const key = `${id}|${querySpec.phase}|${querySpec.release_id ?? ""}`;
+        let read = careers.current.get(key);
+        if (!read) {
+          read = getPlayerCareer(id, { phase: querySpec.phase, releaseId: querySpec.release_id ?? undefined });
+          careers.current.set(key, read);
+          read.catch(() => careers.current.delete(key));
+        }
+        return read;
+      };
+      Promise.allSettled(ids.map(readCareer)).then(settled => {
+        if (!active) return;
+        const reads = settled.map((entry, index): CareerRead => ({ player_id: ids[index],
+          ...(entry.status === "fulfilled" ? { seasons: entry.value.seasons } : {}) }));
+        setResult(reads.every(read => !read.seasons) ? failure : { key: requestKey, rows: careerRows(seasons, reads) });
+      });
+      return () => { active = false; };
+    }
     const querySeason = async (season: string): Promise<SeasonRows> => {
       const scope = catalog?.stats_scopes?.find(entry => entry.season === season && entry.phase === querySpec.phase);
       const spec: QuerySpec = {
@@ -118,10 +160,8 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
       .then(range => settleLimited(range, SEASON_CONCURRENCY, querySeason).then(settled => {
         if (!active) return;
         const rows = settled.map((entry, index): SeasonRows => entry.status === "fulfilled" ? entry.value
-          : { season: range[index], items: [], failed: true });
-        setResult(range.length > 0 && rows.every(row => row.failed)
-          ? { key: requestKey, error: "Trend unavailable: the season queries failed. Try again." }
-          : { key: requestKey, rows });
+          : { season: range[index], items: [], failed: ids });
+        setResult(range.length > 0 && rows.every(row => row.failed) ? failure : { key: requestKey, rows });
       }));
     return () => { active = false; };
     // requestKey covers every input of the request.
@@ -226,7 +266,8 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
   const series = players.map(player => rows.map(row => {
     const item = row.items.find(entry => entry.player_id === player.player_id);
     const value = item ? plotValue(column, item) : null;
-    return { season: row.season, value, label: item && value !== null ? formatColumnValue(column, item) : row.failed ? "Unavailable" : "No games" };
+    return { season: row.season, value, label: item && value !== null ? formatColumnValue(column, item)
+      : row.failed?.includes(player.player_id) ? "Unavailable" : "No games" };
   }));
   const values = series.flat().map(point => point.value).filter((value): value is number => value !== null);
   if (values.length === 0) return <p className="stats-trend-note">No games for these players in the loaded seasons.</p>;

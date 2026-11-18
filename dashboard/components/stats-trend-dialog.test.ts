@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { careerSeasons, settleLimited } from "./stats-trend-dialog";
+import type { PlayerResearchItem } from "@/lib/types";
+import { careerRows, careerSeasons, settleLimited } from "./stats-trend-dialog";
 
 describe("careerSeasons", () => {
   const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
@@ -8,6 +9,25 @@ describe("careerSeasons", () => {
   });
   it("is empty when no loaded season was played", () => {
     expect(careerSeasons(loaded, ["1999-00"])).toEqual([]);
+  });
+});
+
+describe("careerRows", () => {
+  const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
+  const row = (id: string) => ({ player_id: id, metrics: {} }) as unknown as PlayerResearchItem;
+  it("groups each season's rows across players over the shared career span, gaps included", () => {
+    const rows = careerRows(loaded, [
+      { player_id: "a", seasons: [{ season: "2016-17", item: row("a") }, { season: "2014-15", item: row("a") }] },
+      { player_id: "b", seasons: [{ season: "2016-17", item: row("b") }, { season: "2015-16", item: null }] }
+    ]);
+    expect(rows.map(entry => [entry.season, entry.items.map(item => item.player_id)])).toEqual([
+      ["2014-15", ["a"]], ["2015-16", []], ["2016-17", ["a", "b"]]
+    ]);
+    expect(rows.every(entry => entry.failed === undefined)).toBe(true);
+  });
+  it("marks a failed read's player unavailable without hiding the others", () => {
+    const rows = careerRows(loaded, [{ player_id: "a", seasons: [{ season: "2017-18", item: row("a") }] }, { player_id: "b" }]);
+    expect(rows).toEqual([{ season: "2017-18", items: [row("a")], failed: ["b"] }]);
   });
 });
 
