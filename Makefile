@@ -126,8 +126,7 @@ deploy:
 	@git fetch -q origin main
 	@sha="$$(git rev-parse origin/main)"; \
 	if [ "$$(git rev-parse HEAD)" != "$$sha" ]; then echo "HEAD is not origin/main; deploying origin/main ($$sha). Push first to deploy HEAD."; fi; \
-	gh workflow run deploy.yml --ref main -f sha="$$sha" && sleep 4 && \
-	echo "Deploying $$sha: $$(gh run list --workflow deploy.yml --limit 1 --json url --jq '.[0].url')"
+	echo "Deploying $$sha"; gh workflow run deploy.yml --ref main -f sha="$$sha"
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov warehouse/target warehouse/logs dashboard/.next

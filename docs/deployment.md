@@ -431,7 +431,7 @@ Deploy runs and the repository's `production` environment.
 **How the runner gets in.** The VPS has no public SSH. The Deploy job joins the tailnet as an
 ephemeral `tag:ci` node through Tailscale workload identity: Tailscale's trust credential
 "GitHub Actions Deploys" accepts GitHub's OIDC token for subject
-`repo:calebhabesh/*:environment:production`, so no Tailscale secret is stored. The tailnet policy
+`repo:calebhabesh@87959618/*:environment:production` (GitHub's immutable subject, with the account and repository IDs), so no Tailscale secret is stored. The tailnet policy
 lets `tag:ci` reach only `100.67.196.101` on `tcp:22`. The job's SSH key (`VPS_SSH_KEY`, with
 `VPS_SSH_KNOWN_HOSTS`) is pinned in `~/.ssh/authorized_keys` on the VPS:
 
@@ -737,7 +737,7 @@ These steps have already been done once; they are recorded for a rebuild.
    - Tailscale: tag `tag:ci` (owner `autogroup:admin`); grants `autogroup:member` → `*` and
      `tag:ci` → `100.67.196.101` `tcp:22`; the OpenID Connect trust credential (issuer
      `https://token.actions.githubusercontent.com`, subject
-     `repo:calebhabesh/*:environment:production`, Auth Keys write with `tag:ci`).
+     `repo:calebhabesh@87959618/*:environment:production` (GitHub's immutable subject, with the account and repository IDs), Auth Keys write with `tag:ci`).
    - GitHub: the `production` environment limited to `main`, with variables `TS_OAUTH_CLIENT_ID` and
      `TS_AUDIENCE` and secrets `VPS_SSH_KEY` (a dedicated ed25519 key) and `VPS_SSH_KNOWN_HOSTS`
      (`100.67.196.101` and the VPS's ed25519 host key, read over an existing connection).
