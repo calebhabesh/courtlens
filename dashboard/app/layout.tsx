@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     siteName: "CourtLens",
     title: "CourtLens · NBA Analytics",
     description:
-      "NBA research workbench over 26 seasons and 882,849 player-games, with versioned data and scored forecasts.",
+      "NBA stats back to 1946-47, impact ratings from play-by-play, and win probabilities sealed before tip-off and graded after every game.",
     images: [
-      { url: "/og-image.png", width: 1280, height: 640, alt: "CourtLens NBA player statistics table" }
+      { url: "/og-image.png?v=2", width: 1280, height: 640, alt: "CourtLens logo over its NBA player statistics table" }
     ]
   },
   twitter: { card: "summary_large_image" },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     template: "%s · CourtLens"
   },
   description:
-    "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
+    "Self-hosted NBA analytics: player and team stats back to 1946-47, comparisons, impact ratings from play-by-play, research tested on held-out seasons, and win probabilities graded after every game.",
   icons: {
     icon: { url: "/icon.svg?v=7", type: "image/svg+xml", sizes: "any" },
     apple: "/icons/courtlens-apple-180.png?v=5"
