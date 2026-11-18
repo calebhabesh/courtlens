@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { Icon } from "./ui/icon";
@@ -90,6 +90,9 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   const [columnKey, setColumnKey] = useState("");
   const [players, setPlayers] = useState<TrendPlayer[]>([]);
   const [lookup, setLookup] = useState("");
+  // The player whose line is hovered or whose card has the pointer or focus: the others dim.
+  const [focused, setFocused] = useState<string | null>(null);
+  const focusedId = players.length > 1 && players.some(player => player.player_id === focused) ? focused : null;
   const [result, setResult] = useState<{ key: string; rows?: SeasonRows[]; error?: string } | null>(null);
   // Career reads by player, phase and release: reopening or adding a player reuses them.
   const careers = useRef(new Map<string, Promise<PlayerCareerResponse>>());
@@ -184,11 +187,13 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
       <div className="stats-trend-body" aria-busy={!current}>
         <h3 className="stats-trend-title">{column.label} Progression</h3>
         {current?.error ? <p role="alert" className="stats-trend-note">{current.error}</p>
-          : current?.rows ? <TrendChart column={column} players={players} rows={current.rows} />
+          : current?.rows ? <TrendChart column={column} players={players} rows={current.rows} focused={focusedId} onFocusSeries={setFocused} />
           : <p className="stats-trend-note" role="status">Loading seasons…</p>}
-        <div className="stats-trend-players" role="group" aria-label="Players in the trend">
+        <div className={`stats-trend-players${focusedId ? " has-focus" : ""}`} role="group" aria-label="Players in the trend">
           {players.map((player, index) => (
-            <div key={player.player_id} className="stats-trend-player" data-series={index + 1}>
+            <div key={player.player_id} className={`stats-trend-player${player.player_id === focusedId ? " is-focused" : ""}`} data-series={index + 1}
+              onPointerEnter={() => setFocused(player.player_id)} onPointerLeave={() => setFocused(null)}
+              onFocus={() => setFocused(player.player_id)} onBlur={() => setFocused(null)}>
               <PlayerPortrait playerId={player.player_id} name={player.player_name} portraitUrl={player.portrait_url} size="md" />
               <span><span className="stats-trend-swatch" aria-hidden="true" /><PlayerLink id={player.player_id}>{player.player_name}</PlayerLink></span>
               {players.length > 1 && <button type="button" className="stats-trend-remove" aria-label={`Remove ${player.player_name}`}
@@ -212,7 +217,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   );
 }
 
-type Point = { season: string; x: number; y: number; value: number; label: string };
+type Point = { season: string; index: number; x: number; y: number; value: number; label: string };
 
 /** 1, 2, 2.5 or 5 times a power of ten: the round step nearest the raw step. */
 export function niceStep(raw: number): number {
@@ -269,7 +274,29 @@ export function nearestColumn(x: number, count: number, plotLeft: number, plotRi
   return Math.min(count - 1, Math.max(0, index));
 }
 
-function TrendChart({ column, players, rows }: { column: ColumnDefinition; players: TrendPlayer[]; rows: SeasonRows[] }) {
+/**
+ * Sideways offsets that keep one season's dots apart. Dots closer in height than a diameter (plus
+ * gap) chain into a cluster that sits side by side, centred on the season, in series order.
+ * Heights never move, so every dot stays at its value.
+ */
+export function dodgeColumn(ys: (number | null)[], radius: number, gap = 2): number[] {
+  const offsets = ys.map(() => 0);
+  const order = ys.flatMap((y, index) => y === null ? [] : [index]).sort((a, b) => ys[a]! - ys[b]!);
+  const clusters: number[][] = [];
+  for (const index of order) {
+    const last = clusters.at(-1);
+    if (last && ys[index]! - ys[last.at(-1)!]! < 2 * radius + gap) last.push(index);
+    else clusters.push([index]);
+  }
+  for (const cluster of clusters) {
+    cluster.sort((a, b) => a - b).forEach((index, slot) => { offsets[index] = (slot - (cluster.length - 1) / 2) * (2 * radius + gap); });
+  }
+  return offsets;
+}
+
+function TrendChart({ column, players, rows, focused, onFocusSeries }: {
+  column: ColumnDefinition; players: TrendPlayer[]; rows: SeasonRows[]; focused: string | null; onFocusSeries: (id: string | null) => void;
+}) {
   const width = 720, height = 380, left = 56, right = 24, top = 24, bottom = 40;
   // The season column under the pointer: a guide line and its bold year, so no eye trip to the axis.
   const [active, setActive] = useState<number | null>(null);
@@ -301,13 +328,51 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
   const tickShown = (index: number) => index === active || (showTick(index) && (active === null || Math.abs(index - active) >= labelEvery));
   // Every point prints its value (the reference site). Long careers shrink the markers and their text to
   // the season spacing instead of dropping the values.
-  const widest = "0".repeat(Math.max(...series.flat().map(point => point.label.length)));
+  // Plotted labels only: "No games" and "Unavailable" never draw a dot.
+  const widest = "0".repeat(Math.max(...series.flat().filter(point => point.value !== null).map(point => point.label.length)));
   const roomy = valueDotsFit(rows.length, plotRight - plotLeft, 2 * valueDotRadius(widest, true) + 4);
   const large = players.length === 1 && roomy;
   const radius = roomy ? undefined : Math.max(9, Math.floor(spacing / 2) - 1);
+  // Several players: dots that would overlap in one season step sideways (dodgeColumn). A crowded
+  // season shrinks only its own dots (9 at least) until none passes the midpoint to the next
+  // season, so each line still runs left to right.
+  const base = radius ?? valueDotRadius(widest, large);
+  const reach = Math.max(0, spacing / 2 - 1);
+  const columns = rows.map((_, index) => {
+    const ys = series.map(points => points[index].value === null ? null : y(points[index].value!));
+    let r = base, offsets = dodgeColumn(ys, r);
+    while (r > 9 && offsets.some(offset => Math.abs(offset) > reach)) offsets = dodgeColumn(ys, --r);
+    return { r, offsets };
+  });
+  const dotX = (seriesIndex: number, index: number) => x(index) + Math.max(-reach, Math.min(reach, columns[index].offsets[seriesIndex]));
+  const fittedAt = (index: number) => radius !== undefined || columns[index].r < base ? columns[index].r : undefined;
+  const plotted = series.map((points, seriesIndex) => points.flatMap((point, index): Point[] => point.value === null ? []
+    : [{ ...point, index, value: point.value, x: dotX(seriesIndex, index), y: y(point.value) }]));
+  // Break each line at seasons without a row; a gap is unknown, not zero.
+  const segments = series.map((points, seriesIndex) => {
+    const parts: Point[][] = [[]];
+    points.forEach((point, index) => {
+      if (point.value === null) { if (parts.at(-1)!.length) parts.push([]); return; }
+      parts.at(-1)!.push({ ...point, index, value: point.value, x: dotX(seriesIndex, index), y: y(point.value) });
+    });
+    return parts.filter(part => part.length > 1);
+  });
+  const seriesProps = (seriesIndex: number) => {
+    const id = players[seriesIndex].player_id;
+    return {
+      className: `stats-trend-series${id === focused ? " is-focused" : ""}`, "data-series": seriesIndex + 1,
+      onPointerEnter: () => onFocusSeries(id), onPointerLeave: () => onFocusSeries(null)
+    };
+  };
+  // The hovered season's values for every player, highest first; seasons without a value last.
+  const readout = active !== null && active < rows.length && players.length > 1
+    ? series.map((points, seriesIndex) => ({ seriesIndex, point: points[active] }))
+      .sort((a, b) => (b.point.value ?? -Infinity) - (a.point.value ?? -Infinity))
+    : null;
 
   return (
-    <figure className="stats-trend-figure">
+    <figure className={`stats-trend-figure${focused ? " has-focus" : ""}`}>
+      <div className="stats-trend-plot">
       <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${column.label} by season for ${players.map(p => p.player_name).join(", ")}`}
         onPointerMove={event => {
           const matrix = event.currentTarget.getScreenCTM()?.inverse();
@@ -323,25 +388,28 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
         {active !== null && active < rows.length && <line className="stats-trend-guide" x1={x(active)} x2={x(active)} y1={top} y2={height - bottom} />}
         {rows.map((row, index) => tickShown(index) && <text key={row.season} className={`stats-trend-axis${index === active ? " is-active" : ""}`}
           x={x(index)} y={height - 14} textAnchor="middle">{seasonTick(row.season)}<title>{row.season}</title></text>)}
-        {series.map((points, seriesIndex) => {
-          const plotted: Point[] = points.flatMap((point, index) => point.value === null ? [] : [{ ...point, value: point.value, x: x(index), y: y(point.value) }]);
-          // Break the line at seasons without a row; a gap is unknown, not zero.
-          const segments: Point[][] = [[]];
-          points.forEach((point, index) => {
-            if (point.value === null) { if (segments.at(-1)!.length) segments.push([]); return; }
-            segments.at(-1)!.push({ ...point, value: point.value, x: x(index), y: y(point.value) });
-          });
-          const name = players[seriesIndex].player_name;
-          return <g key={players[seriesIndex].player_id} className="stats-trend-series" data-series={seriesIndex + 1}>
-            {segments.filter(segment => segment.length > 1).map((segment, index) => <g key={index}>
-              <path className="stats-trend-glow" d={smoothPath(segment)} />
-              <path className="stats-trend-line" d={smoothPath(segment)} />
-            </g>)}
-            {plotted.map(point => <ValueDot key={point.season} x={point.x} y={point.y} label={point.label} large={large} round radius={radius}
-              title={`${name}, ${point.season}: ${point.label}`} />)}
-          </g>;
-        })}
+        {/* Every line first, then every dot, so no line ever crosses a value. */}
+        {segments.map((parts, seriesIndex) => <g key={players[seriesIndex].player_id} {...seriesProps(seriesIndex)}>
+          {parts.map((part, index) => <g key={index}>
+            <path className="stats-trend-glow" d={smoothPath(part)} />
+            <path className="stats-trend-line" d={smoothPath(part)} />
+          </g>)}
+        </g>)}
+        {plotted.map((points, seriesIndex) => <g key={players[seriesIndex].player_id} {...seriesProps(seriesIndex)}>
+          {points.map(point => <ValueDot key={point.season} x={point.x} y={point.y} label={point.label} large={large} round radius={fittedAt(point.index)}
+            title={`${players[seriesIndex].player_name}, ${point.season}: ${point.label}`} />)}
+        </g>)}
       </svg>
+      {readout && active !== null && <div className="stats-trend-readout" aria-hidden="true" data-side={active > (rows.length - 1) / 2 ? "left" : "right"}
+        style={{ "--readout-x": `${x(active) / width * 100}%`, "--readout-y": `${top / height * 100}%` } as CSSProperties}>
+        <span className="stats-trend-readout-season">{rows[active].season}</span>
+        {readout.map(({ seriesIndex, point }) => <span key={players[seriesIndex].player_id} className="stats-trend-readout-row"
+          data-series={seriesIndex + 1} data-missing={point.value === null || undefined}>
+          <span className="stats-trend-swatch" /><span className="stats-trend-readout-name">{players[seriesIndex].player_name}</span>
+          <span className="stats-trend-readout-value">{point.label}</span>
+        </span>)}
+      </div>}
+      </div>
       <table className="sr-only">
         <caption>{column.label} by season</caption>
         <thead><tr><th scope="col">Player</th>{rows.map(row => <th key={row.season} scope="col">{row.season}</th>)}</tr></thead>

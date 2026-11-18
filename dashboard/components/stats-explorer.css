@@ -390,11 +390,22 @@
   .stats-trend-axis.is-active { fill: var(--color-text); font-weight: var(--font-weight-semibold); }
   /* Hover guide from the hovered season's points down to its year; never takes the pointer. */
   .stats-trend-guide { stroke: var(--color-hairline-strong); stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
-  .stats-trend-series { --series: var(--color-trend-1); }
-  .stats-trend-series[data-series="2"], .stats-trend-player[data-series="2"] { --series: var(--color-trend-2); }
-  .stats-trend-series[data-series="3"], .stats-trend-player[data-series="3"] { --series: var(--color-trend-3); }
-  .stats-trend-series[data-series="4"], .stats-trend-player[data-series="4"] { --series: var(--color-trend-4); }
-  .stats-trend-player { --series: var(--color-trend-1); }
+  .stats-trend-series, .stats-trend-player, .stats-trend-readout-row { --series: var(--color-trend-1); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row)[data-series="2"] { --series: var(--color-trend-2); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row)[data-series="3"] { --series: var(--color-trend-3); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row)[data-series="4"] { --series: var(--color-trend-4); }
+  /* A hovered line or player card keeps its series bright; the other players dim. */
+  .stats-trend-series, .stats-trend-player { transition: opacity var(--dur-fast) var(--ease-out); }
+  .stats-trend-figure.has-focus .stats-trend-series:not(.is-focused) { opacity: 0.22; }
+  .stats-trend-players.has-focus .stats-trend-player:not(.is-focused) { opacity: 0.5; }
+  .stats-trend-plot { position: relative; }
+  /* Several players: every value in the hovered season, beside the guide, never under the pointer. */
+  .stats-trend-readout { position: absolute; top: var(--readout-y); left: var(--readout-x); transform: translateX(var(--space-3)); display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-3); box-shadow: var(--shadow-menu); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; pointer-events: none; }
+  .stats-trend-readout[data-side="left"] { transform: translateX(calc(-100% - var(--space-3))); }
+  .stats-trend-readout-season { color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
+  .stats-trend-readout-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-2); color: var(--color-text); }
+  .stats-trend-readout-row[data-missing] { color: var(--color-text-tertiary); }
+  .stats-trend-readout-value { padding-left: var(--space-3); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-semibold); text-align: right; }
   .stats-trend-series path { fill: none; stroke: var(--series); stroke-linejoin: round; stroke-linecap: round; }
   .stats-trend-line { stroke-width: 2.5; }
   .stats-trend-glow { stroke-width: 10; opacity: 0.16; }
