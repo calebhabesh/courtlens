@@ -20,6 +20,7 @@ with them. Only the loopback origin port is published.
 | `deploy/compose.prod.yml` | Production services with memory/CPU caps, restart policies and rotated logs |
 | `deploy/Caddyfile` | Routing and the read-only boundary |
 | `deploy/pinned.env` | Third-party image digests and serving manifest paths |
+| `.github/workflows/ci.yml` | Tests every pull request and main commit; reuses a pull request's result on main when the tree is identical ([CI](#ci)) |
 | `.github/workflows/images.yml` | arm64 API and dashboard images, built after CI passes on main |
 | `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune; copies nothing under `data/` |
 | `scripts/vps-backup.sh` | Weekly database dump and nightly records copy, from the VPS crontab |
@@ -378,6 +379,34 @@ The VPS holds the only live copy. `scripts/vps-backup.sh` (copied by each deploy
 - **Restore** steps are in the [operations note](operations/hosted-operations.md#restoring-a-backup).
   Both were proved on 2026-11-13: a fresh clone of the records repository matched all 60 live record files by SHA-256, and the dump restored into a scratch database in 23 minutes (single stream) with every one of 127 tables' exact row counts, 245 indexes and 313 constraints equal to live.
 
+## CI
+
+`.github/workflows/ci.yml` starts with a `plan` job (`scripts/ci_plan.sh`) that picks one of three
+outcomes:
+
+- **Full** (the default): `backend-checks` (Ruff, mypy, migrations, demo seed, dbt),
+  `backend-tests` (pytest in two shards, each on four xdist workers with its own database per
+  worker cloned from the migrated one; test files are dealt to the shards by the seconds in
+  `tests/ci_file_durations.json`, which `scripts/ci_file_durations.py` rebuilds), `coverage` (one
+  report from both shards' data), `dashboard-checks` (ESLint, Stylelint, tsc, Vitest, the
+  Turbopack build), `browser` (Playwright in four shards of two workers, each with its own
+  webpack build; Playwright's Ubuntu packages are cached) and `containers` (Compose build and smoke test), all in parallel.
+- **Docs lane**: every changed file is Markdown at the repository root, at the top of `docs/`, or
+  in `docs/operations`, `docs/decisions` or `docs/research`. Only the tests that read those files
+  run: `tests/unit/test_frozen_identifiers.py` (it scans every tracked file) and Vitest (which
+  checks the README's quoted results). `docs/design` and `docs/evidence` are hashed inputs and
+  image contents, so a change there runs everything. Such a change needs no deploy.
+- **Reuse** (pushes to main only): each pull request run uploads the tree it tested
+  (`git rev-parse HEAD^{tree}`, artifact `tested-tree`). When a merge commit's tree is identical to
+  the tree its pull request's latest run passed, which holds whenever the branch was up to date with
+  main, every job is skipped, CI passes in about a minute and Images starts. If main moved after the
+  pull request ran, the tree differs and everything runs. Press "Update branch" before merging to get
+  the fast path. Only same-repository pull requests qualify, and the workflow file is part of the
+  compared tree.
+
+A newer push to a pull request cancels its older run; main commits are never cancelled.
+Locally, `make test-python` runs the same xdist suite with one worker per CPU.
+
 ## Deploy
 
 After CI and then Images succeed on a main commit, run this from any checkout:
@@ -412,6 +441,31 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 ```
 
 ## Deploy log
+
+### 2026-11-18: release 03b62cc7 (#119: site polish; the project's last deploy)
+
+- **What:** the owner's site-polish pass. Stats shows as soon as it arrives (80a7a1ce), and pages
+  across the site do too (2af54f00): loaders only on player pages, Data Status, Methodology and live
+  games; `/` is a config redirect to `/stats`; no route fade; images start loading once the page is
+  idle; header values hydrate as the server rendered them. Also the Deep Navy palette (design
+  language v1.4), Stats trend views, Ask's New Chat flow and contract bracket fixes. No migration;
+  nothing under `deploy/` changed.
+- **CI needed three passes on the PR.**
+  - The warm crawl still listed `/` and checked readiness on it. It does not follow redirects, so
+    on the VPS it would have waited forever; both now use `/stats` (aac2cd78).
+  - The visual baselines now wait for idle image warming.
+  - The phone operation-gallery baseline was stale (palette and Shot Aftermath copy; b722a36c).
+- **Deploy:** `deploy-vps.sh` took **118 s** (06:05:26 to 06:07:24 UTC), after CI and Images
+  passed on the merge commit. The Stats cohort warm-up found 171 existing, built 0 and pruned 3.
+  Disk: 136 GB free of 193.
+- **Checked on the public URL:**
+  - `/api/health` ok;
+  - `/` answers 307 to `/stats`;
+  - Stats HTML has no skeleton;
+  - the warm crawl started on 569 pages for the new generation.
+- **Also on 2026-11-17/18:** the six open Dependabot PRs were closed and their branches deleted, and
+  so was the branch left from the merged #108. `research-r16` (R16, cut 2026-11-13) was saved to a
+  local bundle and deleted.
 
 ### 2026-11-16 (evening of 2026-11-15 Eastern): release fd416ef0 (#110: site improvements and the speed plan)
 
