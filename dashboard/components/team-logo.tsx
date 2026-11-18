@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { teamArtwork } from "@/lib/team-era";
+import { useWarmImage } from "@/lib/use-warm-image";
 
 /**
  * Only exact catalog IDs/codes resolve. Era codes (`SEA`) show their era's artwork; with a season,
@@ -9,6 +10,9 @@ import { teamArtwork } from "@/lib/team-era";
  * 2000-01 Raptors their first logo).
  */
 export function TeamLogo({ team, size = 24, season }: { team: string; size?: number; season?: string | null }) {
+  const imageRef = useRef<HTMLImageElement>(null);
+  // Lazy in the HTML, started once the page is idle (lib/use-warm-image.ts).
+  useWarmImage(imageRef);
   const record = teamArtwork(team, season);
   const [failedAsset, setFailedAsset] = useState<string | null>(null);
   const abbreviation = record?.tricode ?? team;
@@ -22,7 +26,7 @@ export function TeamLogo({ team, size = 24, season }: { team: string; size?: num
     >
       {record && failedAsset !== record.asset ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={record.asset} width={size} height={size} alt="" loading="lazy"
+        <img ref={imageRef} src={record.asset} width={size} height={size} alt="" loading="lazy"
           onError={() => setFailedAsset(record.asset)} />
       ) : <span className="team-logo-fallback" aria-hidden="true">{abbreviation}</span>}
     </span>

@@ -1,49 +1,51 @@
 // @vitest-environment happy-dom
+import { readdirSync } from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import React from "react";
 import { ArticleLoading as RootLoading } from "@/components/ui/article-loading";
 import { StatsPageSkeleton as StatsLoading } from "@/components/stats-page-skeleton";
-import PlayersLoading from "@/app/players/loading";
+import PlayersLoading from "@/app/players/skeleton";
 import PlayerProfileLoading from "@/app/players/[id]/loading";
-import TeamsLoading from "@/app/teams/loading";
-import TeamDetailLoading from "@/app/teams/[id]/loading";
-import CompareLoading from "@/app/compare/loading";
-import LiveLoading from "@/app/live/loading";
+import TeamsLoading from "@/app/teams/skeleton";
+import TeamDetailLoading from "@/app/teams/[id]/skeleton";
+import CompareLoading from "@/app/compare/skeleton";
+import LiveLoading from "@/app/live/skeleton";
 import LiveGameLoading from "@/app/live/games/[id]/loading";
-import PlayoffsLoading from "@/app/playoffs/loading";
-import AskLoading from "@/app/research/ask/loading";
-import WowyLoading from "@/app/wowy/loading";
-import ContractsLoading from "@/app/contracts/loading";
-import ContractsBooksLoading from "@/app/contracts/books/loading";
+import PlayoffsLoading from "@/app/playoffs/skeleton";
+import AskLoading from "@/app/research/ask/skeleton";
+import WowyLoading from "@/app/wowy/skeleton";
+import ContractsLoading from "@/app/contracts/skeleton";
+import ContractsBooksLoading from "@/app/contracts/books/skeleton";
 import DataStatusLoading from "@/app/data-status/loading";
-import ForecastsLoading from "@/app/forecasts/loading";
-import SettingsLoading from "@/app/settings/loading";
-import InvestigationsLoading from "@/app/investigations/loading";
-import TeamCompareLoading from "@/app/team-compare/loading";
-import MatchupsLoading from "@/app/matchups/loading";
-import SeriesLoading from "@/app/playoffs/[seriesId]/loading";
-import ContractsTeamLoading from "@/app/contracts/[team]/loading";
-import FreeAgencyLoading from "@/app/free-agency/loading";
-import RosterShapesLoading from "@/app/roster-shapes/loading";
-import CalculatorLoading from "@/app/calculator/loading";
-import EvaluationLoading from "@/app/evaluation/loading";
-import ShowcaseLoading from "@/app/showcase/loading";
-import RapmLoading from "@/app/research/rapm/loading";
-import ShootingLoading from "@/app/research/shooting/loading";
-import CaseStudiesLoading from "@/app/research/case-studies/loading";
-import BacktestLoading from "@/app/research/backtest/loading";
-import SignalNoiseLoading from "@/app/research/signal-noise/loading";
-import LineupModelLoading from "@/app/research/lineup-model/loading";
-import ProjectedImpactLoading from "@/app/research/projected-impact/loading";
-import WinProbabilityLoading from "@/app/research/win-probability/loading";
-import ZtsLoading from "@/app/research/zts/loading";
-import ShotQualityLoading from "@/app/research/shot-quality/loading";
-import DraftLoading from "@/app/draft/loading";
-import WingspanLoading from "@/app/wingspan/loading";
-import StandingsLoading from "@/app/standings/loading";
-import LastGamesLoading from "@/app/last-games/loading";
-import StatLineShiftLoading from "@/app/stat-line-shift/loading";
+import ForecastsLoading from "@/app/forecasts/skeleton";
+import SettingsLoading from "@/app/settings/skeleton";
+import InvestigationsLoading from "@/app/investigations/skeleton";
+import TeamCompareLoading from "@/app/team-compare/skeleton";
+import MatchupsLoading from "@/app/matchups/skeleton";
+import SeriesLoading from "@/app/playoffs/[seriesId]/skeleton";
+import ContractsTeamLoading from "@/app/contracts/[team]/skeleton";
+import FreeAgencyLoading from "@/app/free-agency/skeleton";
+import RosterShapesLoading from "@/app/roster-shapes/skeleton";
+import CalculatorLoading from "@/app/calculator/skeleton";
+import EvaluationLoading from "@/app/evaluation/skeleton";
+import ShowcaseLoading from "@/app/showcase/skeleton";
+import RapmLoading from "@/app/research/rapm/skeleton";
+import ShootingLoading from "@/app/research/shooting/skeleton";
+import CaseStudiesLoading from "@/app/research/case-studies/skeleton";
+import BacktestLoading from "@/app/research/backtest/skeleton";
+import SignalNoiseLoading from "@/app/research/signal-noise/skeleton";
+import LineupModelLoading from "@/app/research/lineup-model/skeleton";
+import ProjectedImpactLoading from "@/app/research/projected-impact/skeleton";
+import WinProbabilityLoading from "@/app/research/win-probability/skeleton";
+import ZtsLoading from "@/app/research/zts/skeleton";
+import ShotQualityLoading from "@/app/research/shot-quality/skeleton";
+import DraftLoading from "@/app/draft/skeleton";
+import WingspanLoading from "@/app/wingspan/skeleton";
+import StandingsLoading from "@/app/standings/skeleton";
+import LastGamesLoading from "@/app/last-games/skeleton";
+import StatLineShiftLoading from "@/app/stat-line-shift/skeleton";
 
 describe("Route Loading Skeletons", () => {
   const skeletons = [
@@ -112,4 +114,22 @@ describe("Route Loading Skeletons", () => {
       }
     });
   }
+});
+
+/** Every `loading.tsx` under app/, as route paths. */
+function routeLoaders(dir = path.resolve(__dirname, "../../app"), route = ""): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory()
+    ? routeLoaders(path.join(dir, entry.name), `${route}/${entry.name}`)
+    : entry.name === "loading.tsx" ? [route || "/"] : []);
+}
+
+describe("Route loaders (snappy pages, 2026-11-17)", () => {
+  it("keeps a loader only on routes whose first server render is often a second or more", () => {
+    // A loader's skeleton, once React commits it, holds the page back for React's 300 ms reveal
+    // batch, so a fast page shows sooner without one (a slow link click keeps the old page under
+    // IntentLink's scrim instead). These four were measured at 1–8 s on a first hit: historical
+    // player pages, Data Status, Methodology, and live games (uncached, real time). The other
+    // routes' skeletons sit in `skeleton.tsx`, which Next does not treat as a loader.
+    expect(routeLoaders().sort()).toEqual(["/data-status", "/live/games/[id]", "/methodology", "/players/[id]"]);
+  });
 });
