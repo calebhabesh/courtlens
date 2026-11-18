@@ -10,17 +10,17 @@ data sits in a versioned PostgreSQL and dbt warehouse behind a FastAPI service a
 dashboard, whose design draws heavily on [Databallr](https://databallr.com) ([credits](#credits)).
 A tool-calling assistant answers questions from the warehouse.
 
-**Live demo: <https://courtlens.calebhabesh.com>**
+**Live site: <https://courtlens.calebhabesh.com>**
 
 <p align="center">
-  <img src="docs/assets/readme/stats.webp" alt="CourtLens Stats page: the 2025-26 player table with impact, counting and percentile columns" width="900">
+  <img src="docs/assets/readme/stats.webp" alt="CourtLens Stats page as served on the live site: the 2025-26 player table with profile, impact, counting and efficiency columns and league percentiles" width="900">
 </p>
 
 ## Status
 
-Finished on 2026-11-13. CourtLens is a non-commercial portfolio project. The public demo serves
+Finished on 2026-11-13. CourtLens is a non-commercial portfolio project. The live site serves
 every page read-only. Signing in (email and password, Google, or the shared demo account) adds
-favorites and Ask, with a few questions a day. One free-tier VPS runs the demo and every scheduled
+favorites and Ask, with a few questions a day. One free-tier VPS runs the site and every scheduled
 data job: rosters every six hours, a daily refresh, weekly impact fits, and win probability seals
 before each tip-off with grading after each final ([deployment guide](docs/deployment.md)). Every
 page was designed against its reference-site counterpart ([catalog](docs/alignment-catalog.md)).
@@ -103,7 +103,7 @@ flowchart LR
 ```
 
 Python 3.12 (FastAPI, SQLAlchemy 2.0, Pydantic), PostgreSQL 17, dbt, scikit-learn, Next.js 16
-with TypeScript, and Docker Compose. The demo runs on an arm64 Oracle Always Free VPS behind Caddy
+with TypeScript, and Docker Compose. The site runs on an arm64 Oracle Always Free VPS behind Caddy
 and a Cloudflare tunnel.
 
 ## Results
@@ -128,17 +128,8 @@ model never saw ([Research progress](docs/research-progress.md)):
   and 2025-26 ([evidence](docs/evidence/research/r05/README.md)).
 - **Ask evaluation (R16):** cut before it finished (owner, 2026-11-13); no number.
 
-Earlier results:
-
-- **Forecasting:** across 10 chronological folds, the prior-season blend scored
-  MAE 4.88 points against a rolling baseline's 5.09. 81.2% of outcomes landed
-  inside the 80% interval ([case studies](docs/evidence/release-case-studies.md)).
-- **Assistant:** on a pinned snapshot, the first Gemini development baseline got
-  70.3% of 360 runs exactly right, checked against independently written SQL
-  ([evaluation](docs/evidence/ar02-evaluation/README.md)).
-- **Speed:** the API read cache serves repeat reads in a 1 ms median (26–135 ms
-  uncached). A warm crawl refills it after every data change
-  ([speed log](docs/speed-progress.md)).
+The earlier points forecast protocol was superseded by the frozen points-v1 evaluation (MAE 4.643,
+80.6% interval coverage); the boosted challengers failed their gates and the baseline was kept.
 
 ## Explore the Project
 
@@ -153,7 +144,7 @@ Earlier results:
 | [`docs/research-progress.md`](docs/research-progress.md) | Every Research model: registration, results and evidence |
 | [`docs/design/design-language-v1.md`](docs/design/design-language-v1.md) | The dashboard's design language |
 | [`docs/operations/runbook.md`](docs/operations/runbook.md) | Setup, refresh, backup and restore |
-| [`docs/deployment.md`](docs/deployment.md) | The hosted demo: Compose stack, scheduled jobs and deploys |
+| [`docs/deployment.md`](docs/deployment.md) | The hosted site: Compose stack, scheduled jobs and deploys |
 
 ## Run Locally
 
