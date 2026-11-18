@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { CourtLensLockup } from "./brand";
 import type { PlayerGameLogItem } from "@/lib/types";
 import { LAST_GAMES_STATS, formatStat, rolling, type Exposure, type LastGamesStat } from "@/lib/last-games";
 import { formatDate } from "@/lib/format-date";
 import { niceStep, smoothPath } from "./stats-trend-dialog";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { Button, IconButton, Select } from "./ui/kit";
 
 const LEFT = 44, RIGHT = 44, TOP = 24, BOTTOM = 32;
@@ -128,7 +128,7 @@ export function LastGamesTrend({ name, games, windowStart, mode, stats: param, s
     </header>
     <figure className="lg-trend-figure">
       <figcaption className="lg-trend-caption">
-        <span className="lg-trend-brand"><CourtLensWordmark height={16} /><span>{name} · {roll} Game Rolling Average Chart</span></span>
+        <span className="lg-trend-brand"><CourtLensLockup height={16} /><span>{name} · {roll} Game Rolling Average Chart</span></span>
         <span className="lg-trend-legend">{stats.map((stat, i) => <span key={stat.key} data-series={i + 1}>{stat.label}</span>)}</span>
       </figcaption>
       <div className="lg-trend-plot" ref={plotRef}>

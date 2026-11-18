@@ -1,6 +1,7 @@
 "use client";
 
 import { FIRST_GAME_LOG_SEASON, isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
+import { CourtLensLockup } from "@/components/brand";
 import { Fragment, useEffect, useRef, useState, useTransition, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -14,8 +15,6 @@ import { ALL_COLUMNS, columnRanks, formatValue, type SixFactorsResponse, type Si
 import { TeamLogo } from "@/components/team-logo";
 import { TeamGrid } from "@/components/team-grid";
 import { PlayerPortrait } from "@/components/player-portrait";
-import { BrandMark } from "@/components/brand";
-import { CourtLensWordmark } from "@/components/courtlens-wordmark";
 import { PageHeader } from "@/components/ui/panel";
 import { FilterBar } from "@/components/ui/filter-bar";
 import { DataDetails } from "@/components/ui/data-details";
@@ -384,7 +383,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
             </table>
           </> : <TeamStats a={a} b={b} selectedKeys={teamKeys} />}
           {view === "rotations" && <p className="tc-coverage">Verified starting lineups: {tricode(a)} {a.starterEvidence?.verified_games ?? "—"}/{a.starterEvidence?.team_games ?? a.detail?.record.games_played ?? "—"} games · {tricode(b)} {b.starterEvidence?.verified_games ?? "—"}/{b.starterEvidence?.team_games ?? b.detail?.record.games_played ?? "—"} games{!observedUnit ? " · Starting unit unavailable in this scope." : ""}{darkoOff ? " · DARKO is published for the end of the phase only." : ""}</p>}
-          <footer className="tc-footer"><BrandMark size={20} framed={false} /><CourtLensWordmark height={16} /></footer>
+          <footer className="tc-footer"><CourtLensLockup height={16} /></footer>
         </section>
         <TeamGameHistoryTray a={a} b={b} phase={phase} releaseId={catalog.release_id} series={series} gamelessNote={gamelessNote} onUrlChange={presentation} />
       </div>

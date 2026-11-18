@@ -1,12 +1,12 @@
 "use client";
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+import { CourtLensLockup } from "./brand";
 import { seasonEra } from "@/lib/portrait-source";
 import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
 import { IntentLink } from "@/components/intent-link";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
 import { STATS_SCOPE_PENDING } from "./stats-page-controls";
 import { seasonScopeLabel } from "@/lib/season-range";
@@ -806,7 +806,7 @@ export function WorkbenchPlayerExplorer({
       <div className={`stats-frame-layout ${viewMode === "table" ? "has-rail" : ""} ${previewCollapsed ? "preview-collapsed" : ""}`}>
       <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
-        <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
+        <strong className="stats-table-brand"><CourtLensLockup height={16} /></strong>
         <Segmented label="Counting Mode" size="sm" deferChange
           options={ORDERED_COUNTING_MODES.map(cm => ({ value: cm.id, label: cm.label, title: cm.tooltip,
             disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
@@ -1264,10 +1264,10 @@ export function WorkbenchPlayerExplorer({
           {/* Row height in words (was a cryptic −W ▮▯ E+); the W and E keys are in each tooltip. */}
           <Segmented label="Row height" size="xs" value={tableDensity} onChange={handleDensityChange}
             options={[
-              { value: "compact", title: "Compact rows: more players on screen (W)",
-                label: "Compact" },
               { value: "standard", title: "Standard rows: taller and easier to read (E)",
-                label: "Standard" }
+                label: "Standard" },
+              { value: "compact", title: "Compact rows: more players on screen (W)",
+                label: "Compact" }
             ]} />
           <div className="stats-footer-group" role="group" aria-label="View">
             <IconButton size="xs" icon="left" label="Previous view" onClick={() => stepView(-1)} />

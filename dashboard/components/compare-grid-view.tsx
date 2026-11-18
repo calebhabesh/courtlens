@@ -1,6 +1,7 @@
 "use client";
 
 import { IntentLink } from "@/components/intent-link";
+import { CourtLensLockup } from "./brand";
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -21,8 +22,6 @@ import { fetchLandingSeason, newestSeason } from "@/lib/landing-season";
 import { COMPARE_SUBTITLE } from "./compare-counting-menu";
 import type { CompareSelection } from "./compare-player-slot";
 import { ContextBar } from "./context-bar";
-import { CourtLensWordmark } from "./courtlens-wordmark";
-import { BrandMark } from "./brand";
 import { GatedNote } from "./ui/gated-note";
 import { PageHeader } from "./ui/panel";
 import { Menu, MenuItem } from "./ui/menu";
@@ -179,7 +178,7 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
           footer={<>
             {error && <div role="alert"><GatedNote why={error}>Unable to compare.</GatedNote></div>}
             {!lines.metrics.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
-            <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
+            <footer className="pvp-foot"><CourtLensLockup height={18} /></footer>
           </>} />
         {columns.length > 0 && <CompareTrendTray playerIds={ids} context={context} />}
       </div>

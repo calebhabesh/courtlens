@@ -116,18 +116,18 @@ export function ShrunkToggle({ pressed, onChange }: { pressed: boolean; onChange
     title="Add empirical-Bayes shrunk 3P%, FT%, TS% and Rim FG% beside the raw values (Signal vs Noise)">Shrunk %</Chip>;
 }
 
-/** One line saying what the shrunk columns use, and what is unknown and why. */
+/** One short line: what Shrunk % does, anything unknown, then the link (owner: keep it brief). */
 export function ShrunkNote({ overlay, season }: { overlay: ShrunkOverlay; season: string }) {
   const link = <ButtonLink size="sm" variant="text" href="/research/signal-noise">How shrinkage works</ButtonLink>;
-  if (overlay.status === "loading") return <GatedNote action={link}>Loading the {season} shrinkage priors…</GatedNote>;
-  if (overlay.status === "error") return <GatedNote tone="warning" action={link}>Shrunk values unavailable: {overlay.message}</GatedNote>;
-  if (overlay.status === "unavailable") return <GatedNote action={link}>Shrunk values unknown: {overlay.reason}</GatedNote>;
+  const note = "stats-shrunk-note";
+  if (overlay.status === "loading") return <GatedNote className={note}>Loading the {season} shrinkage priors…</GatedNote>;
+  if (overlay.status === "error") return <GatedNote className={note} tone="warning">Shrunk values unavailable: {overlay.message} {link}</GatedNote>;
+  if (overlay.status === "unavailable") return <GatedNote className={note}>Shrunk values unknown: {overlay.reason} {link}</GatedNote>;
   const { priors, rim } = overlay.data;
-  const parts: string[] = [];
-  const fg3 = priors.fg3_pct;
-  if (fg3.status === "available") parts.push(`Shrunk columns use the ${season} priors, fitted on ${fg3.seasons.join(", ")} only; raw columns are unchanged.`);
-  else parts.push(`Shrunk 3P%, FT% and TS% unknown: ${fg3.reason}`);
-  if (rim.status !== "available") parts.push(`Rim FG% unknown: ${rim.reason}`);
-  else if (!overlay.wholeSeason) parts.push("Rim FG% unknown here: it is served for a whole regular season with no team, date or window filter.");
-  return <GatedNote action={link}>{parts.join(" ")}</GatedNote>;
+  const parts = [priors.fg3_pct.status === "available"
+    ? "Shrunk % adds a luck-adjusted column beside each shooting %: players with few attempts are pulled toward a typical NBA rate, so a 5-for-6 start doesn't read as an 83% shooter."
+    : `Shrunk 3P%, FT% and TS% unknown: ${priors.fg3_pct.reason}`];
+  if (rim.status !== "available") parts.push(`Rim FG% unknown for ${season}.`);
+  else if (!overlay.wholeSeason) parts.push("Rim FG% needs a whole regular season with no filters.");
+  return <GatedNote className={note}>{parts.join(" ")} {link}</GatedNote>;
 }
