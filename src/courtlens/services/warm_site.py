@@ -66,7 +66,7 @@ DONE_OUTCOMES = frozenset({"complete", "partial"})
 # their HTML warms nothing. Live (`never` reads), Settings, Data Status and Planner (per viewer or
 # `short`) are left out.
 TOP_LEVEL_PAGES: tuple[str, ...] = (
-    "/",
+    # Not "/": it is a config redirect to /stats (2026-11-17), so its HTML warms nothing.
     "/stats",
     "/wowy",
     "/stat-line-shift",
@@ -295,14 +295,15 @@ class WarmSite:
         return response.status_code
 
     def wait_ready(self, until: float) -> str | None:
-        """None once the API status and the dashboard home page answer; else the reason."""
+        """None once the API status and the dashboard's Stats page answer; else the reason."""
         reason = "not checked"
         while True:
             try:
                 status = self.cache_status()
                 if not status.get("enabled"):
                     return "the API read cache is off"
-                code = self.get_page("/")
+                # Not "/": that is a redirect to /stats, and redirects are not followed.
+                code = self.get_page("/stats")
                 if code == 200:
                     return None
                 reason = f"dashboard answered {code}"
