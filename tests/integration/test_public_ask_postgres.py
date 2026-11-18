@@ -16,6 +16,7 @@ from courtlens.database import get_db
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
 from courtlens.security import create_session_token
 from courtlens.services import accounts
+from courtlens.services.assistant import history
 from courtlens.services.assistant.public_ask import PUBLIC_ASK
 
 postgres_conversation = _postgres_fixture
@@ -119,6 +120,13 @@ def test_each_visitor_sees_only_their_own_conversations(public):
     assert stolen.status_code == 404
     created = client.post(THREADS, headers={**operator, **who("bob")})
     assert created.status_code == 201
+    # An empty thread is a draft: it joins Bob's list with his first question.
+    assert client.get(THREADS, headers=who("bob")).json()["threads"] == []
+    body = HybridTurnRequest(
+        request_id=uuid4(), message="Explain spacing.", thread_id=created.json()["thread_id"]
+    )
+    asked = client.post(TURN, json=body.model_dump(mode="json"), headers={**operator, **who("bob")})
+    assert asked.status_code == 200, asked.text
     assert [t["thread_id"] for t in client.get(THREADS, headers=who("bob")).json()["threads"]] == [
         created.json()["thread_id"]
     ]
@@ -161,8 +169,12 @@ def test_local_use_is_unchanged(postgres_conversation, monkeypatch):
     get_settings.cache_clear()
     session, _ = postgres_conversation
     now = datetime.now(UTC)
-    session.add(AssistantThread(id=str(uuid4()), title="Local", created_at=now, updated_at=now))
-    session.flush()
+    thread = str(uuid4())
+    session.add(AssistantThread(id=thread, title="Local", created_at=now, updated_at=now))
+    session.commit()
+    # Threads are listed once they hold a question.
+    request = HybridTurnRequest(request_id=uuid4(), thread_id=thread, message="Explain spacing.")
+    history.run_durable_turn(session, request, provider=KnowledgeOnly())
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     with TestClient(app) as client:

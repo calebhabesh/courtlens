@@ -140,6 +140,18 @@ test("transport replay preserves request identity; intentional retry links a new
   expect(state.requests[2].request_id).not.toBe(state.requests[0].request_id); expect(state.requests[2].retry_of).toBe(state.requests[0].request_id);
 });
 
+test("New Chat opens a draft that joins the sidebar only with its first question",async({page})=>{
+  const state = await mock(page); await openPage(page, path);
+  const history = page.getByRole("navigation",{name:"Conversation history"}); const newChat = page.getByRole("button",{name:"New Chat",exact:true});
+  await newChat.click(); await expect(history).toContainText("No saved conversations yet"); expect(state.records.size).toBe(0);
+  await send(page,"Explain pick and roll"); await expect(messages(page)).toContainText("pairs a screen"); expect(state.records.size).toBe(1);
+  await newChat.click(); await newChat.click(); await expect(messages(page)).toBeEmpty();
+  await expect(history.getByRole("button")).toHaveCount(1); expect(state.records.size).toBe(1);
+  await expect(history.locator("[aria-current]")).toHaveCount(0);
+  await reloadPage(page); await expect(messages(page)).toBeEmpty();
+  await send(page,"Explain assists"); await expect(history.getByRole("button")).toHaveCount(2); expect(state.records.size).toBe(2);
+});
+
 test("Stop is durable, releases controls and fences a late response",async({page})=>{
   const state = await mock(page,{deferred:true}); await openPage(page, path); await send(page,"Question to stop");
   await expect(page.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await page.getByRole("button",{name:"Stop",exact:true}).click();

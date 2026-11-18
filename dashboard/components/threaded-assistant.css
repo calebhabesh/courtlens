@@ -15,7 +15,8 @@
 .replica-main:has(.ask-page) { display: flex; flex: 1; min-height: 0; }
 .ask-page { display: flex; flex: 1; min-width: 0; min-height: 0; }
 .ask-chat { position: relative; display: flex; flex: 1; min-width: 0; min-height: 0; }
-.ask-sidebar { display: flex; flex-direction: column; flex: none; width: 260px; min-height: 0; background: var(--color-surface-1); border-right: 1px solid var(--color-hairline); }
+/* The docked list sits on the page itself (no panel fill), parted from the chat by a hairline only. */
+.ask-sidebar { display: flex; flex-direction: column; flex: none; width: 260px; min-height: 0; background: transparent; border-right: 1px solid var(--color-hairline); }
 .ask-chat[data-collapsed=true] .ask-sidebar { display: none; }
 .ask-sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: 52px; padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-bottom: 1px solid var(--color-hairline); }
 .ask-sidebar-head h2 { margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-text); }
@@ -56,7 +57,8 @@
 .ask-main.is-empty .ask-scroll { display: flex; flex-direction: column; }
 .ask-main.is-empty .ask-column { flex: none; margin-block: auto; }
 .ask-empty { display: grid; justify-items: center; gap: var(--space-2); width: 100%; padding: 0 0 8vh; text-align: center; }
-.ask-empty-mark { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: var(--space-2); border-radius: var(--radius-lg); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+.ask-empty-mark { display: block; margin-bottom: var(--space-2); }
+.ask-empty-mark svg { display: block; }
 .ask-empty h2 { margin: 0; font-size: var(--text-2xl); letter-spacing: -0.01em; }
 .ask-empty > p { max-width: 48ch; margin: 0; font-size: var(--text-sm); line-height: 1.55; }
 .ask-empty > .ask-composer-block { width: 100%; margin-top: var(--space-5); text-align: left; }
@@ -128,7 +130,7 @@ button.ask-chip:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: n
 .ask-scope-pop :where(input, select) { width: 100%; min-width: 0; }
 
 /* Conversations overlay in the header drawer and below the shell breakpoint. */
-.ask-chat[data-variant=panel] .ask-sidebar { position: absolute; inset: 0 auto 0 0; z-index: var(--z-sticky); width: min(300px, 85%); box-shadow: var(--shadow-2); }
+.ask-chat[data-variant=panel] .ask-sidebar { position: absolute; inset: 0 auto 0 0; z-index: var(--z-sticky); width: min(300px, 85%); background: var(--color-bg); box-shadow: var(--shadow-2); }
 .ask-chat[data-variant=panel][data-drawer=closed] .ask-sidebar { display: none; }
 .ask-chat[data-variant=panel][data-drawer=open] .ask-sidebar { display: flex; }
 /* The header drawer: a sheet on the right edge on the page background (as on /research/ask), one header row. */
@@ -138,7 +140,7 @@ button.ask-chip:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: n
 .ask-drawer .ask-chat { flex: 1; min-height: 0; }
 .ask-drawer .ask-column, .ask-drawer .ask-dock { padding-inline: var(--space-5); }
 @media (max-width: 900px) {
-  .ask-sidebar { position: absolute; inset: 0 auto 0 0; z-index: var(--z-sticky); width: min(300px, 85%); box-shadow: var(--shadow-2); }
+  .ask-sidebar { position: absolute; inset: 0 auto 0 0; z-index: var(--z-sticky); width: min(300px, 85%); background: var(--color-bg); box-shadow: var(--shadow-2); }
   .ask-chat[data-drawer=closed] .ask-sidebar { display: none; }
   .ask-chat[data-drawer=open] .ask-sidebar { display: flex; }
   .ask-history-item, .ask-chip, .ask-chips .ask-chip.button { min-height: 44px; }
