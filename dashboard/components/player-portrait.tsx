@@ -3,6 +3,7 @@
 import { Icon } from "./ui/icon";
 import { useEffect, useRef, useState } from "react";
 import { portraitSource, type PortraitEra, type PortraitWidth } from "@/lib/portrait-source";
+import { useWarmImage } from "@/lib/use-warm-image";
 
 type PortraitSize = "sm" | "md" | "lg" | "xl";
 
@@ -26,7 +27,8 @@ interface PlayerPortraitProps {
   era?: PortraitEra | null;
   /**
    * The page's hero (the player page header): loaded eagerly at high fetch priority, since it is
-   * the largest contentful paint. Every other portrait is lazy (speed plan SP06).
+   * the largest contentful paint. Every other portrait is lazy in the HTML (speed plan SP06) and
+   * starts once the page is idle (`useWarmImage`), so rows are loaded before they are scrolled to.
    */
   priority?: boolean;
 }
@@ -43,6 +45,7 @@ export function PlayerPortrait({
 }: PlayerPortraitProps) {
   const [error, setError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
+  useWarmImage(imageRef);
   // An image that failed before hydration never fires onError; detect it after mount.
   useEffect(() => {
     const image = imageRef.current;

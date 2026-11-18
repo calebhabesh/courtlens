@@ -74,7 +74,6 @@ interface WorkbenchPlayerExplorerProps {
   currentSortDirection?: string;
   /** Full name and description per metric key, shown when a column header is hovered. */
   metricHints?: Record<string, MetricHint>;
-  canonicalHref?: string | null;
 }
 
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
@@ -114,8 +113,7 @@ export function WorkbenchPlayerExplorer({
   catalog,
   currentSortMetric = "pts",
   currentSortDirection = "desc",
-  metricHints = {},
-  canonicalHref = null
+  metricHints = {}
 }: WorkbenchPlayerExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -136,7 +134,6 @@ export function WorkbenchPlayerExplorer({
     removeCompare,
     clearCompare,
     defaultViewId,
-    isLoading: workspaceLoading,
     preferences,
     updatePreferences
   } = useWorkspace();
@@ -269,26 +266,15 @@ export function WorkbenchPlayerExplorer({
   const items = useMemo(() => withShrunkMetrics(data.items, shrunkOverlay), [data.items, shrunkOverlay]);
   // A split-season row opens one full row per team (the same scope filtered to that team).
   const { expanded: stintRows, toggle: toggleStintRows } = useTeamStints();
-  // The body fades in on first load; later changes (skeleton handoff, sort, filter, page, view or
-  // counting mode) settle the body in place instead of remounting the rows (DL Table / Loading).
+  // The server HTML is the table: it shows as soon as it paints, with no entrance that waits for
+  // hydration (Stats speed, 2026-11-17). Later changes (skeleton handoff, sort, filter, page, view,
+  // counting mode, or a saved view that differs from the server's) settle the body in place
+  // instead of remounting the rows (DL Table / Loading).
   const bodySignature = [loadingRows, items.map(player => player.player_id).join(), activePresetId, countingMode,
     currentSortMetric, currentSortDirection].join("|");
   const [bodyMotion, setBodyMotion] = useState({ signature: bodySignature, version: 0 });
   if (bodyMotion.signature !== bodySignature) setBodyMotion({ signature: bodySignature, version: bodyMotion.version + 1 });
-  // Server HTML can paint before hydration restores the URL and saved view. Hold the entrance
-  // until they settle, then retire its class so revealing cached content cannot replay it.
-  const [entrance, setEntrance] = useState<
-    { kind: "pending" } | { kind: "entering" } | { kind: "done"; version: number }
-  >({ kind: "pending" });
-  const entranceReady = !workspaceLoading && (!canonicalHref || canonicalHref === `${pathname}?${searchParams}`);
-  useEffect(() => {
-    if (!entranceReady || entrance.kind !== "pending") return;
-    const frame = requestAnimationFrame(() => setEntrance({ kind: "entering" }));
-    return () => cancelAnimationFrame(frame);
-  }, [entranceReady, entrance.kind]);
-  const bodyMotionClass = entrance.kind === "pending" ? "stats-table-body-pending"
-    : entrance.kind === "entering" ? "stats-table-body-enter"
-    : entrance.version === bodyMotion.version ? "" : bodyMotion.version % 2 ? "motion-settle-a" : "motion-settle-b";
+  const bodyMotionClass = bodyMotion.version === 0 ? "" : bodyMotion.version % 2 ? "motion-settle-a" : "motion-settle-b";
   const stintScope = querySpec ? JSON.stringify([querySpec.release_id, querySpec.season, querySpec.phase,
     querySpec.before_date, querySpec.window, querySpec.season_scope]) : "";
 
@@ -1138,12 +1124,7 @@ export function WorkbenchPlayerExplorer({
               ))}
             </tbody>
           ) : (
-          <tbody className={`${bodyMotionClass} ${searchingRows ? "stats-table-body-searching" : ""}`}
-            onAnimationEnd={event => {
-              if (event.target === event.currentTarget && event.animationName === "enterFade") {
-                setEntrance({ kind: "done", version: bodyMotion.version });
-              }
-            }}>
+          <tbody className={`${bodyMotionClass} ${searchingRows ? "stats-table-body-searching" : ""}`}>
             {items.length === 0 ? (
               <tr>
                 <td

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { careerSeasons, settleLimited } from "./stats-trend-dialog";
+import type { PlayerResearchItem } from "@/lib/types";
+import { careerRows, careerSeasons, nearestColumn, seasonHigh, settleLimited, shortName, spreadLabels, valueScale } from "./stats-trend-dialog";
 
 describe("careerSeasons", () => {
   const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
@@ -8,6 +9,25 @@ describe("careerSeasons", () => {
   });
   it("is empty when no loaded season was played", () => {
     expect(careerSeasons(loaded, ["1999-00"])).toEqual([]);
+  });
+});
+
+describe("careerRows", () => {
+  const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
+  const row = (id: string) => ({ player_id: id, metrics: {} }) as unknown as PlayerResearchItem;
+  it("groups each season's rows across players over the shared career span, gaps included", () => {
+    const rows = careerRows(loaded, [
+      { player_id: "a", seasons: [{ season: "2016-17", item: row("a") }, { season: "2014-15", item: row("a") }] },
+      { player_id: "b", seasons: [{ season: "2016-17", item: row("b") }, { season: "2015-16", item: null }] }
+    ]);
+    expect(rows.map(entry => [entry.season, entry.items.map(item => item.player_id)])).toEqual([
+      ["2014-15", ["a"]], ["2015-16", []], ["2016-17", ["a", "b"]]
+    ]);
+    expect(rows.every(entry => entry.failed === undefined)).toBe(true);
+  });
+  it("marks a failed read's player unavailable without hiding the others", () => {
+    const rows = careerRows(loaded, [{ player_id: "a", seasons: [{ season: "2017-18", item: row("a") }] }, { player_id: "b" }]);
+    expect(rows).toEqual([{ season: "2017-18", items: [row("a")], failed: ["b"] }]);
   });
 });
 
@@ -23,5 +43,61 @@ describe("settleLimited", () => {
     });
     expect(peak).toBe(3);
     expect(settled.map(entry => entry.status === "fulfilled" ? entry.value : "failed")).toEqual([10, 20, 30, "failed", 50, 60, 70]);
+  });
+});
+
+describe("nearestColumn", () => {
+  // Five seasons from x 100 to 500: columns 100 apart.
+  it("snaps to the nearest season column", () => {
+    expect(nearestColumn(140, 5, 100, 500, 50, 550)).toBe(0);
+    expect(nearestColumn(160, 5, 100, 500, 50, 550)).toBe(1);
+    expect(nearestColumn(530, 5, 100, 500, 50, 550)).toBe(4);
+  });
+  it("is null outside the plot and 0 for a single season", () => {
+    expect(nearestColumn(20, 5, 100, 500, 50, 550)).toBeNull();
+    expect(nearestColumn(600, 5, 100, 500, 50, 550)).toBeNull();
+    expect(nearestColumn(300, 1, 100, 500, 50, 550)).toBe(0);
+  });
+});
+
+describe("spreadLabels", () => {
+  it("keeps labels that are already apart where they are", () => {
+    expect(spreadLabels([50, 100], 14, 0, 200)).toEqual([50, 100]);
+  });
+  it("pushes close labels apart in value order without reordering them", () => {
+    expect(spreadLabels([105, 100, 100], 14, 0, 200)).toEqual([128, 100, 114]);
+  });
+  it("keeps a stack pushed past the bottom inside the plot", () => {
+    expect(spreadLabels([195, 196], 14, 0, 200)).toEqual([186, 200]);
+  });
+});
+
+describe("shortName", () => {
+  it("uses the family name and keeps a suffix with it", () => {
+    expect(shortName("Luka Dončić")).toBe("Dončić");
+    expect(shortName("Shai Gilgeous-Alexander")).toBe("Gilgeous-Alexander");
+    expect(shortName("Jaren Jackson Jr.")).toBe("Jackson Jr.");
+    expect(shortName("Nenê")).toBe("Nenê");
+  });
+});
+
+describe("seasonHigh", () => {
+  it("is the season's highest value only when at least two players have one", () => {
+    expect(seasonHigh([24.4, null, 28.2])).toBe(28.2);
+    expect(seasonHigh([24.4, null])).toBeNull();
+  });
+});
+
+describe("valueScale", () => {
+  it("pads the values with round ticks on both sides", () => {
+    const scale = valueScale([13.9, 38.6]);
+    expect(scale.min).toBeLessThan(13.9);
+    expect(scale.max).toBeGreaterThan(38.6);
+    expect(scale.ticks[0]).toBe(scale.min);
+    expect(scale.ticks.at(-1)).toBe(scale.max);
+  });
+  it("never drops below zero for values that are never negative", () => {
+    expect(valueScale([2.9, 31.4]).min).toBe(0);
+    expect(valueScale([-2.1, 3.4]).min).toBeLessThan(-2.1);
   });
 });

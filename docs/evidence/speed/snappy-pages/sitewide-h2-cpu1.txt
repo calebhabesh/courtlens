@@ -1,0 +1,16 @@
+CPU x1, 5 runs, median ms until shown and settled (before :8441 → after :8442)
+route                                            doc load         client nav
+/stats                                          226 → 233              2 → 2
+/players                                        114 → 112          381 → 376
+/teams                                          157 → 149          403 → 125
+/teams/1610612747                               380 → 188          253 → 188
+/standings                                        98 → 69            47 → 64
+/draft                                          378 → 362          602 → 597
+/research/rapm                                  170 → 150           93 → 108
+/showcase                                       195 → 153          380 → 114
+/compare?playerA=2544&playerB=203999            104 → 117           105 → 95
+/wowy                                           155 → 159          379 → 376
+/free-agency                                    226 → 225          461 → 468
+/research/zts                                   202 → 222          460 → 467
+/contracts                                        80 → 70          377 → 374
+/players/2544                                   393 → 282          179 → 404

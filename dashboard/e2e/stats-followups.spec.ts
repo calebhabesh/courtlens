@@ -133,6 +133,24 @@ test("table and preview keep one height; selected players fit inside the frame",
   await expect(tray).toHaveCount(0);
 });
 
+test("the trend view switch offers lines, side by side and a table, and keeps the choice", async ({ page }) => {
+  await openWorkbench(page, "/stats");
+  await rows(page).first().getByRole("button", { name: /^PTS .* Open PTS trend$/ }).click();
+  const dialog = page.getByRole("dialog", { name: "PTS Trend" });
+  const views = dialog.getByRole("radiogroup", { name: "Trend view" });
+  await expect(views.getByRole("radio", { name: "Lines", exact: true })).toBeChecked();
+  await expect(dialog.getByRole("img", { name: /PTS by season/ })).toBeVisible();
+  await views.getByRole("radio", { name: "Side by side", exact: true }).click();
+  await expect(dialog.locator(".stats-trend-panel")).toHaveCount(1);
+  await views.getByRole("radio", { name: "Table", exact: true }).click();
+  const table = dialog.getByRole("table", { name: "PTS by season" });
+  await expect(table).toBeVisible();
+  await expect(table.locator("tbody tr").first().locator("td").first()).toHaveText(/\d|—/);
+  // A chosen view stays when the statistic changes.
+  await dialog.getByRole("combobox", { name: "Trend statistic" }).selectOption("pts_per_game");
+  await expect(views.getByRole("radio", { name: "Table", exact: true })).toBeChecked();
+});
+
 test("trend points stay clear of the axes", async ({ page }) => {
   await openWorkbench(page, "/stats");
   await rows(page).first().getByRole("button", { name: /^PTS .* Open PTS trend$/ }).click();

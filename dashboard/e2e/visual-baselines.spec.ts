@@ -34,6 +34,10 @@ async function stableWorkspace(page: Page) {
 
 async function settle(page: Page) {
   await page.waitForLoadState("networkidle");
+  // Lazy images start once the page is idle (lib/use-warm-image.ts), and a portrait the mock API
+  // lacks then turns into initials: let that pass before the shot, or a slow runner shoots first.
+  await page.evaluate(() => new Promise(resolve => requestIdleCallback(() => resolve(null), { timeout: 2500 })));
+  await page.waitForLoadState("networkidle");
   await page.evaluate(() => document.fonts.ready);
   // Intersect the viewport and every clipping ancestor: lazy logos in offscreen table columns
   // do not load even when their un-clipped boxes overlap the viewport.

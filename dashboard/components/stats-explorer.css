@@ -114,14 +114,6 @@
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 /* Typed searches keep the current rows, dimmed, until the filtered rows land. */
 .stats-workspace .dense-stats-table tbody.stats-table-body-searching { opacity: 0.55; }
-.stats-table-body-pending { opacity: 0; }
-.stats-table-body-enter { animation: enterFade var(--dur-base) var(--ease-out) backwards; }
-@media (scripting: none) {
-  .stats-table-body-pending { opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .stats-table-body-enter { animation-duration: var(--dur-fast); }
-}
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
 .stats-workspace .stats-row-pin { display: inline-flex; vertical-align: middle; }
 .stats-workspace .stats-pagination-footer { margin: 0; padding: var(--space-1) var(--space-3); gap: var(--space-2); background: var(--color-surface-1); border-top: 1px solid var(--color-hairline); }
@@ -361,7 +353,7 @@
   .stats-team-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); }
   .stats-team-option { display: grid; justify-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-1); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
   .stats-team-option:hover { background: var(--color-surface-hover); }
-  .stats-team-option[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+  .stats-team-option[aria-pressed=true] { background: var(--kit-sheen), var(--kit-selected); color: var(--color-accent); box-shadow: var(--kit-selected-shadow); }
   .stats-team-clear { margin-top: var(--space-3); width: 100%; min-height: var(--control-md); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); }
   .stats-workspace .stats-position-chips { display: inline-flex; gap: var(--space-1); }
   .stats-workspace .dense-stats-table .stats-header-tier-2 th[data-column]:hover { background: var(--color-surface-hover); }
@@ -388,17 +380,50 @@
   .stats-trend-back kbd { font-size: var(--text-xs); opacity: 0.7; background: transparent; }
   .stats-trend-metric { width: auto; min-width: 200px; }
   .stats-trend-body { display: grid; gap: var(--space-4); padding-top: var(--space-4); }
+  /* The view switch sits under the chart title, centred: always in sight above whichever view shows. */
+  .stats-trend-head { display: grid; justify-items: center; gap: var(--space-3); }
+  /* Several players: small markers ringed in the plot surface so crossing lines never hide them. */
+  .stats-trend-marker { fill: var(--series); stroke: var(--color-surface-2); stroke-width: 2; transition: r var(--dur-fast) var(--ease-out); }
+  .stats-trend-end { fill: var(--series); font-size: var(--text-xs); font-weight: var(--font-weight-semibold); transition: opacity var(--dur-fast) var(--ease-out); }
+  .stats-trend-split { display: grid; gap: var(--space-4); }
+  .stats-trend-panel { display: grid; gap: var(--space-1); }
+  .stats-trend-panel-name { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; padding-left: var(--space-3); font-size: var(--text-sm); font-weight: var(--font-weight-semibold); }
+  /* Comparing players: each season's highest value is bold in full text colour; the rest step back. */
+  .stats-trend-table[data-compare] .rs-grid-value { color: var(--color-text-secondary); font-weight: var(--font-weight-normal); }
+  .stats-trend-table[data-compare] .rs-grid-value.stats-trend-high { color: var(--color-text); font-weight: var(--font-weight-bold); }
+  /* A grid item: without this a wide table widens the dialog instead of scrolling in its frame. */
+  .stats-trend-table { min-width: 0; }
+  /* Sized by its columns (season plus one per player), not the grid's 520 px floor, so one player fits a phone. */
+  .stats-trend-table .rs-grid[data-min] { --rs-grid-min: 0px; }
+  .stats-trend-table .dense-stats-table thead th:has(.stats-trend-swatch) .table-sort-button { display: inline-flex; width: auto; }
+  .stats-trend-table .stats-trend-swatch { display: inline-block; margin-left: var(--space-2); vertical-align: middle; }
+  .stats-trend-table-season { font-variant-numeric: tabular-nums; }
   .stats-trend-title { margin: 0; text-align: center; font-size: var(--text-lg); font-weight: 700; }
   .stats-trend-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); text-align: center; padding: var(--space-8) 0; }
   .stats-trend-figure { margin: 0; padding: var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); }
   .stats-trend-figure svg { display: block; width: 100%; height: auto; }
   .stats-trend-grid line { stroke: var(--color-hairline); stroke-width: 1; }
   .stats-trend-grid text, .stats-trend-axis { fill: var(--color-text-secondary); font-size: var(--text-xs); }
-  .stats-trend-series { --series: var(--color-trend-1); }
-  .stats-trend-series[data-series="2"], .stats-trend-player[data-series="2"] { --series: var(--color-trend-2); }
-  .stats-trend-series[data-series="3"], .stats-trend-player[data-series="3"] { --series: var(--color-trend-3); }
-  .stats-trend-series[data-series="4"], .stats-trend-player[data-series="4"] { --series: var(--color-trend-4); }
-  .stats-trend-player { --series: var(--color-trend-1); }
+  .stats-trend-axis { transition: fill var(--dur-fast) var(--ease-out); }
+  .stats-trend-axis.is-active { fill: var(--color-text); font-weight: var(--font-weight-semibold); }
+  /* Hover guide from the hovered season's points down to its year; never takes the pointer. */
+  .stats-trend-guide { stroke: var(--color-hairline-strong); stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
+  .stats-trend-series, .stats-trend-player, .stats-trend-readout-row, .stats-trend-panel, .stats-trend-end, .stats-trend-swatch[data-series="1"] { --series: var(--color-trend-1); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row, .stats-trend-panel, .stats-trend-end, .stats-trend-swatch)[data-series="2"] { --series: var(--color-trend-2); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row, .stats-trend-panel, .stats-trend-end, .stats-trend-swatch)[data-series="3"] { --series: var(--color-trend-3); }
+  :is(.stats-trend-series, .stats-trend-player, .stats-trend-readout-row, .stats-trend-panel, .stats-trend-end, .stats-trend-swatch)[data-series="4"] { --series: var(--color-trend-4); }
+  /* A hovered line or player card keeps its series bright; the other players dim. */
+  .stats-trend-series, .stats-trend-player { transition: opacity var(--dur-fast) var(--ease-out); }
+  .stats-trend-plot.has-focus .stats-trend-series:not(.is-focused), .stats-trend-end[data-dim] { opacity: 0.22; }
+  .stats-trend-players.has-focus .stats-trend-player:not(.is-focused) { opacity: 0.5; }
+  .stats-trend-plot { position: relative; }
+  /* Several players: every value in the hovered season, beside the guide, never under the pointer. */
+  .stats-trend-readout { position: absolute; top: var(--readout-y); left: var(--readout-x); transform: translateX(var(--space-3)); display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-3); box-shadow: var(--shadow-menu); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; pointer-events: none; }
+  .stats-trend-readout[data-side="left"] { transform: translateX(calc(-100% - var(--space-3))); }
+  .stats-trend-readout-season { color: var(--color-text-secondary); font-weight: var(--font-weight-semibold); }
+  .stats-trend-readout-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-2); color: var(--color-text); }
+  .stats-trend-readout-row[data-missing] { color: var(--color-text-tertiary); }
+  .stats-trend-readout-value { padding-left: var(--space-3); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-semibold); text-align: right; }
   .stats-trend-series path { fill: none; stroke: var(--series); stroke-linejoin: round; stroke-linecap: round; }
   .stats-trend-line { stroke-width: 2.5; }
   .stats-trend-glow { stroke-width: 10; opacity: 0.16; }
@@ -429,7 +454,7 @@
    tokens, so reduced motion collapses them (Design Language v1). */
 @layer pages {
   .stats-workspace .filter-toolbar { animation: fadeInDropdown var(--dur-base) var(--ease-out); }
-  /* The body fades in after hydration and settles in place on later changes. */
+  /* The body shows with the server HTML and settles in place on later changes. */
   .stats-header-tip { animation: chart-crossfade var(--dur-fast) var(--ease-out); }
   .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
   .stats-team-option:hover .team-logo { transform: scale(1.08); }

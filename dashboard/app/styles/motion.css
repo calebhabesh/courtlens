@@ -72,17 +72,8 @@
     }
   }
 
-  @keyframes routeEnter {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
+  /* The page wrapper (app/template.tsx). It does not animate: a page shows the frame it arrives
+     (Stats speed, 2026-11-17; the 320 ms fade held every navigation back). */
   .route-enter {
     display: flex;
     flex-direction: column;
@@ -90,7 +81,25 @@
     min-width: 0;
     min-height: 0;
     width: 100%;
-    animation: routeEnter var(--dur-slow) var(--ease-out) forwards;
+  }
+
+  /* A link's navigation still waiting for its page (IntentLink's PendingSignal) lays a scrim over
+     the page being left, below the header, after the skeleton delay, so a fast navigation never
+     flickers. A separate layer: fading the page's own opacity repainted the whole Stats table and
+     held the next page back by about 40 ms on a slow CPU. */
+  @keyframes navPendingScrim {
+    from { opacity: 0; }
+  }
+
+  .route-enter[data-nav-pending]::after {
+    content: "";
+    position: fixed;
+    inset: var(--header-height) 0 0;
+    /* Above the table's sticky cells (later in tree order at the same level), under the header. */
+    z-index: var(--z-sticky-corner);
+    pointer-events: none;
+    background: color-mix(in srgb, var(--color-surface-0) 45%, transparent);
+    animation: navPendingScrim var(--dur-base) var(--ease-out) var(--delay-skeleton) backwards;
   }
 
   /* ---------- Content motion (DL Enter / Loading / Table patterns) ----------
@@ -155,11 +164,6 @@
     }
 
     .ui-skeleton::after { display: none; }
-
-    .route-enter {
-      animation: fadeInDropdown var(--dur-slow) var(--ease-out) forwards;
-      transform: none !important;
-    }
 
     /* Content enters keep a short opacity fade (opacity keeps --dur-fast) and never move. */
     .motion-enter,

@@ -181,6 +181,10 @@ test.describe("F03 Win Probability research page", () => {
 
   test("win probability added: one sortable grid with photos, sorted not ranked, season in the URL", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
+    // The mock API serves no portrait files, and every portrait now loads once the page is idle
+    // (ImageWarmer), so a missing file would turn the photo into initials. Serve a one-pixel image.
+    await page.route(/\/portrait(\.webp)?\?/, route => route.fulfill({ contentType: "image/png",
+      body: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=", "base64") }));
     await page.goto("/research/win-probability");
     const season = wp.wpa_seasons[0], table = served.wpa[season];
     const players = new Set([...table.leaders, ...table.clutch_leaders].map(r => r.player));

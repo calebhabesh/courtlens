@@ -1,0 +1,13 @@
+CPU x1, 7 runs: median ms from the action until content is visible and painted
+3181 doc /                     712    runs: 712,720,730,745,692,704,698
+3181 doc /stats                637    runs: 635,636,637,653,653,653,604
+3181 doc /players/2544         372    runs: 373,372,371,372,372,373,372
+3181 nav player→Stats          587    runs: 577,587,565,535,612,587,589
+3181 click Stats→player        299    runs: 300,283,299,298,300,300,283
+3181 Back player→Stats         366    runs: 366,353,368,351,367,367,352
+3182 doc /                     188    runs: 227,150,189,148,188,189,157
+3182 doc /stats                185    runs: 188,182,190,185,148,144,192
+3182 doc /players/2544         377    runs: 377,380,382,256,377,257,378
+3182 nav player→Stats          336    runs: 341,327,342,336,334,335,337
+3182 click Stats→player        284    runs: 276,550,287,285,283,250,284
+3182 Back player→Stats         186    runs: 196,186,189,192,180,185,178

@@ -72,7 +72,7 @@
     color: var(--color-text-secondary); font: inherit; font-size: var(--text-xs); cursor: pointer;
   }
   .wowy-team-pick:hover { background: var(--color-surface-hover); color: var(--color-text); }
-  .wowy-team-pick[aria-pressed="true"] { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; outline: 1px solid var(--color-accent); outline-offset: -1px; }
+  .wowy-team-pick[aria-pressed="true"] { background: var(--kit-sheen), var(--kit-selected); color: var(--color-accent); box-shadow: var(--kit-selected-shadow); font-weight: 600; }
   .wowy-team-pick:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 0; }
   .wowy-method { margin: 0; padding-left: var(--space-5); }
 

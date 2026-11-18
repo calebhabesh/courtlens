@@ -1,0 +1,9 @@
+tools/popin.mjs, final builds over the HTTP/2 proxy (before :8441 = 108656ab, after :8442 = this change),
+1440x900, after networkidle + 1.5 s: images inside main still not loaded, then images first seen
+unloaded while scrolling the table box (Stats) or the page to the bottom.
+before /stats               {"visibleImgs":350,"notLoadedAfterIdle":310,"shownUnloadedWhileScrolling":106}
+before /draft               {"visibleImgs":830,"notLoadedAfterIdle":740,"shownUnloadedWhileScrolling":19}
+before /teams/1610612747    {"visibleImgs":204,"notLoadedAfterIdle":100,"shownUnloadedWhileScrolling":38}
+after  /stats               {"visibleImgs":350,"notLoadedAfterIdle":0,"shownUnloadedWhileScrolling":0}
+after  /draft               {"visibleImgs":775,"notLoadedAfterIdle":0,"shownUnloadedWhileScrolling":0}
+after  /teams/1610612747    {"visibleImgs":204,"notLoadedAfterIdle":0,"shownUnloadedWhileScrolling":0}

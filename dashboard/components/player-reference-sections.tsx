@@ -74,6 +74,7 @@ const SPAN_END: Record<string, string> = {
 
 const SPAN_START: Record<string, string> = {
   previous_contract: "Starts after the contract it extends",
+  salary_rise: "Starts where the salary rises more than one contract allows",
   current_contract: "Counted back from the current contract's last season",
 };
 
@@ -87,6 +88,7 @@ const LENGTH_SOURCE: Record<PlayerContractLengthSource, string> = {
 
 const ARTICLE_TITLE = "Stated in the player's Wikipedia article (CC BY-SA 4.0); Basketball-Reference gives no length";
 const ADDED_TITLE = "Basketball-Reference does not list this signing; it is stated in the player's Wikipedia article (CC BY-SA 4.0)";
+const EXTENSION_TITLE = "Basketball-Reference lists a signing; the player's Wikipedia article (CC BY-SA 4.0) states it was an extension";
 
 function yearsLabel(years: number) { return `${years} ${years === 1 ? "year" : "years"}`; }
 
@@ -149,6 +151,7 @@ function SpanCell({ span, edge, tone, unplaced }: {
   const basis = [
     SPAN_START[span.start_basis ?? ""], SPAN_END[span.end_basis ?? ""],
     span.length_source ? LENGTH_SOURCE[span.length_source] : undefined, span.source === "wikipedia" ? ADDED_TITLE : undefined,
+    span.extension_source === "wikipedia" ? EXTENSION_TITLE : undefined,
   ].filter(Boolean).join(" · ");
   return <td className="player-contract-span" data-tone={tone}>
     {label && <span className="player-contract-span-label" title={`${span.description} · signed ${formatDate(span.signed_date)}${basis ? ` · ${basis}` : ""}`}>
@@ -315,7 +318,7 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
     {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contracts">
       <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contracts</h2><span>Reported salaries · USD</span></header>
       <ContractTable reference={reference} contract={contract} history={history} events={events} />
-      <p className="player-reference-note">Seasons are bracketed by contract where its start and end are known: from Basketball-Reference&apos;s signing events, the CBA&apos;s fixed lengths (rookie scale, 10-day, Exhibit 10), and lengths or signings the player&apos;s Wikipedia article states where Basketball-Reference gives none. Where counting forward would run past the current contract (an extension that replaced an option year), the extensions are counted back from its last season. A signing whose start or end is still unknown is noted without a bracket, saying which is missing. Options are reported terms. &ldquo;Fully Guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
+      <p className="player-reference-note">Seasons are bracketed by contract where its start and end are known: from Basketball-Reference&apos;s signing events, the CBA&apos;s fixed lengths (rookie scale, 10-day, Exhibit 10), and lengths, extensions or signings the player&apos;s Wikipedia article states where Basketball-Reference gives none. Where counting forward would run past the current contract (an extension that replaced an option year), the extensions are counted back from its last season, never so far that one contract holds a raise the CBA does not allow; a salary rising more than that marks where a contract began. A signing whose start or end is still unknown is noted without a bracket, saying which is missing. Options are reported terms. &ldquo;Fully Guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
       {reference.contract_terms_source && <p className="player-reference-credit">
         <a href={reference.contract_terms_source.url} target="_blank" rel="noreferrer">Wikipedia: {reference.contract_terms_source.title}</a> (CC BY-SA 4.0) · Contract terms Basketball-Reference does not state · As of {formatDate(reference.contract_terms_source.as_of)}

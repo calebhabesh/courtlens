@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import type { AssistantPageContext } from "./assistant-v2.generated";
 import { humanLabel } from "./route-availability";
@@ -27,10 +27,21 @@ export function AssistantPageSelection({ route, playerIds = [], teamIds = [], sc
   return null;
 }
 
+const subscribeToNothing = () => () => {};
+
+/**
+ * The page's Ask context, or null while this consumer hydrates. The server renders before any page
+ * registers itself (an effect), so the header's Ask button is disabled in the HTML. The header
+ * hydrates in its own Suspense boundary, after the shell; a page in the shell (no loader since
+ * 2026-11-17) registers first, and hydrating the header against that value left the button's
+ * `disabled` attribute unpatched for good. The server snapshot keeps hydration on the server's
+ * value; React renders the real one right after.
+ */
 export function useAssistantPage() {
   const { page } = useContext(PageContext);
   const pathname = usePathname();
-  return page?.context.route === pathname ? page : null;
+  const hydrated = useSyncExternalStore(subscribeToNothing, () => true, () => false);
+  return hydrated && page?.context.route === pathname ? page : null;
 }
 
 export function pageContextLabel(page: AssistantPageContext, label = "This page"): string {

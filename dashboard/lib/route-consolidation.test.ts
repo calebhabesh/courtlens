@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { activeRouteTab } from "@/components/ui/route-tabs";
 import { analyticalNavItems, MORE_LINKS, TAB_SHORTCUTS } from "./nav-model";
-import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, TABBED_PAGES, mergedPagePath } from "./route-consolidation";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, HOME_REDIRECT, TABBED_PAGES, mergedPagePath } from "./route-consolidation";
 import nextConfig from "../next.config";
 
 const appDir = path.resolve(__dirname, "../app");
@@ -47,7 +47,14 @@ describe("FO07 route consolidation (D3)", () => {
 
   it("serves the shared table as Next.js redirects", async () => {
     const redirects = await nextConfig.redirects!();
-    expect(redirects).toEqual([...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS].map(r => ({ ...r, permanent: false })));
+    expect(redirects).toEqual([HOME_REDIRECT, ...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS].map(r => ({ ...r, permanent: false })));
+  });
+
+  it("opens Stats from `/` with a redirect, not a page (Stats speed, 2026-11-17)", () => {
+    // A page that called redirect() streamed a 200 shell and redirected only after its scripts ran.
+    expect(HOME_REDIRECT).toEqual({ source: "/", destination: "/stats" });
+    expect(isFile(pageFile("/")), "app/page.tsx").toBe(false);
+    expect(isFile(pageFile(HOME_REDIRECT.destination))).toBe(true);
   });
 
   it("removes hidden pages from the app and the navigation and sends them to an existing page", () => {

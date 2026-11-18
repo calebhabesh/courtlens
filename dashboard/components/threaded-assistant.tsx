@@ -225,18 +225,16 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
     return () => { active = false; clearTimeout(timer); };
   }, [pendingId, thread, turnCursor]);
 
-  async function createThread() {
+  // New Chat opens a local draft, as chat apps do: the conversation is saved (and joins the
+  // sidebar) only when its first question is sent, so clicking it never leaves empty chats.
+  function startNewChat() {
     if (lock.current || pending) return;
-    lock.current = true; setBusy(true); setError(null);
-    const owned = ++epoch.current;
-    setQuestion("");
-    try {
-      const header = await newAssistantThread();
-      if (epoch.current !== owned) return;
-      tailCursor.current = undefined; currentThread.current = header.thread_id; setThread(header.thread_id); remember(header.thread_id); setTurns([]); setTurnCursor(null); setTransportRetry(null); setScopeEdited(false); scopeChanged.current = false; setContext(initialContext); setConfirmDelete(false); setDrawer(false);
-      await refreshThreads(); notifyHistory(); input.current?.focus();
-    } catch (cause) { if (epoch.current === owned) setError(messageOf(cause)); }
-    finally { if (epoch.current === owned) { lock.current = false; setBusy(false); } }
+    setDrawer(false); setConfirmDelete(false);
+    if (currentThread.current || turns.length) {
+      epoch.current++;
+      tailCursor.current = undefined; currentThread.current = null; setThread(null); remember(null); setTurns([]); setTurnCursor(null); setError(null); setTransportRetry(null); setQuestion(""); setScopeEdited(false); scopeChanged.current = false; setContext(initialContext);
+    }
+    input.current?.focus();
   }
   async function execute(request: HybridTurnRequest) {
     if (lock.current) return;
@@ -376,7 +374,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         <IconButton size="sm" variant="ghost" icon="sidebar" label="Conversations" aria-expanded={overlay ? drawer : !collapsed} aria-controls={sidebarId} onClick={toggleSidebar} />
         <p className="ask-title" title={title}>{title}</p>
         <div className="ask-topbar-actions">
-          <IconButton size="sm" variant="ghost" icon="compose" label="New Chat" disabled={blocked} onClick={() => void createThread()} />
+          <IconButton size="sm" variant="ghost" icon="compose" label="New Chat" disabled={blocked} onClick={startNewChat} />
           {!isPublicAsk && <IconButton size="sm" variant="ghost" icon="trash" label="Delete Chat" disabled={blocked || !thread} onClick={() => setConfirmDelete(true)} />}
           {headerActions && <><span className="ask-topbar-divider" aria-hidden="true" />{headerActions}</>}
         </div>
@@ -385,7 +383,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         <div className="ask-column">
           {!ready && <p role="status">Reading local history…</p>}
           {isEmpty && <div className="ask-empty">
-            <span className="ask-empty-mark"><BrandMark size={40} /></span>
+            <span className="ask-empty-mark"><BrandMark size={56} /></span>
             <h2>What Do You Want to Know?</h2>
             <p className="text-muted">{isPublicAsk
               ? "Ask about NBA stats, players, history and rules. Answers use CourtLens data first; very recent news may be missing."

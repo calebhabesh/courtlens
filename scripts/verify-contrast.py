@@ -22,25 +22,25 @@ def contrast(c1: str, c2: str) -> float:
 
 
 surfaces = {
-    "surface-0 (#0e1013)": "#0e1013",
-    "surface-1 (#15171b)": "#15171b",
-    "surface-2 (#1c1f24)": "#1c1f24",
-    "surface-3 (#24282e)": "#24282e",
+    "surface-0 (#070c16)": "#070c16",
+    "surface-1 (#10182a)": "#10182a",
+    "surface-2 (#172135)": "#172135",
+    "surface-3 (#1f2a40)": "#1f2a40",
 }
 
-# v1.3: the blue page background only carries these text tokens.
-bg = ("bg (#15325a)", "#15325a")
+# v1.4 (Deep Navy): the blue page background only carries these text tokens.
+bg = ("bg (#0c1f3d)", "#0c1f3d")
 bg_texts = {
     "--color-text (#f2f3f5)": "#f2f3f5",
-    "--color-on-bg-secondary (#c9d3e6)": "#c9d3e6",
-    "--color-on-bg-tertiary (#b4c2dc)": "#b4c2dc",
+    "--color-on-bg-secondary (#c6d1e6)": "#c6d1e6",
+    "--color-on-bg-tertiary (#aebcd6)": "#aebcd6",
     "--color-accent (#ffd166)": "#ffd166",
 }
 
 texts = {
     "--color-text (#f2f3f5)": "#f2f3f5",
-    "--color-text-secondary (#a9afb9)": "#a9afb9",
-    "--color-text-tertiary (#858b95)": "#858b95",
+    "--color-text-secondary (#a8b1c0)": "#a8b1c0",
+    "--color-text-tertiary (#8790a1)": "#8790a1",
     "--color-accent (#ffd166)": "#ffd166",
     "--color-positive (#60d394)": "#60d394",
     "--color-negative (#ff6b6b)": "#ff6b6b",

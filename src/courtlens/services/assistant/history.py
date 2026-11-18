@@ -17,8 +17,9 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException
-from sqlalchemy import Engine, delete, inspect, select, text, true
+from sqlalchemy import Engine, delete, exists, inspect, literal, select, text, true, tuple_
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.elements import ColumnElement
 
 from courtlens.assistant_history_models import (
     AssistantAgentTranscript,
@@ -544,11 +545,22 @@ def delete_visitor_history(session: Session, visitor: str) -> int:
 def list_threads(
     session: Session, limit: int = 20, cursor: UUID | None = None, visitor: str | None = None
 ) -> ThreadHistoryPage:
+    """Newest activity first, like a chat app's sidebar. A thread with no question yet is a
+    draft and is not listed; the cursor is the last listed thread's id."""
+    after: ColumnElement[bool] = true()
+    if cursor:
+        last = session.get(AssistantThread, str(cursor))
+        if last is None:
+            return ThreadHistoryPage(threads=[], next_cursor=None)
+        after = tuple_(AssistantThread.updated_at, AssistantThread.id) < tuple_(
+            literal(last.updated_at), literal(last.id)
+        )
+    asked = exists().where(AssistantTurn.thread_id == AssistantThread.id)
     rows = session.scalars(
         select(AssistantThread)
-        .where(AssistantThread.id > str(cursor) if cursor else true())
+        .where(after, asked)
         .where(AssistantThread.visitor == visitor if visitor is not None else true())
-        .order_by(AssistantThread.id)
+        .order_by(AssistantThread.updated_at.desc(), AssistantThread.id.desc())
         .limit(limit + 1)
     ).all()
     return ThreadHistoryPage(
