@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useRef, useState, type ReactNode } from "react";
+import { CourtLensLockup } from "./brand";
 import { IntentLink } from "@/components/intent-link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -21,8 +22,6 @@ import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CompareSeasonPicker } from "./compare-season-picker";
 import { fetchLandingSeason, newestSeason, type BestSeason } from "@/lib/landing-season";
 import { CompareSeasonHonors, EmptySectionHeading, honorSeasons, honorsNone } from "./compare-season-honors";
-import { CourtLensWordmark } from "./courtlens-wordmark";
-import { BrandMark } from "./brand";
 import { accoladeGroups, completedSeasons, type AccoladeGroups } from "@/lib/compare-accolades";
 import { formatDate } from "@/lib/format-date";
 import { PageHeader } from "./ui/panel";
@@ -306,7 +305,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
             {!noAwards && <CompareSeasonHonors key={`${a.id}-${b.id}-${seasonOf("a")}-${seasonOf("b")}-honors`} honors={accolades.season} names={[a.name, b.name]} />}
           </div>
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
-          <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
+          <footer className="pvp-foot"><CourtLensLockup height={18} /></footer>
         </>}
       </section>
 

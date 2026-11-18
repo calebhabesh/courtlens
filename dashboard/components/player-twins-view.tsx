@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { CourtLensLockup } from "./brand";
 import { IntentLink } from "@/components/intent-link";
 // The Stats table look, as Player Matchups borrows it.
 import "./stats-explorer.css";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { SkelControl, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
@@ -104,7 +104,7 @@ export function PlayerTwinsView() {
               all: "Volume and box rates are per 100 offensive possessions (defensive possessions for DREB, STL and BLK).",
             }[view.mode]} Bars and signed values compare the player with the possession-weighted league-season average. PCTL ranks the season among player-seasons with {whole(view.method.base_possessions)}+ offensive possessions.</Info></div>
           </div>
-          <span className="tw-panel-brand"><CourtLensWordmark height={18} /></span>
+          <span className="tw-panel-brand"><CourtLensLockup height={18} /></span>
         </header>
         {view.focus_rule && <p className="tw-default">Shown by default · {view.focus_rule}</p>}
         <div className="tw-cards">

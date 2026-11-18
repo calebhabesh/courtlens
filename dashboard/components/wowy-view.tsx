@@ -7,6 +7,7 @@ import {
   CLOCK_OPTIONS, FILTER_KEYS, MAX_COMBO, TAB_COLUMNS, activeFilters, assignRole, fmt, getWowyCombos, readState, requestParams, roleOf, shortName, signed, tone,
   type ComboCell, type Role, type Tier, type TierMetric, type VsState, type WowyCombosResponse, type WowyColumn, type WowyState, type WowyTab,
 } from "@/lib/wowy";
+import { CourtLensLockup } from "./brand";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { AccordionItem } from "./ui/accordion";
 import { TeamGrid, teamDisplayName } from "./team-grid";
@@ -95,7 +96,7 @@ function PlayersPanel({ data, state, season, onRole }: { data: WowyCombosRespons
         </li>;
       })}
     </ul>
-    {!query && matches.length > SHOWN_PLAYERS && <Button size="xs" variant="text" onClick={() => setAll(!all)}>{all ? "Fewer" : `All ${matches.length} Players`}</Button>}
+    {!query && matches.length > SHOWN_PLAYERS && <Button size="sm" iconAfter={all ? "chevron-up" : "chevron-down"} aria-expanded={all} onClick={() => setAll(!all)}>{all ? "Show Fewer" : `Show All ${matches.length} Players`}</Button>}
   </section>;
 }
 
@@ -248,7 +249,7 @@ function LineupTable({ data, state, season, summary }: { data: WowyCombosRespons
   const shift = data.shifts[0];
   return <section className="wowy-card" aria-label="WOWY combos" data-wide={state.tab === "overview" ? undefined : true}>
     <header className="wowy-card-head">
-      <span className="wowy-card-brand">CourtLens</span>
+      <CourtLensLockup height={20} />
       <span className="wowy-card-scope">WOWY Combos • {season} • {phaseName(data)}<small>{summary}{data.provisional ? " · Provisional" : ""}</small></span>
     </header>
     <div className="wowy-card-scroll" role="region" aria-label="On/off combinations" tabIndex={0}>
@@ -326,7 +327,7 @@ function Composition({ data, cell, order, split, season }: { data: WowyCombosRes
   const era = { season, team };
   return <div className="wowy-composition">
     <header className="wowy-composition-head">
-      <span className="wowy-card-brand">CourtLens</span>
+      <CourtLensLockup height={20} />
       <span className="wowy-composition-title"><TeamLogo team={team} season={season} size={24} />Lineups</span>
       <span className="wowy-composition-season">{season}</span>
     </header>

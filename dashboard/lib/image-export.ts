@@ -1,3 +1,4 @@
+import { REST_SEAM_PATH } from "./ball-seams";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "./courtlens-wordmark";
 
 /**
@@ -146,17 +147,20 @@ export async function exportSvgAsPng(
   ctx.fillStyle = "#20252e";
   ctx.fillRect(0, 0, totalWidth, totalHeight);
 
-  // 2. Draw branded header
+  // 2. Draw branded header: the logo beside the wordmark, as on the page cards.
+  const markSize = 28; // 2:1 to the 14px wordmark, as in the site header
+  drawBrandMark(ctx, paddingX, 9, markSize);
+  const wordmarkX = paddingX + markSize + 8;
   ctx.fillStyle = "#ffd166"; // CourtLens Accent
   ctx.save();
-  ctx.translate(paddingX, 16);
+  ctx.translate(wordmarkX, 16);
   ctx.scale(14 / WORDMARK_HEIGHT, 14 / WORDMARK_HEIGHT);
   ctx.fill(new Path2D(WORDMARK_PATH));
   ctx.restore();
 
   ctx.fillStyle = "#b4bdca"; // Muted text
   ctx.font = "12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-  ctx.fillText("NBA Analytics · Reconstructed Prior Facts", paddingX + 14 * WORDMARK_WIDTH / WORDMARK_HEIGHT + 14, 30);
+  ctx.fillText("NBA Analytics · Reconstructed Prior Facts", wordmarkX + 14 * WORDMARK_WIDTH / WORDMARK_HEIGHT + 14, 30);
 
   // Main title
   ctx.fillStyle = "#f1f3f6"; // Primary text
@@ -236,6 +240,32 @@ export async function exportSvgAsPng(
       resolve();
     }, "image/png");
   });
+}
+
+/** BrandMark (components/brand-mark.tsx, unframed) drawn on a canvas: same 32x32 geometry and silver ring. */
+function drawBrandMark(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(size / 32, size / 32);
+  const silver = ctx.createLinearGradient(5, 5, 29, 29);
+  for (const [offset, color] of [[0, "#eef3f8"], [0.22, "#a1adbd"], [0.42, "#f8fbff"], [0.58, "#8795a8"], [0.78, "#d5dfe9"], [1, "#a3b0c2"]] as const) {
+    silver.addColorStop(offset, color);
+  }
+  ctx.strokeStyle = silver;
+  ctx.fillStyle = silver;
+  ctx.lineWidth = 3.4;
+  ctx.lineCap = "butt";
+  ctx.beginPath(); ctx.moveTo(20.5, 20.5); ctx.lineTo(27.4, 27.4); ctx.stroke();
+  ctx.beginPath(); ctx.arc(27.4, 27.4, 1.7, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#b44d28";
+  ctx.beginPath(); ctx.arc(14, 14, 8.4, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = "#0c0d10";
+  ctx.lineWidth = 1.2;
+  ctx.stroke(new Path2D(REST_SEAM_PATH));
+  ctx.strokeStyle = silver;
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(14, 14, 9.2, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
 }
 
 /**

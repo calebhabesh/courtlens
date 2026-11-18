@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { CourtLensLockup } from "./brand";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 // The Stats table look, as the career table borrows it.
@@ -11,8 +12,6 @@ import { CompareEmptySlot } from "./compare-empty-slot";
 import { teamRecord } from "./compare-player-slot";
 import { TeamLogo } from "./team-logo";
 import { TeamWatermark } from "./team-watermark";
-import { BrandMark } from "./brand";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { SortHeader } from "./table-ui";
 import { FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { FilterBar } from "./ui/filter-bar";
@@ -234,7 +233,7 @@ export function SeasonMatchupsView() {
           </div>
           <p className="mu-note">NBA tracking assigns each offensive player a primary defender, moment to moment. MIN is time matched up; POSS weights each possession by the share of it the two were matched up. Best and worst rank by PTS/100 among matchups with at least the chosen possessions (25 unless changed). Choose a row to see that matchup both ways. A missing pairing was never observed, not zero.</p>
         </section>
-        <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
+        <footer className="pvp-foot"><CourtLensLockup height={18} /></footer>
       </section>
     </div>}
   </div>;
