@@ -2230,3 +2230,133 @@ dashboard suites ran.
 - The local A/B above was measured before the `ReplaceUrl` change, which moves only the address-bar
   write by one task, not the rendering.
 - Python suites not run: no Python changed. Not deployed.
+
+## 2026-11-17 — Follow-up 2: every page shows as soon as it arrives; no image pop-in
+
+The owner, after the Stats change: "Apply it to all the pages you can (that would make the site feel
+snappy responsive)", and the Stats portraits "load as you scroll … I don't like this. The site
+should feel loaded/stable/responsive/snappy." Built on `improve/site-polish` (from 108656ab); not
+deployed. Evidence: `docs/evidence/speed/snappy-pages/`.
+
+### Route loaders
+
+Live HTML times for every route with a loader (`live-route-times.txt`): most finish in 35–100 ms
+warm. A loader on those only adds React's 300 ms reveal batch.
+
+- **Kept (4):** the first hit often takes a second or more.
+  - `players/[id]`: Bird's first visit took 5.7 s.
+  - `data-status`: 7–8 s.
+  - `methodology`: 0.3–1 s.
+  - `live/games/[id]`: real time, uncached.
+- **Removed (41).**
+  - The other 37 skeletons moved to `skeleton.tsx` beside their page, a name Next does not treat as
+    a loader. Their unit tests and the design gallery still render them.
+  - The four one-line article loaders of the last follow-up were deleted.
+  - A unit test now fails if any other route gains a `loading.tsx`.
+
+### Images
+
+Every portrait, team logo and watermark was `loading="lazy"` (SP06). Inside Stats' own scroll box a
+lazy image starts only once it is in view, so rows filled in as they scrolled.
+
+- **First attempt: all eager.** Eager with `fetchPriority="low"` (React emits no preload for a
+  low-priority image) moved first paint 30–70 ms later on image-heavy pages. Draft has 278 portraits
+  and Matchups 424. Most of that was decoding at first paint; the rest was the local API serving
+  every portrait.
+- **What shipped: `lib/use-warm-image.ts`.** Images stay lazy in the HTML. Each `PlayerPortrait`,
+  `TeamLogo` and `TeamWatermark` queues its own image from its effect, and one idle callback (two
+  seconds at most) starts them all, skipping images under `display: none`. `TeamWatermark` became a
+  client component for it.
+- **A page-wide sweep came first.** A MutationObserver over the document started every lazy image.
+  It was replaced because it also reached Suspense boundaries still waiting to hydrate.
+  - Bisecting showed it did not cause the #418 below.
+  - Touching unhydrated DOM is the same hazard, though.
+  - The 4× numbers below were measured on that version.
+- **Result (`popin.txt`), after the page goes idle:**
+
+| Page | Images still unloaded | Seen unloaded while scrolling |
+| --- | --- | --- |
+| Stats | 310 of 350 → 0 | 106 → 0 |
+| Draft | 740 → 0 | 19 → 0 |
+| Lakers | 100 → 0 | 38 → 0 |
+
+### Hydration races the change exposed (also in the last follow-up's Stats commit)
+
+With a page in the first flush, its effects run before the header's own Suspense boundary
+hydrates. The header must keep that boundary: 30 routes are static, and it reads `useSearchParams`.
+A large page also starves that low-priority hydration. Values the header reads had often changed by
+then, and it hydrated against them instead of the server HTML. This was caught by the full suite
+and found by instrumenting React's mismatch thrower in a sandbox copy.
+
+- **Ask button stuck disabled** (team pages, Compare). The page registers its Ask context from an
+  effect, and React never patches an attribute mismatch, so the button kept its server
+  `disabled`. `useAssistantPage` now returns null while its consumer hydrates (a
+  `useSyncExternalStore` server snapshot). A hydration unit test fails without it.
+- **React #418 on Compare, team pages and Stats.** The header expected
+  `<span class="account-header-control">`: the account read (`me`) had answered before the header
+  hydrated. `useAccount` now reports the provider's initial state (loading, no user, no favourites)
+  while its consumer hydrates.
+  - Commit 80a7a1ce has this bug on Stats: the new spec fails 4 of 6 runs on 108656ab. It is not
+    deployed.
+  - A happy-dom unit test could not reproduce the ordering (it passed without the fix), so it was
+    dropped. `e2e/hydration-clean.spec.ts` guards it instead: seven pages at two widths, no page
+    error.
+- **`ReplaceUrl` writes once the main thread is idle** (at most a second). This is so the new
+  search parameters do not reach a boundary that is still waiting to hydrate. The previous one-task
+  delay already kept Next's history state.
+
+### Measures (HTTP/2, both builds at once)
+
+Both builds: `next build` with the hosted flags and a same-origin API, as live. They were served on
+:3181 and :3182 behind `tools/h2-proxy.mjs`, a Node HTTP/2 TLS proxy with the Caddyfile's routes, on
+:8441 and :8442. Both used a private API with the read cache on (:8191, the PC's database).
+Portraits were answered from memory, as Cloudflare's `HIT` would.
+
+`tools/sitewide.mjs` reports the median ms until `h1` is filled, no `[role=status][aria-busy]`
+loader remains, `main` is opaque, and the next frame has painted. Five runs, 1× CPU
+(`sitewide-h2-cpu1.txt`):
+
+| Route | Load before → after | Client nav before → after |
+| --- | --- | --- |
+| Teams | 157 → 149 | 403 → **125** |
+| Lakers | 380 → **188** | 253 → **188** |
+| Standings | 98 → **69** | 47 → 64 |
+| Showcase | 195 → **153** | 380 → **114** |
+| RAPM | 170 → **150** | 93 → 108 |
+| Compare (pair) | 104 → 117 | 105 → 95 |
+| LeBron (loader kept) | 393 → **282** | bimodal 180 or 400 in both builds (the kept loader's batch) |
+| Players, Draft, WOWY, Free Agency, zTS, Contracts | within ±20 | within ±10: these read their data in the browser after mount |
+
+At 4× CPU, measured on the page-wide-warmer build (`sitewide-h2-cpu4.txt`):
+
+- loads: Lakers 775 → 548, Showcase 607 → 371, RAPM 621 → 342, LeBron 859 → 682;
+- navs: Standings 554 → 190, Players 577 → 325;
+- no route slower.
+
+The plain HTTP/1.1 runs were misleading on image-heavy pages, because six connections were shared
+between portraits and data reads. Read the HTTP/2 numbers.
+
+### Not done (next levers)
+
+- **Pages that read their data in the browser** (Players, Draft, WOWY, Free Agency, zTS, Contracts,
+  most Research pages) still show their in-page skeleton for 350–600 ms after a click. Moving those
+  reads to the server, as the Stats table does, would make them arrive complete.
+- **Player pages keep their loader.** A delayed client-side skeleton for slow navigations only
+  would let them drop it as well.
+- **The header's `layoutId` indicator** still forces a full-page layout when the section changes
+  (the last follow-up).
+
+### Checks
+
+- `npm run lint` and `typecheck`: pass. Vitest: **155 files, 1,119 passed**. New tests:
+  `use-warm-image.test.tsx`, `assistant-page-context.test.tsx`, the loader guard in
+  `loading-skeletons.test.tsx`.
+- Playwright, webpack fixture build (mock API :4180, dashboard :3183), every spec except "real",
+  4 workers: **686 passed, 0 failed, 27 skipped**. Spec changes:
+  - `r03-signal-noise:157` counts data reads only, since portraits now load at idle;
+  - `win-probability:182` serves its portraits, since the mock API has none and a warmed 404 turns a
+    photo into initials;
+  - `hydration-clean.spec.ts` is new.
+- The fixture build ran with the sandbox's original React. The instrumented copy was used only to
+  find the mismatch and was restored (byte-identical to the checkout's).
+- Python not run: no Python changed. Not deployed.

@@ -156,7 +156,8 @@ test.describe("R03 Signal vs Noise", () => {
 
   test("the Stats Shrunk toggle is off by default, adds labelled columns without re-running the query, and restores the table", async ({ page }) => {
     const calls: string[] = [];
-    page.on("request", request => { if (/\/api\/(workbench|signal-noise)/.test(request.url())) calls.push(`${request.method()} ${new URL(request.url()).pathname}`); });
+    // Data reads only: portraits load once the page is idle (ImageWarmer), which is not a query.
+    page.on("request", request => { if (request.resourceType() !== "image" && /\/api\/(workbench|signal-noise)/.test(request.url())) calls.push(`${request.method()} ${new URL(request.url()).pathname}`); });
     await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&viewId=shooting");
     const heads = page.locator("thead tr.stats-header-tier-2 th");
     const toggle = page.getByRole("button", { name: "Show shrunk shooting percentages" });

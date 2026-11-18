@@ -47,7 +47,7 @@ import { motion, DURATIONS, SPRING } from "@/lib/motion";
 import { ArticleLoading as RootLoading } from "@/components/ui/article-loading";
 import { StatsPageSkeleton as StatsLoading } from "@/components/stats-page-skeleton";
 import PlayerProfileLoading from "@/app/players/[id]/loading";
-import LiveLoading from "@/app/live/loading";
+import LiveLoading from "@/app/live/skeleton";
 
 function DesignShowcase() {
   const { toast } = useToast();
