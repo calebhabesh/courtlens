@@ -81,10 +81,17 @@ jobs:
       # Archive publication supplies its dataset variables in a separate candidate build.
       - run: dbt build --project-dir warehouse --profiles-dir warehouse --exclude tag:archive
 
+  # pytest in two shards (tests/conftest.py --shard: test files dealt by the seconds CI measured,
+  # tests/ci_file_durations.json), each on four xdist workers with a database per worker.
   backend-tests:
     needs: plan
     if: needs.plan.outputs.tests == 'full'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    name: backend-tests (${{ matrix.shard }}/2)
     services:
       postgres:
         image: postgres:17-alpine
@@ -110,6 +117,7 @@ jobs:
       # Python 3.12's sys.monitoring tracer: line coverage (no branch coverage is configured)
       # at a fraction of the C tracer's cost.
       COVERAGE_CORE: sysmon
+      COVERAGE_FILE: ${{ github.workspace }}/coverage-${{ matrix.shard }}.data
     steps:
       - uses: actions/checkout@v7
       - name: PostgreSQL 17 client tools and pdftotext
@@ -131,7 +139,29 @@ jobs:
       - uses: ./.github/actions/python-env
       # Four workers (the runner's four CPUs), each on its own database cloned from the
       # migrated one (scripts/test_python.py).
-      - run: python scripts/test_python.py -n 4 --cov=courtlens --cov-report=term-missing
+      - run: python scripts/test_python.py -n 4 --shard=${{ matrix.shard }}/2 --cov=courtlens --cov-report=
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ matrix.shard }}
+          path: coverage-${{ matrix.shard }}.data
+          retention-days: 7
+
+  # One coverage report for the whole suite, from both shards' data.
+  coverage:
+    needs: backend-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install "$(grep '^coverage==' requirements-lock.txt)"
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: coverage-*
+          merge-multiple: true
+      - run: coverage combine coverage-1.data coverage-2.data
+      - run: coverage report --show-missing
 
   dashboard-checks:
     needs: plan
@@ -147,7 +177,7 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: dashboard/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
@@ -182,8 +212,23 @@ jobs:
           path: dashboard/.next/cache
           key: next-webpack-${{ hashFiles('dashboard/package-lock.json') }}-${{ github.sha }}
           restore-keys: next-webpack-${{ hashFiles('dashboard/package-lock.json') }}-
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npm ci --no-audit --no-fund
+      # Playwright's system packages (fonts, mostly) come from Ubuntu's mirror, which has served
+      # them at 100 kB/s; the .deb files are cached so a slow mirror costs nothing.
+      - uses: actions/cache@v6
+        with:
+          path: ~/apt-archives
+          key: playwright-apt-${{ runner.os }}-${{ hashFiles('dashboard/package-lock.json') }}
+          restore-keys: playwright-apt-${{ runner.os }}-
+      - name: Playwright's Chromium and its system packages
+        run: |
+          if compgen -G "$HOME/apt-archives/*.deb" >/dev/null; then
+            sudo cp "$HOME"/apt-archives/*.deb /var/cache/apt/archives/
+          fi
+          npx playwright install --with-deps chromium
+          mkdir -p ~/apt-archives
+          cp /var/cache/apt/archives/*.deb ~/apt-archives/ 2>/dev/null || true
+          echo "Cached system packages: $(compgen -G "$HOME/apt-archives/*.deb" | wc -l)"
       - run: npm run test:browser -- --workers=2 --shard=${{ matrix.shard }}/4
       - if: matrix.shard == 1 && !cancelled()
         uses: actions/cache/save@v6
@@ -233,7 +278,7 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: dashboard/package-lock.json
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
         working-directory: dashboard
       - run: npm test
         working-directory: dashboard
