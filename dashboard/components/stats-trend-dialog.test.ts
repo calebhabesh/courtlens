@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PlayerResearchItem } from "@/lib/types";
-import { careerRows, careerSeasons, dodgeColumn, nearestColumn, settleLimited } from "./stats-trend-dialog";
+import { careerRows, careerSeasons, nearestColumn, seasonHigh, settleLimited, shortName, spreadLabels, valueScale } from "./stats-trend-dialog";
 
 describe("careerSeasons", () => {
   const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
@@ -60,15 +60,44 @@ describe("nearestColumn", () => {
   });
 });
 
-describe("dodgeColumn", () => {
-  it("leaves dots that are a diameter apart in place", () => {
-    expect(dodgeColumn([100, 140, null], 16)).toEqual([0, 0, 0]);
+describe("spreadLabels", () => {
+  it("keeps labels that are already apart where they are", () => {
+    expect(spreadLabels([50, 100], 14, 0, 200)).toEqual([50, 100]);
   });
-  it("puts overlapping dots side by side in series order, centred on the season", () => {
-    // Series 0 sits lower but still comes first (left); series 2 has no value.
-    expect(dodgeColumn([110, 100, null], 16)).toEqual([-17, 17, 0]);
+  it("pushes close labels apart in value order without reordering them", () => {
+    expect(spreadLabels([105, 100, 100], 14, 0, 200)).toEqual([128, 100, 114]);
   });
-  it("chains a dot that touches either neighbour into one cluster", () => {
-    expect(dodgeColumn([100, 125, 150], 16)).toEqual([-34, 0, 34]);
+  it("keeps a stack pushed past the bottom inside the plot", () => {
+    expect(spreadLabels([195, 196], 14, 0, 200)).toEqual([186, 200]);
+  });
+});
+
+describe("shortName", () => {
+  it("uses the family name and keeps a suffix with it", () => {
+    expect(shortName("Luka Dončić")).toBe("Dončić");
+    expect(shortName("Shai Gilgeous-Alexander")).toBe("Gilgeous-Alexander");
+    expect(shortName("Jaren Jackson Jr.")).toBe("Jackson Jr.");
+    expect(shortName("Nenê")).toBe("Nenê");
+  });
+});
+
+describe("seasonHigh", () => {
+  it("is the season's highest value only when at least two players have one", () => {
+    expect(seasonHigh([24.4, null, 28.2])).toBe(28.2);
+    expect(seasonHigh([24.4, null])).toBeNull();
+  });
+});
+
+describe("valueScale", () => {
+  it("pads the values with round ticks on both sides", () => {
+    const scale = valueScale([13.9, 38.6]);
+    expect(scale.min).toBeLessThan(13.9);
+    expect(scale.max).toBeGreaterThan(38.6);
+    expect(scale.ticks[0]).toBe(scale.min);
+    expect(scale.ticks.at(-1)).toBe(scale.max);
+  });
+  it("never drops below zero for values that are never negative", () => {
+    expect(valueScale([2.9, 31.4]).min).toBe(0);
+    expect(valueScale([-2.1, 3.4]).min).toBeLessThan(-2.1);
   });
 });
