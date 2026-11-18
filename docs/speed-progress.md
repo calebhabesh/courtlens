@@ -2416,3 +2416,17 @@ the next restart. Nothing built the index at API start.
   start and warm crawl tests.
 - Memory: the index is 28.4 MiB with the new structures (12.8 MiB before): 21,372 distinct terms,
   8,155 bigram keys, appearances for 5,161 players. At most two are kept.
+
+### Live after the deploy (a1247476, 2026-11-18)
+
+- The API's warm start built the search index in **19.1 s** in the background (`lookup_index` in
+  `GET /api/cache/status`), so no visitor waited for it.
+- The post-deploy warm crawl ran its search step (`search_index`: status 200, 0.0 s, as the index
+  was already built), then all 569 pages in 260 s.
+- Per keystroke, the API's own timer (`latency_ms`): **1–28 ms** across 40 fresh queries (one
+  69 ms while the crawl ran); before, 124–3,796 ms. `Server-Timing` total 7–24 ms, 3–4 queries
+  (resolving the release), about 2 ms of database time.
+- From the owner's PC: 40–110 ms per keystroke through Cloudflare's Toronto edge. For a few
+  minutes some requests went through Munich instead (`cf-ray` ending `-MUC`: 107 ms to connect,
+  about 460 ms in all) with the same server time; that is Cloudflare's anycast routing, outside
+  the site, and it returned to Toronto.
