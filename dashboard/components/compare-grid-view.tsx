@@ -3,7 +3,8 @@
 import { IntentLink } from "@/components/intent-link";
 import { CourtLensLockup } from "./brand";
 import { useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { usePendingRouter } from "@/lib/pending-navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { COMPARE_PRESETS, CUSTOM_DEFAULT, customMetricKeys, type CompareCountingMode, type ComparePresetId } from "@/lib/comparison-metrics";
 import { duelParams, gridParams, parseGrid, MAX_GRID_PLAYERS, type GridSelection } from "@/lib/compare-grid";
@@ -41,7 +42,7 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
       without a server read (74). Otherwise the page navigates. */
   toDuel?: (selection: GridSelection) => void;
 }) {
-  const router = useRouter(), params = useSearchParams();
+  const router = usePendingRouter(), params = useSearchParams();
   const { views } = useWorkspace();
   // The open "Add Player" tile can be closed and reopened from the toolbar (67).
   const [adding, setAdding] = useState(true);

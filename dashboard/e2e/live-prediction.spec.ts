@@ -34,7 +34,7 @@ async function shot(page: Page, name: string, region?: string) {
 
 const cards = (page: Page) => page.getByRole("region", { name: "Game slate" }).locator(".live-card");
 
-test("cards carry the own read's sealed call above the book's chips, the call with the line beside it", async ({ page }) => {
+test("card feet: the own read's sealed call, the call with the line, then the book's line, chances on one edge", async ({ page }) => {
   await mock(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/live/2026-11-12");
@@ -43,17 +43,35 @@ test("cards carry the own read's sealed call above the book's chips, the call wi
   // W-D16: the call is the own read (PHI 56%); the Market-informed model's number follows in grey.
   await expect(call).toHaveText(/CourtLens favors\s*PHI\s*56%/);
   await expect(call).toHaveAttribute("title", /^CourtLens' own read \(Original model\): the sealed tip-off probability, sealed 2:10 PM EST/);
-  await expect(call.locator(".live-card-call-alt")).toHaveText("with the line PHI 71%");
-  await expect(call.locator(".live-card-call-alt")).toHaveAttribute("title", /Market-informed model, on trial/);
+  const alt = first.locator(".live-card-call-alt");
+  await expect(alt).toHaveText(/^With the line\s*PHI\s*71%$/);
+  await expect(alt).toHaveAttribute("title", /Market-informed model, on trial/);
   await expect(first).not.toContainText("Market-informed");
-  // The call sits above the line chips.
-  const [callBox, lineBox] = [await call.boundingBox(), await first.locator(".live-card-line").boundingBox()];
-  expect(callBox!.y).toBeLessThan(lineBox!.y);
+  // Owner, 2026-11-18: label-and-value rows, the call, then the call with the line, then the line;
+  // each row's value ends on the same right edge.
+  const line = first.locator(".live-card-line");
+  const [spread, total] = [line.locator(".live-chip").first(), line.locator(".live-chip").last()];
+  await expect(spread).toContainText("PHI by 7.5");
+  await expect(total).toContainText("O/U 223.5");
+  // Owner, 2026-11-18 ("What does O/U mean?"): each chip says what it means on hover, and to readers.
+  await expect(total).toContainText("the book expects about 223.5 points from both teams combined");
+  await total.hover();
+  await expect(first.getByRole("tooltip")).toHaveText("Over/under (DraftKings): the book expects about 223.5 points from both teams combined");
+  await spread.hover();
+  await expect(first.getByRole("tooltip")).toHaveText("Spread (DraftKings): the Philadelphia 76ers are favored to win by 7.5 points");
+  await page.mouse.move(0, 0);
+  const [callBox, altBox, lineBox] = await Promise.all([call, alt, line].map(row => row.locator(".live-card-value").boundingBox()));
+  expect(callBox!.y).toBeLessThan(altBox!.y);
+  expect(altBox!.y).toBeLessThan(lineBox!.y);
+  for (const box of [altBox, lineBox]) expect(Math.abs(box!.x + box!.width - (callBox!.x + callBox!.width))).toBeLessThan(1);
   await expect(cards(page).nth(1).locator(".live-card-call")).toHaveText(/CourtLens favors\s*DET\s*88%/);
-  await expect(cards(page).nth(1).locator(".live-card-call-alt")).toHaveText("with the line DET 84%");
+  await expect(cards(page).nth(1).locator(".live-card-call-alt")).toHaveText(/^With the line\s*DET\s*84%$/);
   await shot(page, "w4-cards-1440");
   await page.setViewportSize({ width: 390, height: 844 });
   await shot(page, "w4-cards-390");
+  // The chips sit above the card's link for their tooltips; a click on one still opens the game.
+  await total.click();
+  await expect(page).toHaveURL(/\/live\/games\/401909976/);
 });
 
 test("final, in-progress, toss-up and unsealed cards", async ({ page }) => {
@@ -69,11 +87,11 @@ test("final, in-progress, toss-up and unsealed cards", async ({ page }) => {
   ] } };
   await mock(page, { slateRead: changed });
   await page.goto("/live/2026-11-12");
-  await expect(cards(page).nth(0).locator(".live-card-call")).toHaveText(/Called\s*PHI\s*56%\s*right/);
+  await expect(cards(page).nth(0).locator(".live-card-call")).toHaveText(/Called\s*right\s*PHI\s*56%/);
   await expect(cards(page).nth(0).locator(".live-card-call")).toHaveAttribute("data-right", "true");
-  await expect(cards(page).nth(1).locator(".live-card-call")).toHaveText(/Called\s*DET\s*88%\s*wrong/);
-  await expect(cards(page).nth(2).locator(".live-card-call")).toHaveText(/Pregame call:\s*MIN\s*71%/);
-  await expect(cards(page).nth(3).locator(".live-card-call")).toHaveText(/Toss-up ·\s*PHX\s*52%/);
+  await expect(cards(page).nth(1).locator(".live-card-call")).toHaveText(/Called\s*wrong\s*DET\s*88%/);
+  await expect(cards(page).nth(2).locator(".live-card-call")).toHaveText(/Pregame call\s*MIN\s*71%/);
+  await expect(cards(page).nth(3).locator(".live-card-call")).toHaveText(/Toss-up, leaning\s*PHX\s*52%/);
 
   await mock(page, { slateRead: { ...slate, data: { ...slate.data!, games: [{ ...games[0], prediction: { status: "no_seal" } }, { ...games[1], prediction: null }] } } });
   await page.reload();

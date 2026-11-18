@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { seasonEra } from "@/lib/portrait-source";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { usePendingRouter } from "@/lib/pending-navigation";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent } from "react";
 import { ContextBar } from "./context-bar";
 import { PlayerPortrait } from "./player-portrait";
@@ -55,7 +56,7 @@ const tenthMinutes = (value: number | null) => (value === null ? "—" : value.t
 const percent = (share: number | null) => (share === null ? "—" : `${(share * 100).toFixed(1)}%`);
 
 export function RosterAllocationView({ catalog, teamId, scope, embedded = false, initial = null }: RosterAllocationViewProps) {
-  const router = useRouter();
+  const router = usePendingRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [result, setResult] = useState<Result | null>(null);

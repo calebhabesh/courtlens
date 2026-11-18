@@ -1,9 +1,11 @@
 "use client";
 
-import { Fragment, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { CourtLensLockup } from "./brand";
 import { IntentLink } from "@/components/intent-link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useNavPendingMark, usePendingRouter } from "@/lib/pending-navigation";
+import { COMPARE_SCOPE_PENDING } from "@/lib/scope-pending";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { COMPARE_PRESETS, CUSTOM_DEFAULT, isWholeCount, cardLabel, customMetricKeys, comparisonRows, formatCardValue, isPercentUnit, overallGroupStart, pillStrength, availabilityShare, type CompareCountingMode, type ComparePresetId, type PillStrength } from "@/lib/comparison-metrics";
 import { comparisonFlags, leadingIdentity } from "./charts/semantics";
@@ -43,6 +45,8 @@ type Side = { season: string; before_date: string };
 const PER_PLAYER_SEASONS = ["seasonA", "seasonB", "seasons"];
 
 type Scope = { season: string; phase: string; before_date: string; window: string; release_id?: string };
+/** What a server read is replacing: one side (a season or a new player) or both, and the season asked for. */
+type Reading = { sides: "a" | "b" | "a b"; season?: string };
 
 
 /**
@@ -65,7 +69,22 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   /** Before a pair resolves: the player already chosen for each side, if any (24). */
   pending?: { a: CompareSelection | null; b: CompareSelection | null } | null;
 }) {
-  const router = useRouter(), params = useSearchParams();
+  const params = useSearchParams();
+  // A season or player read on the server can take 2–3 s when it is not cached (owner,
+  // 2026-11-18): the side it replaces turns to skeletons in place until it lands, instead of the
+  // old numbers holding still and the new ones popping in. The card shows it, so no page scrim.
+  const navigation = usePendingRouter({ scrim: false });
+  const [reading, setReading] = useState<Reading>({ sides: "a b" });
+  // The console's season, phase or cutoff re-reads both sides.
+  const [scopeReading, setScopeReading] = useState(false);
+  useEffect(() => {
+    const onPending = (event: Event) => setScopeReading(Boolean((event as CustomEvent<boolean>).detail));
+    window.addEventListener(COMPARE_SCOPE_PENDING, onPending);
+    return () => window.removeEventListener(COMPARE_SCOPE_PENDING, onPending);
+  }, []);
+  const readingSides = navigation.pending ? reading.sides : scopeReading ? "a b" : undefined;
+  const isReading = (side: "a" | "b") => readingSides?.includes(side) ?? false;
+  const pickedSeason = (side: "a" | "b") => navigation.pending && reading.sides === side ? reading.season : undefined;
   // Swap is instant (29): the card holds both sides, so it mirrors them while the URL changes,
   // and later server reads arrive already in the URL's order.
   const flipped = served != null && params.get("playerA") === served.player_b.id && params.get("playerB") === served.player_a.id;
@@ -91,6 +110,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const careerMode: CompareCountingMode = mode === "raw" ? "raw" : "per_game";
   const rows = comparison ? careerView ? comparisonRows(keys, careerMode, comparison, metricDefinitions, { items: careerItems }, true) : comparisonRows(keys, mode, comparison, metricDefinitions, cohort) : [];
   const a = comparison?.player_a ?? null, b = comparison?.player_b ?? null;
+  // Open slots and the grid have no duel rows to stand in for, so their reads dim the page like a link does.
+  useNavPendingMark(readingSides != null && (!(a && b) || params.get("layout") === "grid"));
   // Career rows carry no league percentile: each season ranks against its own league.
   const cohortRow = (id?: string) => careerView ? undefined : cohort?.items.find(row => row.player_id === id);
   const minutes = cohort?.table_cohort?.min_season_minutes ?? 500;
@@ -107,11 +128,11 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     const next = new URLSearchParams(params.toString());
     const key = side === "a" ? "seasonA" : "seasonB";
     if (season === context.season) next.delete(key); else next.set(key, season);
-    navigate(next, true);
+    navigate(next, true, { sides: side, season });
   }
 
-  function navigate(next: URLSearchParams, server: boolean) {
-    if (server) router.push(`/compare?${next}`, { scroll: false });
+  function navigate(next: URLSearchParams, server: boolean, read: Reading = { sides: "a b" }) {
+    if (server) { setReading(read); navigation.push(`/compare?${next}`, { scroll: false }); }
     else window.history.pushState(null, "", `/compare?${next}`);
   }
   function change(values: Record<string, string>, server = false) {
@@ -134,8 +155,12 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     if (selection.id === other) { setNotice("Choose two different players."); return; }
     const next = new URLSearchParams(params.toString());
     next.set(side === "a" ? "playerA" : "playerB", selection.id); next.delete("players");
-    await land(next, side, selection.id);
-    navigate(next, true);
+    // The landing season's lookup is part of the wait, so the side reads as loading from the pick.
+    setReading({ sides: side });
+    navigation.start(async () => {
+      await land(next, side, selection.id);
+      navigation.push(`/compare?${next}`, { scroll: false });
+    });
   }
   /** Fill one open side; the other side's choice (if any) stays, and a full pair loads (24). */
   async function pickPending(side: "a" | "b", selection: CompareSelection) {
@@ -222,6 +247,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
           { id: b.id, name: b.name, portraitUrl: b.portrait_url, played: played.b, identity: "b" }]} /> : undefined}
         // The console's Season is a global override: it resets both players' own seasons (42).
         clearOnSeasonChange={PER_PLAYER_SEASONS}
+        pendingEvent={COMPARE_SCOPE_PENDING}
         modes={<div className="pvp-actions">
           <Button size="sm" variant="primary" icon="sliders" disabled={!a || !b} onClick={() => setEditing(true)}>Edit Metrics</Button>
           <Button size="sm" icon="download" disabled={exporting || !a || !b} onClick={() => void share()}>{exporting ? "Exporting…" : "Share Image"}</Button>
@@ -241,11 +267,11 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     {a && b && <AssistantPageSelection route="/compare" playerIds={[a.id, b.id, ...additionalPlayerIds]} scope={context} label={`${a.name} / ${b.name}`} />}
     <div className="pvp-column" data-paired={(a && b) || undefined}>
       <div className="pvp-stack">
-      <section className="pvp-card" aria-label="Comparison card">
+      <section className="pvp-card" aria-label="Comparison card" aria-busy={readingSides != null || undefined} data-reading={readingSides}>
         {a && b ? <>
           <div className="pvp-players">
             <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" ends={ends} player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null} best={best?.a}
-              onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
+              onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)} reading={isReading("a")} pickedSeason={pickedSeason("a")}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <div className="pvp-pair-actions">
               <IconButton size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
@@ -254,7 +280,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <Button size="sm" variant="ghost" aria-label="Clear players" title="Clear all players" onClick={clearPlayers}>Clear</Button>
             </div>
             <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" ends={ends} player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null} best={best?.b}
-              onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
+              onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)} reading={isReading("b")} pickedSeason={pickedSeason("b")}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>
           <div className="pvp-controls">

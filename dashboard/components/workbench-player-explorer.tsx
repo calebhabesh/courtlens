@@ -8,7 +8,7 @@ import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/sta
 
 import { IntentLink } from "@/components/intent-link";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
-import { STATS_SCOPE_PENDING } from "./stats-page-controls";
+import { STATS_SCOPE_PENDING } from "@/lib/scope-pending";
 import { seasonScopeLabel } from "@/lib/season-range";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";

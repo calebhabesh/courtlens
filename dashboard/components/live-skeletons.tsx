@@ -23,7 +23,10 @@ export function LiveCardsSkeleton({ count = 8 }: { count?: number }) {
     <span className="live-card-head"><SkelText size="xs" width={48} /><SkelText size="xs" width={32} /></span>
     <CardTeam />
     <CardTeam />
-    <span className="live-card-call"><SkelText size="xs" width={160} /></span>
+    <span className="live-card-foot">
+      <span className="live-card-row"><SkelText size="xs" width={112} /><SkelText size="xs" width={56} /></span>
+      <span className="live-card-row"><SkelText size="xs" width={28} /><SkelText size="xs" width={120} /></span>
+    </span>
   </article></li>)}</ol></section>;
 }
 

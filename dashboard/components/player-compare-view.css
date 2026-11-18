@@ -161,6 +161,38 @@
   .pvp-fade { animation: pvp-fade-in var(--dur-base) var(--ease-out); }
   @keyframes pvp-fade-in { from { opacity: 0.35; } to { opacity: 1; } }
 
+  /* A server read replacing one side (owner, 2026-11-18: an uncached season takes 2–3 s): after
+     the skeleton delay, that side's values fade and a skeleton bar stands where each sits, while
+     the other side stays readable; its photo and bio dim. The pills and the leader's weight compare
+     the two sides, so both sides' wait too. Nothing shows for a read faster than the delay, and
+     everything returns at once when the read lands. */
+  .pvp-card[data-reading~="a"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(2),
+  .pvp-card[data-reading~="b"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(4) {
+    position: relative; color: transparent;
+    transition: color var(--dur-fast) var(--ease-out) var(--delay-skeleton);
+  }
+  .pvp-card[data-reading~="a"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(2) > *,
+  .pvp-card[data-reading~="b"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(4) > *,
+  .pvp-card[data-reading] .pvp-pill-cell > * {
+    opacity: 0; transition: opacity var(--dur-fast) var(--ease-out) var(--delay-skeleton);
+  }
+  .pvp-card[data-reading] .pvp-plain[data-leading] {
+    font-weight: 400; transition: font-weight 0s linear var(--delay-skeleton);
+  }
+  .pvp-card[data-reading~="a"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(2)::after,
+  .pvp-card[data-reading~="b"] .pvp-rows tr > :is(.pvp-value, .pvp-honor-cell):nth-child(4)::after {
+    content: ""; position: absolute; inset: 50% auto auto 50%; width: 40px; height: var(--space-3); translate: -50% -50%;
+    border-radius: var(--radius-xs);
+    /* The Skeleton's ghost tone with its highlight sweeping across (DL Loading: 1.2 s linear). */
+    background: linear-gradient(90deg, transparent 30%, color-mix(in srgb, var(--color-white) 5%, transparent) 50%, transparent 70%) 100% 0 / 300% 100% no-repeat,
+      color-mix(in srgb, var(--color-white) 10%, transparent);
+    animation: skeletonReveal var(--dur-fast) var(--ease-out) var(--delay-skeleton) backwards, pvp-reading-sweep calc(var(--dur-slow) * 4) linear infinite;
+  }
+  @keyframes pvp-reading-sweep { to { background-position: 0 0; } }
+  .pvp-slot[data-reading] :is(.pvp-photo-frame, .pvp-name, .pvp-team, .pvp-bio, .pvp-dnp) {
+    opacity: 0.45; transition: opacity var(--dur-fast) var(--ease-out) var(--delay-skeleton);
+  }
+
   /* Loading (app/compare/loading.tsx): the card's own geometry, filled with skeletons. */
   .pvp-skeleton-header { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding-block: var(--space-2); }
   .pvp-skeleton-scope { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }

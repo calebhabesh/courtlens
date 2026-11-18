@@ -57,23 +57,31 @@
     padding: var(--space-0-5) var(--space-1); border-radius: var(--radius-xs); background: var(--color-surface-3); color: var(--color-text-secondary);
     font: 600 var(--text-2xs) / 1.4 var(--font-mono, ui-monospace, monospace);
   }
-  /* Follow-up 4: the number shares the label's font and baseline (a mono kbd box sat it high). */
-  .live-card-line { display: flex; flex-wrap: wrap; gap: var(--space-1); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
-  /* W4: CourtLens' sealed call, above the book's chips. Neutral text; only ✓ and ✗ carry green and red. */
-  .live-card-call {
-    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline);
+  /* The card's foot (owner, 2026-11-18): label-and-value rows under one hairline, labels left and
+     values right, so the chances and the line read down one edge. Neutral text; only a final
+     call's ✓ and ✗ carry green and red. */
+  .live-card-foot {
+    display: grid; gap: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline);
     color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1;
   }
-  .live-card-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }
-  .live-card-call-lead { display: inline-flex; align-items: center; gap: var(--space-1); }
-  .live-card-call-team { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text); }
+  .live-card-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: 20px; }
+  /* The wordmark sits a word-and-a-half from "favors", as in the Pre-Game headline. */
+  .live-card-label { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; white-space: nowrap; }
+  .live-card-value { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text); white-space: nowrap; }
+  .live-card-pick { display: inline-flex; align-items: center; gap: var(--space-1); }
   .live-card-call-pct { font-variant-numeric: tabular-nums; font-weight: 600; }
-  .live-card-call-mark { display: inline-flex; align-items: center; }
-  /* W-D16: the same seal with the betting line, quieter than the call and pushed to the row's end. */
-  .live-card-call-alt { display: inline-flex; align-items: center; gap: var(--space-1); margin-inline-start: auto; color: var(--color-text-tertiary); white-space: nowrap; }
+  .live-card-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }
+  .live-card-call-mark { display: inline-flex; align-items: center; margin-inline-start: calc(var(--space-1) * -1); }
   .live-card-call[data-right="true"] .live-card-call-mark { color: var(--color-positive); }
   .live-card-call[data-right="false"] .live-card-call-mark { color: var(--color-negative); }
-  .live-card-call + .live-card-line { border-top: 0; padding-top: 0; }
+  /* W-D16: the same seal with the betting line, quieter than the call. */
+  .live-card-call-alt, .live-card-call-alt .live-card-value { color: var(--color-text-tertiary); }
+  /* Follow-up 4: the number shares the label's font and baseline (a mono kbd box sat it high). */
+  .live-card-line .live-chip { display: inline-flex; align-items: center; gap: var(--space-1); cursor: help; }
+  /* The chip's meaning on hover (owner, 2026-11-18): above the card's stretched link so it gets the
+     pointer, wrapped and held to the card's right edge, where the chips sit. */
+  .live-chip-tip { z-index: var(--z-sticky); }
+  .live-chip-tip .ui-tooltip { left: auto; right: 0; transform: none; width: max-content; max-width: 220px; white-space: normal; text-align: start; }
   .live-card-status, .live-chip { white-space: nowrap; }
   .live-hotkey { display: inline-flex; align-items: baseline; gap: var(--space-0-5); color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: 1; font-weight: 700; }
   .live-page .live-hotkey kbd { display: inline; height: auto; min-width: 0; padding: 0; background: transparent; color: var(--color-text); font: inherit; }

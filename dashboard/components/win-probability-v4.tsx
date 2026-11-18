@@ -121,7 +121,7 @@ function Board({ board, loading, error, day }: { board: Board | null; loading: b
     {loading && !board ? <p className="wp-note" role="status">Loading the games…</p>
       : error ? <GatedNote tone="warning">The games are unavailable right now.</GatedNote>
       : board && board.games.length ? <>
-        <ol className="wpc-grid" aria-label="Predictions">{board.games.map(game => <li key={game.source_id}><PredictionCard game={game} /></li>)}</ol>
+        <ol className="wpc-grid" aria-label="Predictions" aria-busy={loading || undefined}>{board.games.map(game => <li key={game.source_id}><PredictionCard game={game} /></li>)}</ol>
         <p className="wp-note wpc-caption" data-field="slate-day" data-day={board.day}>{board.fallback ? `No games today. The latest slate, ${formatDate(board.day)}. ` : ""}{board.today || board.fallback ? "Sealed before tip-off; the chance does not move during the game. Open a game for the live chart and the why." : "Each call as sealed before tip-off, and whether it was right."}</p>
       </> : <p className="wp-lead" data-field="slate-empty">{day ? "No games on this day." : "No games are scheduled. The first slate of the next season appears here with CourtLens' call for each game."}</p>}
   </ResearchSection>;

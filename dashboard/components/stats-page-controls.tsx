@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useOpenedOnce } from "@/lib/use-opened-once";
+import { STATS_SCOPE_PENDING } from "@/lib/scope-pending";
 
 // The shortcuts sheet loads on its first opening (speed plan SP05).
 const HotkeysModal = dynamic(() => import("./hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
@@ -42,7 +43,6 @@ export function StatsHelpRow() {
 }
 
 /** The table listens for this to show skeleton rows while a scope filter loads. */
-export const STATS_SCOPE_PENDING = "stats-scope-pending";
 
 /** Replace scope-row URL filters; any change returns to the first page. */
 function useScopeFilter() {

@@ -3,7 +3,8 @@
 import "./stats-explorer.css";
 import "./player-career.css";
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { usePendingRouter } from "@/lib/pending-navigation";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
@@ -61,7 +62,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   onPhaseChange?: (phase: string) => void;
   onSeasonOpen?: (season: string) => void;
 }) {
-  const router = useRouter();
+  const router = usePendingRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [presetId, setPresetId] = useState<PresetId>("overview");

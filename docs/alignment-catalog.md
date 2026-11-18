@@ -1314,6 +1314,21 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
 83. [x] A tied honour (both All-Stars, both 1st Team) reads as held equally: a brighter,
     side-neutral chip (white semibold on a light tint), distinct from a lower result's plain grey
     and from a lead's player colour; the share images match.
+Follow-up instructions (owner, 2026-11-18):
+84. [ ] "In player comparison when i change the player year, and we fetch the data for that year
+    ... for fetching that is not immediate there should be some type of skeleton loading or
+    indication of loading/fetching ... (this goes for any other parts of the site that may face
+    this issue)." (owner screenshot: Maxey vs Durant, 2026-27)
+    — A season or player read on the server (1.9-3.1 s uncached on the demo, about 0.1 s cached)
+    now runs in a transition (`lib/pending-navigation.ts`). After the 120 ms skeleton delay, the
+    side being read turns to skeleton bars where its values sit; its photo and bio dim, the
+    chosen season shows in its menu at once, and the pills and the leader's weight hide on both
+    sides (they compare the pair). The console's season, phase or cutoff skeletons both sides.
+    Site-wide: a `router.push`/`replace` that waits for a server render gets the scrim links
+    already lay (Players' console and career seasons, Playoffs series, RAPM, Roster Shapes team,
+    the Compare grid); Stats' console reports to the table's skeleton rows instead; the Win
+    Probability board dims its last day while another loads. A faster read shows nothing.
+    Awaits the owner.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
@@ -4019,6 +4034,26 @@ Follow-up instructions (owner, 2026-10-29):
     each logo; the banner's colour wash at the edges stays. Phones keep logo over code. Evidence:
     `banner-logos-inward-1440.png`, `banner-logos-inward-1100.png`, `banner-logos-inward-390.png`,
     `banner-logos-inward-1440-upcoming.png`.
+
+Follow-up instructions (owner, 2026-11-18):
+37. [ ] "the footnotes of these live game cards look off. I think we could arrange the text better in
+    the bottom of these cards." (owner screenshot: the 2026-11-18 board)
+    — A card's foot is label-and-value rows under one hairline: the call ("CourtLens favors",
+    "Toss-up, leaning", "Pregame call", or "Called" with its ✓ or ✗ beside the word), "With the
+    line", then "Line" with the spread and over/under chips. Labels sit left; each team's logo,
+    code and chance sit right, so the numbers share one right edge (the call with the line had
+    wrapped onto its own line). The spread chip gains the favourite's logo.
+38. [ ] "can we make it so the spacing after the courtlens wordmark/logo is a little more, it seems a
+    little off here." (owner screenshot: a Win Probability card's "CourtLens favors")
+    — "favors" sits 8 px after the wordmark on the Live and Win Probability cards (was 4 px), as
+    in the Pre-Game headline.
+39. [ ] "What does o/u mean? Can we have a hover indicator for what this means?"
+    — Both line chips show their meaning in the site tooltip (300 ms), with a help cursor:
+    "Over/under (DraftKings): the book expects about 223.5 points from both teams combined" and
+    "Spread (DraftKings): the Philadelphia 76ers are favored to win by 7.5 points"; screen readers
+    hear the same with the chip. The chips sit above the card's stretched link to get the hover,
+    so a chip hands its click to that link: it still opens the game (Cmd/Ctrl-click a new tab).
+    All three await the owner.
 
 
 ### 5 WOWY — ✅ approved 2026-11-03 (all core pages done; was ready for review)

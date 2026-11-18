@@ -144,6 +144,8 @@
   .wp-page .live-strip { grid-column: auto; justify-content: center; }
   .wpc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
   .wpc-grid > li { display: grid; }
+  /* Another day loading over the last one (owner, 2026-11-18): the old cards dim after the skeleton delay. */
+  .wpc-grid[aria-busy="true"] { opacity: 0.6; transition: opacity var(--dur-fast) var(--ease-out) var(--delay-skeleton); }
   .wpc {
     display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);
     background: var(--color-surface-1); box-shadow: var(--shadow-1); color: var(--color-text); text-decoration: none; transition: background var(--dur-fast) var(--ease-out);
@@ -172,7 +174,8 @@
   .wpc-bar > span + span { border-inline-start: 2px solid var(--color-surface-1); }
   .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1; }
   .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); font-size: var(--text-sm); line-height: 1; }
-  .wpc-call-lead { display: inline-flex; align-items: center; gap: var(--space-1); }
+  /* The wordmark sits a word-and-a-half from "favors" (owner, 2026-11-18), as in the Pre-Game headline. */
+  .wpc-call-lead { display: inline-flex; align-items: center; gap: var(--space-2); }
   .wpc-call strong { color: var(--color-text); line-height: 1; }
   .wpc-pick { display: inline-flex; align-items: center; gap: var(--space-1); }
   .wpc-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }

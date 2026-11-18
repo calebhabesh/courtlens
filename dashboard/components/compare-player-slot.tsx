@@ -42,7 +42,7 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, best = null, onSeason, onPick, excludedIds = [], ends }: {
+export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, best = null, onSeason, onPick, excludedIds = [], ends, reading = false, pickedSeason }: {
   /** The player's best full season, marked in the season menu (owner, 2026-10-22). */
   best?: BestSeason | null;
   /** Completed seasons, for the season picker's award marks (75). */
@@ -62,6 +62,10 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
   /** Compare this player in another season (alignment row 3, 38). */
   onSeason?: (season: string) => void;
   onPick: (selection: CompareSelection) => void;
+  /** A server read is replacing this side (owner, 2026-11-18): its photo and bio dim until it lands. */
+  reading?: boolean;
+  /** The season just chosen in this side's menu, shown there while that read runs. */
+  pickedSeason?: string;
 }) {
   const params = useSearchParams();
   // The search slides in focused (26) and fades out before it unmounts (46); the name returns after.
@@ -80,7 +84,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
   const span = playedSeasons?.length ? `${playedSeasons[0]} – ${playedSeasons.at(-1)}` : null;
   const record = teamRecord(latest, season);
 
-  return <div className="pvp-slot pvp-fade" data-identity={side} data-inactive={inactive || undefined}
+  return <div className="pvp-slot pvp-fade" data-identity={side} data-inactive={inactive || undefined} data-reading={reading || undefined}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearch(state => state === "open" ? "closing" : "open")}>
@@ -110,7 +114,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
             <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
-            <ComparePlayerSeasonPicker label={label} playerId={player.id} best={best} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
+            <ComparePlayerSeasonPicker label={label} playerId={player.id} best={best} season={pickedSeason ?? season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;

@@ -2,6 +2,7 @@
 
 import { isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useNavPendingMark } from "@/lib/pending-navigation";
 import { useCallback, useEffect, useOptimistic, useState, useTransition } from "react";
 
 import { CountChip, FilterBar } from "@/components/ui/filter-bar";
@@ -51,6 +52,9 @@ interface ContextBarProps {
   steppedScope?: boolean;
   /** Stats alignment 43e: the stepped picker also offers From–Through season ranges. */
   allowMultiSeason?: boolean;
+  /** A window event the bar dispatches (`detail`: true, then false) while a scope change waits for its server
+      render. A page that shows its own loading state for that wait names one, and the bar lays no scrim. */
+  pendingEvent?: string;
 }
 
 const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In", cup_final: "Cup Final" };
@@ -80,9 +84,16 @@ export function ContextBar({
   clearOnSeasonChange,
   detailRows = [],
   steppedScope = false,
-  allowMultiSeason = false
+  allowMultiSeason = false,
+  pendingEvent
 }: ContextBarProps) {
   const router = useRouter();
+  // A scope change re-renders the page on the server: until it lands the page gets the link scrim (owner, 2026-11-18).
+  const [navigating, startNavigation] = useTransition();
+  useNavPendingMark(navigating && !pendingEvent);
+  useEffect(() => {
+    if (pendingEvent) window.dispatchEvent(new CustomEvent(pendingEvent, { detail: navigating }));
+  }, [pendingEvent, navigating]);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -115,14 +126,13 @@ export function ContextBar({
     (key: ScopeKey, value: string) => {
       const params = applyScopeChange(searchParams?.toString() ?? "", key, value, { catalog, season, phase, releaseId, allowedPhases });
       if (key === "season") clearOnSeasonChange?.forEach(name => params.delete(name));
-      router.push(`${pathname}?${params.toString()}`);
+      startNavigation(() => router.push(`${pathname}?${params.toString()}`));
     },
     [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases, clearOnSeasonChange]
   );
   // The phase indicator slides on click; the URL value takes over once the navigation commits.
-  const [, startPhaseNavigation] = useTransition();
   const [shownPhase, setShownPhase] = useOptimistic(phase);
-  const selectPhase = (value: string) => startPhaseNavigation(() => {
+  const selectPhase = (value: string) => startNavigation(() => {
     setShownPhase(value);
     updateParam("phase", value);
   });
@@ -142,7 +152,7 @@ export function ContextBar({
       } else {
         params.delete(SEASON_FROM_PARAM);
       }
-      router.push(`${pathname}?${params.toString()}`);
+      startNavigation(() => router.push(`${pathname}?${params.toString()}`));
     },
     [router, pathname, searchParams, catalog, season, phase, releaseId, allowedPhases]
   );

@@ -954,6 +954,8 @@
   /* Unranked values (careers, small samples) keep the text colour instead of the cell's muted one (28). */
   .pvp-value .chart-percentile-text[data-qualified] { color: var(--color-text); }
   .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
+  /* While a side is read again the lead is unknown (player-compare-view.css). */
+  .pvp-card[data-reading] .pvp-value[data-leading] .stat-main-value { font-weight: 400; transition: font-weight 0s linear var(--delay-skeleton); }
 }
 
 /* Projected Impact leaderboard: long names wrap on a phone so the projection stays on screen. */

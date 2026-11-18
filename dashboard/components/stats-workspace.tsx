@@ -16,6 +16,7 @@ import { getWorkspace } from "@/lib/workspace-client";
 import { positionChipStatus } from "@/lib/position-estimates";
 import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { StatsDraftClassSelect, StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
+import { STATS_SCOPE_PENDING } from "@/lib/scope-pending";
 import { DarkoSourceLink } from "./darko-source-link";
 
 const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
@@ -189,6 +190,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           lastIncludedDate={researchData?.context?.last_included_date}
           steppedScope
           allowMultiSeason
+          pendingEvent={STATS_SCOPE_PENDING}
           detailRows={researchData?.darko ? [
             { label: "DARKO source", value: <DarkoSourceLink>{researchData.darko.source}</DarkoSourceLink> },
             { label: "DARKO ratings through", value: researchData.darko.data_date ?? "Unavailable in this scope" },

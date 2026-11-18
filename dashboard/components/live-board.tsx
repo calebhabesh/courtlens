@@ -1,11 +1,13 @@
 "use client";
 
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { IntentLink } from "@/components/intent-link";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, predictionCall, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
 import { CourtLensSays } from "./brand";
 import { TeamLogo } from "./team-logo";
 import { EntityAnchor, TeamLink } from "./entity-link";
 import { Icon } from "./ui/icon";
+import { Tooltip } from "./ui/tooltip";
 
 /** Days either side of the selected one in the strip (the reference site shows seven). */
 const STRIP_RADIUS = 3;
@@ -97,37 +99,79 @@ function label(game: LiveGame) {
   return `${teams.map(t => `${t.name}${t.score != null ? ` ${t.score}` : ""}`).join(" at ")} · ${gameStatus(game)}`;
 }
 
-/**
- * W4: CourtLens' sealed call above the book's line chips. The favoured team is not coloured; only
- * a final call's ✓ and ✗ carry the green and red convention. The model is named in the title only.
- * W-D16: the call is the own read; the same seal's call with the betting line follows it in grey.
- */
-function PredictionRow({ game, season }: { game: LiveGame; season: string }) {
-  const call = predictionCall(game);
-  if (!call) return null;
-  if (call.kind === "none") return <span className="live-card-call" data-call="none" title={call.title}>No prediction was sealed for this game</span>;
-  const team = game.teams.find(t => t.side === call.side);
-  if (!team) return null;
-  const pick = <span className="live-card-call-team">
+/** A team's logo, code and chance, as each row of a card's foot ends. */
+function Pick({ team, percent, season }: { team: LiveTeam; percent: number; season: string }) {
+  return <span className="live-card-pick">
     <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={14} />
-    <strong>{teamCode(team)}</strong> <span className="live-card-call-pct">{call.percent}%</span>
-  </span>;
-  const lineTeam = call.withLine && game.teams.find(t => t.side === call.withLine!.side);
-  const lead = call.kind === "favours" ? <><CourtLensSays size={10} /> favors</> : { toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
-  return <span className="live-card-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
-    <span className="live-card-call-lead">{lead}</span>{pick}
-    {call.kind === "called" && call.right != null && <span className="live-card-call-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span className="sr-only">{call.right ? "right" : "wrong"}</span></span>}
-    {call.withLine && lineTeam && <span className="live-card-call-alt" title="The same seal with the betting line: the Market-informed model, on trial beside CourtLens' own read">with the line <span className="live-card-call-pct">{teamCode(lineTeam)} {call.withLine.percent}%</span></span>}
+    <strong>{teamCode(team)}</strong> <span className="live-card-call-pct">{percent}%</span>
   </span>;
 }
 
-/** One game on the board: status or tipoff, hotkey, the free line before tipoff, both teams. */
-export function GameCard({ game, href, index }: { game: LiveGame; href: string; index: number }) {
-  const teams = awayFirst(game.teams);
-  const season = seasonOf(game.slate_date);
+const CALL_LEADS = { toss_up: "Toss-up, leaning", pregame: "Pregame call", called: "Called" } as const;
+
+/**
+ * The chip sits above the card's stretched link to get its own hover, so its click is handed to that
+ * link: it opens the game as the rest of the card does, modifier keys included (a new tab on Cmd/Ctrl).
+ */
+function openCardGame(event: ReactMouseEvent<HTMLElement>) {
+  const link = event.currentTarget.closest(".has-stretched-link")?.querySelector<HTMLAnchorElement>("a.is-stretched");
+  link?.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, button: event.button,
+    ctrlKey: event.ctrlKey, metaKey: event.metaKey, shiftKey: event.shiftKey, altKey: event.altKey }));
+}
+
+/** One of the book's numbers, saying what it means on hover (owner, 2026-11-18: "What does O/U mean?"); readers hear it with the chip. */
+function LineChip({ tip, children }: { tip: string; children: ReactNode }) {
+  return <Tooltip content={tip} className="live-chip-tip">
+    <span className="live-chip" onClick={openCardGame}>{children}<span className="sr-only">. {tip}</span></span>
+  </Tooltip>;
+}
+
+/**
+ * A card's foot (owner, 2026-11-18): label-and-value rows under one hairline, labels on the left and
+ * each team's logo, code and number on the right, so the numbers line up down the card. W4:
+ * CourtLens' sealed call first; the favoured team is not coloured, and only a final call's ✓ and ✗
+ * carry the green and red convention. W-D16: the call is the own read; the same seal's call with the
+ * betting line follows in grey. Follow-up 8: the book's line last, naming the favourite. The model is
+ * named in the titles only.
+ */
+function CardFoot({ game, season }: { game: LiveGame; season: string }) {
+  const call = predictionCall(game);
   const odds = game.status === "scheduled" ? game.odds : null;
   const favourite = lineFavourite(odds, game.teams);
   const book = odds?.provider ?? "sportsbook";
+  const line = favourite != null || odds?.over_under != null;
+  if (!call && !line) return null;
+  const sideTeam = (side?: "home" | "away") => side ? game.teams.find(t => t.side === side) : undefined;
+  const team = call?.kind === "none" ? undefined : sideTeam(call?.side);
+  const lineTeam = sideTeam(call?.withLine?.side);
+  return <div className="live-card-foot">
+    {call?.kind === "none" && <span className="live-card-call" data-call="none" title={call.title}>No prediction was sealed for this game</span>}
+    {call && call.kind !== "none" && team && <span className="live-card-row live-card-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
+      {/* A final call's mark sits by "Called", so the chances keep one right edge. */}
+      <span className="live-card-label">{call.kind === "favours" ? <><CourtLensSays size={10} /> favors</> : CALL_LEADS[call.kind]}
+        {call.kind === "called" && call.right != null && <span className="live-card-call-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span className="sr-only">{call.right ? "right" : "wrong"}</span></span>}</span>
+      <span className="live-card-value"><Pick team={team} percent={call.percent!} season={season} /></span>
+    </span>}
+    {call?.withLine && lineTeam && <span className="live-card-row live-card-call-alt" title="The same seal with the betting line: the Market-informed model, on trial beside CourtLens' own read">
+      <span className="live-card-label">With the line</span>
+      <span className="live-card-value"><Pick team={lineTeam} percent={call.withLine.percent} season={season} /></span>
+    </span>}
+    {line && <span className="live-card-row live-card-line">
+      <span className="live-card-label">Line</span>
+      <span className="live-card-value">
+        {favourite && <LineChip tip={favourite === "even" ? `Spread (${book}): an even game, no favorite` : `Spread (${book}): the ${favourite.team.name} are favored to win by ${favourite.points} points`}>
+          {favourite === "even" ? "Even" : <><TeamLogo team={favourite.team.tricode ?? favourite.team.canonical_id ?? teamCode(favourite.team)} season={season} size={12} />{teamCode(favourite.team)} by {favourite.points}</>}
+        </LineChip>}
+        {odds?.over_under != null && <LineChip tip={`Over/under (${book}): the book expects about ${odds.over_under} points from both teams combined`}>O/U {odds.over_under}</LineChip>}
+      </span>
+    </span>}
+  </div>;
+}
+
+/** One game on the board: status or tipoff, hotkey, both teams, then the call and the free line before tipoff. */
+export function GameCard({ game, href, index }: { game: LiveGame; href: string; index: number }) {
+  const teams = awayFirst(game.teams);
+  const season = seasonOf(game.slate_date);
   // Site links D2: the card is one target that opens the game (a stretched link, first in tab
   // order), and each team's logo and code is its own link on top of it. Anchors never nest.
   return <article className="live-card has-stretched-link" data-status={game.status}>
@@ -139,12 +183,7 @@ export function GameCard({ game, href, index }: { game: LiveGame; href: string; 
       </span>
     </EntityAnchor>
     {teams.map(team => <TeamRow key={team.source_id} team={team} game={game} season={season} />)}
-    <PredictionRow game={game} season={season} />
-    {/* Follow-up 8: the line on its own row, naming the favourite, so the header never wraps. */}
-    {(favourite || odds?.over_under != null) && <span className="live-card-line">
-      {favourite && <span className="live-chip" title={favourite === "even" ? `Spread (${book}): an even game, no favorite` : `Spread (${book}): ${favourite.team.name} favored by ${favourite.points} points`}>{favourite === "even" ? "Even" : `${teamCode(favourite.team)} by ${favourite.points}`}</span>}
-      {odds?.over_under != null && <span className="live-chip" title={`Over/under (${book}): about ${odds.over_under} points combined`}>O/U {odds.over_under}</span>}
-    </span>}
+    <CardFoot game={game} season={season} />
   </article>;
 }
 

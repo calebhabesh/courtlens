@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { usePendingRouter } from "@/lib/pending-navigation";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { useState } from "react";
 import { formatDate } from "@/lib/format-date";
@@ -18,7 +19,7 @@ export function CompareSelector({ catalog, initialA, initialB, date, legacy = fa
   legacy?: boolean;
 }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const router = usePendingRouter();
   function apply(nextA: Selection, nextB: Selection, nextDate = date) {
     const sp = new URLSearchParams(searchParams.toString());
     if(nextA) sp.set("playerA",nextA.id); else sp.delete("playerA");

@@ -54,7 +54,9 @@ test("upcoming cards carry the free line and injury counts", async ({ page }) =>
   const card = slate(page).locator(".live-card").first();
   await expect(card).toContainText("PM ED");
   await expect(card).toContainText("BOS by 12.5");
-  await expect(card.getByText("BOS by 12.5")).toHaveAttribute("title", "Spread (DraftKings): Boston Celtics favored by 12.5 points");
+  await card.getByText("BOS by 12.5").hover();
+  await expect(card.getByRole("tooltip")).toHaveText("Spread (DraftKings): the Boston Celtics are favored to win by 12.5 points");
+  await page.mouse.move(0, 0);
   await expect(card).toContainText("O/U 222.5");
   await expect(card).toContainText("1 OUT");
   await expect(card.locator(".live-card-score").first()).toHaveText("0");
