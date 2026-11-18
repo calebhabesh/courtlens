@@ -94,8 +94,11 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   const [lookup, setLookup] = useState("");
   // The player whose line is hovered or whose card has the pointer or focus: the others dim.
   const [focused, setFocused] = useState<string | null>(null);
-  // Lines is the default; a chosen view stays while players and the statistic change.
-  const [view, setView] = useState<TrendView>("lines");
+  // Lines is the default (Table on a phone, where the chart's labels get too small to read); a
+  // chosen view stays while players and the statistic change. The dialog renders nothing on the
+  // server, so reading the screen width here never mismatches hydration.
+  const [view, setView] = useState<TrendView>(() =>
+    typeof window !== "undefined" && window.matchMedia?.("(max-width: 767px)").matches ? "table" : "lines");
   const focusedId = view === "lines" && players.length > 1 && players.some(player => player.player_id === focused) ? focused : null;
   const [result, setResult] = useState<{ key: string; rows?: SeasonRows[]; error?: string } | null>(null);
   // Career reads by player, phase and release: reopening or adding a player reuses them.
