@@ -3,10 +3,14 @@
     python scripts/test_python.py -n 4 --junitxml="$PWD/junit.xml"
     python scripts/ci_file_durations.py junit.xml
 
+or, better, from a CI run's backend-tests shards (artifacts coverage-1 and coverage-2):
+
+    gh run download <run id> --pattern 'coverage-*' --dir ci-reports
+    python scripts/ci_file_durations.py ci-reports/*/junit-*.xml
+
 Stale numbers only unbalance the two shards (a file not listed counts as the median); they never
 drop or repeat a test. Refresh when one backend-tests shard runs clearly longer than the other.
-Times from a CI run (download its JUnit report) are better than a fast local machine's, although
-only their proportions matter.
+CI's times are better than a fast local machine's, although only their proportions matter.
 """
 
 from __future__ import annotations
@@ -19,10 +23,15 @@ from pathlib import Path
 
 
 def main() -> int:
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         raise SystemExit(__doc__)
     seconds: dict[str, float] = defaultdict(float)
-    for case in ElementTree.parse(sys.argv[1]).getroot().iter("testcase"):
+    cases = (
+        case
+        for report in sys.argv[1:]
+        for case in ElementTree.parse(report).getroot().iter("testcase")
+    )
+    for case in cases:
         module = case.get("classname", "").split(".")
         # classname is "tests.unit.test_x" or "tests.unit.test_x.TestClass".
         while module and not module[-1].startswith("test_"):

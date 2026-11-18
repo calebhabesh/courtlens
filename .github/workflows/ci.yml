@@ -140,10 +140,14 @@ jobs:
       # Four workers (the runner's four CPUs), each on its own database cloned from the
       # migrated one (scripts/test_python.py).
       - run: python scripts/test_python.py -n 4 --shard=${{ matrix.shard }}/2 --cov=courtlens --cov-report=
+          --junitxml="$GITHUB_WORKSPACE/junit-${{ matrix.shard }}.xml"
       - uses: actions/upload-artifact@v7
         with:
           name: coverage-${{ matrix.shard }}
-          path: coverage-${{ matrix.shard }}.data
+          # The JUnit report's test times rebuild tests/ci_file_durations.json.
+          path: |
+            coverage-${{ matrix.shard }}.data
+            junit-${{ matrix.shard }}.xml
           retention-days: 7
 
   # One coverage report for the whole suite, from both shards' data.
@@ -151,7 +155,10 @@ jobs:
     needs: backend-tests
     runs-on: ubuntu-latest
     steps:
+      # The report reads only the measured sources (and the lock file, a root file).
       - uses: actions/checkout@v7
+        with:
+          sparse-checkout: src
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
