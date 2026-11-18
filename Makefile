@@ -77,7 +77,7 @@ test: test-python
 PYTHON ?= .venv/bin/python
 PYTEST_ARGS ?=
 test-python:
-	$(PYTHON) scripts/test_python.py --cov=courtlens --cov-report=term-missing $(PYTEST_ARGS)
+	$(PYTHON) scripts/test_python.py -n auto --cov=courtlens --cov-report=term-missing $(PYTEST_ARGS)
 
 # Deliberately OOM-kills tiny capped systemd units; KDE/GNOME show "low memory" notices.
 test-kernel-limits:
