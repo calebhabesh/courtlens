@@ -176,8 +176,13 @@ def test_warm_runs_every_step_and_records_a_failed_one() -> None:
     assert "error" not in report["steps"]["first"] and "error" not in report["steps"]["third"]
 
 
-def test_the_default_steps_load_the_catalog_facts_and_finance_book() -> None:
-    assert [name for name, _ in warm_start.STEPS] == ["catalog", "source_facts", "finance_book"]
+def test_the_default_steps_load_the_catalog_facts_finance_book_and_search_index() -> None:
+    assert [name for name, _ in warm_start.STEPS] == [
+        "catalog",
+        "source_facts",
+        "finance_book",
+        "lookup_index",
+    ]
 
 
 def test_start_warms_in_the_background_and_reports_it(monkeypatch: pytest.MonkeyPatch) -> None:

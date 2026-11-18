@@ -5,8 +5,10 @@ from __future__ import annotations
 import threading
 import time
 from collections import OrderedDict
+from collections.abc import Iterable
+from dataclasses import dataclass
 from datetime import date
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import HTTPException
 from sqlalchemy import func, or_, select
@@ -27,6 +29,7 @@ from courtlens.domain.entity_lookup import (
     STATIC_NAVIGATION_PAGES,
     IndexedEntity,
     MatchBasis,
+    NameSearch,
     build_destination_url,
     generate_player_aliases,
     get_portrait_fallback,
@@ -46,6 +49,8 @@ from courtlens.workbench_models import (
 
 # Bounded LRU cache capacity for warm query responses
 LOOKUP_CACHE_MAX_ENTRIES = 1024
+# A new dataset is published daily: keep the newest indexes (the one being replaced included).
+LOOKUP_INDEX_MAX_DATASETS = 2
 # Season leaders offered before typing: alone in a player search, or ahead of pages and teams.
 LEADER_SUGGESTIONS = 8
 MIXED_LEADER_SUGGESTIONS = 5
@@ -96,8 +101,44 @@ def season_leaders(
     return [player_id for player_id, _, _ in ranked[:limit]]
 
 
+@dataclass(frozen=True)
+class PlayerAppearances:
+    """A player's team-seasons in the indexed dataset, for search's team captions."""
+
+    # (season, phase, team, last appeared date) from the game logs.
+    games: tuple[tuple[str, str, str, date], ...] = ()
+    # (season, phase, team) of seasons served only as totals.
+    totals: tuple[tuple[str, str, str], ...] = ()
+
+
+class EntityIndex(list[IndexedEntity]):
+    """The searchable entities of one dataset, with what each keystroke reads (speed plan SP09).
+
+    A list, as before, for callers that iterate it. `search` finds candidates without scoring
+    every entity; `appearances` answers team captions without a database query (None when they
+    could not be loaded, and the database answers instead).
+    """
+
+    def __init__(
+        self,
+        entities: Iterable[IndexedEntity],
+        appearances: dict[str, PlayerAppearances] | None = None,
+    ) -> None:
+        super().__init__(entities)
+        self.search = NameSearch(self)
+        self.latest_player_season = latest_player_season(self)
+        self.appearances = appearances
+
+
+def latest_player_season(index: Iterable[IndexedEntity]) -> str | None:
+    """The newest season any indexed player appeared in."""
+    return max((s for e in index if e.kind == "player" for s in e.seasons[-1:]), default=None)
+
+
 _index_lock = threading.RLock()
-_indices_by_dataset: dict[str, list[IndexedEntity]] = {}
+# One build at a time, outside `_index_lock`, so cached answers never wait for a build.
+_build_lock = threading.Lock()
+_indices_by_dataset: OrderedDict[str, EntityIndex] = OrderedDict()
 _association_cache: OrderedDict[tuple[Any, ...], LookupTeamAssociation] = OrderedDict()
 _response_cache: OrderedDict[tuple[Any, ...], LookupResponse] = OrderedDict()
 
@@ -169,7 +210,7 @@ def _destination(
     )
 
 
-def build_entity_index(session: Session, dataset_id: str | None = None) -> list[IndexedEntity]:
+def build_entity_index(session: Session, dataset_id: str | None = None) -> EntityIndex:
     """Build in-memory searchable entity index from database identities, teams, and pages."""
     entities: list[IndexedEntity] = []
 
@@ -180,26 +221,37 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         .all()
     )
 
-    # 2. Load player appearance summaries (seasons, latest team, latest date)
+    # 2. Load player appearance summaries (seasons, latest team, latest date). The same pass keeps
+    # each player's appeared team-seasons for the team captions: the game logs are read once,
+    # here (a whole-table scan, about 20 s live), never per keystroke.
     player_summaries: dict[str, dict[str, Any]] = {}
+    played: dict[str, list[tuple[str, str, str, date]]] = {}
+    totals_played: dict[str, list[tuple[str, str, str]]] = {}
+    appearances_loaded = True
     try:
         summary_query = select(
             WorkbenchPlayerGame.player_id,
             WorkbenchPlayerGame.season,
+            WorkbenchPlayerGame.phase,
             WorkbenchPlayerGame.team_id,
+            WorkbenchPlayerGame.appearance,
             func.max(WorkbenchPlayerGame.game_date).label("latest_date"),
             func.count().label("games"),
         ).group_by(
             WorkbenchPlayerGame.player_id,
             WorkbenchPlayerGame.season,
+            WorkbenchPlayerGame.phase,
             WorkbenchPlayerGame.team_id,
+            WorkbenchPlayerGame.appearance,
         )
         if dataset_id is not None:
             summary_query = summary_query.where(WorkbenchPlayerGame.dataset_id == dataset_id)
 
         summary_rows = session.execute(summary_query).all()
 
-        for pid, season, team_id, latest_date, games in summary_rows:
+        for pid, season, phase, team_id, appearance, latest_date, games in summary_rows:
+            if appearance == "appeared":
+                played.setdefault(pid, []).append((season, phase, team_id, latest_date))
             if pid not in player_summaries:
                 player_summaries[pid] = {
                     "seasons": set(),
@@ -217,7 +269,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
                 entry["latest_team_id"] = team_id
     except Exception:
         # Fallback if table is not accessible or dataset does not exist
-        pass
+        appearances_loaded = False
 
     # Seasons before the game logs (season totals pinned by the dataset).
     try:
@@ -231,6 +283,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         for pid, season, _phase, team_id, games in player_team_seasons(
             session, totals_sha, totals_seasons
         ):
+            totals_played.setdefault(pid, []).append((season, _phase, team_id))
             entry = player_summaries.setdefault(
                 pid, {"seasons": set(), "latest_date": None, "latest_team_id": None, "games": 0}
             )
@@ -242,6 +295,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
                 entry["latest_team_id"] = team_id
     except Exception:
         session.rollback()
+        appearances_loaded = False
 
     # 3. Basketball-Reference nicknames from each player's newest parsed profile
     nicknames: dict[str, list[str]] = {}
@@ -413,7 +467,15 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
             )
         )
 
-    return entities
+    appearances = None
+    if appearances_loaded:
+        appearances = {
+            pid: PlayerAppearances(
+                games=tuple(played.get(pid, ())), totals=tuple(totals_played.get(pid, ()))
+            )
+            for pid in played.keys() | totals_played.keys()
+        }
+    return EntityIndex(entities, appearances)
 
 
 def _match_tier(entity: IndexedEntity, basis: MatchBasis, term: str | None) -> int:
@@ -436,15 +498,83 @@ def _match_tier(entity: IndexedEntity, basis: MatchBasis, term: str | None) -> i
 def get_or_build_entity_index(
     session: Session, dataset_id: str | None = None
 ) -> list[IndexedEntity]:
-    """Retrieve thread-safe cached entity index or build from database."""
+    """Retrieve thread-safe cached entity index or build from database.
+
+    Builds run one at a time under their own lock: a request for an index being built waits
+    for it, and a cached answer (`_index_lock`) never does.
+    """
     cache_key = dataset_id or "default"
     with _index_lock:
-        if cache_key in _indices_by_dataset:
-            return _indices_by_dataset[cache_key]
-
-        index = build_entity_index(session, dataset_id=dataset_id)
-        _indices_by_dataset[cache_key] = index
+        index = _indices_by_dataset.get(cache_key)
+        if index is not None:
+            _indices_by_dataset.move_to_end(cache_key)
+            return index
+    with _build_lock:
+        with _index_lock:
+            index = _indices_by_dataset.get(cache_key)
+        if index is None:
+            index = build_entity_index(session, dataset_id=dataset_id)
+            with _index_lock:
+                _indices_by_dataset[cache_key] = index
+                while len(_indices_by_dataset) > LOOKUP_INDEX_MAX_DATASETS:
+                    _indices_by_dataset.popitem(last=False)
         return index
+
+
+def indexed_team_associations(
+    appearances: dict[str, PlayerAppearances],
+    season: str | None,
+    phase: str | None,
+    player_ids: list[str],
+) -> dict[str, LookupTeamAssociation]:
+    """`scoped_team_associations` without a cutoff, read from the index (speed plan SP09).
+
+    The same rules and the same answers, with no query: game logs first, and a player with none
+    in the scope falls back to the seasons served as totals, each standing at its season's end.
+    A scoped answer lists every team in the scope; an unscoped one, the teams tied on the last
+    observed date.
+    """
+    from courtlens.services.history_totals import season_end_date
+
+    def in_scope(row_season: str, row_phase: str) -> bool:
+        return (season is None or row_season == season) and (phase is None or row_phase == phase)
+
+    scoped = season is not None or phase is not None
+    basis: Literal["selected_scope", "last_observed"] = (
+        "selected_scope" if scoped else "last_observed"
+    )
+    result: dict[str, LookupTeamAssociation] = {}
+    for player_id in player_ids:
+        player = appearances.get(player_id, PlayerAppearances())
+        latest_by_team: dict[str, date] = {}
+        for row_season, row_phase, team, day in player.games:
+            if in_scope(row_season, row_phase) and day > latest_by_team.get(team, date.min):
+                latest_by_team[team] = day
+        from_totals = not latest_by_team
+        if from_totals:
+            for row_season, row_phase, team in player.totals:
+                ended = season_end_date(row_season)
+                if in_scope(row_season, row_phase) and ended > latest_by_team.get(team, date.min):
+                    latest_by_team[team] = ended
+        if not latest_by_team:
+            result[player_id] = LookupTeamAssociation(basis=basis, season=season, phase=phase)
+            continue
+        latest = max(latest_by_team.values())
+        result[player_id] = LookupTeamAssociation(
+            basis=basis,
+            teams=sorted(
+                {
+                    resolve_team_tricode(team)
+                    for team, day in latest_by_team.items()
+                    if scoped or day == latest
+                }
+            ),
+            observed_through=None if from_totals else latest,
+            last_season=f"{latest.year - 1}-{latest.year % 100:02d}" if from_totals else None,
+            season=season,
+            phase=phase,
+        )
+    return result
 
 
 def scoped_team_associations(
@@ -715,7 +845,10 @@ def lookup_entities(
         scored_candidates: list[tuple[float, int, IndexedEntity, MatchBasis, str | None]] = []
         kind_rank_map = {"player": 1, "team": 2, "page": 3}
 
-        for entity in index:
+        # Only the entities the query can match are scored (SP09); the result is the same.
+        search = index.search if isinstance(index, EntityIndex) else NameSearch(index)
+        for position in search.candidates(norm_q):
+            entity = index[position]
             if entity.kind not in allowed_kinds:
                 continue
 
@@ -726,8 +859,10 @@ def lookup_entities(
                 scored_candidates.append((match_score, k_rank, entity, match_basis, matched_term))
 
         # Players in the scope's season (or the newest indexed season) come first within a tier.
-        current_season = season or max(
-            (s for e in index if e.kind == "player" for s in e.seasons[-1:]), default=None
+        current_season = season or (
+            index.latest_player_season
+            if isinstance(index, EntityIndex)
+            else latest_player_season(index)
         )
 
         # Stable deterministic ordering:
@@ -809,14 +944,15 @@ def lookup_entities(
             )
 
     if any(item.kind == "player" for item in items):
-        associations = scoped_team_associations(
-            session,
-            dataset_id,
-            season,
-            phase,
-            before_date,
-            [item.id for item in items if item.kind == "player"],
-        )
+        player_ids = [item.id for item in items if item.kind == "player"]
+        appearances = index.appearances if isinstance(index, EntityIndex) else None
+        if dataset_id is not None and before_date is None and appearances is not None:
+            # Whole seasons only: a cutoff inside a season still asks the database.
+            associations = indexed_team_associations(appearances, season, phase, player_ids)
+        else:
+            associations = scoped_team_associations(
+                session, dataset_id, season, phase, before_date, player_ids
+            )
         scoped = any(value is not None for value in (season, phase, before_date))
         for item in items:
             if item.kind != "player":

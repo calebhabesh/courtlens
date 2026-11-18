@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from typing import Any, Literal
 from urllib.parse import quote
@@ -331,7 +332,7 @@ def score_entity_match(
 
     # 6. Typo similarity (only allowed for query length >= 4)
     if q_len >= 4:
-        max_dist = max_typo_distance if max_typo_distance is not None else (1 if q_len <= 5 else 2)
+        max_dist = typo_distance(q_len, max_typo_distance)
         best_dist = max_dist + 1
         best_term: str | None = None
 
@@ -349,6 +350,95 @@ def score_entity_match(
             return ("typo", round(0.35 * sim, 4), best_term)
 
     return None
+
+
+def typo_distance(query_length: int, max_typo_distance: int | None = None) -> int:
+    """The edit distance `score_entity_match` allows a query of this length."""
+    if max_typo_distance is not None:
+        return max_typo_distance
+    return 1 if query_length <= 5 else 2
+
+
+class NameSearch:
+    """The entities a query can match, found without scoring every entity (speed plan SP09).
+
+    `candidates` returns, in index order, every position for which `score_entity_match` can
+    return a match. It may return more; callers score each candidate with `score_entity_match`,
+    so results are exactly those of scoring the whole index.
+
+    - Id, name, alias and word matches (every basis but typo) need the query inside the entity's
+      id, name, an alias or a word: one `in` per entity over its joined text.
+    - A typo match needs a word or alias within the edit distance k. Cut the query into k + 1
+      pieces: at most k edits touch at most k pieces, so one piece survives whole, shifted by
+      at most k. A bigram-by-position index finds every term holding a piece's first two
+      letters there; only those terms are measured.
+    """
+
+    def __init__(self, entities: Sequence[IndexedEntity]) -> None:
+        self._ids: dict[str, list[int]] = {}
+        # Newline never occurs in a normalized query, so a match never spans two names.
+        self._texts: list[str] = []
+        term_ids: dict[str, int] = {}
+        self._terms: list[str] = []
+        self._owners: list[list[int]] = []
+        self._bigrams: dict[tuple[str, int], list[int]] = {}
+        for position, entity in enumerate(entities):
+            for key in dict.fromkeys((entity.id.lower(), entity.canonical_id.lower())):
+                self._ids.setdefault(key, []).append(position)
+            self._texts.append(
+                "\n".join((entity.display_name_norm, *entity.aliases_norm, *entity.tokens))
+            )
+            # The typo basis measures exactly these terms (score_entity_match, step 6).
+            for term in (*entity.tokens, *entity.aliases_norm):
+                term_id = term_ids.get(term)
+                if term_id is None:
+                    term_id = term_ids[term] = len(self._terms)
+                    self._terms.append(term)
+                    self._owners.append([])
+                    for offset in range(len(term) - 1):
+                        self._bigrams.setdefault((term[offset : offset + 2], offset), []).append(
+                            term_id
+                        )
+                owners = self._owners[term_id]
+                if not owners or owners[-1] != position:
+                    owners.append(position)
+
+    def candidates(self, norm_query: str, max_typo_distance: int | None = None) -> list[int]:
+        """Positions of every entity `score_entity_match` can match for this query."""
+        if not norm_query:
+            return []
+        found = set(self._ids.get(norm_query, ()))
+        found.update(position for position, text in enumerate(self._texts) if norm_query in text)
+        if len(norm_query) >= 4:
+            for term_id in self._typo_terms(
+                norm_query, typo_distance(len(norm_query), max_typo_distance)
+            ):
+                found.update(self._owners[term_id])
+        return sorted(found)
+
+    def _typo_terms(self, norm_query: str, k: int) -> list[int]:
+        """Terms within edit distance k of the query."""
+        q_len = len(norm_query)
+        pieces = k + 1
+        if q_len < 2 * pieces:
+            # A piece shorter than a bigram: measure every term (no default distance does this).
+            terms: Iterable[int] = range(len(self._terms))
+        else:
+            hits: set[int] = set()
+            size, extra = divmod(q_len, pieces)
+            start = 0
+            for piece in range(pieces):
+                gram = norm_query[start : start + 2]
+                for offset in range(max(0, start - k), start + k + 1):
+                    hits.update(self._bigrams.get((gram, offset), ()))
+                start += size + (1 if piece < extra else 0)
+            terms = hits
+        return [
+            term_id
+            for term_id in terms
+            if abs(len(self._terms[term_id]) - q_len) <= k
+            and damerau_levenshtein_distance(norm_query, self._terms[term_id], max_dist=k) <= k
+        ]
 
 
 STATIC_NAVIGATION_PAGES: list[dict[str, Any]] = [

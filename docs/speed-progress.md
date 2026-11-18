@@ -2360,3 +2360,59 @@ between portraits and data reads. Read the HTTP/2 numbers.
 - The fixture build ran with the sandbox's original React. The instrumented copy was used only to
   find the mismatch and was restored (byte-identical to the checkout's).
 - Python not run: no Python changed. Not deployed.
+
+## 2026-11-18 — SP09 built: search, server side
+
+The owner found search slow on the live site; the plan was reopened for it (SP09, SP10).
+
+### Before: where a keystroke's time went (live, 2026-11-18)
+
+`curl` from the owner's PC; "API" is the response's own `latency_ms` (inside `lookup_entities`).
+
+| Query | Matches | Total | API |
+| --- | --- | --- | --- |
+| `m` | 1,135 | 3.87 s | 3,796 ms |
+| `mic` | 122 | 1.95 s | 1,900 ms |
+| `micha` | 101 | 0.20 s | 124 ms |
+| `michaelx` | 40 | 1.68 s | 1,630 ms |
+| `dun` | 22 | 1.07 s | 985 ms |
+| `tatum` | 3 | 0.46 s | 416 ms |
+
+Split inside the live `api` container (2 CPUs, shared VPS, load average about 5 on 4 cores):
+
+| Part | Time |
+| --- | --- |
+| Team captions: one query over the shown players' game logs | 220–750 ms |
+| Scoring all 5,314 entities (28,649 names and nicknames) | 20–90 ms; 225 ms when the typo check runs on most of them |
+| Newest player season, recomputed per query | 3.5 ms |
+| Building the index: one `GROUP BY` over the dataset's 1.29 M game rows | 18.9 s of 20.8 s (a sequential scan reading 2.1 GB: `stats_json` makes rows wide) |
+
+A new dataset is published daily (13:32 UTC), and the index is cached per dataset, so the first
+search after each publish waited about 21 s, and every dataset's index stayed in memory until
+the next restart. Nothing built the index at API start.
+
+### What changed
+
+- `NameSearch` (`domain/entity_lookup.py`) finds the entities a query can match; only those are
+  scored, by the unchanged `score_entity_match`.
+- The build's scan now groups by phase and appearance too (20.5 s live, one scan as before) and
+  keeps each player's appeared team-seasons and totals seasons; `indexed_team_associations`
+  answers captions for scopes without a cutoff. A cutoff still runs `scoped_team_associations`.
+- Warm start step `lookup_index`; the warm crawl requests `GET /api/workbench/lookup?q=` before
+  its pages (`search_index` in `warm-site.json`). Builds have their own lock; two datasets kept.
+
+### Checks
+
+- Old code (HEAD) against new on the PC's copy of the live database: **6,420 responses, 0
+  differences** (every field but `latency_ms`): 1,045 queries (prefixes of 60 names, 250 typo'd
+  names, 250 substrings, fixed cases) in 6 scopes (none, newest season, 1995-96, 1975-76 for
+  totals, playoffs, players only) at limit 20, plus 150 with a cutoff. Mean time per lookup
+  **35.1 ms → 2.40 ms** (the old figure includes its caption cache warming over the run).
+- Unit tests: candidates against the whole-index scan for over 1,000 random prefixes,
+  substrings, typos, ids and noise; responses against a scan-everything `NameSearch`; captions
+  against the database query in 12 scopes (trade, playoffs, a non-appearance, a two-team tie);
+  totals captions; no SQL per keystroke; index eviction; the crawl's search request and its
+  failure. The search, Postgres identity and workbench API tests pass (58), as do the warm
+  start and warm crawl tests.
+- Memory: the index is 28.4 MiB with the new structures (12.8 MiB before): 21,372 distinct terms,
+  8,155 bigram keys, appearances for 5,161 players. At most two are kept.

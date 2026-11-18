@@ -8,6 +8,8 @@ Work one block at a time, in order. Record measured evidence in the
 
 **Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). SP08 built 2026-11-16: merged (#110), deployed (fd416ef0), final live table recorded. G1 ✅ owner 2026-11-15 after trying the live site; SP07 and SP08 ✅ owner 2026-11-15. The plan is finished.**
 
+**2026-11-18: reopened for search (SP09, SP10).** The owner found search slow on the live site. SP09 is the server side; SP10, moving search into the browser, waits until SP09 is live.
+
 ## Where the time goes (measured 2026-11-14)
 
 Full numbers are in the progress log. The short version:
@@ -138,6 +140,8 @@ gate G2; any other may be overturned at gate G1.
 | G2 | Owner gate: Cloudflare changes | ✅ owner, 2026-11-15 |
 | SP07 | Cloudflare settings | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP08 | Close: suites, deploy, final numbers, docs | ✅ owner, 2026-11-15; built 2026-11-16 |
+| SP09 | Search: server side | Built 2026-11-18 |
+| SP10 | Search: in the browser | Not started; after SP09 is live |
 
 ## SP00 Measuring tools and baseline
 
@@ -337,6 +341,36 @@ is recorded before and after; the owner's other hostnames on the zone answer as 
 
 **Done when:** the final table is recorded; every budget row is met or carries its recorded
 floor; the docs are updated; the owner marks the blocks.
+
+## SP09 Search: server side
+
+Every search box (27 components, all through `LookupInput` and `GET /api/workbench/lookup`) asks
+the API on each keystroke. Measured live on 2026-11-18, the API's own timer read 120 ms to 3.8 s
+per keystroke: a database query for the shown players' teams (220–750 ms), a pure-Python typo
+check of every one of 28,649 names and nicknames (up to 225 ms), and, for the first search after
+each daily dataset, building the index (about 21 s, one scan of 2.1 GB of game logs).
+
+- **Score only what can match.** `NameSearch` finds candidates: one substring test per entity
+  for every match basis but typo, and a bigram-by-position index for typos (a query cut into
+  k + 1 pieces keeps one piece whole, shifted by at most k). Each candidate is still scored by
+  `score_entity_match`, so the answers are the whole-index scan's.
+- **Team captions from the index.** The build's one scan also keeps each player's appeared
+  team-seasons (and totals seasons); captions for any scope without a cutoff come from memory
+  with the database path's rules. A cutoff inside a season still asks the database.
+- **Build off the request path.** The API's warm start builds the published dataset's index;
+  the warm crawl requests one empty search first after each data change. Builds have their own
+  lock, so cached answers never wait for one, and only the two newest datasets stay in memory.
+
+**Done when:** responses equal the old code's for every query tried on real data; the live
+API's time per keystroke is under 20 ms for scopes without a cutoff; no search waits for a
+build after a deploy or a daily publish.
+
+## SP10 Search: in the browser
+
+The catalog is small (170 KB gzipped with nicknames, 85 KB without). Load it once when a search
+box first gets focus, cached per data stamp, and search in the browser with the same ranking
+rules ported to TypeScript, checked against the API's answers. The API endpoint stays for
+cutoff scopes, Ask and the Stats `name` filter. Not started.
 
 ## Left alone
 

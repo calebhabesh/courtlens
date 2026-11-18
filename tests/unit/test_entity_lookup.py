@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import concurrent.futures
+import random
 import time
 from datetime import date
 
@@ -12,6 +13,7 @@ from sqlalchemy.orm import Session
 from courtlens.domain.entity_lookup import (
     LOOKUP_CATALOG_VERSION,
     STATIC_NAVIGATION_PAGES,
+    IndexedEntity,
     damerau_levenshtein_distance,
     generate_player_aliases,
     normalize_lookup_text,
@@ -690,3 +692,223 @@ def test_first_name_forms_find_the_player(test_db_session: Session):
     assert (found.display_name, found.match_basis) == ("Ronald Holland II", "exact")
     # A generated form is matched silently, never shown as an "aka" nickname.
     assert found.nicknames == [] and found.matched_alias is None
+
+
+# --- SP09: the indexed search gives exactly the whole-index scan's answers ------------------
+
+
+def _brute_force(index: list, norm_query: str, tokens: list[str]) -> list[tuple[int, object]]:
+    from courtlens.domain.entity_lookup import score_entity_match
+
+    return [
+        (position, match)
+        for position, entity in enumerate(index)
+        if (match := score_entity_match(entity, norm_query, tokens)) is not None
+    ]
+
+
+def _edits(word: str, rng: random.Random) -> str:
+    """One to three random insertions, deletions, substitutions or swaps."""
+    letters = "abcdeijlmnorstuvy "
+    for _ in range(rng.randint(1, 3)):
+        at = rng.randrange(len(word) + 1)
+        operation = rng.choice(("insert", "delete", "substitute", "swap"))
+        if operation == "insert" or not word:
+            word = word[:at] + rng.choice(letters) + word[at:]
+        elif operation == "delete" and at < len(word):
+            word = word[:at] + word[at + 1 :]
+        elif operation == "substitute" and at < len(word):
+            word = word[:at] + rng.choice(letters) + word[at + 1 :]
+        elif at + 1 < len(word):
+            word = word[:at] + word[at + 1] + word[at] + word[at + 2 :]
+    return word
+
+
+def test_name_search_candidates_hold_every_match_of_the_whole_index(test_db_session: Session):
+    """Prefixes, substrings, typos, ids and noise: the candidates miss no match the scan finds."""
+    from courtlens.domain.entity_lookup import NameSearch, score_entity_match
+
+    rng = random.Random(9)
+    index = list(get_or_build_entity_index(test_db_session))
+    surnames = ["Williams", "Bridges", "Johnson", "Jones", "Smith", "Brown", "Davis", "Scott"]
+    firsts = ["Michael", "Mike", "Scottie", "Jalen", "Jaylin", "Chris", "Ron", "Anna", "Bo"]
+    for n in range(400):
+        name = f"{rng.choice(firsts)} {rng.choice(surnames)}{rng.choice(['', ' Jr.', ' III'])}"
+        if n % 3 == 0:
+            name = "".join(rng.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(7)).title()
+        nicknames = {"the mailman": "The Mailman"} if n % 50 == 0 else {}
+        index.append(
+            IndexedEntity(
+                id=f"x{n}",
+                kind="player",
+                canonical_id=f"x{n}",
+                display_name=name,
+                display_name_norm=normalize_lookup_text(name),
+                aliases_norm=tuple(generate_player_aliases(name, list(nicknames.values()))),
+                tokens=tuple(tokenize_lookup_text(name)),
+                subtitle=None,
+                portrait_url=None,
+                portrait_fallback=None,
+                base_destination=f"/players/x{n}",
+                nicknames=nicknames,
+            )
+        )
+    search = NameSearch(index)
+
+    queries = {"x7", "x399", "page_stats", "stats", "a", "jo", "zzzz", "the mail", "williamz"}
+    for entity in rng.sample(index, 150):
+        text = entity.display_name_norm
+        queries.update(text[:cut] for cut in range(1, len(text) + 1))
+        start = rng.randrange(len(text))
+        queries.add(text[start : start + rng.randint(1, 8)])
+        queries.update(_edits(text, rng) for _ in range(3))
+        queries.update(_edits(token, rng) for token in entity.tokens)
+    checked = 0
+    for raw in sorted(queries):
+        norm, tokens = normalize_lookup_text(raw), tokenize_lookup_text(raw)
+        if not norm:
+            continue
+        expected = _brute_force(index, norm, tokens)
+        found = [
+            (position, match)
+            for position in search.candidates(norm)
+            if (match := score_entity_match(index[position], norm, tokens)) is not None
+        ]
+        assert found == expected, raw
+        checked += 1
+    assert checked > 1000
+    # A larger edit distance than the default still finds every match (pieces under two letters).
+    wide = [p for p, _ in _brute_force(index, "jonez", [])]
+    wide_found = search.candidates("jonez", max_typo_distance=3)
+    assert set(wide) - {p for p in wide_found} == set()
+
+
+def test_lookup_answers_match_the_whole_index_scan(
+    test_db_session: Session, monkeypatch: pytest.MonkeyPatch
+):
+    """The served response is the one the old scan gave, item for item, for any query."""
+    from courtlens.domain.entity_lookup import NameSearch
+    from courtlens.services import entity_lookup as service
+
+    class EveryEntity(NameSearch):
+        """The old behaviour: every entity is a candidate."""
+
+        def candidates(self, norm_query: str, max_typo_distance: int | None = None) -> list[int]:
+            return list(range(len(self._texts)))
+
+    queries = ["a", "jo", "jokic", "jokci", "will", "willaims", "brid", "celtics", "stat", "x"]
+    indexed = [
+        lookup_entities(test_db_session, query=q, limit=20).model_dump(exclude={"latency_ms"})
+        for q in queries
+    ]
+    clear_lookup_caches()
+    monkeypatch.setattr(service, "NameSearch", EveryEntity)
+    scanned = [
+        lookup_entities(test_db_session, query=q, limit=20).model_dump(exclude={"latency_ms"})
+        for q in queries
+    ]
+    assert indexed == scanned
+
+
+def _played(player: str, team: str, day: date, season: str, phase: str, appearance: str):
+    return WorkbenchPlayerGame(
+        dataset_id="d", game_id=f"{player}-{team}-{day}", player_id=player, team_id=team,
+        opponent_id="X", game_date=day, season=season, phase=phase, appearance=appearance,
+        minutes_original="30:00", points=10, stats_json={}, source_version_id="v",
+        source_observation_id="o",
+    )  # fmt: skip
+
+
+def test_team_captions_from_the_index_match_the_database(test_db_session: Session):
+    """Every scope without a cutoff: the index's teams equal the database query's (SP09)."""
+    from courtlens.services.entity_lookup import (
+        EntityIndex,
+        indexed_team_associations,
+        scoped_team_associations,
+    )
+
+    test_db_session.add_all(
+        [
+            # Traded mid-season, a playoff run, a game they sat out, and an earlier season.
+            _played("203999", "DEN", date(2025, 1, 2), "2024-25", "regular_season", "appeared"),
+            _played("203999", "LAL", date(2025, 2, 3), "2024-25", "regular_season", "appeared"),
+            _played("203999", "BOS", date(2025, 2, 9), "2024-25", "regular_season", "unknown"),
+            _played("203999", "LAL", date(2025, 4, 30), "2024-25", "playoffs", "appeared"),
+            _played("203999", "NJN", date(2011, 1, 1), "2010-11", "regular_season", "appeared"),
+            # Two teams on the same last date, and a player who never appeared.
+            _played("1629029", "DAL", date(2025, 3, 1), "2024-25", "regular_season", "appeared"),
+            _played("1629029", "MIA", date(2025, 3, 1), "2024-25", "regular_season", "appeared"),
+            _played(
+                "1631114",
+                "OKC",
+                date(2025, 3, 1),
+                "2024-25",
+                "regular_season",
+                "reported_nonappearance",
+            ),
+        ]
+    )
+    test_db_session.commit()
+    index = get_or_build_entity_index(test_db_session, "d")
+    assert isinstance(index, EntityIndex) and index.appearances is not None
+    players = ["203999", "1629029", "1631114", "1628969"]
+    for season in (None, "2024-25", "2010-11", "2026-27"):
+        for phase in (None, "regular_season", "playoffs"):
+            clear_lookup_caches()
+            expected = scoped_team_associations(test_db_session, "d", season, phase, None, players)
+            assert indexed_team_associations(index.appearances, season, phase, players) == expected
+
+    # A whole lookup asks the database nothing once the index is built.
+    from sqlalchemy import event
+
+    get_or_build_entity_index(test_db_session, "d")
+    statements: list[str] = []
+    connection = test_db_session.connection()
+    event.listen(connection, "before_cursor_execute", lambda *a: statements.append(a[2]))
+    lookup_entities(test_db_session, query="jok", dataset_id="d", season="2024-25")
+    lookup_entities(test_db_session, query="luka", dataset_id="d")
+    assert statements == []
+
+
+def test_team_captions_from_totals_stand_at_the_season_end() -> None:
+    """A career before the game logs reads its last totals season, as the database path does."""
+    from courtlens.services.entity_lookup import PlayerAppearances, indexed_team_associations
+
+    appearances = {
+        "old": PlayerAppearances(
+            totals=(
+                ("1960-61", "regular_season", "BOS"),
+                ("1968-69", "regular_season", "BOS"),
+                ("1968-69", "playoffs", "BOS"),
+            )
+        ),
+        "both": PlayerAppearances(
+            games=(("1984-85", "regular_season", "LAL", date(1985, 4, 14)),),
+            totals=(("1981-82", "regular_season", "MIL"),),
+        ),
+    }
+    unscoped = indexed_team_associations(appearances, None, None, ["old", "both"])
+    assert unscoped["old"].teams == ["BOS"]
+    assert (unscoped["old"].last_season, unscoped["old"].observed_through) == ("1968-69", None)
+    # Game logs win; totals are read only for a scope without games.
+    assert unscoped["both"].teams == ["LAL"]
+    assert unscoped["both"].observed_through == date(1985, 4, 14)
+    early = indexed_team_associations(appearances, "1981-82", None, ["both"])["both"]
+    assert (early.teams, early.last_season, early.basis) == (["MIL"], "1981-82", "selected_scope")
+
+
+def test_only_the_newest_dataset_indexes_are_kept(monkeypatch: pytest.MonkeyPatch):
+    from courtlens.services import entity_lookup as service
+
+    built: list[str | None] = []
+
+    def build(_session: object, dataset_id: str | None = None) -> service.EntityIndex:
+        built.append(dataset_id)
+        return service.EntityIndex([])
+
+    monkeypatch.setattr(service, "build_entity_index", build)
+    for dataset in ("d1", "d2", "d1", "d3", "d1", "d2"):
+        get_or_build_entity_index(None, dataset)  # type: ignore[arg-type]
+    # d1 stays (used again before d3 arrived); d2 was evicted by d3, so it is built again.
+    assert built == ["d1", "d2", "d3", "d2"]
+    assert list(service._indices_by_dataset) == ["d1", "d2"]

@@ -49,6 +49,8 @@ HEALTH_FILE = "warm-site.json"
 CONCURRENCY = 2  # plan rule: the VPS is shared
 MAX_CONSECUTIVE_5XX = 5
 REQUEST_TIMEOUT = 30.0
+# Building a new dataset's search index scans its game logs once: about 20 s live (SP09).
+SEARCH_INDEX_TIMEOUT = 180.0
 DEADLINE_SECONDS = 1200.0
 READY_TIMEOUT = 180.0
 # One more than the API's stamp recheck (read_cache.STAMP_RECHECK_SECONDS), so a status read
@@ -294,6 +296,26 @@ class WarmSite:
         response = self._http().get(f"{self.base_url.rstrip('/')}{path}")
         return response.status_code
 
+    def warm_search(self) -> dict[str, Any]:
+        """Build the new data's search index before a visitor's first keystroke does (SP09).
+
+        One empty search through the API: the same request a search box makes on focus. A failure
+        is recorded and the crawl goes on; the first search then builds the index itself.
+        """
+        began = self.clock()
+        outcome: dict[str, Any]
+        try:
+            response = self._http().get(
+                f"{self.api_url.rstrip('/')}/api/workbench/lookup",
+                params={"q": ""},
+                timeout=SEARCH_INDEX_TIMEOUT,
+            )
+            outcome = {"status": response.status_code}
+        except httpx.HTTPError as error:
+            outcome = {"error": type(error).__name__}
+        outcome["seconds"] = round(self.clock() - began, 1)
+        return outcome
+
     def wait_ready(self, until: float) -> str | None:
         """None once the API status and the dashboard's Stats page answer; else the reason."""
         reason = "not checked"
@@ -371,6 +393,7 @@ class WarmSite:
             roster_source=listing.roster_source,
             cache_before=_cache_counts(before),
         )
+        record["search_index"] = self.warm_search()
         self.log(f"warm-site: {len(listing.urls)} pages for generation {generation}")
         crawl_began = self.clock()
         result = crawl(self.get_page, listing.urls, deadline=deadline, clock=self.clock)

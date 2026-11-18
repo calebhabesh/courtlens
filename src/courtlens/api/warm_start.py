@@ -55,10 +55,19 @@ def _finance_book(session: Session) -> None:
         book_rows(session, refresh.book_id)
 
 
+def _lookup_index(session: Session) -> None:
+    """The published dataset's search index (about 20 s live), before the first keystroke."""
+    from courtlens.services.entity_lookup import get_or_build_entity_index, resolve_lookup_binding
+
+    _, dataset_id = resolve_lookup_binding(session, None)
+    get_or_build_entity_index(session, dataset_id)
+
+
 STEPS: tuple[tuple[str, Callable[[Session], None]], ...] = (
     ("catalog", _catalog),
     ("source_facts", _source_facts),
     ("finance_book", _finance_book),
+    ("lookup_index", _lookup_index),
 )
 
 

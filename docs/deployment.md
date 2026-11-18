@@ -322,12 +322,15 @@ milliseconds. Its parts, as they run on the VPS:
 - **Status.** `GET /api/cache/status`: entries, bytes, hits, misses, the stamp and a generation id
   that changes with the stamp and with each API start.
 - **Warm start** (`COURTLENS_WARM_START: "true"` on `api`). The API loads the catalog's bundles,
-  the tracking fingerprint and the finance book in the background as it starts, so the first
-  visitor after a deploy does not wait for them.
+  the tracking fingerprint, the finance book and the published dataset's search index (about
+  20 s: one scan of the game logs) in the background as it starts, so the first visitor after a
+  deploy does not wait for them.
 - **Warm crawl** (`courtlens warm-site`, in the `jobs` loop after each `run-jobs`). When the
   generation at `/api/cache/status` differs from its last run, it requests the top-level pages,
   all 30 team pages and every current roster player's page from `http://dashboard:3000`, two at a
-  time, so the cache is filled by the same code visitors use. It stops after 5 consecutive 5xx
+  time, so the cache is filled by the same code visitors use. Before the pages it requests one
+  empty search from the API, which builds the new dataset's search index (its `search_index`
+  field records the status and seconds). It stops after 5 consecutive 5xx
   responses, is bounded by `timeout 1500`, and its time comes off the loop's sleep. Its record is
   `data/derived/job-health/warm-site.json`. A failed or skipped crawl only leaves pages cold.
 - **Memory.** The cache cap is part of the API's 3 GB limit, beside the impact bundle (about

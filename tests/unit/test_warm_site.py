@@ -105,6 +105,7 @@ class FakeSite:
         self.statuses = statuses
         self.page_status = page_status
         self.pages: list[str] = []
+        self.searches: list[str] = []
         self.request_headers: list[httpx.Headers] = []
 
     def handler(self, request: httpx.Request) -> httpx.Response:
@@ -112,6 +113,9 @@ class FakeSite:
         if request.url.path == "/api/cache/status":
             body = self.statuses.pop(0) if len(self.statuses) > 1 else self.statuses[0]
             return httpx.Response(200, json=body)
+        if request.url.path == "/api/workbench/lookup":
+            self.searches.append(str(request.url))
+            return httpx.Response(200, json={"items": []})
         self.pages.append(request.url.path)
         # A dashboard that sets a cookie must never get it back.
         return httpx.Response(
@@ -155,6 +159,9 @@ def test_a_new_settled_generation_is_crawled_and_recorded(tmp_path: Path) -> Non
     assert record["pages"] == record["ok"] == len(TOP_LEVEL_PAGES) + 90
     assert set(site.pages) >= {"/teams/1610612747", "/players/1000"}
     assert read_health(tmp_path)["generation"] == "g1"
+    # The new data's search index is built once, before the pages (SP09).
+    assert site.searches == ["http://api:8000/api/workbench/lookup?q="]
+    assert record["search_index"]["status"] == 200
     for headers in site.request_headers:  # no cookie and no credential header, ever
         names = {name.lower().encode() for name in headers}
         assert not names & read_cache.CREDENTIAL_HEADERS
@@ -166,6 +173,7 @@ def test_the_same_generation_is_not_crawled_twice(tmp_path: Path) -> None:
     record = _runner(site, tmp_path).run()
     assert record["outcome"] == "skipped"
     assert site.pages == ["/stats"]  # the readiness check only
+    assert site.searches == []
 
 
 def test_no_crawl_while_a_job_runs(tmp_path: Path) -> None:
@@ -228,6 +236,27 @@ def test_an_unexpected_error_is_recorded_not_raised(tmp_path: Path) -> None:
 
 def _pages(n: int) -> list[str]:
     return [f"/p/{i}" for i in range(n)]
+
+
+def test_a_failed_search_warm_up_is_recorded_and_the_crawl_goes_on(tmp_path: Path) -> None:
+    site = FakeSite([_status("g1")])
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/api/workbench/lookup":
+            raise httpx.ReadTimeout("index still building", request=request)
+        return site.handler(request)
+
+    record = WarmSite(
+        base_url="http://dashboard:3000",
+        api_url="http://api:8000",
+        root=tmp_path,
+        client=warm_site.no_cookie_client(transport=httpx.MockTransport(handler)),
+        roster_loader=_roster,
+        sleep=lambda _: None,
+        log=lambda _: None,
+    ).run()
+    assert record["outcome"] == "complete"
+    assert record["search_index"]["error"] == "ReadTimeout"
 
 
 def test_crawl_stops_after_repeated_server_errors() -> None:
