@@ -11,6 +11,11 @@ or, better, from a CI run's backend-tests shards (artifacts coverage-1 and cover
 Stale numbers only unbalance the two shards (a file not listed counts as the median); they never
 drop or repeat a test. Refresh when one backend-tests shard runs clearly longer than the other.
 CI's times are better than a fast local machine's, although only their proportions matter.
+
+Each file's weight is its tests' reported seconds plus PER_TEST_OVERHEAD per test: under xdist a
+test also costs scheduling and fixture work the report does not count. On CI run 44245107940 the
+shard of 1,897 mostly short tests ran 70 s longer than the shard of 1,138 longer ones although
+its reported total was 93 s smaller; 0.4 s a test accounts for the difference.
 """
 
 from __future__ import annotations
@@ -20,6 +25,8 @@ import sys
 import xml.etree.ElementTree as ElementTree
 from collections import defaultdict
 from pathlib import Path
+
+PER_TEST_OVERHEAD = 0.4
 
 
 def main() -> int:
@@ -37,7 +44,7 @@ def main() -> int:
         while module and not module[-1].startswith("test_"):
             module.pop()
         if module:
-            seconds["/".join(module) + ".py"] += float(case.get("time", 0))
+            seconds["/".join(module) + ".py"] += float(case.get("time", 0)) + PER_TEST_OVERHEAD
     target = Path(__file__).resolve().parents[1] / "tests/ci_file_durations.json"
     rounded = {name: round(value, 1) for name, value in sorted(seconds.items())}
     target.write_text(json.dumps(rounded, indent=1) + "\n")
