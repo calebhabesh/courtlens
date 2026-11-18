@@ -385,10 +385,12 @@ The VPS holds the only live copy. `scripts/vps-backup.sh` (copied by each deploy
 outcomes:
 
 - **Full** (the default): `backend-checks` (Ruff, mypy, migrations, demo seed, dbt),
-  `backend-tests` (pytest on four xdist workers, each on its own database cloned from the
-  migrated one, with coverage), `dashboard-checks` (ESLint, Stylelint, tsc, Vitest, the
+  `backend-tests` (pytest in two shards, each on four xdist workers with its own database per
+  worker cloned from the migrated one; test files are dealt to the shards by the seconds in
+  `tests/ci_file_durations.json`, which `scripts/ci_file_durations.py` rebuilds), `coverage` (one
+  report from both shards' data), `dashboard-checks` (ESLint, Stylelint, tsc, Vitest, the
   Turbopack build), `browser` (Playwright in four shards of two workers, each with its own
-  webpack build) and `containers` (Compose build and smoke test), all in parallel.
+  webpack build; Playwright's Ubuntu packages are cached) and `containers` (Compose build and smoke test), all in parallel.
 - **Docs lane**: every changed file is Markdown at the repository root, at the top of `docs/`, or
   in `docs/operations`, `docs/decisions` or `docs/research`. Only the tests that read those files
   run: `tests/unit/test_frozen_identifiers.py` (it scans every tracked file) and Vitest (which
