@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PlayerResearchItem } from "@/lib/types";
-import { careerRows, careerSeasons, nearestColumn, settleLimited } from "./stats-trend-dialog";
+import { careerRows, careerSeasons, dodgeColumn, nearestColumn, settleLimited } from "./stats-trend-dialog";
 
 describe("careerSeasons", () => {
   const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
@@ -57,5 +57,18 @@ describe("nearestColumn", () => {
     expect(nearestColumn(20, 5, 100, 500, 50, 550)).toBeNull();
     expect(nearestColumn(600, 5, 100, 500, 50, 550)).toBeNull();
     expect(nearestColumn(300, 1, 100, 500, 50, 550)).toBe(0);
+  });
+});
+
+describe("dodgeColumn", () => {
+  it("leaves dots that are a diameter apart in place", () => {
+    expect(dodgeColumn([100, 140, null], 16)).toEqual([0, 0, 0]);
+  });
+  it("puts overlapping dots side by side in series order, centred on the season", () => {
+    // Series 0 sits lower but still comes first (left); series 2 has no value.
+    expect(dodgeColumn([110, 100, null], 16)).toEqual([-17, 17, 0]);
+  });
+  it("chains a dot that touches either neighbour into one cluster", () => {
+    expect(dodgeColumn([100, 125, 150], 16)).toEqual([-34, 0, 34]);
   });
 });
