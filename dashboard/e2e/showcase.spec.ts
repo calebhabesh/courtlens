@@ -109,7 +109,8 @@ test.describe("Player Showcase", () => {
     await expect(tray).toContainText("Compare (2)");
     // The tray never covers the last cards.
     const [trayTop, lastBottom] = await page.evaluate(() => {
-      window.scrollTo(0, document.documentElement.scrollHeight);
+      // Instant: the page scrolls smoothly, and the tray floats over it, so a read mid-scroll compares two moving boxes.
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
       const cardsList = document.querySelectorAll(".sc-card");
       return [document.querySelector(".compare-tray")!.getBoundingClientRect().top, cardsList[cardsList.length - 1].getBoundingClientRect().bottom];
     });

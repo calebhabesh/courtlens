@@ -73,7 +73,7 @@ def test_top_level_pages_render_on_the_server_and_leave_out_live_and_viewer_page
         assert route.exists(), page
         # A static page fetches its data from the browser: crawling its HTML warms nothing.
         assert 'dynamic = "force-dynamic"' in route.read_text(), f"{page} is not server-rendered"
-        assert page == "/" or f'"{page}"' in nav, f"{page} is not in the navigation"
+        assert f'"{page}"' in nav, f"{page} is not in the navigation"
     assert not {"/live", "/settings", "/planner", "/data-status"} & set(TOP_LEVEL_PAGES)
 
 
@@ -165,14 +165,14 @@ def test_the_same_generation_is_not_crawled_twice(tmp_path: Path) -> None:
     site = FakeSite([_status("g1")])
     record = _runner(site, tmp_path).run()
     assert record["outcome"] == "skipped"
-    assert site.pages == ["/"]  # the readiness check only
+    assert site.pages == ["/stats"]  # the readiness check only
 
 
 def test_no_crawl_while_a_job_runs(tmp_path: Path) -> None:
     site = FakeSite([_status("g1", ["daily"])])
     record = _runner(site, tmp_path).run()
     assert record["outcome"] == "skipped" and "daily" in record["reason"]
-    assert site.pages == ["/"]
+    assert site.pages == ["/stats"]
     assert read_health(tmp_path) == {}  # a skip leaves the last record alone
 
 

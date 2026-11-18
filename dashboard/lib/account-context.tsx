@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import type { AccountOptions, AccountUser, FavoritePlayer, FavoritesResponse } from "./account-types";
 
@@ -257,6 +257,20 @@ const SIGNED_OUT: AccountContextValue = {
   openSignIn: () => undefined, closeSignIn: () => undefined,
 };
 
+const subscribeToNothing = () => () => {};
+
+/**
+ * The account, or while this consumer hydrates the state the server rendered it with (loading, no
+ * user, no favourites). The header hydrates in its own Suspense boundary, after the shell; with a
+ * page in the shell (no loader since 2026-11-17) the `me` read often lands first, and hydrating
+ * the header signed out against HTML rendered while loading failed (React #418 on /compare). The
+ * server snapshot keeps hydration on the server's state; React renders the real one right after.
+ */
 export function useAccount(): AccountContextValue {
-  return useContext(AccountContext) ?? SIGNED_OUT;
+  const value = useContext(AccountContext) ?? SIGNED_OUT;
+  const hydrated = useSyncExternalStore(subscribeToNothing, () => true, () => false);
+  return hydrated || value === SIGNED_OUT ? value : {
+    ...value, status: "loading", user: null,
+    favorites: EMPTY.player_ids, favoritePlayers: EMPTY.players, sharedFavorites: EMPTY.shared, favoritesLimit: EMPTY.limit,
+  };
 }

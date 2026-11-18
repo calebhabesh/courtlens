@@ -1,0 +1,26 @@
+Live site (release 2eec4a80), 2026-11-17 ~23:40 UTC, headless Chromium 1248 from the owner's PC, 1440x900,
+tools/visible.mjs. Median ms from the action until the content is in the DOM ("present") and has an
+effective opacity >= 0.95 ("visible"). DOM-based; it does not wait for paint (see painted.mjs for that).
+
+CPU x1, 5 runs
+doc /                  present   531  visible   872   all visible: 875,803,872,872,871
+doc /stats             present   508  visible   753   all visible: 702,786,719,786,753
+doc /players/2544      present   313  visible   414   all visible: 420,370,447,414,386
+nav player→Stats       present   551  visible   766   all visible: 767,766,742,740,767
+click Stats→player     present   410  visible   514   all visible: 497,514,497,515,531
+Back player→Stats      present   193  visible   358   all visible: 359,342,342,358,394
+
+CPU x4, 3 runs
+doc /                  present  1830  visible  2613   all visible: 2613,2541,2644
+doc /stats             present   817  visible  2111   all visible: 2111,2413,1914
+doc /players/2544      present   732  visible  1068   all visible: 1152,1068,862
+nav player→Stats       present  1878  visible  2775   all visible: 6213,2693,2775
+click Stats→player     present   590  visible   801   all visible: 1073,801,785
+Back player→Stats      present   806  visible  1117   all visible: 1317,1117,1043
+
+RSC payloads (page resource timing, 4 runs): /stats 330 KB decoded / 55 KB wire, request→done 59–75 ms;
+player pages 204–259 KB, 45–73 ms. HTML: /stats 1.68 MB, TTFB 30–73 ms, complete 178–290 ms (curl).
+`/` answered 200 (7.6 KB) with NEXT_REDIRECT in its payload and <meta http-equiv="refresh" content="1;url=/stats">.
+The streamed /stats HTML revealed B:0 (header), B:1 (root loader → Stats skeleton) and B:2 (the table)
+through $RC, whose batch waits until $RT + 300 ms after the first reveal.
+zTS (live): .zt-dock top 10,872 px on a 10,932 px page; .route-enter transform matrix(1, 0, 0, 1, 0, 0).

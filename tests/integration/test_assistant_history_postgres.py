@@ -249,16 +249,18 @@ def test_pagination_deletion_and_saved_findings_independence(postgres_conversati
         history.list_turns(session, first.thread_id, 1, int(next_page.next_cursor)).turns[0].turn_id
         == third.turn_id
     )
-    for _ in range(3):
-        history.create_thread(session)
+    asked = [legacy_turn(session, question()).thread_id for _ in range(3)]
+    draft = history.create_thread(session)  # No question yet: a draft, not listed.
     threads = history.list_threads(session, 2)
     more = history.list_threads(session, 2, UUID(threads.next_cursor))
-    assert len({t.thread_id for t in threads.threads + more.threads}) == 4
+    listed = [t.thread_id for t in threads.threads + more.threads]
+    assert listed == [*reversed(asked), first.thread_id]  # Newest activity first.
+    assert draft.thread_id not in listed and more.next_cursor is None
     saved_before = session.execute(
         text("SELECT count(*) FROM saved_conversation_analyses")
     ).scalar_one()
     inventory = history.history_inventory(session)
-    assert len(inventory["turns"]) == 3
+    assert len(inventory["turns"]) == 6
     history.delete_history(session, first.thread_id)
     assert len(history.list_threads(session).threads) == 3
     history.delete_history(session)

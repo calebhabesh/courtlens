@@ -75,21 +75,33 @@ inner radii and gaps between kit controls of one size. The controls themselves a
 | Variant | Rest | Hover | Use |
 | --- | --- | --- | --- |
 | `primary` | `--color-accent` fill, `--color-on-accent` text | accent mixed 88% with white | one main action per area |
-| `secondary` | `--color-surface-2`, `--color-text` | `--color-surface-3` | console and default actions; `console` tone as above |
+| `secondary` | `--color-surface-2` with the raised finish (below), `--color-text` | `--color-surface-3` | console and default actions; `console` tone as above |
 | `ghost` | transparent, `--color-text-secondary` | `--color-surface-hover`, `--color-text` | toolbars, table rows, header (on the page background the text is `--color-on-bg-secondary`) |
-| `danger` | `--color-surface-2`, `--color-negative` text | negative mixed 15% into surface-2 | destructive actions |
+| `danger` | `--color-surface-2` with the raised finish, `--color-negative` text | negative mixed 15% into surface-2 | destructive actions |
 | `text` | transparent, `--color-text-secondary`, no inline padding | `--color-text` only, no fill | an inline disclosure that sits flush with the content it follows (player Earlier Transactions) |
 | `provider` | `--kit-provider` white fill, `--kit-on-provider` text, 1 px inset `--kit-provider-ring` | `--kit-provider-hover` | a third-party or email sign-in choice (Continue with Google, Continue with Email); white as Google's sign-in branding asks. Added 2026-11-17 (accounts plan, owner's linewatchto dialog) |
 | `link` | transparent, `--kit-link` (info blue) text, weight 600, no inline padding | `--kit-link-hover`, underlined | an inline text action inside a form or dialog (Forgot Password?, Back to Options, Sign Up). Added 2026-11-17 |
 
 **Selected** (`aria-pressed`, `aria-checked`, `aria-selected` or `aria-current` true) applies to every
-variant except `primary`: `--color-accent-soft` fill, `--color-accent` text, a 1 px inset accent ring,
-weight 600. This is the Stats style the owner approved during alignment; the legacy solid-accent
-`.control-pill.active` moves to it (change C10).
+variant except `primary`. Since 2026-11-17 ("Paint, raised", owner) it is a raised block of lighter
+navy, like the painted key on a court: `--kit-selected` fill under `--kit-sheen`, the
+`--kit-selected-shadow` lift (a soft top bevel and drop shadow), `--color-accent` text, weight 600.
+An `identity` control uses the same block with its side's identity colour as the text. The Segmented
+indicator draws the same block. Gold on the block measures 6.9:1; identity blue 5.2:1. It replaced
+the accent-soft fill with a 1 px inset accent ring (the alignment-era Stats style, change C10), and
+it is distinct from `primary` (solid gold), so a selected choice never looks like an action.
+
+**Depth** (2026-11-17). Filled controls (`secondary`, `danger`, the `console` tone, `Select` and
+`RemovableChip`) carry the raised finish: `--kit-sheen` over their fill and `--kit-raised-shadow`
+(a 1 px top bevel, a faint 5% rim and a 1–2 px drop). Every Segmented track is recessed:
+`--kit-track` fill (table lift mixed 30% toward black) with `--kit-track-shadow`. The lifts live on
+Tailwind's inset-shadow layer through the `depth-raised`, `depth-selected` and `depth-track`
+utilities (`app/styles/tailwind.css`), so the focus ring, which uses the `shadow` layer, still draws
+on top. No control uses an edge bar or highlight strip (owner, 2026-11-17).
 
 Menu/popover triggers use `data-selected="true"` for a held choice. Expanded describes whether
 the panel is open; it does not select the trigger. Triggers do not use `aria-pressed`. Selected
-controls keep their accent look while hovered; hover styling skips disabled and selected controls.
+controls keep their selected look while hovered; hover styling skips disabled and selected controls.
 
 UC02 implements these recipes in Tailwind v4 with a `kit:` utility prefix, no preflight, and
 source discovery restricted to `components/ui/kit`. `tokens.css` owns every existing value;

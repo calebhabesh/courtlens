@@ -1,4 +1,4 @@
-# CourtLens design language v1.3
+# CourtLens design language v1.4
 
 Owner-confirmed direction (2026-10-07): smooth and modern, no stiff or abrupt changes, no bright
 outline borders. Use this contract for every dashboard change after DL01 lands. The block plan and
@@ -21,6 +21,14 @@ analytical definitions, temporal cutoffs and hashes are unchanged. The file keep
 Tailwind v4, specified in [control kit v1](control-kit-v1.md) and enforced by lint with no
 exemptions. The legacy `Button`/`IconButton`, `SegmentedControl`, `ChipGroup` and `EntityChip`
 primitives are gone. Tokens, motion, chart and page rules are unchanged.
+
+**v1.4 (2026-11-17, owner):** Deep Navy. The page background moves from the muted `#15325a` to
+a deeper, richer `#0c1f3d`, and the container surfaces, table frame and secondary text move from
+neutral charcoal to blue-black steps of the same hue, so panels read as one material with the page
+rather than grey cut-outs. A soft light (`--color-bg-glow`) sits behind the header. The owner chose
+it from a side-by-side trial of four palettes on the live Ask, Stats and Player pages. Gold, data
+semantics, chart, identity and status colors are unchanged. The same day the control kit's selected state became a raised navy block with a gold label, with
+raised buttons and recessed segmented tracks (see Controls).
 
 ## Principles
 
@@ -45,68 +53,71 @@ migration and are deleted in DL08.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--color-bg` | `#15325a` | Page background: a darker, muted take on the NBA-logo blue (`#01408b`, same hue). v1.3, owner 2026-10-13 |
-| `--color-surface-0` | `#0e1013` | Inset black: tooltips, wells and fact grids inside containers (never the page) |
-| `--color-surface-1` | `#15171b` | Header, panels, cards |
-| `--color-surface-2` | `#1c1f24` | Raised elements: inputs, table header, hovered rows, menus |
-| `--color-surface-3` | `#24282e` | Popovers, modals, drawers, selected rows |
+| `--color-bg` | `#0c1f3d` | Page background: Deep Navy, a deeper take on the NBA-logo blue (`#01408b`). v1.4, owner 2026-11-17 (v1.3 was `#15325a`) |
+| `--color-bg-glow` | `rgb(52 104 196 / 26%)` | Soft light behind the header, painted by `app/shell.css` over `--color-bg` |
+| `--color-surface-0` | `#070c16` | Inset black: tooltips, wells and fact grids inside containers (never the page) |
+| `--color-surface-1` | `#10182a` | Header, panels, cards |
+| `--color-surface-2` | `#172135` | Raised elements: inputs, table header, hovered rows, menus |
+| `--color-surface-3` | `#1f2a40` | Popovers, modals, drawers, selected rows |
 | `--color-surface-hover` | `rgb(255 255 255 / 4%)` | Hover overlay on any surface |
 | `--color-surface-press` | `rgb(255 255 255 / 7%)` | Pressed overlay |
 | `--color-hairline` | `rgb(255 255 255 / 6%)` | Table row dividers, list separators |
 | `--color-hairline-strong` | `rgb(255 255 255 / 10%)` | Input outline at rest (optional), grouped controls |
 | `--color-text` | `#f2f3f5` | Primary text |
-| `--color-text-secondary` | `#a9afb9` | Labels, secondary text |
-| `--color-text-tertiary` | `#858b95` | Placeholders, disabled text. Never for essential text below 18px. |
-| `--color-on-bg-secondary` / `--color-on-bg-tertiary` | `#c9d3e6` / `#b4c2dc` | Secondary/tertiary text placed directly on the blue page background (nav, field labels, page notes). `--color-text-secondary/-tertiary` are for container surfaces only. |
+| `--color-text-secondary` | `#a8b1c0` | Labels, secondary text |
+| `--color-text-tertiary` | `#8790a1` | Placeholders, disabled text. Never for essential text below 18px. |
+| `--color-on-bg-secondary` / `--color-on-bg-tertiary` | `#c6d1e6` / `#aebcd6` | Secondary/tertiary text placed directly on the blue page background (nav, field labels, page notes). `--color-text-secondary/-tertiary` are for container surfaces only. |
 | `--color-accent` | `#ffd166` | Active nav, primary action, focus |
-| `--color-accent-soft` | `rgb(255 209 102 / 12%)` | Selected chip/tab background |
+| `--color-accent-soft` | `rgb(255 209 102 / 12%)` | Selected list-navigation background (tables of contents, index links); kit controls use the raised selected block (v1.4) |
 | `--color-on-accent` | `#0e1013` | Text on the accent |
 | `--color-brand` | `#ff7a2f` | Flag accents (Contracts aprons, Free Agency flags). The logo's ball is game-ball brown `#b44d28`, set in the mark and icons (owner, 2026-11-14) |
 | `--color-positive` / `--color-negative` / `--color-info` | `#60d394` / `#ff6b6b` / `#67aaf9` | Data semantics |
 | `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
-The page backdrop is solid `--color-bg`, owned by `app/shell.css`. The owner parked the decorative
-X/O pattern on 2026-10-14 because it made player-page information harder to read. The experiment
-remains in Git history; it has no active asset, generator or background-image rule.
+The page backdrop is `--color-bg` with the `--color-bg-glow` light at the top (v1.4), owned by
+`app/shell.css`. The table frame tokens (`--color-table-lift` / `-well` / `-rail`) are
+`#1d2740` / `#0d1422` / `#151d30` in v1.4. The owner parked the decorative X/O pattern on 2026-10-14
+because it made player-page information harder to read. The experiment remains in Git history; it
+has no active asset, generator or background-image rule.
 
 All text and surface pairs used for essential text must meet WCAG AA (4.5:1, or 3:1 at 18px+).
-DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-measured ratios:
+DL01 verified this with `scripts/verify-contrast.py`; v1.4 (Deep Navy) re-measured ratios:
 
 | Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |
 | --- | --- | --- | --- | --- |
 | `--color-on-accent (#0e1013)` | `--color-accent (#ffd166)` | 13.21:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `bg (#15325a)` | 11.56:1 | Pass | Pass |
-| `--color-on-bg-secondary (#c9d3e6)` | `bg (#15325a)` | 8.52:1 | Pass | Pass |
-| `--color-on-bg-tertiary (#b4c2dc)` | `bg (#15325a)` | 7.15:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `bg (#15325a)` | 8.90:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-0 (#0e1013)` | 17.16:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-1 (#15171b)` | 16.16:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-2 (#1c1f24)` | 14.88:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-3 (#24282e)` | 13.34:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-0 (#0e1013)` | 8.64:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-1 (#15171b)` | 8.13:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-2 (#1c1f24)` | 7.49:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-3 (#24282e)` | 6.71:1 | Pass | Pass |
-| `--color-text-tertiary (#858b95)` | `surface-0 (#0e1013)` | 5.56:1 | Pass | Pass |
-| `--color-text-tertiary (#858b95)` | `surface-1 (#15171b)` | 5.23:1 | Pass | Pass |
-| `--color-text-tertiary (#858b95)` | `surface-2 (#1c1f24)` | 4.82:1 | Pass | Pass |
-| `--color-text-tertiary (#858b95)` | `surface-3 (#24282e)` | 4.32:1 | N/A (non-essential / >=18px) | Pass |
-| `--color-accent (#ffd166)` | `surface-0 (#0e1013)` | 13.21:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-1 (#15171b)` | 12.45:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-2 (#1c1f24)` | 11.46:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-3 (#24282e)` | 10.27:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-0 (#0e1013)` | 10.20:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-1 (#15171b)` | 9.61:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-2 (#1c1f24)` | 8.85:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-3 (#24282e)` | 7.93:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-0 (#0e1013)` | 6.87:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-1 (#15171b)` | 6.47:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-2 (#1c1f24)` | 5.95:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-3 (#24282e)` | 5.34:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-0 (#0e1013)` | 7.89:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-1 (#15171b)` | 7.43:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-2 (#1c1f24)` | 6.84:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-3 (#24282e)` | 6.13:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `bg (#0c1f3d)` | 14.79:1 | Pass | Pass |
+| `--color-on-bg-secondary (#c6d1e6)` | `bg (#0c1f3d)` | 10.68:1 | Pass | Pass |
+| `--color-on-bg-tertiary (#aebcd6)` | `bg (#0c1f3d)` | 8.57:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `bg (#0c1f3d)` | 11.39:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-0 (#070c16)` | 17.62:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-1 (#10182a)` | 15.95:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-2 (#172135)` | 14.49:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-3 (#1f2a40)` | 12.92:1 | Pass | Pass |
+| `--color-text-secondary (#a8b1c0)` | `surface-0 (#070c16)` | 9.05:1 | Pass | Pass |
+| `--color-text-secondary (#a8b1c0)` | `surface-1 (#10182a)` | 8.19:1 | Pass | Pass |
+| `--color-text-secondary (#a8b1c0)` | `surface-2 (#172135)` | 7.44:1 | Pass | Pass |
+| `--color-text-secondary (#a8b1c0)` | `surface-3 (#1f2a40)` | 6.64:1 | Pass | Pass |
+| `--color-text-tertiary (#8790a1)` | `surface-0 (#070c16)` | 6.09:1 | Pass | Pass |
+| `--color-text-tertiary (#8790a1)` | `surface-1 (#10182a)` | 5.51:1 | Pass | Pass |
+| `--color-text-tertiary (#8790a1)` | `surface-2 (#172135)` | 5.01:1 | Pass | Pass |
+| `--color-text-tertiary (#8790a1)` | `surface-3 (#1f2a40)` | 4.46:1 | N/A (non-essential / >=18px) | Pass |
+| `--color-accent (#ffd166)` | `surface-0 (#070c16)` | 13.57:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-1 (#10182a)` | 12.28:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-2 (#172135)` | 11.16:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-3 (#1f2a40)` | 9.95:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-0 (#070c16)` | 10.48:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-1 (#10182a)` | 9.48:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-2 (#172135)` | 8.61:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-3 (#1f2a40)` | 7.68:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-0 (#070c16)` | 7.05:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-1 (#10182a)` | 6.38:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-2 (#172135)` | 5.80:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-3 (#1f2a40)` | 5.17:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-0 (#070c16)` | 8.10:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-1 (#10182a)` | 7.33:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-2 (#172135)` | 6.66:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-3 (#1f2a40)` | 5.94:1 | Pass | Pass |
 
 
 ### Chart color semantics (v1.2, PC03)
@@ -280,7 +291,7 @@ both axes, e.g. pinned identity header cells; added 2026-10-08) · `--z-header: 
 | `--dur-instant` | 80ms | Press feedback |
 | `--dur-fast` | 140ms | Hover, color, exits, tooltips |
 | `--dur-base` | 200ms | Enters, popovers, tabs, crossfades |
-| `--dur-slow` | 320ms | Drawers, modals, page transitions, layout moves |
+| `--dur-slow` | 320ms | Drawers, modals, layout moves |
 | `--dur-chart` | 450ms | First chart draw only |
 | `--delay-skeleton` | 120ms | Wait before a loading skeleton shows (kept under reduced motion) |
 | `--ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | Enters and most transitions |
@@ -320,9 +331,9 @@ Rules:
 | Drawer / Ask panel | Slides from its edge over `--dur-slow` with `--ease-out`. The scrim fades over `--dur-base`. Mobile bottom sheets use the spring. |
 | Modal / command palette | Scrim fade plus panel `scale(0.98)`/opacity over `--dur-base`. Exit over `--dur-fast`. |
 | Tabs, segmented controls, nav active item | A sliding indicator (motion `layoutId` or a measured CSS transform) with the spring. Content crossfades over `--dur-base`. |
-| Page / route change | Root `template.tsx` enter: opacity plus `translateY(6px)` over `--dur-slow`. Use View Transitions (`experimental.viewTransition` in Next, React `<ViewTransition>`) only if DL02 confirms they're supported in the pinned Next/React versions. Otherwise only the template enter. The header never animates on navigation. |
+| Page / route change | No enter animation: a page shows in the frame it arrives (Stats speed, 2026-11-17). The template's 320 ms fade held every navigation back, and the transform it left behind made the page wrapper the containing block for fixed elements. The header never animates on navigation. A link navigation still waiting after `--delay-skeleton` lays a scrim over the page being left, below the header (`IntentLink`). |
 | Table sort, filter or column change | Rows ≤ 100: motion `layout` reorder over `--dur-slow`. More rows: crossfade the body over `--dur-base`. Columns added or removed: crossfade. The sort arrow rotates over `--dur-fast`. |
-| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. A loading region (`role="status" aria-busy="true"`) stays transparent for `--delay-skeleton` (120 ms), then fades in over `--dur-fast`, so a faster response never shows a skeleton; reduced motion keeps the delay (it is a wait, not motion). Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. |
+| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. A loading region (`role="status" aria-busy="true"`) stays transparent for `--delay-skeleton` (120 ms), then fades in over `--dur-fast`, so a faster response never shows a skeleton; reduced motion keeps the delay (it is a wait, not motion). Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. Route loaders (`loading.tsx`) are kept only where a first server render often takes a second or more: player pages, Data Status, Methodology and live games. Every other route shows its content in the first flush, because a skeleton, once React shows it, holds the page back for its 300 ms reveal batch; their skeleton designs stay in `skeleton.tsx` beside the page. In-page loaders for reads made in the browser are unchanged. Stats' table has no entrance. Images are lazy in the HTML and start once the page is idle (`useWarmImage`), so scrolled rows are already loaded. A client value the header reads (the account, the Ask page context) hydrates as the server rendered it (snappy pages, 2026-11-17). |
 | Charts | The first view draws in (line stroke-dash, bar `scaleY` from baseline) over `--dur-chart`. Data changes morph or crossfade over `--dur-base`, with no re-draw from zero. |
 | Accordion / expanding row | Grid-rows technique over `--dur-slow`. The chevron rotates over `--dur-fast`. |
 | Toast | Slides in from the bottom-right with the spring and auto-dismisses after 5s. Exit is opacity plus `translateY(8px)`. |
@@ -425,6 +436,13 @@ variants (primary, secondary, ghost, danger), tones (`console` for the Stats wor
   the spec lists each and why.
 - **Styling:** the kit is built with Tailwind v4 utilities under the `kit:` prefix in the
   `utilities` layer, after `foundation`, so page CSS cannot override a control's size or states.
+- **Selected and depth (v1.4, owner 2026-11-17):** a selected choice is a raised block of lighter navy
+  with a gold label ("Paint, raised"); filled controls are softly raised and segmented tracks are
+  recessed. Values are the `--kit-selected`, `--kit-sheen`, `--kit-*-shadow` and `--kit-track`
+  tokens; the control kit spec has the details. Bevels, shadows and glows are allowed; edge bars and
+  highlight strips are not. Button-like pickers outside the kit (the Stats and WOWY team pickers,
+  team-grid tiles) use the same tokens. List navigation (tables of contents, index links) and Live
+  cards keep the soft gold.
 
 ## Pages (v1.1)
 

@@ -1,0 +1,11 @@
+# Measured on the page-wide-warmer build (before the per-image hook and the hydration fixes); 3 runs, 4x CPU.
+CPU x4, 3 runs, median ms until shown and settled (before :8441 → after :8442)
+route                                            doc load         client nav
+/teams                                          787 → 756          571 → 584
+/teams/1610612747                               775 → 548          751 → 728
+/standings                                      221 → 200          554 → 190
+/showcase                                       607 → 371          360 → 366
+/draft                                        1565 → 1476        1536 → 1560
+/players                                        561 → 536          577 → 325
+/players/2544                                   859 → 682          615 → 636
+/research/rapm                                  621 → 342          398 → 382

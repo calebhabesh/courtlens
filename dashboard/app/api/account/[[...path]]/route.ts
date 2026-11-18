@@ -32,8 +32,14 @@ const STARTS_SESSION = new Set(["session", "demo", "confirm", "reset-password"])
 const GOOGLE_FLOW = "courtlens-google-flow";
 const GOOGLE_FLOW_PATH = "/api/account/google";
 const MAX_BODY = 4 * 1024;
-/** After a sign-out in dev, auto sign-in waits until the next real sign-in (or a day). */
+/**
+ * After a sign-out in dev, auto sign-in waits until the next real sign-in or the next `next dev`
+ * start: the cookie carries this server run's id, and a cookie from an earlier run is ignored.
+ * Kept on globalThis so a hot reload of this module doesn't count as a new run.
+ */
 const DEV_OPT_OUT = "courtlens-dev-signed-out";
+const devRunHolder = globalThis as typeof globalThis & { courtlensDevRun?: string };
+const DEV_RUN = (devRunHolder.courtlensDevRun ??= crypto.randomUUID());
 
 /**
  * Local development only: sign a visitor with no session into the API's dev account, so the
@@ -105,10 +111,10 @@ async function proxy(request: NextRequest, context: Context) {
   const cleared = sessionCookie("", 0);
   if (key === "sign-out") {
     const response = json({ user: null }, 200, cleared);
-    if (devAutoLogin()) response.headers.append("Set-Cookie", `${DEV_OPT_OUT}=1; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
+    if (devAutoLogin()) response.headers.append("Set-Cookie", `${DEV_OPT_OUT}=${DEV_RUN}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
     return response;
   }
-  if (!session && key === "me" && devAutoLogin() && !request.cookies.get(DEV_OPT_OUT)) {
+  if (!session && key === "me" && devAutoLogin() && request.cookies.get(DEV_OPT_OUT)?.value !== DEV_RUN) {
     const signedIn = await devSession(clientAddress(request));
     if (signedIn) return json({ user: signedIn.user }, 200, sessionCookie(signedIn.token, signedIn.maxAge));
   }

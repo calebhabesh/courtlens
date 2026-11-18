@@ -49,7 +49,7 @@ export interface RemovableChipProps extends ChipLook {
 
 /** A chosen entity with a trailing remove button; the × is centered in its own square hit area. */
 export function RemovableChip({ size = "lg", tone = "default", icon, onRemove, removeLabel, className, children }: RemovableChipProps) {
-  const surface = tone === "console" ? "kit:bg-console kit:text-text-control kit:font-semibold" : "kit:bg-surface-2 kit:text-text kit:font-medium";
+  const surface = cx(tone === "console" ? "kit:bg-console kit:text-text-control kit:font-semibold" : "kit:bg-surface-2 kit:text-text kit:font-medium", "kit:bg-(image:--kit-sheen) kit:depth-raised");
   const height = { xs: "kit:h-control-xs kit:text-xs kit:ps-2", sm: "kit:h-control-sm kit:text-sm kit:ps-3", md: "kit:h-control-md kit:text-sm kit:ps-3", lg: "kit:h-control-lg kit:text-sm kit:ps-3" }[size];
   return (
     <span data-kit="chip" className={cx("kit:inline-flex kit:shrink-0 kit:items-center kit:gap-1 kit:whitespace-nowrap kit:rounded-sm kit:phone:min-h-control-lg", surface, height, className)}>

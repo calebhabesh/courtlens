@@ -51,12 +51,12 @@ export const metadata: Metadata = {
   description:
     "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
-    icon: { url: "/icon.svg?v=6", type: "image/svg+xml", sizes: "any" },
+    icon: { url: "/icon.svg?v=7", type: "image/svg+xml", sizes: "any" },
     apple: "/icons/courtlens-apple-180.png?v=5"
   }
 };
 
-export const viewport: Viewport = { themeColor: "#15325a" };
+export const viewport: Viewport = { themeColor: "#0c1f3d" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -78,10 +78,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Suspense fallback={null}>
               <NavTrailRecorder />
             </Suspense>
+            {/* No Suspense around the page: a page without a loader (Stats, the page `/` opens) then
+                streams in the first flush instead of a later reveal that React batches 300 ms
+                after the header's (Stats speed, 2026-11-17). Pages with a loader keep their own. */}
             <main id="content" className="replica-main" tabIndex={-1}>
-              <Suspense fallback={null}>
-                {children}
-              </Suspense>
+              {children}
             </main>
           </div>
           <LazySignInDialog />

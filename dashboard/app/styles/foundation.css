@@ -3,7 +3,8 @@
  * This layer is ordered after `pages` so page-level element rules (for example
  * `.research-links input { padding }`) cannot break primitive structure. It holds only `ui-*`
  * primitives and the lookup-field structure. Visual patterns are lifted from Stats Explorer
- * (D2): surface-2 tracks, accent-soft selected states with an inset accent ring, xs labels.
+ * (D2): xs labels; kit controls (tracks, selected states) are styled by the control kit, see
+ * docs/design/control-kit-v1.md.
  */
 @layer foundation {
   /* ---------- Page templates (D22) ---------- */

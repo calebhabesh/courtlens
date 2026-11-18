@@ -80,7 +80,7 @@ test("PC03 Compare exports retain resolved token colors in SVG and PNG", async (
   const svg = readFileSync((await (await pendingSvg).path())!, "utf8");
   expect(svg).not.toContain("var(--");
   // Fixture Star leads points, so the gold identity pill and wordmark resolve; Guard leads nothing.
-  expect(svg).toContain("#ffd166"); expect(svg).toContain('fill="#15171b"');
+  expect(svg).toContain("#ffd166"); expect(svg).toContain('fill="#10182a"');
   const pendingPng = page.waitForEvent("download");
   await page.getByRole("button", { name: "Share Image", exact: true }).click();
   const png = readFileSync((await (await pendingPng).path())!);

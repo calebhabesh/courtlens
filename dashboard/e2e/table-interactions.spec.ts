@@ -69,12 +69,14 @@ test("keyboard sorting, single compare shortcut and drawer focus stay scoped", a
   await row.focus(); await page.keyboard.press("c");
   await expect(row.getByRole("button", { name: "Remove Fixture Star from comparison", exact: true })).toHaveAttribute("aria-pressed", "true");
   expect(fixture.adds()).toBe(1);
-  await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).press("c");
-  await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
+  // The drawer comes before the name search: the typed search lands about 300 ms later and filters
+  // Fixture Star out, so a drawer opened after it raced the row's removal (the old "focus flake").
   const detail = row.getByRole("button", { name: "Open details for Fixture Star" }); await detail.click();
   const dialog = page.getByRole("dialog", { name: "Fixture Star", exact: true }); await expect(dialog).toBeVisible();
   await page.keyboard.press("Shift+Tab"); expect(await dialog.evaluate(el => el.contains(document.activeElement))).toBe(true);
   await page.keyboard.press("Escape"); await expect(dialog).toHaveCount(0); await expect(detail).toBeFocused();
+  await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).press("c");
+  await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
 });
 
 test("custom selected columns deduplicate normalization and preserve recurring group order", async ({ page }) => {
