@@ -1,4 +1,7 @@
 name: Images
+# The commit this run builds. deploy-vps.sh matches runs by this name, because GitHub files a
+# workflow_run-triggered run under main's head when it starts, not the commit it builds.
+run-name: Images ${{ github.event.workflow_run.head_sha || github.sha }}
 
 # Builds the arm64 images the hosted demo pulls (docs/deployment.md). Runs after CI
 # passes on main, so every published tag is a green commit. Nothing is built on the VPS.
