@@ -1,0 +1,93 @@
+name: Deploy
+run-name: Deploy ${{ inputs.sha || github.sha }}
+
+# Deploys a main commit to the hosted demo (docs/deployment.md#deploy). Start it from the Actions
+# tab or with `make deploy` right after pushing: it waits for that commit's CI, which publishes the
+# images. The runner joins the tailnet as an ephemeral tag:ci node (Tailscale workload identity:
+# GitHub's OIDC token, no stored Tailscale secret), which the tailnet policy lets reach only the
+# VPS's SSH port. Its SSH key is pinned on the VPS to the deploy gate, which runs main's
+# scripts/vps-release.sh and nothing the runner sends.
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Full 40-character main commit to deploy (blank for the newest main commit)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write # Tailscale workload identity
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: production
+      url: https://courtlens.calebhabesh.com
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Check the commit is on main
+        id: release
+        env:
+          REQUESTED_SHA: ${{ inputs.sha }}
+        run: |
+          [[ "$GITHUB_REF" == refs/heads/main ]] || { echo 'Run this workflow from main.' >&2; exit 1; }
+          sha="${REQUESTED_SHA:-$GITHUB_SHA}"
+          [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo 'Enter a full lowercase 40-character SHA.' >&2; exit 1; }
+          git cat-file -e "$sha^{commit}"
+          git merge-base --is-ancestor "$sha" "$GITHUB_SHA" || { echo "$sha is not on main." >&2; exit 1; }
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for its CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: scripts/wait_for_ci.sh "${{ steps.release.outputs.sha }}"
+
+      - name: Join the tailnet
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ vars.TS_OAUTH_CLIENT_ID }}
+          audience: ${{ vars.TS_AUDIENCE }}
+          tags: tag:ci
+          hostname: courtlens-deploy-${{ github.run_id }}
+          ping: ${{ vars.VPS_HOST || '100.67.196.101' }}
+
+      - name: SSH key
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          : "${SSH_KEY:?Set the production secret VPS_SSH_KEY}"
+          : "${SSH_KNOWN_HOSTS:?Set the production secret VPS_SSH_KNOWN_HOSTS}"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/deploy_key ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          VPS_HOST: ${{ vars.VPS_HOST || '100.67.196.101' }}
+          VPS_USER: ${{ vars.VPS_USER || 'ubuntu' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=20 -o ServerAliveInterval=30 "$VPS_USER@$VPS_HOST" \
+            "${{ steps.release.outputs.sha }}" < /dev/null
+
+      - name: Check the public site
+        run: |
+          for path in /healthz /api/health; do
+            curl -fsS --retry 5 --retry-delay 5 --retry-all-errors "https://courtlens.calebhabesh.com$path" >/dev/null
+          done
+          echo "Deployed ${{ steps.release.outputs.sha }}: https://github.com/${{ github.repository }}/commit/${{ steps.release.outputs.sha }}" >> "$GITHUB_STEP_SUMMARY"

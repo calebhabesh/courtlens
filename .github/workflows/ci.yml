@@ -4,20 +4,23 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Run by hand on main to rebuild a commit's images (the images job publishes only from main).
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-# A newer push to a pull request cancels its older run. Every main commit keeps its own run,
-# because Images publishes a tag for each green main commit.
+# Work happens on main (docs/deployment.md#ci): a newer push cancels the older run, on main as on a
+# pull request. The plan job compares with the newest main commit whose CI passed, so a cancelled
+# or failed commit's changes are tested by the next run.
 concurrency:
-  group: ci-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.sha }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ci-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # What this run must test (scripts/ci_plan.sh): everything; only the docs lane, when nothing
-  # but Markdown no code reads changed; or nothing, when a push to main has the exact tree its
-  # pull request's CI already passed (merging an up-to-date pull request).
+  # but Markdown no code reads changed since main last passed; or nothing, when a push to main has
+  # the exact tree its pull request's CI already passed (merging an up-to-date pull request).
   plan:
     runs-on: ubuntu-latest
     permissions:
@@ -26,13 +29,14 @@ jobs:
     outputs:
       tests: ${{ steps.plan.outputs.tests }}
     steps:
+      # Full history without file contents: ci_plan.sh walks back to the last green main commit.
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          filter: blob:none
       - id: plan
         env:
           EVENT: ${{ github.event_name }}
-          BEFORE: ${{ github.event.before }}
           REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
         run: scripts/ci_plan.sh
@@ -289,3 +293,52 @@ jobs:
         working-directory: dashboard
       - run: npm test
         working-directory: dashboard
+
+  # The arm64 API and dashboard images the hosted demo pulls, tagged sha-<commit>, for every main
+  # commit whose tests passed. A passed CI run on main therefore means its images exist, which is
+  # what the Deploy workflow checks. Nothing is built on the VPS.
+  images:
+    needs: [plan, backend-checks, backend-tests, coverage, dashboard-checks, browser, containers, docs-lane]
+    if: >-
+      !cancelled() && !contains(needs.*.result, 'failure')
+      && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - image: courtlens-api
+            context: .
+            build_args: ""
+          - image: courtlens-dashboard
+            context: dashboard
+            build_args: |
+              NEXT_PUBLIC_COURTLENS_API_URL=
+              NEXT_PUBLIC_COURTLENS_HOSTED=true
+              NEXT_PUBLIC_COURTLENS_PUBLIC_ASK=true
+              NEXT_PUBLIC_COURTLENS_HOSTED_DEMO=1
+    name: images (${{ matrix.image }})
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Build and push
+        id: push
+        uses: docker/build-push-action@v7
+        with:
+          context: ${{ matrix.context }}
+          platforms: linux/arm64
+          push: true
+          provenance: false
+          build-args: ${{ matrix.build_args }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:sha-${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+      - name: Record digest
+        run: echo "${{ matrix.image }}@${{ steps.push.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"

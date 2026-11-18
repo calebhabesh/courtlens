@@ -1,6 +1,6 @@
 # Hosted read-only demo at https://courtlens.calebhabesh.com (see docs/deployment.md).
 # Runs on the shared Oracle VPS at /home/ubuntu/apps/courtlens. Images are pulled from
-# GHCR by digest (written to release.env by scripts/deploy-vps.sh); nothing is built here.
+# GHCR by digest (written to release.env by scripts/vps-release.sh); nothing is built here.
 name: courtlens
 
 x-logging: &logging

@@ -10,7 +10,7 @@
 # It also writes the tree this run tests to "$RUNNER_TEMP/tested-tree"; pull request runs
 # upload it, and a later push to main compares its own tree with it.
 #
-# Inputs (environment): EVENT (pull_request | push), GITHUB_SHA, BEFORE (push only),
+# Inputs (environment): EVENT (pull_request | push | workflow_dispatch), GITHUB_SHA,
 # REPO (owner/name), GH_TOKEN, RUNNER_TEMP, GITHUB_OUTPUT.
 set -euo pipefail
 
@@ -62,12 +62,26 @@ if [[ "$EVENT" == push ]]; then
   fi
 fi
 
-# 2. Which files does this change touch?
+# 2. Which files does this change touch? A push to main compares with the newest main commit
+# whose CI passed, not the commit before the push: pushes go straight to main, and a newer push
+# cancels an older run, so the commits since then may never have been tested.
+base=""
 if [[ "$EVENT" == pull_request ]]; then
   base='HEAD^1' # the test merge commit's first parent is the base branch
-elif [[ -n "${BEFORE:-}" && ! "$BEFORE" =~ ^0+$ ]] && git fetch -q --depth=1 origin "$BEFORE" 2>/dev/null; then
-  base="$BEFORE"
-else
+elif [[ "$EVENT" == push ]]; then
+  # Filter on the conclusion here, not with the API's status filter, which has missed runs.
+  while read -r green; do
+    if [[ -n "$green" && "$green" != "$GITHUB_SHA" ]] && git merge-base --is-ancestor "$green" HEAD 2>/dev/null; then
+      base="$green"
+      break
+    fi
+  done < <(gh api "repos/$REPO/actions/workflows/ci.yml/runs?branch=main&per_page=100" --jq \
+    '.workflow_runs | sort_by(.created_at) | reverse | .[]
+     | select(.conclusion == "success" and (.event == "push" or .event == "workflow_dispatch")) | .head_sha' \
+    2>/dev/null || true)
+  [[ -n "$base" ]] && note "Comparing with $base, the newest main commit whose CI passed."
+fi
+if [[ -z "$base" ]]; then
   note "No base commit to compare with; running everything."
   out tests=full
   exit 0

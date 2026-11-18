@@ -20,9 +20,11 @@ with them. Only the loopback origin port is published.
 | `deploy/compose.prod.yml` | Production services with memory/CPU caps, restart policies and rotated logs |
 | `deploy/Caddyfile` | Routing and the read-only boundary |
 | `deploy/pinned.env` | Third-party image digests and serving manifest paths |
-| `.github/workflows/ci.yml` | Tests every pull request and main commit; reuses a pull request's result on main when the tree is identical ([CI](#ci)) |
-| `.github/workflows/images.yml` | arm64 API and dashboard images, built after CI passes on main |
-| `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune; copies nothing under `data/` |
+| `.github/workflows/ci.yml` | Tests every push to main, then builds the commit's arm64 API and dashboard images ([CI](#ci)) |
+| `.github/workflows/deploy.yml` | Deploys a main commit over Tailscale once its CI has passed ([Deploy](#deploy)) |
+| `scripts/vps-deploy-gate.sh` | The VPS's deploy gate (`/usr/local/sbin/courtlens-deploy-gate`): lock, main check, runs main's release script |
+| `scripts/vps-release.sh` | Pull, migrate, health-check, warm Stats cohorts, prune; copies nothing under `data/` |
+| `scripts/deploy-vps.sh` | The same deploy from the PC over Tailscale, without Actions |
 | `scripts/vps-backup.sh` | Weekly database dump and nightly records copy, from the VPS crontab |
 | `scripts/pull-from-vps.sh` | Copies the VPS's `data/` (and, on request, a database dump) to the PC; never pushes |
 
@@ -396,47 +398,82 @@ outcomes:
   run: `tests/unit/test_frozen_identifiers.py` (it scans every tracked file) and Vitest (which
   checks the README's quoted results). `docs/design` and `docs/evidence` are hashed inputs and
   image contents, so a change there runs everything. Such a change needs no deploy.
-- **Reuse** (pushes to main only): each pull request run uploads the tree it tested
-  (`git rev-parse HEAD^{tree}`, artifact `tested-tree`). When a merge commit's tree is identical to
-  the tree its pull request's latest run passed, which holds whenever the branch was up to date with
-  main, every job is skipped, CI passes in about a minute and Images starts. If main moved after the
-  pull request ran, the tree differs and everything runs. Press "Update branch" before merging to get
-  the fast path. Only same-repository pull requests qualify, and the workflow file is part of the
-  compared tree.
+- **Reuse** (Dependabot pull requests only): a pull request run uploads the tree it tested
+  (`git rev-parse HEAD^{tree}`, artifact `tested-tree`); when a merge commit's tree is identical to
+  it, every job is skipped.
 
-A newer push to a pull request cancels its older run; main commits are never cancelled.
+Work is pushed straight to main (since 2026-11-18). A push compares with the **newest main commit
+whose CI passed**, not the commit before it, so a docs-only push after a failed or cancelled code
+push still runs everything. A newer push cancels the older run, on main as on a pull request.
+
+The last job, `images`, builds the arm64 `courtlens-api` and `courtlens-dashboard` images on an arm
+runner and pushes them as `sha-<commit>` to GHCR. It runs only on main and only when no test job
+failed, so a passed CI run on main means its images exist. (Until 2026-11-18 a separate Images
+workflow did this after CI.) Run CI by hand on main (Actions → CI → Run workflow) to rebuild a
+commit's images.
+
 Locally, `make test-python` runs the same xdist suite with one worker per CPU.
 
 ## Deploy
 
-After CI and then Images succeed on a main commit, run this from any checkout:
+Push to main, then:
 
 ```bash
-scripts/deploy-vps.sh            # latest origin/main
-scripts/deploy-vps.sh <sha>      # a specific main commit
+make deploy                      # deploy origin/main through the Deploy workflow
+scripts/deploy-vps.sh [<sha>]    # the same from this PC over Tailscale, without Actions
+```
+
+Or Actions → **Deploy** → Run workflow (blank SHA for main's head). Either way the deploy waits for
+that commit's CI (`scripts/wait_for_ci.sh`), so it can start right after the push. A commit whose CI
+was cancelled by a newer push can't be deployed; deploy the newer one. Deploys are listed under the
+Deploy runs and the repository's `production` environment.
+
+**How the runner gets in.** The VPS has no public SSH. The Deploy job joins the tailnet as an
+ephemeral `tag:ci` node through Tailscale workload identity: Tailscale's trust credential
+"GitHub Actions Deploys" accepts GitHub's OIDC token for subject
+`repo:calebhabesh/*:environment:production`, so no Tailscale secret is stored. The tailnet policy
+lets `tag:ci` reach only `100.67.196.101` on `tcp:22`. The job's SSH key (`VPS_SSH_KEY`, with
+`VPS_SSH_KNOWN_HOSTS`) is pinned in `~/.ssh/authorized_keys` on the VPS:
+
+```text
+command="/usr/local/sbin/courtlens-deploy-gate",from="100.64.0.0/10,fd7a:115c:a1e0::/48",restrict ssh-ed25519 ... courtlens-github-actions-production
+```
+
+so it can only run the gate. The `production` environment (its secrets and the Tailscale variables
+`TS_OAUTH_CLIENT_ID`, `TS_AUDIENCE`) is limited to the `main` branch. LineWatchTO deploys the same
+way with its own key and gate.
+
+**The gate** (`scripts/vps-deploy-gate.sh`, a root-owned copy at
+`/usr/local/sbin/courtlens-deploy-gate`) takes one argument, a full SHA. It takes the deploy lock,
+fetches main into the VPS's partial clone of the public repository (`.repo`, about 2 MB, file
+contents fetched on demand), refuses a commit that isn't on main, and runs `scripts/vps-release.sh`
+as committed on main. The release script reads the compose file, Caddyfile, `pinned.env` and backup
+script from the deployed commit. Reinstall the gate whenever its file changes:
+
+```bash
+git show origin/main:scripts/vps-deploy-gate.sh \
+  | ssh vps 'sudo tee /usr/local/sbin/courtlens-deploy-gate >/dev/null && sudo chmod 755 /usr/local/sbin/courtlens-deploy-gate'
 ```
 
 **When.** Any time. A deploy restarts every service, including `win-probability-seal`, and takes
-about 3 to 4 minutes. On a game day the seal service takes each game's last seal at :25 and :55
-Eastern, 5 minutes before tip, so a deploy that should not risk a seal starts just after one of
-those runs. Earlier deploys used 9:00 AM to noon Eastern only because no game is sealed then.
+about 2 to 4 minutes once CI has passed. On a game day the seal service takes each game's last seal
+at :25 and :55 Eastern, 5 minutes before tip, so a deploy that should not risk a seal starts just
+after one of those runs.
 
-**Safeguards (since 2026-11-18).**
-- **One at a time.** The script takes a lock on the VPS (`.deploy.lock`) before it changes
-  anything. A second deploy, from any machine, stops with "Another deploy is running on the VPS"
-  and changes nothing.
-- **Staged files.** The compose file, `pinned.env`, Caddyfile and backup script are uploaded to a
-  staging folder (`.incoming/`) and installed only under the lock.
-- **The right images.** The gate accepts only an Images run named `Images <sha>`: the run name
-  records the commit it built. GitHub lists a triggered run under main's head when it starts, which
-  can be a different commit. Images runs before this change are all named "Images", so a commit
-  built before it can't pass the gate; roll back with `release.prev.env` instead (below).
+**Safeguards.**
+- **One at a time.** The gate takes a lock on the VPS (`.deploy.lock`) before it changes anything.
+  A second deploy, from any machine, stops with "another deploy is running on the VPS" and changes
+  nothing. The workflow also runs one deploy at a time (`concurrency: production-deploy`).
+- **Images before files.** The release script pulls the commit's `sha-<commit>` images first; a
+  commit without them stops before any file or container changes.
 - **Workers stopped first.** `jobs`, `demo-reset` and `win-probability-seal` run a shell loop as
   PID 1, which ignores SIGTERM. They are stopped before the new release starts, so `up --wait` never
   sees a container killed mid-replacement.
+- **Main's release script.** Whatever machine starts a deploy, the VPS runs the release script
+  committed on main, never one sent to it.
 
-Serving files are git-ignored and live only under the VPS's `data/` (`SERVING_DIRS` in the
-script). Since W7 a deploy only makes sure those directories exist: nothing under `data/` is
+Serving files are git-ignored and live only under the VPS's `data/` (`SERVING_DIRS` in
+`scripts/vps-release.sh`). Since W7 a deploy only makes sure those directories exist: nothing under `data/` is
 copied, overwritten or deleted from the deploying machine. Before W7 they were rsynced from the
 PC.
 
@@ -455,6 +492,9 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 ```
 
 ## Deploy log
+
+Until 2026-11-18 each release was recorded here. Since then the Deploy workflow's runs and the
+`production` environment are the record; add an entry only for a deploy worth explaining.
 
 ### 2026-11-18: release c495f520 (#125: logo beside the wordmark; filter bar fills when pinned)
 
@@ -680,7 +720,7 @@ These steps have already been done once; they are recorded for a rebuild.
 2. Take a dump of the local database without the dbt candidate build schemas, which
    serving never reads:
    `pg_dump -Fc --no-owner --exclude-schema='cl_candidate_*'`.
-3. Copy the dump to the VPS. Run `scripts/deploy-vps.sh` up to `db`, or start `db` by
+3. Copy the dump to the VPS. Start `db` (`docker compose ... up -d --wait db`) by
    hand, then restore with
    `pg_restore -U courtlens -d courtlens --no-owner --exit-on-error`, and delete the dump.
 4. If the dump came from a branch whose migrations are ahead of main, undo those
@@ -691,3 +731,13 @@ These steps have already been done once; they are recorded for a rebuild.
 5. Create the tunnel and route `courtlens.calebhabesh.com` to `http://127.0.0.1:8090`.
    Save the connector token at `secrets/tunnel-token` (mode 0600, owner `1001:1001`).
    The next deploy starts the `cloudflared` service.
+6. Deploy access (2026-11-18, [Deploy](#deploy)):
+   - `git clone --bare --filter=blob:none https://github.com/calebhabesh/courtlens.git .repo` in
+     `/home/ubuntu/apps/courtlens`, and install the gate at `/usr/local/sbin/courtlens-deploy-gate`.
+   - Tailscale: tag `tag:ci` (owner `autogroup:admin`); grants `autogroup:member` → `*` and
+     `tag:ci` → `100.67.196.101` `tcp:22`; the OpenID Connect trust credential (issuer
+     `https://token.actions.githubusercontent.com`, subject
+     `repo:calebhabesh/*:environment:production`, Auth Keys write with `tag:ci`).
+   - GitHub: the `production` environment limited to `main`, with variables `TS_OAUTH_CLIENT_ID` and
+     `TS_AUDIENCE` and secrets `VPS_SSH_KEY` (a dedicated ed25519 key) and `VPS_SSH_KNOWN_HOSTS`
+     (`100.67.196.101` and the VPS's ed25519 host key, read over an existing connection).

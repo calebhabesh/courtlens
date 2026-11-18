@@ -1,4 +1,4 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup refresh-rosters refresh-daily install-data-refresh test-kernel-limits preview
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup refresh-rosters refresh-daily install-data-refresh test-kernel-limits preview deploy
 
 # Scratch goes to disk, not RAM-backed /tmp (tmpfs); see scripts/clean_scratch.sh.
 export TMPDIR ?= $(HOME)/.cache/courtlens-tmp
@@ -119,6 +119,15 @@ refresh-daily:
 
 install-data-refresh:
 	scripts/install_data_refresh.sh
+
+# Deploy what is on origin/main to the hosted demo (docs/deployment.md#deploy). Run it right after
+# `git push`: the Deploy workflow waits for that commit's CI, which publishes its images.
+deploy:
+	@git fetch -q origin main
+	@sha="$$(git rev-parse origin/main)"; \
+	if [ "$$(git rev-parse HEAD)" != "$$sha" ]; then echo "HEAD is not origin/main; deploying origin/main ($$sha). Push first to deploy HEAD."; fi; \
+	gh workflow run deploy.yml --ref main -f sha="$$sha" && sleep 4 && \
+	echo "Deploying $$sha: $$(gh run list --workflow deploy.yml --limit 1 --json url --jq '.[0].url')"
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov warehouse/target warehouse/logs dashboard/.next

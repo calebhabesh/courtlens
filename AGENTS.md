@@ -40,6 +40,15 @@ For accounts (password sign-up, email links, Google sign-in, deleting an account
 
 For the hosted demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys, the scheduled `jobs` service, backups and disk budget), read [the deployment guide](docs/deployment.md) first; the owner's one-page summary is [Running the hosted demo](docs/operations/hosted-operations.md). Since 2026-11-13 the VPS is the system of record: it runs every scheduled job and holds the only live database and `data/`. The PC develops against copies pulled with `scripts/pull-from-vps.sh` and never pushes data to the VPS. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
+## Development Flow
+
+Work directly on `main`: commit, `git push`, deploy. No feature branches or pull requests (Dependabot's are the exception). Since 2026-11-18:
+
+- **Before pushing**, run the checks for what changed (Ruff, mypy and the affected pytest files; or the dashboard's lint, typecheck and affected Vitest/Playwright specs). CI runs everything on every push, so a full local suite is only needed when a change is broad.
+- **CI** (`.github/workflows/ci.yml`) tests each push. A newer push cancels the older run, and its plan compares with the newest main commit whose CI passed, so nothing is skipped. Its last job publishes the commit's arm64 images.
+- **Deploy** with `make deploy` (or Actions → Deploy → Run workflow) right after pushing. It waits for that commit's CI, then deploys over Tailscale through the VPS's deploy gate. `scripts/deploy-vps.sh` does the same from this machine without Actions. Deploys are recorded by the Deploy runs and the `production` environment; no deploy-log commit is needed.
+- **A red main** is fixed by the next push, promptly. Never force-push or rewrite main.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
@@ -103,6 +112,9 @@ courtlens publish-archive
 # Offline evaluation
 make evaluate
 make evaluate-final
+
+# Deploy origin/main to the hosted demo (waits for its CI)
+make deploy
 
 # Backup and restore
 ./scripts/backup.sh
