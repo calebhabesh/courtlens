@@ -21,12 +21,15 @@ sha="${1:-$(git -C "$REPO_ROOT" rev-parse origin/main)}"
 [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo "Give a full 40-character commit SHA." >&2; exit 1; }
 git -C "$REPO_ROOT" merge-base --is-ancestor "$sha" origin/main || { echo "$sha is not on origin/main." >&2; exit 1; }
 
-# Filter on the conclusion ourselves: GitHub's status=success filter can miss a run that already
-# succeeded (2026-11-11, a hand-dispatched Images run during a CI outage).
-images_run="$(gh run list --repo "$OWNER/courtlens" --workflow images.yml --commit "$sha" \
-  --limit 20 --json databaseId,conclusion \
-  --jq '[.[] | select(.conclusion == "success")][0].databaseId // empty')"
-[[ -n "$images_run" ]] || { echo "No successful Images run for $sha yet; wait for CI and Images on main." >&2; exit 1; }
+# Match the Images run by the commit it built, named in its run name ("Images <sha>"). GitHub files
+# a workflow_run-triggered run under main's head when it starts, not the commit it builds: on
+# 2026-11-18 run 44251620872 was listed under 8526bc02 but built 448a018f. Filter on the conclusion
+# ourselves: GitHub's status=success filter can miss a run that already succeeded (2026-11-11, a
+# hand-dispatched Images run during a CI outage).
+images_run="$(gh run list --repo "$OWNER/courtlens" --workflow images.yml --limit 100 \
+  --json databaseId,conclusion,displayTitle \
+  --jq "[.[] | select(.conclusion == \"success\" and .displayTitle == \"Images $sha\")][0].databaseId // empty")"
+[[ -n "$images_run" ]] || { echo "No successful Images run built $sha yet; wait for CI and Images on main." >&2; exit 1; }
 
 stage="$(mktemp -d "${TMPDIR:-$HOME/.cache/courtlens-tmp}/courtlens-release.XXXXXX")"
 trap 'rm -rf "$stage"' EXIT
@@ -74,22 +77,38 @@ SERVING_DIRS=(
 VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health derived/position-estimates-provisional-v1)
 
 echo "Deploying $sha to $SSH_HOST:$REMOTE_DIR"
-remote_dirs=("$REMOTE_DIR/infra")
+# The release files go to a staging folder of their own; the remote script installs them only once
+# it holds the deploy lock. On 2026-11-18 two deploys of one commit ran at once: they replaced each
+# other's compose file and release.env.next, killed each other's containers mid-wait, and left no
+# release.env behind.
+incoming="$REMOTE_DIR/.incoming/$(date -u +%Y%m%dT%H%M%SZ)-$$-${sha:0:12}"
+remote_dirs=("$REMOTE_DIR/infra" "$REMOTE_DIR/scripts" "$incoming")
 for dir in "${SERVING_DIRS[@]}" "${VPS_OWNED_DIRS[@]}"; do remote_dirs+=("$REMOTE_DIR/data/$dir"); done
 "${SSH[@]}" "install -d -m 755 ${remote_dirs[*]} && install -d -m 700 '$REMOTE_DIR/secrets'"
-"${RSYNC[@]}" "$stage/docker-compose.yml" "$stage/pinned.env" "$SSH_HOST:$REMOTE_DIR/"
-"${RSYNC[@]}" "$stage/infra/" "$SSH_HOST:$REMOTE_DIR/infra/"
-"${SSH[@]}" "install -d -m 755 '$REMOTE_DIR/scripts'"
-"${RSYNC[@]}" "$stage/scripts/" "$SSH_HOST:$REMOTE_DIR/scripts/"
+"${RSYNC[@]}" "$stage/" "$SSH_HOST:$incoming/"
 
 # Upload the remote script first and run it with stdin closed, so no command
 # (docker compose run, for one) can swallow the rest of the script.
 # shellcheck disable=SC2016
-"${SSH[@]}" "bash -c 'tmp=\"\$(mktemp)\"; cat > \"\$tmp\"; bash \"\$tmp\" \"\$@\" < /dev/null; rc=\$?; rm -f \"\$tmp\"; exit \$rc' bash '$REMOTE_DIR' '$sha' '$OWNER'" <<'REMOTE'
+"${SSH[@]}" "bash -c 'tmp=\"\$(mktemp)\"; cat > \"\$tmp\"; bash \"\$tmp\" \"\$@\" < /dev/null; rc=\$?; rm -f \"\$tmp\"; exit \$rc' bash '$REMOTE_DIR' '$sha' '$OWNER' '$incoming'" <<'REMOTE'
 set -euo pipefail
-dir="$1"; sha="$2"; owner="$3"
+dir="$1"; sha="$2"; owner="$3"; incoming="$4"
 cd "$dir"
+# One deploy at a time, from any machine. The lock lasts until this script and every command it
+# started have exited.
+exec 9>"$dir/.deploy.lock"
+if ! flock -n 9; then
+  rm -rf "$incoming"
+  echo "Another deploy is running on the VPS; this one changed nothing. Retry when it finishes." >&2
+  exit 1
+fi
 [[ -f secrets.env ]] || { echo "Missing $dir/secrets.env; run the first-time setup in docs/deployment.md." >&2; exit 1; }
+# Install this release's files, then drop its staging folder and any an interrupted deploy left.
+cp "$incoming/docker-compose.yml" "$incoming/pinned.env" "$dir/"
+rsync -a --delete "$incoming/infra/" "$dir/infra/"
+rsync -a --delete "$incoming/scripts/" "$dir/scripts/"
+rm -rf "$incoming"
+find "$dir/.incoming" -mindepth 1 -maxdepth 1 -mmin +60 -exec rm -rf {} +
 
 next=release.env.next
 cp pinned.env "$next"
@@ -106,6 +125,15 @@ tunnel_profile=()
 [[ -s secrets/tunnel-token ]] && tunnel_profile=(--profile tunnel)
 
 compose "$next" config --quiet
+# The worker services run a shell loop as PID 1, which ignores SIGTERM, so replacing a running one
+# waits out the stop timeout and kills it (exit 137); on 2026-11-18 that made `up --wait` abort.
+# Stop them first so `up` only starts fresh containers. Each is restarted below.
+services="$(compose "$next" config --services)"
+workers=()
+for service in jobs demo-reset win-probability-seal; do
+  grep -qx "$service" <<< "$services" && workers+=("$service")
+done
+((${#workers[@]})) && compose "$next" stop -t 30 "${workers[@]}"
 compose "$next" up -d --wait db
 compose "$next" --profile migrate run --rm -T migrate < /dev/null
 if ! compose "$next" "${tunnel_profile[@]}" up -d --wait --wait-timeout 300 --remove-orphans; then

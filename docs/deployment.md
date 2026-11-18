@@ -421,6 +421,20 @@ about 3 to 4 minutes. On a game day the seal service takes each game's last seal
 Eastern, 5 minutes before tip, so a deploy that should not risk a seal starts just after one of
 those runs. Earlier deploys used 9:00 AM to noon Eastern only because no game is sealed then.
 
+**Safeguards (since 2026-11-18).**
+- **One at a time.** The script takes a lock on the VPS (`.deploy.lock`) before it changes
+  anything. A second deploy, from any machine, stops with "Another deploy is running on the VPS"
+  and changes nothing.
+- **Staged files.** The compose file, `pinned.env`, Caddyfile and backup script are uploaded to a
+  staging folder (`.incoming/`) and installed only under the lock.
+- **The right images.** The gate accepts only an Images run named `Images <sha>`: the run name
+  records the commit it built. GitHub lists a triggered run under main's head when it starts, which
+  can be a different commit. Images runs before this change are all named "Images", so a commit
+  built before it can't pass the gate; roll back with `release.prev.env` instead (below).
+- **Workers stopped first.** `jobs`, `demo-reset` and `win-probability-seal` run a shell loop as
+  PID 1, which ignores SIGTERM. They are stopped before the new release starts, so `up --wait` never
+  sees a container killed mid-replacement.
+
 Serving files are git-ignored and live only under the VPS's `data/` (`SERVING_DIRS` in the
 script). Since W7 a deploy only makes sure those directories exist: nothing under `data/` is
 copied, overwritten or deleted from the deploying machine. Before W7 they were rsynced from the
@@ -441,6 +455,31 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 ```
 
 ## Deploy log
+
+### 2026-11-18: release 8526bc02 (#120 faster CI, #123 README, #121 Open Graph image)
+
+- **What:** CI runs once per change, in parallel (#120, [CI](#ci)); new README screenshots and
+  overview (#123); a new Open Graph image and site description (#121). No migration.
+- **CI:** #120's merge ran the new workflow in full (8 min); #123's merge reused its pull request's
+  result (28 s); #121's ran in full after its branch was brought up to date (8 min). Images:
+  2.5 min each.
+- **Deploy:** two deploys of 8526bc02 ran at once from the owner's PC.
+  - The first attempt failed after 42 s: the other deploy replaced the `jobs` container while it
+    warmed the site, the old container was killed (exit 137), and `up --wait` aborted and rolled
+    back. `jobs`, `demo-reset` and `win-probability-seal` were down for about a minute (1:37 AM
+    Eastern, no games).
+  - With those three stopped by hand, the retry took 91 s (171 Stats cohorts existing, 0 built).
+  - The two deploys' last steps then collided on `release.env.next`, leaving no `release.env`. It
+    was restored at 06:41 UTC (`release.env` 8526bc02, `release.prev.env` 03b62cc7).
+  - The safeguards above came out of this.
+- **Also seen:** Images run 44251620872 was listed under 8526bc02 but built 448a018f (#122), which
+  the old gate would have accepted. The pull would still have failed safely, because the
+  `sha-8526bc02` tag didn't exist yet.
+- **Checked on the public URL:**
+  - `/api/health` ok;
+  - `/` answers 307 to `/stats`;
+  - the page carries the new description and `og-image.png?v=2`, which is served (252 KB);
+  - all 8 services are up on the new images.
 
 ### 2026-11-18: release 03b62cc7 (#119: site polish; the project's last deploy)
 
