@@ -44,7 +44,9 @@ test("the v4 sections come first, in the plan's order, and read correctly before
   // The slate fixture is 2026-11-12's; without a fixed clock the date strip marks the real today.
   await page.clock.setFixedTime(new Date("2026-11-12T17:00:00Z"));
   await page.goto("/research/win-probability");
-  await expect(page.getByText("CourtLens picks a favorite for every game, shows its reasoning, and is graded every night.")).toBeVisible();
+  // Visible copies only: the fixed browser clock (the 12th) differs from the server's, so React can
+  // re-render the page on the client and leave the streamed server copy hidden in the DOM.
+  await expect(page.getByText("CourtLens picks a favorite for every game, shows its reasoning, and is graded every night.").filter({ visible: true })).toBeVisible();
   await page.locator("#trial").waitFor();
   const ids = await page.locator(".wp-page > section.rs-section, .wp-page > h2#evidence").evaluateAll(els => els.map(e => e.id));
   expect(ids.slice(0, 6)).toEqual(["slate", "track-record", "how", "trial", "evidence", "answer"]);

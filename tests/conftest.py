@@ -1,10 +1,23 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+from sqlalchemy.engine import make_url
+
+# Under pytest-xdist, scripts/test_python.py clones one database per worker
+# (<database>_gw0, _gw1, ...). Point this worker at its own before any test reads the URL.
+if os.environ.get("COURTLENS_TEST_POSTGRES_PER_WORKER") == "1" and (
+    _worker := os.environ.get("PYTEST_XDIST_WORKER")
+):
+    _url = make_url(os.environ["COURTLENS_TEST_POSTGRES_URL"])
+    os.environ["COURTLENS_TEST_POSTGRES_URL"] = _url.set(
+        database=f"{_url.database}_{_worker}"
+    ).render_as_string(hide_password=False)
+
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session
@@ -216,3 +229,42 @@ def workbench_db(request: pytest.FixtureRequest) -> Generator[Session, None, Non
             with root_engine.begin() as connection:
                 connection.execute(text(f"DROP SCHEMA {schema} CASCADE"))
         root_engine.dispose()
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--shard",
+        default=None,
+        help="Run one share of the test files, as INDEX/TOTAL (CI's backend-tests matrix).",
+    )
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """Keep only this shard's test files when --shard INDEX/TOTAL is given.
+
+    Files are dealt longest first to the shard with the least time so far, using the per-file
+    seconds CI measured (tests/ci_file_durations.json; a file not listed counts as the median).
+    The deal depends only on the selected file names, so every xdist worker and every shard
+    computes the same split, and together the shards run each selected test exactly once.
+    """
+    option = config.getoption("--shard")
+    if not option:
+        return
+    index, total = (int(part) for part in option.split("/"))
+    if not 1 <= index <= total:
+        raise pytest.UsageError(f"--shard {option}: INDEX must be between 1 and TOTAL")
+    seconds = json.loads((Path(__file__).parent / "ci_file_durations.json").read_text())
+    median = sorted(seconds.values())[len(seconds) // 2]
+    files = sorted({item.nodeid.split("::", 1)[0] for item in items})
+    loads = [0.0] * total
+    owner: dict[str, int] = {}
+    for name in sorted(files, key=lambda name: (-seconds.get(name, median), name)):
+        lightest = min(range(total), key=lambda shard: (loads[shard], shard))
+        owner[name] = lightest
+        loads[lightest] += seconds.get(name, median)
+    keep = [item for item in items if owner[item.nodeid.split("::", 1)[0]] == index - 1]
+    dropped = [item for item in items if owner[item.nodeid.split("::", 1)[0]] != index - 1]
+    if dropped:
+        config.hook.pytest_deselected(items=dropped)
+        items[:] = keep
