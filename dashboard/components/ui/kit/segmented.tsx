@@ -94,7 +94,8 @@ export function Segmented<T extends string>({ label, options, value, onChange, s
     <div ref={groupRef} role="radiogroup" aria-label={label} aria-disabled={disabled || undefined} data-kit="segmented"
       onKeyDown={handleKeyDown}
       className={cx("kit:inline-flex kit:max-w-full kit:items-stretch kit:rounded-sm kit:p-1 kit:overflow-x-auto kit:[scrollbar-width:none] kit:phone:h-[calc(var(--kit-control-lg)+var(--space-2))]",
-        dense ? "kit:gap-0" : "kit:gap-1", sizes[size], tone === "console" ? "kit:bg-console" : "kit:bg-surface-2", stretch && "kit:flex kit:w-full", className)}>
+        // Depth (2026-11-17): every track is recessed; the selected block rises out of it.
+        dense ? "kit:gap-0" : "kit:gap-1", sizes[size], "kit:bg-track kit:depth-track", stretch && "kit:flex kit:w-full", className)}>
       {options.map(option => {
         const active = option.value === selected;
         return (
@@ -108,7 +109,7 @@ export function Segmented<T extends string>({ label, options, value, onChange, s
               "kit:motion-reduce:duration-(--dur-instant)",
               "kit:focus-visible:outline-none kit:focus-visible:shadow-[inset_0_0_0_2px_var(--color-accent)] kit:disabled:opacity-45 kit:disabled:pointer-events-none kit:disabled:cursor-not-allowed",
               "kit:phone:min-h-control-lg kit:phone:min-w-control-lg kit:phone:px-2", itemPadding, stretch && "kit:grow kit:shrink-0")}>
-            {active && <SlidingIndicator layoutId={`kit-segmented-${id}`} className="kit:absolute kit:inset-0 kit:rounded-xs kit:bg-accent-soft kit:inset-ring kit:inset-ring-accent kit:pointer-events-none" />}
+            {active && <SlidingIndicator layoutId={`kit-segmented-${id}`} className="kit:absolute kit:inset-0 kit:rounded-xs kit:bg-selected kit:bg-(image:--kit-sheen) kit:depth-selected kit:pointer-events-none" />}
             <span className="kit:relative kit:inline-flex kit:items-center kit:gap-1">
               {option.icon && <Icon name={option.icon} size={kitIconSize[size]} />}
               {option.label}

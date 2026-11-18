@@ -29,6 +29,8 @@
   --color-danger-hover: var(--kit-danger-hover);
   --color-console: var(--color-table-lift);
   --color-console-hover: var(--kit-console-hover);
+  --color-selected: var(--kit-selected);
+  --color-track: var(--kit-track);
   --color-provider: var(--kit-provider);
   --color-provider-hover: var(--kit-provider-hover);
   --color-on-provider: var(--kit-on-provider);
@@ -57,6 +59,23 @@
   --animate-beckon: kit-beckon 1.2s ease-in-out infinite;
 }
 
+/* Depth (owner, 2026-11-17): raised buttons, the raised selected block and recessed tracks. Each
+   writes the inset-shadow layer, which the stock `inset-shadow-*` utility cannot hold (it prefixes
+   `inset` to the whole value, and these lists mix inner and outer shadows). The focus ring stays on
+   the `shadow` layer, so a focused control keeps its ring on top. */
+@utility depth-raised {
+  --tw-inset-shadow: var(--kit-raised-shadow);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+@utility depth-selected {
+  --tw-inset-shadow: var(--kit-selected-shadow);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+@utility depth-track {
+  --tw-inset-shadow: var(--kit-track-shadow);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
 /* IconButton `beckon`: the ring swells and the soft fill breathes in the control's colour. */
 @keyframes kit-beckon {
   0%, 100% { box-shadow: inset 0 0 0 1px var(--kit-beckon); background-color: color-mix(in srgb, var(--kit-beckon) 8%, transparent); }
@@ -68,7 +87,7 @@
 /* Selected: one rule for toggles, radios, tabs, the current route, and menu triggers holding a
    choice (`data-selected`, since a trigger cannot be pressed). */
 @custom-variant selected (&:is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), [data-selected="true"]));
-/* Hover for enabled, unselected controls only, so a selected control keeps its accent outline. */
+/* Hover for enabled, unselected controls only, so a selected control keeps its raised selected look. */
 @custom-variant hoverable {
   @media (hover: hover) {
     &:hover:not(:disabled, [aria-disabled="true"], [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), [data-selected="true"]) {

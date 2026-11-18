@@ -64,7 +64,7 @@ test("selected controls keep their accent look on hover and keyboard focus stays
   await page.mouse.up();
   const select = page.getByRole("combobox", { name: "md default rest select", exact: true });
   await select.hover();
-  await expect(select).toHaveCSS("background-color", "rgb(36, 40, 46)");
+  await expect(select).toHaveCSS("background-color", "rgb(31, 42, 64)");
 });
 
 test("kit triggers open overlays and radios change by keyboard", async ({ page }) => {
