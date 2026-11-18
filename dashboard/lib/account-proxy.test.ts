@@ -144,12 +144,22 @@ describe("dev account auto sign-in (local development only)", () => {
     devMode();
     const fetch = vi.fn().mockResolvedValue(Response.json(dev)); vi.stubGlobal("fetch", fetch);
     const out = await POST(incoming("sign-out", { method: "POST", headers: signedIn }), context(["sign-out"]));
-    expect(out.headers.getSetCookie()).toContain("courtlens-dev-signed-out=1; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax");
-    const me = await GET(incoming("me", { headers: { cookie: "courtlens-dev-signed-out=1" } }), context(["me"]));
+    const pause = out.headers.getSetCookie().find(cookie => cookie.startsWith("courtlens-dev-signed-out="));
+    expect(pause).toMatch(/^courtlens-dev-signed-out=[0-9a-f-]{36}; Path=\/; Max-Age=86400; HttpOnly; SameSite=Lax$/);
+    const paused = pause!.split(";")[0];
+    const me = await GET(incoming("me", { headers: { cookie: paused } }), context(["me"]));
     expect(await me.json()).toEqual({ user: null });
     expect(fetch).not.toHaveBeenCalled();
-    const back = await POST(incoming("demo", { method: "POST", headers: { cookie: "courtlens-dev-signed-out=1" } }), context(["demo"]));
+    const back = await POST(incoming("demo", { method: "POST", headers: { cookie: paused } }), context(["demo"]));
     expect(back.headers.getSetCookie()).toContain("courtlens-dev-signed-out=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax");
+  });
+
+  it("signs back in on the next dev server start after a sign-out", async () => {
+    devMode();
+    const fetch = vi.fn().mockResolvedValue(Response.json(dev)); vi.stubGlobal("fetch", fetch);
+    const earlierRun = await GET(incoming("me", { headers: { cookie: "courtlens-dev-signed-out=an-earlier-run" } }), context(["me"]));
+    expect(await earlierRun.json()).toEqual({ user: dev.user });
+    expect(String(fetch.mock.calls[0][0])).toBe("http://localhost:8000/api/auth/dev-session");
   });
 
   it("falls back to signed out when the API has no dev account", async () => {

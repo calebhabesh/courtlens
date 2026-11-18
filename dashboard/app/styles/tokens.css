@@ -99,7 +99,7 @@
     --account-field: rgb(15 23 42 / 82%);
     --account-field-ring: rgb(255 255 255 / 14%);
     --account-scrim: rgb(2 6 23 / 68%);
-    --account-scrim-blur: 24px;
+    --account-scrim-blur: 8px;
 
     /* Spacing Tokens */
     --space-0: 0;
