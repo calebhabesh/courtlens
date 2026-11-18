@@ -4,6 +4,7 @@ import { useMemo, useState, type CSSProperties } from "react";
 import { runStatShiftRoster } from "@/lib/workbench-api";
 import { DEFAULT_SHIFT_STATS, SHIFT_STATS, clearShift, floorCsv, formatShift, shiftValue, type FloorResponse, type RosterPlayer, type ShiftStat, type StatShiftRosterResponse } from "@/lib/shared-floor";
 import { formatDate } from "@/lib/format-date";
+import { CourtLensLockup } from "./brand";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamGrid, teamDisplayName } from "./team-grid";
 import branding from "@/lib/team-branding.client.json";
@@ -148,7 +149,7 @@ function PairCard({ result, focal, other, season, stats }: { result: FloorRespon
   const otherFirst = firstName(other.name ?? other.player_id);
   return <article className="sls-card" aria-label={`${focal.name} with and without ${other.name}`}>
     <header className="sls-card-head">
-      <span className="sls-card-brand">CourtLens</span><span className="sls-card-season">{season}</span>
+      <span className="sls-card-brand"><CourtLensLockup height={14} /></span><span className="sls-card-season">{season}</span>
       <span className="sls-card-faces">
         <PlayerAvatar playerId={focal.player_id} name={focal.name ?? ""} team={result.request.team_id} era={{ season, team: result.request.team_id }} size="lg" className="sls-card-face" />
         <PlayerAvatar playerId={other.player_id} name={other.name ?? ""} team={result.request.team_id} era={{ season, team: result.request.team_id }} size="md" className="sls-card-other" />

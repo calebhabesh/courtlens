@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { CourtLensLockup } from "./brand";
 import { useSearchParams } from "next/navigation";
 import { getPlayerGameLog, getPlayerSeasons, getTeamSchedule, getTeamsResearch, WorkbenchApiError } from "@/lib/workbench-api";
 import { landing } from "@/lib/landing-season";
@@ -21,7 +22,6 @@ import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { TeamWatermark } from "./team-watermark";
 import { teamRecord } from "./compare-player-slot";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { LastGamesTrend, MAX_TREND_STATS, trendStats } from "./last-games-trend";
 import { PageHeader } from "./ui/panel";
 import { FilterBar } from "./ui/filter-bar";
@@ -312,7 +312,7 @@ function Comparison({ playerId, season, name, who, games, first, last, stats, mo
       ? <><span className="lg-phrase"><span className="lg-key" data-tone="up">Gold:</span> better</span> · <span className="lg-phrase"><span className="lg-key" data-tone="down">Blue:</span> worse</span> · <span className="lg-phrase"><span className="lg-key">Grey:</span> his usual range</span><span className="lg-phrase lg-key-line"><span className="lg-extreme lg-extreme-inline" aria-hidden="true" /><span className="sr-only">Dot</span>: his best or worst {last.length}-game stretch this season</span></>
       : <span className="lg-phrase">Too few {last.length}-game stretches to judge</span>}
       {partial.map(note => <span key={note}> · <span className="lg-phrase">{note}</span></span>)}</p>
-    <div className="lg-wordmark"><CourtLensWordmark height={16} /></div>
+    <div className="lg-wordmark"><CourtLensLockup height={16} /></div>
   </section>;
 }
 

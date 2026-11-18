@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition, type CSSProperties } from "react";
+import { CourtLensLockup } from "./brand";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { executeWorkbenchQuery } from "@/lib/workbench-api";
 import { useReducedMotion, DURATIONS } from "@/lib/motion";
@@ -23,7 +24,6 @@ import { TeamWatermark } from "./team-watermark";
 import { teamRecord } from "./compare-player-slot";
 import { TeamLogo } from "./team-logo";
 import { LookupInput } from "./lookup-input";
-import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
 import { positionChipStatus } from "@/lib/position-estimates";
 import { PageHeader } from "./ui/panel";
@@ -280,7 +280,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
       <div className="sc-banner">
         <span className="sc-banner-season" aria-live="polite">{shown.season}</span>
         <h2 className="sc-banner-title">{leaders}</h2>
-        <span className="sc-banner-mark"><CourtLensWordmark height={20} /></span>
+        <span className="sc-banner-mark"><CourtLensLockup height={20} /></span>
       </div>
       <SeasonScrubber seasons={seasons} season={shown.season} onPick={goSeason} />
       <p className="sc-key">
