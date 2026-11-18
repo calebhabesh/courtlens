@@ -456,6 +456,34 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-18: release c495f520 (#125: logo beside the wordmark; filter bar fills when pinned)
+
+- **What:** UI work made after #119 merged, until then only uncommitted changes in a local
+  checkout. The logo now sits beside the wordmark on every branded card (`CourtLensLockup`). PNG
+  exports draw it too. The filter bar is transparent at rest and filled only while pinned. The
+  Shrunk % note is one short line. Dashboard only: no migration, and the API image didn't change.
+- **CI needed two passes on the PR.** Three visual baselines (Stats desktop and phone, Showcase
+  desktop) were refreshed. The Stats ones dated from 2026-10-19 and had drifted just under the 1%
+  tolerance. An R03 test still looked for the old Shrunk % copy. Main's CI reused the PR's result
+  (37 s). Images: 2 min 12 s.
+- **Deploy:** `deploy-vps.sh` took **97 s** (12:12:07 to 12:13:44 UTC), its second run with the
+  safeguards above. The Stats cohort warm-up found 171 existing, built 0 and pruned 0. Compose
+  recreated `dashboard` and the three workers. `api` kept running, because its image digest was
+  unchanged. Disk: 137 GB free of 193.
+- **Checked on the public URL:**
+  - `/api/health` ok;
+  - `/` answers 307 to `/stats`;
+  - Stats, Compare, Showcase and Team Compare serve the lockup in their HTML;
+  - `release.env` is c495f520 and `release.prev.env` is e6f582f5.
+
+### 2026-11-18: release e6f582f5 (#124: deploy safeguards; dnspython 2.9.2)
+
+- **What:** the safeguards above (VPS lock, staged files, Images runs named after their commit,
+  workers stopped first). Dependabot alert 134 fixed (`dnspython` 2.9.1 to 2.9.2). No migration.
+- **CI:** main reused the PR's result (25 s).
+- **Deploy:** `deploy-vps.sh` took **128 s**, the first run of the new script, with no errors.
+  All 8 services were healthy, `/api/health` was ok, and the API container runs dnspython 2.9.2.
+
 ### 2026-11-18: release 8526bc02 (#120 faster CI, #123 README, #121 Open Graph image)
 
 - **What:** CI runs once per change, in parallel (#120, [CI](#ci)); new README screenshots and
