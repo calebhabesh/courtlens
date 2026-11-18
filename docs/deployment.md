@@ -20,6 +20,7 @@ with them. Only the loopback origin port is published.
 | `deploy/compose.prod.yml` | Production services with memory/CPU caps, restart policies and rotated logs |
 | `deploy/Caddyfile` | Routing and the read-only boundary |
 | `deploy/pinned.env` | Third-party image digests and serving manifest paths |
+| `.github/workflows/ci.yml` | Tests every pull request and main commit; reuses a pull request's result on main when the tree is identical ([CI](#ci)) |
 | `.github/workflows/images.yml` | arm64 API and dashboard images, built after CI passes on main |
 | `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune; copies nothing under `data/` |
 | `scripts/vps-backup.sh` | Weekly database dump and nightly records copy, from the VPS crontab |
@@ -377,6 +378,32 @@ The VPS holds the only live copy. `scripts/vps-backup.sh` (copied by each deploy
   (`~/.ssh/courtlens_records`) that can write to that repository only.
 - **Restore** steps are in the [operations note](operations/hosted-operations.md#restoring-a-backup).
   Both were proved on 2026-11-13: a fresh clone of the records repository matched all 60 live record files by SHA-256, and the dump restored into a scratch database in 23 minutes (single stream) with every one of 127 tables' exact row counts, 245 indexes and 313 constraints equal to live.
+
+## CI
+
+`.github/workflows/ci.yml` starts with a `plan` job (`scripts/ci_plan.sh`) that picks one of three
+outcomes:
+
+- **Full** (the default): `backend-checks` (Ruff, mypy, migrations, demo seed, dbt),
+  `backend-tests` (pytest on four xdist workers, each on its own database cloned from the
+  migrated one, with coverage), `dashboard-checks` (ESLint, Stylelint, tsc, Vitest, the
+  Turbopack build), `browser` (Playwright in four shards of two workers, each with its own
+  webpack build) and `containers` (Compose build and smoke test), all in parallel.
+- **Docs lane**: every changed file is Markdown at the repository root, at the top of `docs/`, or
+  in `docs/operations`, `docs/decisions` or `docs/research`. Only the tests that read those files
+  run: `tests/unit/test_frozen_identifiers.py` (it scans every tracked file) and Vitest (which
+  checks the README's quoted results). `docs/design` and `docs/evidence` are hashed inputs and
+  image contents, so a change there runs everything. Such a change needs no deploy.
+- **Reuse** (pushes to main only): each pull request run uploads the tree it tested
+  (`git rev-parse HEAD^{tree}`, artifact `tested-tree`). When a merge commit's tree is identical to
+  the tree its pull request's latest run passed, which holds whenever the branch was up to date with
+  main, every job is skipped, CI passes in about a minute and Images starts. If main moved after the
+  pull request ran, the tree differs and everything runs. Press "Update branch" before merging to get
+  the fast path. Only same-repository pull requests qualify, and the workflow file is part of the
+  compared tree.
+
+A newer push to a pull request cancels its older run; main commits are never cancelled.
+Locally, `make test-python` runs the same xdist suite with one worker per CPU.
 
 ## Deploy
 
