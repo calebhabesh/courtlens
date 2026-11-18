@@ -118,7 +118,7 @@ for(const width of [1440,390]) test(`counting menu keeps its slot across season 
   await trigger.click();
   const yearHeading=page.getByRole("group",{name:"2025-26",exact:true}).locator(".pvp-counting-group");
   await expect(yearHeading).toHaveText("2025-26");
-  await expect(yearHeading).toHaveCSS("background-color","rgb(21, 23, 27)");
+  await expect(yearHeading).toHaveCSS("background-color","rgb(16, 24, 42)");
   await expect(page.getByRole("menuitem",{name:"2025-26",exact:true})).toHaveCount(0);
   await yearHeading.click();await expect(trigger).toHaveAttribute("aria-expanded","true");
   await trigger.focus();await page.keyboard.press("ArrowDown");

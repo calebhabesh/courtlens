@@ -34,8 +34,8 @@ const chevrons = {
 } as const;
 
 const tones: Record<SelectTone, string> = {
-  default: "kit:bg-surface-2 kit:text-text kit:hoverable:bg-surface-3",
-  console: "kit:bg-console kit:font-semibold kit:text-text-control kit:hoverable:bg-console-hover kit:hoverable:text-text",
+  default: "kit:bg-surface-2 kit:bg-(image:--kit-sheen) kit:depth-raised kit:text-text kit:hoverable:bg-surface-3",
+  console: "kit:bg-console kit:bg-(image:--kit-sheen) kit:depth-raised kit:font-semibold kit:text-text-control kit:hoverable:bg-console-hover kit:hoverable:text-text",
 };
 
 /** The chevron sits outside the select, so it follows the select's text colour through `peer`. */
@@ -59,6 +59,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         className={cx(
           "kit:peer kit:w-full kit:min-h-0 kit:min-w-0 kit:truncate kit:rounded-sm kit:border-0 kit:py-0 kit:ps-3 kit:text-sm kit:cursor-pointer kit:appearance-none",
           "kit:supports-[appearance:base-select]:[appearance:base-select] kit:[&::picker-icon]:hidden",
+          // The legacy select arrow (shared-overrides.css) sizes and pins every select background; the
+          // kit draws its own chevron, so its sheen spans the whole control.
+          "kit:bg-auto kit:bg-repeat",
           "kit:transition-[background-color,color,box-shadow] kit:duration-(--dur-fast) kit:ease-out",
           "kit:motion-reduce:duration-(--dur-instant)",
           "kit:focus-visible:outline-none kit:focus-visible:shadow-(--focus-ring) kit:phone:min-h-control-lg",

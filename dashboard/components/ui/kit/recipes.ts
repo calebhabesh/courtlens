@@ -47,9 +47,9 @@ const squares: Record<KitSize, string> = {
 
 const variants: Record<KitVariant, string> = {
   primary: "kit:bg-accent kit:font-medium kit:text-on-accent kit:hoverable:bg-accent-hover",
-  secondary: "kit:bg-surface-2 kit:font-medium kit:text-text kit:hoverable:bg-surface-3",
+  secondary: "kit:bg-surface-2 kit:bg-(image:--kit-sheen) kit:depth-raised kit:font-medium kit:text-text kit:hoverable:bg-surface-3",
   ghost: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:bg-surface-hover kit:hoverable:text-text",
-  danger: "kit:bg-surface-2 kit:font-medium kit:text-negative kit:hoverable:bg-danger-hover",
+  danger: "kit:bg-surface-2 kit:bg-(image:--kit-sheen) kit:depth-raised kit:font-medium kit:text-negative kit:hoverable:bg-danger-hover",
   text: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:text-text",
   provider: "kit:bg-provider kit:font-semibold kit:text-on-provider kit:inset-ring kit:inset-ring-provider-ring kit:hoverable:bg-provider-hover",
   link: "kit:bg-transparent kit:font-semibold kit:text-link kit:hoverable:text-link-hover kit:hoverable:underline kit:underline-offset-2",
@@ -57,20 +57,25 @@ const variants: Record<KitVariant, string> = {
 
 /** A tone replaces its variant's colours: `console` for secondary, `onBackground` for ghost. */
 const tones: Record<Exclude<KitTone, "default">, string> = {
-  console: "kit:bg-console kit:font-semibold kit:text-text-control kit:hoverable:bg-console-hover kit:hoverable:text-text",
+  console: "kit:bg-console kit:bg-(image:--kit-sheen) kit:depth-raised kit:font-semibold kit:text-text-control kit:hoverable:bg-console-hover kit:hoverable:text-text",
   onBackground: "kit:bg-transparent kit:font-medium kit:text-on-bg-secondary kit:hoverable:bg-surface-hover kit:hoverable:text-text",
 };
 
-/** Accent outline for pressed toggles, checked radios, selected tabs and the current route. */
-export const selectedClasses =
-  "kit:selected:bg-accent-soft kit:selected:text-accent kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-accent";
+/**
+ * Pressed toggles, checked radios, selected tabs and the current route ("Paint, raised", owner
+ * 2026-11-17): a raised block of lighter navy with the label in gold. The lift lives on the
+ * inset-shadow layer (`depth-selected` in tailwind.css), not `shadow`, so the focus ring
+ * (`shadow`) still draws on a selected control.
+ */
+const selectedSurface = "kit:selected:bg-selected kit:selected:bg-(image:--kit-sheen) kit:selected:depth-selected kit:selected:font-semibold";
+export const selectedClasses = `${selectedSurface} kit:selected:text-accent`;
 
-/** Comparison sides: a toggle that stands for player A or B takes that side's identity colour
- *  (Design Language identity-a gold / identity-b blue) in place of the accent. */
+/** Comparison sides: a toggle that stands for player A or B labels the same raised block in that
+ *  side's identity colour (Design Language identity-a gold / identity-b blue) instead of the accent. */
 export type KitIdentity = "a" | "b";
 const identitySelected: Record<KitIdentity, string> = {
-  a: "kit:selected:bg-identity-a-soft kit:selected:text-identity-a kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-identity-a",
-  b: "kit:selected:bg-identity-b-soft kit:selected:text-identity-b kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-identity-b",
+  a: `${selectedSurface} kit:selected:text-identity-a`,
+  b: `${selectedSurface} kit:selected:text-identity-b`,
 };
 
 /**

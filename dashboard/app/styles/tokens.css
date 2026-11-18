@@ -3,35 +3,37 @@
     color-scheme: dark;
 
     /* Design Language v1 Color Tokens */
-    /* v1.3 (owner, 2026-10-13): page background is a darker, muted take on the NBA-logo blue
-       (logo #01408b, same hue) so it frames the tables without competing; containers are neutral
-       charcoal steps that read as distinct slabs on it. surface-0 is the inset black for
-       tooltips and wells that used to borrow the old near-black page background. */
-    --color-bg: #15325a;
-    --color-surface-0: #0e1013;
-    --color-surface-1: #15171b;
-    --color-surface-2: #1c1f24;
-    --color-surface-3: #24282e;
+    /* v1.4 Deep Navy (owner, 2026-11-17): a deeper, richer take on the NBA-logo blue (logo #01408b)
+       so the gold and the data stand out. Containers are blue-black steps of the same hue, so
+       panels read as one material with the page rather than grey cut-outs (v1.3 used neutral
+       charcoal on #15325a). surface-0 is the inset black for tooltips and wells. */
+    --color-bg: #0c1f3d;
+    /* Soft light behind the header, painted by app/shell.css over --color-bg. */
+    --color-bg-glow: rgb(52 104 196 / 26%);
+    --color-surface-0: #070c16;
+    --color-surface-1: #10182a;
+    --color-surface-2: #172135;
+    --color-surface-3: #1f2a40;
     /* Stats table frame (owner, 2026-10-13): cool slate pair tinted toward the page blue, with a
        wider lift/well step than the charcoal surfaces so header bands, guide columns and the
        preview rail separate clearly from the data well. */
-    --color-table-lift: #1f2632;
-    --color-table-well: #11161e;
+    --color-table-lift: #1d2740;
+    --color-table-well: #0d1422;
     /* Player preview rail: its own darker slate between the lift and the well. */
-    --color-table-rail: #181e28;
+    --color-table-rail: #151d30;
     --color-surface-hover: rgb(255 255 255 / 4%);
     --color-surface-press: rgb(255 255 255 / 7%);
     --color-hairline: rgb(255 255 255 / 6%);
     --color-hairline-strong: rgb(255 255 255 / 10%);
     --color-text: #f2f3f5;
-    --color-text-secondary: #a9afb9;
-    --color-text-tertiary: #858b95;
+    --color-text-secondary: #a8b1c0;
+    --color-text-tertiary: #8790a1;
     /* Inactive control labels (Stats toolbars): brighter than secondary text, below --color-text. */
     --color-text-control: #d5d9e0;
     --color-text-smoke: #c8cdd4;
-    /* Secondary/tertiary text that sits directly on the blue page background (6.5:1 and 5.5:1). */
-    --color-on-bg-secondary: #c9d3e6;
-    --color-on-bg-tertiary: #b4c2dc;
+    /* Secondary/tertiary text that sits directly on the blue page background. */
+    --color-on-bg-secondary: #c6d1e6;
+    --color-on-bg-tertiary: #aebcd6;
     --color-accent: #ffd166;
     --color-accent-soft: rgb(255 209 102 / 12%);
     --color-on-accent: #0e1013;
@@ -91,7 +93,7 @@
 
     /* Sign-in dialog (accounts plan, 2026-11-17, from the owner's linewatchto dialog): a near-black
        panel with a top sheen and rim light, a lighter footer band, inset fields and a deeper scrim. */
-    --account-panel: #0e1016;
+    --account-panel: #0b1019;
     --account-panel-sheen: linear-gradient(180deg, rgb(255 255 255 / 4%) 0%, rgb(255 255 255 / 1%) 50%, rgb(0 0 0 / 20%) 100%);
     --account-panel-shadow: 0 24px 80px rgb(0 0 0 / 60%), 0 10px 32px rgb(0 0 0 / 48%), inset 0 1px 1.5px 0 rgb(255 255 255 / 14%), inset 0 -1px 2px 0 rgb(0 0 0 / 45%);
     --account-panel-radius: 16px;
@@ -137,6 +139,15 @@
     --kit-primary-hover: color-mix(in srgb, var(--color-accent) 88%, var(--color-white));
     --kit-danger-hover: color-mix(in srgb, var(--color-negative) 15%, var(--color-surface-2));
     --kit-console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
+    /* Depth (owner, 2026-11-17, "Paint, raised"): the selected choice is a raised block of lighter
+       navy with a gold (or identity) label, like the painted key on a court. Filled buttons carry a
+       soft top sheen and lift; segmented tracks are recessed. No edge bars or highlight strips. */
+    --kit-selected: #2c4170;
+    --kit-sheen: linear-gradient(180deg, rgb(255 255 255 / 7%), rgb(255 255 255 / 0%));
+    --kit-selected-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), 0 1px 2px rgb(0 0 0 / 45%), 0 2px 6px rgb(0 0 0 / 25%);
+    --kit-raised-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), inset 0 0 0 1px rgb(255 255 255 / 5%), 0 1px 2px rgb(0 0 0 / 40%);
+    --kit-track: color-mix(in srgb, #000 30%, var(--color-table-lift));
+    --kit-track-shadow: inset 0 1px 3px rgb(0 0 0 / 50%), inset 0 0 0 1px rgb(255 255 255 / 5%);
     /* `provider` (accounts plan, 2026-11-17): a white third-party sign-in button (Google, email),
        as Google's branding asks and as the owner's linewatchto dialog draws it. `link`: an inline
        text action in the accent-free info blue (Forgot Password?, Back to Options, Sign Up). */

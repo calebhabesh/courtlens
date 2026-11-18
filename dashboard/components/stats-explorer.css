@@ -353,7 +353,7 @@
   .stats-team-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); }
   .stats-team-option { display: grid; justify-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-1); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
   .stats-team-option:hover { background: var(--color-surface-hover); }
-  .stats-team-option[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+  .stats-team-option[aria-pressed=true] { background: var(--kit-sheen), var(--kit-selected); color: var(--color-accent); box-shadow: var(--kit-selected-shadow); }
   .stats-team-clear { margin-top: var(--space-3); width: 100%; min-height: var(--control-md); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); }
   .stats-workspace .stats-position-chips { display: inline-flex; gap: var(--space-1); }
   .stats-workspace .dense-stats-table .stats-header-tier-2 th[data-column]:hover { background: var(--color-surface-hover); }
