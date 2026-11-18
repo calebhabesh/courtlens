@@ -1,0 +1,23 @@
+name: Python environment
+description: >-
+  Python 3.12 with the locked dev and warehouse dependencies. The whole virtual environment
+  is cached on the lock file and pyproject.toml, so a warm run skips pip entirely.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v7
+      id: python
+      with:
+        python-version: "3.12"
+    - uses: actions/cache@v6
+      id: venv
+      with:
+        path: ~/venv
+        key: venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('requirements-lock.txt', 'pyproject.toml') }}
+    - if: steps.venv.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        python -m venv ~/venv
+        ~/venv/bin/pip install -c requirements-lock.txt -e '.[dev,warehouse]'
+    - shell: bash
+      run: echo "$HOME/venv/bin" >> "$GITHUB_PATH"

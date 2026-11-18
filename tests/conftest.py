@@ -1,10 +1,23 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+from sqlalchemy.engine import make_url
+
+# Under pytest-xdist, scripts/test_python.py clones one database per worker
+# (<database>_gw0, _gw1, ...). Point this worker at its own before any test reads the URL.
+if os.environ.get("COURTLENS_TEST_POSTGRES_PER_WORKER") == "1" and (
+    _worker := os.environ.get("PYTEST_XDIST_WORKER")
+):
+    _url = make_url(os.environ["COURTLENS_TEST_POSTGRES_URL"])
+    os.environ["COURTLENS_TEST_POSTGRES_URL"] = _url.set(
+        database=f"{_url.database}_{_worker}"
+    ).render_as_string(hide_password=False)
+
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session
