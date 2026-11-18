@@ -5,17 +5,18 @@
 
 or, better, from a CI run's backend-tests shards (artifacts coverage-1 and coverage-2):
 
-    gh run download <run id> --pattern 'coverage-*' --dir ci-reports
-    python scripts/ci_file_durations.py ci-reports/*/junit-*.xml
+    gh run download <run id> --pattern 'coverage-*' --dir ci-reports/<run id>
+    python scripts/ci_file_durations.py ci-reports/*/*/junit-*.xml
 
 Stale numbers only unbalance the two shards (a file not listed counts as the median); they never
 drop or repeat a test. Refresh when one backend-tests shard runs clearly longer than the other.
 CI's times are better than a fast local machine's, although only their proportions matter.
 
 Each file's weight is its tests' reported seconds plus PER_TEST_OVERHEAD per test: under xdist a
-test also costs scheduling and fixture work the report does not count. On CI run 44245107940 the
-shard of 1,897 mostly short tests ran 70 s longer than the shard of 1,138 longer ones although
-its reported total was 93 s smaller; 0.4 s a test accounts for the difference.
+test also costs scheduling and fixture work the report does not count. Fitting four shard runs
+(CI runs 44245107940 and 44246152250) gave wall = 0.316 x reported + 0.131 x tests - 164 s, so a
+test is worth about 0.4 reported seconds. A file's time also depends on which Postgres-heavy
+files share its runner, so pass the reports of several runs: their sums average that out.
 """
 
 from __future__ import annotations
