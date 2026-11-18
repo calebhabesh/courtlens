@@ -391,6 +391,10 @@
   /* Comparing players: each season's highest value is bold in full text colour; the rest step back. */
   .stats-trend-table[data-compare] .rs-grid-value { color: var(--color-text-secondary); font-weight: var(--font-weight-normal); }
   .stats-trend-table[data-compare] .rs-grid-value.stats-trend-high { color: var(--color-text); font-weight: var(--font-weight-bold); }
+  /* A grid item: without this a wide table widens the dialog instead of scrolling in its frame. */
+  .stats-trend-table { min-width: 0; }
+  /* Sized by its columns (season plus one per player), not the grid's 520 px floor, so one player fits a phone. */
+  .stats-trend-table .rs-grid[data-min] { --rs-grid-min: 0px; }
   .stats-trend-table .dense-stats-table thead th:has(.stats-trend-swatch) .table-sort-button { display: inline-flex; width: auto; }
   .stats-trend-table .stats-trend-swatch { display: inline-block; margin-left: var(--space-2); vertical-align: middle; }
   .stats-trend-table-season { font-variant-numeric: tabular-nums; }
