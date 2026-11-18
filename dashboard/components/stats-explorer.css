@@ -386,6 +386,10 @@
   .stats-trend-figure svg { display: block; width: 100%; height: auto; }
   .stats-trend-grid line { stroke: var(--color-hairline); stroke-width: 1; }
   .stats-trend-grid text, .stats-trend-axis { fill: var(--color-text-secondary); font-size: var(--text-xs); }
+  .stats-trend-axis { transition: fill var(--dur-fast) var(--ease-out); }
+  .stats-trend-axis.is-active { fill: var(--color-text); font-weight: var(--font-weight-semibold); }
+  /* Hover guide from the hovered season's points down to its year; never takes the pointer. */
+  .stats-trend-guide { stroke: var(--color-hairline-strong); stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
   .stats-trend-series { --series: var(--color-trend-1); }
   .stats-trend-series[data-series="2"], .stats-trend-player[data-series="2"] { --series: var(--color-trend-2); }
   .stats-trend-series[data-series="3"], .stats-trend-player[data-series="3"] { --series: var(--color-trend-3); }

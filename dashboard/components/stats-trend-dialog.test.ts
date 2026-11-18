@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PlayerResearchItem } from "@/lib/types";
-import { careerRows, careerSeasons, settleLimited } from "./stats-trend-dialog";
+import { careerRows, careerSeasons, nearestColumn, settleLimited } from "./stats-trend-dialog";
 
 describe("careerSeasons", () => {
   const loaded = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18"];
@@ -43,5 +43,19 @@ describe("settleLimited", () => {
     });
     expect(peak).toBe(3);
     expect(settled.map(entry => entry.status === "fulfilled" ? entry.value : "failed")).toEqual([10, 20, 30, "failed", 50, 60, 70]);
+  });
+});
+
+describe("nearestColumn", () => {
+  // Five seasons from x 100 to 500: columns 100 apart.
+  it("snaps to the nearest season column", () => {
+    expect(nearestColumn(140, 5, 100, 500, 50, 550)).toBe(0);
+    expect(nearestColumn(160, 5, 100, 500, 50, 550)).toBe(1);
+    expect(nearestColumn(530, 5, 100, 500, 50, 550)).toBe(4);
+  });
+  it("is null outside the plot and 0 for a single season", () => {
+    expect(nearestColumn(20, 5, 100, 500, 50, 550)).toBeNull();
+    expect(nearestColumn(600, 5, 100, 500, 50, 550)).toBeNull();
+    expect(nearestColumn(300, 1, 100, 500, 50, 550)).toBe(0);
   });
 });
