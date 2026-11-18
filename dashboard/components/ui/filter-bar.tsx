@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ControlScope, useControlScope } from "./control-scope";
 import { Drawer } from "./drawer";
 import { Button } from "./kit";
@@ -40,6 +40,7 @@ const NARROW = "(max-width: 767px)";
 export function FilterBar({ scope, filters, modes, count, details, summary, label = "Research context controls", collapsible = true, className = "" }: FilterBarProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const { tone } = useControlScope();
+  const [barRef, stuck] = useStuck();
 
   useEffect(() => {
     if (!sheetOpen) return;
@@ -52,7 +53,7 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
   // Slim 32 px controls on desktop; the kit keeps its 40 px hit area on phones (owner, 2026-10-14).
   return (
     <ControlScope size="sm">
-    <div className={`ui-filter-bar ${modes ? "has-modes" : ""} ${collapsible ? "" : "is-fixed-scope"} ${className}`} role="region" aria-label={label}>
+    <div ref={barRef} data-stuck={stuck || undefined} className={`ui-filter-bar ${modes ? "has-modes" : ""} ${collapsible ? "" : "is-fixed-scope"} ${className}`} role="region" aria-label={label}>
       <div className="ui-filter-bar-controls">
         <div className="ui-filter-bar-scope">{scope}</div>
         {filters && <div className="ui-filter-bar-page">{filters}</div>}
@@ -76,6 +77,38 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
     </div>
     </ControlScope>
   );
+}
+
+/**
+ * True while the bar is pinned under the header. At rest the bar is transparent over the shell's
+ * glow; pinned, it takes the sticky-header fill so rows never show through (DL: Sticky header on
+ * scroll). Pinned means its top sits at its sticky offset after a scroll, so a bar whose wrapper is
+ * too short to stick (it just scrolls away) never gets the fill.
+ */
+function useStuck() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [value, setValue] = useState(false);
+  useEffect(() => {
+    const bar = ref.current;
+    if (!bar) return;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const offset = Number.parseFloat(getComputedStyle(bar).top);
+      const top = bar.getBoundingClientRect().top;
+      setValue(window.scrollY > 0 && Number.isFinite(offset) && Math.abs(top - offset) < 1);
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(measure); };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  return [ref, value] as const;
 }
 
 export function CountChip({ children }: { children: ReactNode }) {

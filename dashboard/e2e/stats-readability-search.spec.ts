@@ -35,7 +35,7 @@ test("header branding and secondary navigation align", async ({ page }) => {
     return center(element.querySelector("svg")!) - center(element.querySelector(".brand-title")!);
   });
   expect(Math.abs(offset)).toBeLessThan(1);
-  expect(await page.locator(".brand-title path").getAttribute("d")).toBe(await page.locator(".stats-table-brand path").getAttribute("d"));
+  expect(await page.locator(".brand-title path").getAttribute("d")).toBe(await page.locator(".stats-table-brand .courtlens-wordmark path").getAttribute("d"));
 });
 
 test("profile exports keep the same shared wordmark artwork", async ({ page }) => {
