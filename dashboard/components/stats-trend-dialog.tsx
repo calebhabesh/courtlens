@@ -261,8 +261,18 @@ export function smoothPath(points: { x: number; y: number }[]): string {
   return path;
 }
 
+/** The season column nearest a viewBox x, or null outside the plot's horizontal span. */
+export function nearestColumn(x: number, count: number, plotLeft: number, plotRight: number, from: number, to: number): number | null {
+  if (count === 0 || x < from || x > to) return null;
+  if (count === 1) return 0;
+  const index = Math.round((x - plotLeft) / ((plotRight - plotLeft) / (count - 1)));
+  return Math.min(count - 1, Math.max(0, index));
+}
+
 function TrendChart({ column, players, rows }: { column: ColumnDefinition; players: TrendPlayer[]; rows: SeasonRows[] }) {
   const width = 720, height = 380, left = 56, right = 24, top = 24, bottom = 40;
+  // The season column under the pointer: a guide line and its bold year, so no eye trip to the axis.
+  const [active, setActive] = useState<number | null>(null);
   const series = players.map(player => rows.map(row => {
     const item = row.items.find(entry => entry.player_id === player.player_id);
     const value = item ? plotValue(column, item) : null;
@@ -287,6 +297,8 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
   // Long careers: every other (or third) season label, so year labels never collide.
   const labelEvery = Math.max(1, Math.ceil(40 / spacing));
   const showTick = (index: number) => index === rows.length - 1 || (index % labelEvery === 0 && rows.length - 1 - index >= labelEvery);
+  // The hovered season's year always shows (bold); labels close enough to collide with it hide.
+  const tickShown = (index: number) => index === active || (showTick(index) && (active === null || Math.abs(index - active) >= labelEvery));
   // Every point prints its value (the reference site). Long careers shrink the markers and their text to
   // the season spacing instead of dropping the values.
   const widest = "0".repeat(Math.max(...series.flat().map(point => point.label.length)));
@@ -296,12 +308,21 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
 
   return (
     <figure className="stats-trend-figure">
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${column.label} by season for ${players.map(p => p.player_name).join(", ")}`}>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${column.label} by season for ${players.map(p => p.player_name).join(", ")}`}
+        onPointerMove={event => {
+          const matrix = event.currentTarget.getScreenCTM()?.inverse();
+          if (!matrix) return;
+          const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix);
+          setActive(nearestColumn(point.x, rows.length, plotLeft, plotRight, left, width - right));
+        }}
+        onPointerLeave={() => setActive(null)}>
         {ticks.map(tick => <g key={tick} className="stats-trend-grid">
           <line x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} />
           <text x={left - 8} y={y(tick)} dy="0.32em" textAnchor="end">{tickLabel(tick)}</text>
         </g>)}
-        {rows.map((row, index) => showTick(index) && <text key={row.season} className="stats-trend-axis" x={x(index)} y={height - 14} textAnchor="middle">{seasonTick(row.season)}<title>{row.season}</title></text>)}
+        {active !== null && active < rows.length && <line className="stats-trend-guide" x1={x(active)} x2={x(active)} y1={top} y2={height - bottom} />}
+        {rows.map((row, index) => tickShown(index) && <text key={row.season} className={`stats-trend-axis${index === active ? " is-active" : ""}`}
+          x={x(index)} y={height - 14} textAnchor="middle">{seasonTick(row.season)}<title>{row.season}</title></text>)}
         {series.map((points, seriesIndex) => {
           const plotted: Point[] = points.flatMap((point, index) => point.value === null ? [] : [{ ...point, value: point.value, x: x(index), y: y(point.value) }]);
           // Break the line at seasons without a row; a gap is unknown, not zero.
