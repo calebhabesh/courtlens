@@ -280,7 +280,7 @@ both axes, e.g. pinned identity header cells; added 2026-10-08) · `--z-header: 
 | `--dur-instant` | 80ms | Press feedback |
 | `--dur-fast` | 140ms | Hover, color, exits, tooltips |
 | `--dur-base` | 200ms | Enters, popovers, tabs, crossfades |
-| `--dur-slow` | 320ms | Drawers, modals, page transitions, layout moves |
+| `--dur-slow` | 320ms | Drawers, modals, layout moves |
 | `--dur-chart` | 450ms | First chart draw only |
 | `--delay-skeleton` | 120ms | Wait before a loading skeleton shows (kept under reduced motion) |
 | `--ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | Enters and most transitions |
@@ -320,9 +320,9 @@ Rules:
 | Drawer / Ask panel | Slides from its edge over `--dur-slow` with `--ease-out`. The scrim fades over `--dur-base`. Mobile bottom sheets use the spring. |
 | Modal / command palette | Scrim fade plus panel `scale(0.98)`/opacity over `--dur-base`. Exit over `--dur-fast`. |
 | Tabs, segmented controls, nav active item | A sliding indicator (motion `layoutId` or a measured CSS transform) with the spring. Content crossfades over `--dur-base`. |
-| Page / route change | Root `template.tsx` enter: opacity plus `translateY(6px)` over `--dur-slow`. Use View Transitions (`experimental.viewTransition` in Next, React `<ViewTransition>`) only if DL02 confirms they're supported in the pinned Next/React versions. Otherwise only the template enter. The header never animates on navigation. |
+| Page / route change | No enter animation: a page shows in the frame it arrives (Stats speed, 2026-11-17). The template's 320 ms fade held every navigation back, and the transform it left behind made the page wrapper the containing block for fixed elements. The header never animates on navigation. A link navigation still waiting after `--delay-skeleton` lays a scrim over the page being left, below the header (`IntentLink`). |
 | Table sort, filter or column change | Rows ≤ 100: motion `layout` reorder over `--dur-slow`. More rows: crossfade the body over `--dur-base`. Columns added or removed: crossfade. The sort arrow rotates over `--dur-fast`. |
-| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. A loading region (`role="status" aria-busy="true"`) stays transparent for `--delay-skeleton` (120 ms), then fades in over `--dur-fast`, so a faster response never shows a skeleton; reduced motion keeps the delay (it is a wait, not motion). Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. |
+| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. A loading region (`role="status" aria-busy="true"`) stays transparent for `--delay-skeleton` (120 ms), then fades in over `--dur-fast`, so a faster response never shows a skeleton; reduced motion keeps the delay (it is a wait, not motion). Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. Stats has no route loader and its table no entrance: the rows arrive in the first flush and show as they paint, because a skeleton, once shown, holds content back for React's 300 ms reveal batch. Routes whose server render waits on no read have no loader either (Stats speed, 2026-11-17). |
 | Charts | The first view draws in (line stroke-dash, bar `scaleY` from baseline) over `--dur-chart`. Data changes morph or crossfade over `--dur-base`, with no re-draw from zero. |
 | Accordion / expanding row | Grid-rows technique over `--dur-slow`. The chevron rotates over `--dur-fast`. |
 | Toast | Slides in from the bottom-right with the spring and auto-dismisses after 5s. Exit is opacity plus `translateY(8px)`. |

@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, HOSTED_DEMO_REDIRECTS } from "./lib/route-consolidation";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, HOME_REDIRECT, HOSTED_DEMO_REDIRECTS } from "./lib/route-consolidation";
 
 const hostedDemo = process.env.NEXT_PUBLIC_COURTLENS_HOSTED_DEMO === "1";
 
@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS, ...(hostedDemo ? HOSTED_DEMO_REDIRECTS : [])].map(redirect => ({ ...redirect, permanent: false }));
+    return [HOME_REDIRECT, ...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS, ...(hostedDemo ? HOSTED_DEMO_REDIRECTS : [])].map(redirect => ({ ...redirect, permanent: false }));
   }
 };
 

@@ -220,7 +220,6 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
             // Keys are sorted: the same scope must give the same key whether its defaults came from
             // the URL or were filled in here, or the first search after a URL sync remounts the field.
             key={stableKey({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
-            canonicalHref={canonicalHref}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
