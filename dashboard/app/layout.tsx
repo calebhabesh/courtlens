@@ -78,10 +78,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Suspense fallback={null}>
               <NavTrailRecorder />
             </Suspense>
+            {/* No Suspense around the page: a page without a loader (Stats, the page `/` opens) then
+                streams in the first flush instead of a later reveal that React batches 300 ms
+                after the header's (Stats speed, 2026-11-17). Pages with a loader keep their own. */}
             <main id="content" className="replica-main" tabIndex={-1}>
-              <Suspense fallback={null}>
-                {children}
-              </Suspense>
+              {children}
             </main>
           </div>
           <LazySignInDialog />

@@ -2,8 +2,8 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import React from "react";
-import RootLoading from "@/app/loading";
-import StatsLoading from "@/app/stats/loading";
+import { ArticleLoading as RootLoading } from "@/components/ui/article-loading";
+import { StatsPageSkeleton as StatsLoading } from "@/components/stats-page-skeleton";
 import PlayersLoading from "@/app/players/loading";
 import PlayerProfileLoading from "@/app/players/[id]/loading";
 import TeamsLoading from "@/app/teams/loading";

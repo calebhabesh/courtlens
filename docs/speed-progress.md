@@ -2099,3 +2099,134 @@ plan is now ✅. The floors recorded at SP03, SP05, SP06 and SP08 stand as accep
 
 Still running when the plan closed: the Wikipedia contract-terms crawl in `jobs` (2,129 of 3,297
 players at 04:15 UTC on 2026-11-16), with `bump-data-stamp` chained after it.
+
+## 2026-11-17 — Follow-up after the plan: Stats shows as soon as it arrives
+
+The owner, after the plan closed: player pages load very quickly, but the Stats table, the page `/`
+opens, "takes longer than I'd like … It should be lightning fast (loading to and from it)." They
+chose all four fixes offered (show the table at once, remove the 300 ms wait, a real redirect for
+`/`, cut the route fade). Built on `improve/site-polish`; not deployed. Evidence:
+`docs/evidence/speed/stats-instant/`.
+
+### What was slow (live, `live-before.txt`)
+
+Rows visible (opacity ≥ 0.95), median of five: `/` 872 ms, `/stats` 753 ms, a player page 414 ms,
+header nav → Stats 766 ms, Back → Stats 358 ms; at 4× CPU 2.6 s, 2.1 s, 1.1 s, 2.8 s, 1.1 s. The
+server was not the cause: the Stats payload completed 59–75 ms after its request, the HTML in about
+220 ms. Four front-end delays stacked on it:
+
+1. **The table body was hidden until hydration.** `.stats-table-body-pending { opacity: 0 }`
+   (alignment follow-up 72's single entrance) held the server's rows until the scripts ran, the
+   browser read `/api/workspace`, a frame passed and a 200 ms fade ran. At 4× CPU the rows sat
+   invisible for about 1.3 s after they arrived. The server and the browser read the same shared
+   workspace (the browser's proxy forwards no session), so the hold guarded a mismatch that cannot
+   occur in practice.
+2. **React's 300 ms reveal batch.** Once a Suspense fallback has shown, React holds later reveals
+   until 300 ms after it: `$RT + 300` in the streamed `$RC` script, `globalMostRecentFallbackTime +
+   300` in react-dom's client. The root `app/loading.tsx`, the Stats loader and the layout's
+   `<Suspense fallback={null}>` around every page all streamed fallbacks before the table, so the
+   table waited out the batch on document loads and on unprefetched clicks, even with its data
+   ready. SP03's 120 ms CSS delay hides a fast skeleton but cannot stop React committing it.
+3. **`/` streamed a 200 page and redirected in the browser** (`NEXT_REDIRECT` in the payload, a 1 s
+   meta refresh as fallback), because the root loader had already sent headers. The browser loaded
+   the scripts, then `/stats` as a second document.
+4. **The template faded every page in over 320 ms**, Back included.
+
+### Changes
+
+- **Table at once.** The entrance state and its CSS are gone; the body's settle animations for later
+  changes (sort, filter, view, a saved view that differs) stay. `canonicalHref` is no longer passed
+  to the explorer (only the entrance read it).
+- **No reveal wait on Stats.** `app/stats/loading.tsx`, the root `app/loading.tsx` and the layout's
+  Suspense around `{children}` are removed, so Stats streams in the first flush and a click keeps the
+  old page until the new one is complete. The article skeleton is now
+  `components/ui/article-loading.tsx`, loaded only by routes whose server render waits on a read
+  (Methodology, the glossary, the planner, account reset and verify). Routes that await nothing (What's
+  New, Privacy, Terms, the Research index, Defensive Matchups, Player Twins, Stats tracking and other
+  client-rendered pages) have no loader: there is nothing for a skeleton to cover. Routes with their own loader are unchanged, minus the root
+  skeleton that flashed before each of them.
+- **`ReplaceUrl` waits one task.** With Stats in the first flush, its mount effect ran in the same
+  hydration commit as the App Router's, and before it (children's effects run first). The router
+  patches `history.replaceState` in that later effect, so the unpatched call left `useSearchParams`
+  on bare `/stats` (Back to table then saved `/stats?`). It also replaced the entry's router state
+  (`__NA`) with null, and Next ignores a popstate with null state, so browser Back to a freshly
+  loaded Stats page did nothing. The full suite caught the first part (`player-career.spec.ts:65`);
+  a new spec checks the second. The other mount-time `history` writers sit behind their own loaders
+  or run after a fetch or a click; the account `?signin=` cleanup already keeps the router's state.
+- **Pending scrim.** `IntentLink` renders `PendingSignal` (`useLinkStatus`), which marks the page being
+  left (`#content > .route-enter[data-nav-pending]`). After `--delay-skeleton` a scrim fades in over it,
+  below the header. Next reports pending even after `IntentLink`'s own prefetch (the Link has
+  `prefetch={false}`), so the delay is what keeps quick clicks clear. A first version faded the
+  page's own opacity: that repainted the whole Stats table and held the next page back by about
+  40 ms at 4× CPU. A separate layer costs nothing measurable.
+- **`/` is a config redirect** (`HOME_REDIRECT`, 307, query passed through); `app/page.tsx` is gone. The
+  brand links to `/stats` and the hosted-demo `/planner` redirect goes straight there.
+- **No route fade.** `.route-enter` keeps its layout rules without the animation. Its `forwards` fill
+  had left `transform: matrix(1, 0, 0, 1, 0, 0)` on every page wrapper, which made it the containing
+  block for fixed descendants. Overlays render through `OverlayPortal`, so only one element moved: the
+  zTS view dock now floats at the bottom of the window as its CSS says. Live, it sits at the end of the
+  10,932 px page. Nothing sticky inside a page has a z-index at or above the header's.
+
+### Local A/B (`local-ab-cpu1.txt`, `local-ab-cpu4.txt`)
+
+Both builds served at once (`next build`, hosted-demo flags; before = `improve/site-polish` at
+30bae17a, after = this change) on one private API with the read cache on (:8191, the PC's database),
+journeys interleaved. `tools/painted.mjs`: ms from the action until the content is present, opaque
+and painted (the next frame after the DOM check; not before first contentful paint on a document
+load). No network latency: Chromium's emulation does not reach localhost documents, so live adds
+Cloudflare's round trips to both columns.
+
+| Journey | Before | After | Before, 4× CPU | After, 4× CPU |
+| --- | --- | --- | --- | --- |
+| Open `/` | 712 | **188** | 2,338 | **300** |
+| `/stats` | 637 | **185** | 1,881 | **251** |
+| Header nav → Stats | 587 | **336** | 1,832 | **1,267** |
+| Back → Stats | 366 | **186** | 1,042 | **760** |
+| Stats → player, no hover first | 299 | 284 | 802 | 837 |
+| Player page (control, unchanged) | 372 | 377 | 952 | 946 |
+
+- **Stats → player at 4× CPU is within noise but not faster.** Without the root skeleton the old page
+  unmounts after the response instead of during it. Mouse, touch and keyboard users prefetch on
+  intent first; hover then click, 1×: 312 → 262 ms.
+- **What remains in nav → Stats and Back** is drawing the table: a 105 ms React render and about
+  90 ms of layout and paint at 1× after the payload lands (78 ms after the click, 40–60 ms of it
+  Playwright's own click). That is SP05's markup floor.
+
+### Not done (next levers, the owner's call)
+
+- **Leaving Stats spends about 50 ms (190 ms at 4× CPU) in a forced layout of the whole table**:
+  `getBoundingClientRect` from motion's `measureScroll`, run by the header's
+  `layoutId="header-active-indicator"` when the section changes, and by `SlidingIndicator` hand-offs.
+  It predates this change and costs the same in both builds.
+- **Player and team pages still pay the 300 ms reveal batch** behind their own loaders. The same
+  treatment would apply there if their warm reads stay fast.
+- **The Stats markup** (50 rows, about 1,050 cells with `aria-label`, `title` and screen-reader text)
+  sets the render floor above.
+
+### Checks
+
+The change touches shared code (`IntentLink`, the root layout, the template's CSS), so the full
+dashboard suites ran.
+
+- `npm run lint` (ESLint and Stylelint) and `typecheck`: pass. Vitest: **153 files, 1,114 passed**.
+  `route-consolidation.test.ts` lists `HOME_REDIRECT` first and checks that `/` has no page.
+- Playwright, webpack fixture production build (mock API :4180, dashboard :3183), every spec except
+  "real", 4 workers: **671 passed, 0 failed, 27 skipped**. The first run had 3 failures:
+  - `player-career.spec.ts:65` was the `ReplaceUrl` bug above, now fixed.
+  - `showcase.spec.ts:97` read the tray and the last card right after `scrollTo`, while
+    `scroll-behavior: smooth` was still moving the page. The old tray scrolled with the content, so
+    timing never mattered; with the floating tray it does. Once the scroll lands, the last card ends
+    above the tray (811.5 against 816), as the page's padding intends. The spec now scrolls instantly.
+  - `table-interactions.spec.ts:63`, SP05's "focus flake", was a race in the spec. The typed `cc`
+    search lands about 300 ms later and filters Fixture Star out, and the drawer opened after it
+    needed that row. The faster page now always lost the race (3 of 3), so the drawer check moved
+    ahead of the search, with every assertion kept: 60 of 60 at `--repeat-each=10`.
+- `e2e/stats-entrance.spec.ts` rewritten for the new contract:
+  - rows opaque with every script held;
+  - no entrance on open or refresh, at both densities, and none with reduced motion;
+  - a differing saved view settles once (`settleA`);
+  - after a full load, `history.state.__NA` is set and Back from a player page returns to the same
+    Stats URL. This one fails on the build without the `ReplaceUrl` fix (`__NA` undefined).
+- The local A/B above was measured before the `ReplaceUrl` change, which moves only the address-bar
+  write by one task, not the rendering.
+- Python suites not run: no Python changed. Not deployed.

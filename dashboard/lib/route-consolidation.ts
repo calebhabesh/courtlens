@@ -120,8 +120,15 @@ export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
 
 /** PC11: removed from the hosted demo only (see HOSTED_DEMO_HIDDEN in lib/nav-model.ts). */
 export const HOSTED_DEMO_REDIRECTS: { source: string; destination: string }[] = [
-  { source: "/planner", destination: "/" },
+  { source: "/planner", destination: "/stats" },
 ];
+
+/**
+ * `/` opens Stats. A config redirect answers before anything renders; the page that called
+ * `redirect()` streamed a 200 shell first, so the browser loaded its scripts and only then went on
+ * to `/stats` as a second document (Stats speed, 2026-11-17). The query string passes through.
+ */
+export const HOME_REDIRECT: { source: string; destination: string } = { source: "/", destination: "/stats" };
 
 /** The path of the merged page that owns `pathname` when it is one of its tabs, else the pathname. */
 export function mergedPagePath(pathname: string): string {

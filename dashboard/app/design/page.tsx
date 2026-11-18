@@ -44,8 +44,8 @@ import { DesignChartShowcase } from "@/components/charts/design-chart-showcase";
 import { ControlKitShowcase } from "@/components/ui/kit/showcase";
 import { Button, IconButton, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { motion, DURATIONS, SPRING } from "@/lib/motion";
-import RootLoading from "@/app/loading";
-import StatsLoading from "@/app/stats/loading";
+import { ArticleLoading as RootLoading } from "@/components/ui/article-loading";
+import { StatsPageSkeleton as StatsLoading } from "@/components/stats-page-skeleton";
 import PlayerProfileLoading from "@/app/players/[id]/loading";
 import LiveLoading from "@/app/live/loading";
 

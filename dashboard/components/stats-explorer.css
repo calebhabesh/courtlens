@@ -114,14 +114,6 @@
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 /* Typed searches keep the current rows, dimmed, until the filtered rows land. */
 .stats-workspace .dense-stats-table tbody.stats-table-body-searching { opacity: 0.55; }
-.stats-table-body-pending { opacity: 0; }
-.stats-table-body-enter { animation: enterFade var(--dur-base) var(--ease-out) backwards; }
-@media (scripting: none) {
-  .stats-table-body-pending { opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .stats-table-body-enter { animation-duration: var(--dur-fast); }
-}
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
 .stats-workspace .stats-row-pin { display: inline-flex; vertical-align: middle; }
 .stats-workspace .stats-pagination-footer { margin: 0; padding: var(--space-1) var(--space-3); gap: var(--space-2); background: var(--color-surface-1); border-top: 1px solid var(--color-hairline); }
@@ -429,7 +421,7 @@
    tokens, so reduced motion collapses them (Design Language v1). */
 @layer pages {
   .stats-workspace .filter-toolbar { animation: fadeInDropdown var(--dur-base) var(--ease-out); }
-  /* The body fades in after hydration and settles in place on later changes. */
+  /* The body shows with the server HTML and settles in place on later changes. */
   .stats-header-tip { animation: chart-crossfade var(--dur-fast) var(--ease-out); }
   .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
   .stats-team-option:hover .team-logo { transform: scale(1.08); }
