@@ -413,6 +413,31 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-18: release 03b62cc7 (#119: site polish; the project's last deploy)
+
+- **What:** the owner's site-polish pass. Stats shows as soon as it arrives (80a7a1ce), and pages
+  across the site do too (2af54f00): loaders only on player pages, Data Status, Methodology and live
+  games; `/` is a config redirect to `/stats`; no route fade; images start loading once the page is
+  idle; header values hydrate as the server rendered them. Also the Deep Navy palette (design
+  language v1.4), Stats trend views, Ask's New Chat flow and contract bracket fixes. No migration;
+  nothing under `deploy/` changed.
+- **CI needed three passes on the PR.**
+  - The warm crawl still listed `/` and checked readiness on it. It does not follow redirects, so
+    on the VPS it would have waited forever; both now use `/stats` (aac2cd78).
+  - The visual baselines now wait for idle image warming.
+  - The phone operation-gallery baseline was stale (palette and Shot Aftermath copy; b722a36c).
+- **Deploy:** `deploy-vps.sh` took **118 s** (06:05:26 to 06:07:24 UTC), after CI and Images
+  passed on the merge commit. The Stats cohort warm-up found 171 existing, built 0 and pruned 3.
+  Disk: 136 GB free of 193.
+- **Checked on the public URL:**
+  - `/api/health` ok;
+  - `/` answers 307 to `/stats`;
+  - Stats HTML has no skeleton;
+  - the warm crawl started on 569 pages for the new generation.
+- **Also on 2026-11-17/18:** the six open Dependabot PRs were closed and their branches deleted, and
+  so was the branch left from the merged #108. `research-r16` (R16, cut 2026-11-13) was saved to a
+  local bundle and deleted.
+
 ### 2026-11-16 (evening of 2026-11-15 Eastern): release fd416ef0 (#110: site improvements and the speed plan)
 
 - **What:** search, provisional positions, season impact on the VPS, player-page contracts with
