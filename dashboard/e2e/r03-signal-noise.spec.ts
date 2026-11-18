@@ -171,7 +171,7 @@ test.describe("R03 Signal vs Noise", () => {
     for (const label of ["FT%-Shrunk", "TS%-Shrunk", "Rim FG%", "Rim FG%-Shrunk"]) await expect(page.getByRole("columnheader", { name: new RegExp(label) }).first()).toBeVisible();
     await expect(page).toHaveURL(/shrunk=1/);
     expect(calls.slice(seen)).toEqual(["GET /api/signal-noise/shrinkage"]);
-    await expect(page.getByText(/raw columns are unchanged/)).toBeVisible();
+    await expect(page.getByText(/luck-adjusted column beside each shooting %/)).toBeVisible();
     await toggle.click();
     await expect(page).not.toHaveURL(/shrunk=1/);
     await expect.poll(() => heads.allTextContents()).toEqual(before);
