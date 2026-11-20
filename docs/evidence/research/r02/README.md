@@ -103,9 +103,9 @@ full-page capture. A plain viewport shot at scroll 0 shows them correctly.
 A season with no fit (2026-27, or before 2014-15) gets an explanation and a button to the latest fit, not
 an error. Stats defaults to 2026-27, so its link lands here until that season is sealed.
 
-## Step 0: the Playwright debt from `386c4e0`
+## Step 0: the Playwright debt from `7468a99`
 
-First valid full run on `386c4e0`: **509 passed, 17 skipped, 5 failed**. All five were stale tests or
+First valid full run on `7468a99`: **509 passed, 17 skipped, 5 failed**. All five were stale tests or
 baselines, no product bug, fixed in their own commit:
 
 - `route-polish` "research without a catalog": `/research/rapm` renders no catalog-scoped field. Moved to
@@ -114,7 +114,7 @@ baselines, no product bug, fixed in their own commit:
 - `whats-new` baselines (2): the Blog tab was removed on purpose.
 
 **Also found: a flash on Player Twins, not fixed.** On a phone the match rows run 52 px wide for a moment
-before settling, under load. It failed the suite twice on R02's build, so it was traced: clean `386c4e0`
+before settling, under load. It failed the suite twice on R02's build, so it was traced: clean `7468a99`
 shows the same in 16 of 120 loaded runs, 0 px every time 1.2 s later. It predates R02 and that first run
 passed by luck. `player-twins.spec.ts` now polls for the settled page. The flash itself is left for the
 owner to prioritize.

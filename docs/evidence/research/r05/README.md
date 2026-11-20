@@ -22,8 +22,8 @@ defensive tabs (R06), the possession filter and the CSV download. The saved page
 
 ## Registered first
 
-`courtlens-expected-shot-v2` (content `b474fd31…`) was committed on its own (`1dc8b21`) before any fit, after
-the shot-table code (`5d3877a`, no fit). It pins the twelve shot tables by content hash and fixes the target,
+`courtlens-expected-shot-v2` (content `b474fd31…`) was committed on its own (`ee17e1c`) before any fit, after
+the shot-table code (`ece07fc`, no fit). It pins the twelve shot tables by content hash and fixes the target,
 features, excluded features, vocabularies, baseline, reference, the three candidates and their settings, the
 split, the selection gate, Platt calibration, three test gates, the bootstrap (2,000 game replicates, seed 5005),
 slices, player shot-making (300 FGA minimum) and the budget (one thread, 4 GiB, 30 min per pass).

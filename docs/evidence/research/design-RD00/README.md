@@ -1,6 +1,6 @@
 # RD00 — Six-Factor RAPM, rounds 2–5: centred column, reference shading, RAPM Ratings tab, larger photos, less caption text
 
-Measured 2026-11-06 on branch `research` from `335f8b9`. Parents: [Research design catalog](../../../research-design-catalog.md)
+Measured 2026-11-06 on branch `research` from `485ab42`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD00, [Research progress](../../../research-progress.md), round 1 in [design-18](../design-18/README.md). Page:
 `/research/rapm/six-factor`. **Awaiting the owner.** Only the owner marks ✅.
 

@@ -12,7 +12,7 @@ Files here: [results.json](results.json) (the frozen results, byte-identical to
 
 ## Registered first
 
-`courtlens-signal-noise-v1` (content `786d0aa0…`) was committed on its own (`d1b977e`) before any
+`courtlens-signal-noise-v1` (content `786d0aa0…`) was committed on its own (`fb94f2e`) before any
 correlation, prior or validation number existed. It fixes the seasons, eligibility, 500 splits, the octile
 sample-size bins, seed 3003, the bootstrap, how TS% is shrunk, what the prior may read, the validation and
 the budget (one thread, 3 GiB, 30 min). It also defines **reached** so that nothing is extrapolated silently:

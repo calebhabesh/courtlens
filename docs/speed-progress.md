@@ -733,7 +733,7 @@ the click**.
 
 ### Click to content (real data, `SPEED_REAL=1`, five runs, medians; `navigation-before-local.json`, `navigation-after-local.json`)
 
-Same stack and warm cache for both; "before" is a build of `HEAD` (9e926246) with its own spec.
+Same stack and warm cache for both; "before" is a build of `HEAD` (fb128682) with its own spec.
 
 | Journey | SP01 | Before (today) | After, click only | After, prefetched | Budget |
 | --- | --- | --- | --- | --- | --- |
@@ -804,7 +804,7 @@ remains the high mark. The before run was not sampled, so this is not a before/a
     fo14-accessibility, finance, control-kit, header-command-palette, motion-coverage,
     site-links-crawl, site-links-gate, conversation, threaded-assistant, saved-operations): 202
     passed, 27 skipped, **1 failed**. The failure is `player-career.spec.ts:83`, which expects the
-    draft line `2018 · R1 #9 · TOR`. The page shows the team's full name, as commit 5ace395a
+    draft line `2018 · R1 #9 · TOR`. The page shows the team's full name, as commit aa9be7ac
     ("draft team by full name") made it. The assertion predates SP03 and SP03 does not touch the bio
     header, so it is left for the owner.
 - `speed-navigation.spec.ts` with `SPEED_REAL=1` on the local real-data stack: passed (timings above).
@@ -821,7 +821,7 @@ The owner's G1 decisions are recorded under "Decided (owner, G1, 2026-11-15)" in
 
 Same recipe as SP00–SP03: production build (Turbopack) on :3180, the API on :8180 on the PC's
 database copy (release `71639af2…`, scope 2026-27 before 2026-11-13). "Before" is a build of
-`HEAD` (24e5a998) with its API run from a worktree of `HEAD` on the same data. "After" is this
+`HEAD` (6c57bb3c) with its API run from a worktree of `HEAD` on the same data. "After" is this
 block. Server reads were captured through `capture_reads.py`'s recording proxy, which now records
 each read's start and end from the page request.
 
@@ -1102,7 +1102,7 @@ unindexed scan.
   settle the jitter question (above).
 - **`player-career.spec.ts`:** the draft assertion now checks `2018 · R1 #9` and
   `Toronto Raptors` separately (the team's full name sits on the fact's detail line since
-  5ace395a).
+  aa9be7ac).
 - **New tools:** `scripts/speed/slow_reads.py`; `capture_reads.py --only` and read start and end
   times; `snapshot.py`'s 12-digit hash and `--digits-only`. The ad hoc scripts (page text, waves,
   cold runs, profilers, the facts SQL) are in `tools/`; they use the scratch paths of this run.
@@ -1148,7 +1148,7 @@ Evidence: `docs/evidence/speed/sp05/`. Scratch tools are in its `tools/`.
 Same recipe as SP00–SP04: Turbopack production builds on :3180, the API on :8180 (cache and warm
 start on) on the PC's copy, release `71639af2…`, scope 2026-27 before 2026-11-13.
 
-- **Before** is `HEAD` (dda031e4): a sandbox copy of `dashboard/`, and an API run from a
+- **Before** is `HEAD` (4ffe18a8): a sandbox copy of `dashboard/`, and an API run from a
   `git archive HEAD src` (`PYTHONPATH`).
 - **Another session (courtlens-91) edited the same working tree during this block.** It added
   numbered paging (`page_cursors` in the query response, a Stats pager, some icons and CSS).
@@ -1494,7 +1494,7 @@ shifts, none from an image, and both builds show them identically (below). Evide
 
 - The pager session's edits (numbered paging, `page_cursors`) were still uncommitted in the tree,
   so every measurement compares two isolated trees, as SP05 did:
-  - **before**: `git archive HEAD` (b3367cca) of `dashboard src tests scripts`;
+  - **before**: `git archive HEAD` (00183aee) of `dashboard src tests scripts`;
   - **after**: the same plus this block's files only (`tools/mine.txt`). `workbench.py` is shared
     with the pager session, so its two SP06 edits were replayed onto `HEAD`'s copy
     (`tools/replay_workbench.py`; the result equals this block's two hunks exactly).
@@ -1764,7 +1764,7 @@ cookie. No zone or Caddy change is needed.
 
 The owner, after SP06 and the pager commit: "Alright, you can approve all slices we have worked on
 up until now." SP00–SP06 are ✅ in the plan, and Stats follow-up 85 (numbered paging, the other
-session's change committed as 75e0b4f4) is ✅ in the alignment catalog.
+session's change committed as 64972bce) is ✅ in the alignment catalog.
 
 The approval marks the blocks. It does not change the budget, and the open items for the
 G1/G2 stop remain:
@@ -1781,9 +1781,9 @@ G1/G2 stop remain:
 
 The stop after SP06 (plan, "Decided (owner, G1, 2026-11-15)"). Part A needs no owner input; it ends
 at owner point 1 (push and PR). Evidence: `docs/evidence/speed/stop/`. ListAgents at the start:
-two peer sessions, both idle; the tree was clean at f7a93fc5.
+two peer sessions, both idle; the tree was clean at 3d78a996.
 
-### Ruff (2abfd9e8)
+### Ruff (e0e6b831)
 
 CI runs `ruff check .` and `ruff format --check .` on the whole repository. Both were red: 197
 findings and 13 files to reformat, all in the SP04 and SP05 scratch tools under
@@ -1799,11 +1799,11 @@ findings and 13 files to reformat, all in the SP04 and SP05 scratch tools under
   live API, database or an uncommitted analyzer export; their edits are mechanical.
 - `ruff check .`: all checks passed; `ruff format --check .`: 1,185 files formatted (`ruff.log`).
 
-### Live spec fix (53099747)
+### Live spec fix (b48c7f5a)
 
 `live.spec.ts:83` failed 3 runs in 20 on this branch at 1 and 4 workers, with a strict-mode
-violation: `.live-banner` resolved to 3 elements. On a fixture build of `main` (bca82d3c) it passed
-10 of 10. Cause: the Live game skeleton added on this branch (37775732,
+violation: `.live-banner` resolved to 3 elements. On a fixture build of `main` (94ebe75c) it passed
+10 of 10. Cause: the Live game skeleton added on this branch (e8d295fd,
 `components/live-skeletons.tsx`) reuses `<header className="live-banner">` inside an
 `aria-hidden` `.live-game`, and while the page streams in both are in the DOM. The page itself is
 right (the skeleton is hidden); the spec's locator was too wide. Both banner locators now scope to
@@ -1811,7 +1811,7 @@ right (the skeleton is hidden); the spec's locator was too wide. Both banner loc
 (`playwright-live-fixed.log`). So `live.spec.ts:83` was not a worker-count flake on this branch;
 it is fixed, not waived.
 
-### Full suites (branch at 2abfd9e8; the live spec rerun at 53099747)
+### Full suites (branch at e0e6b831; the live spec rerun at b48c7f5a)
 
 | Suite | Result |
 | --- | --- |
@@ -1975,7 +1975,7 @@ Evidence: `docs/evidence/speed/sp08/`.
 - `docs/operations/hosted-operations.md`: a row for the warm crawl in "What runs", and a line to
   run `bump-data-stamp` after a hand-run write.
 
-### Suites (fixture build of 066c05c7's tree; dashboard checks in the same sandbox)
+### Suites (fixture build of d037d825's tree; dashboard checks in the same sandbox)
 
 - Playwright, every spec except "real", 4 workers: **658 passed, 10 failed, 27 skipped**
   (`playwright-fixture.log`). The 10 are exactly the known `HEAD` failures (`advanced-research:61`,
@@ -1997,16 +1997,16 @@ runs after the crawl, one during it if caught), the navigation spec live, and th
 
 **Correction.** Since SP05 the log called 10 Playwright failures "`HEAD` failures" that predate
 each block. `HEAD` was this branch, never `main`, and part A and SP08 part 1 repeated the label as
-if `main` failed them too. CI on PR #110 (run 43769603249, commit f77263a6) failed the dashboard job
+if `main` failed them too. CI on PR #110 (run 43769603249, commit ea48d4ab) failed the dashboard job
 on exactly those 10, while `main`'s last CI passed 660 of 660. They were the branch's.
 
-Causes and fixes (31f07e69):
+Causes and fixes (75dcff95):
 
 | Failure | Cause | Fix |
 | --- | --- | --- |
 | `roster-shapes` ×4, `advanced-research:61`, roster chart phone baseline | SP04 hands the depth chart the team page's server read, so the specs' `page.route` mocks (browser only) never applied and the board showed the mock API's 1-player Boston | The mock API serves the specs' 3-player Boston at their scope (`e2e/fixtures/team-bos-depth-2025-26.json`), and a `beforeDate=2026-03-01` variant with the non-appearance player; `advanced-research:61` asserts against the same fixture. Page code unchanged |
 | `pc12-demo-hygiene:6` (saved, 390 px) | Site links made an identity's name a link, and the phone tap-target rule (`main a`, 40 px inline-flex) added a line to every small identity on phones; Back said "Previous Page" because `/investigations` now reaches the trail without a name | `.ui-identity-name` joins the existing heading and subtitle exemption (`min-height: 0`); `pageLabel("/investigations")` is "Saved Investigations". `pc12-c-public-390` matches `main`'s baseline again, so the branch's earlier refresh of it is reverted |
-| `visual-baselines` player profile desktop and phone, search modal phone | Approved changes: the draft line with the college under it (5ace395a), grouped search (4cd60d54) | Baselines refreshed, after looking at each diff |
+| `visual-baselines` player profile desktop and phone, search modal phone | Approved changes: the draft line with the college under it (aa9be7ac), grouped search (e1f34109) | Baselines refreshed, after looking at each diff |
 
 The baselines had drifted since 2026-10-19 to just under the 1% pixel tolerance on `main`; the
 branch's approved changes crossed it. Local and CI renders agree within a few pixels (25,023 and
@@ -2020,7 +2020,7 @@ suite, including the phone baselines, passes with it.
 ## 2026-11-16 — SP08 part 2: merge, deploy, final numbers
 
 The owner: "You can commit push and deploy everything", and, on the deploy window, "There are no
-users on the site … So do it." PR #110 merged as fd416ef0; CI and Images passed; deployed at
+users on the site … So do it." PR #110 merged as caabff1c; CI and Images passed; deployed at
 00:51:52 UTC (7:51 PM Eastern on 2026-11-15) in **206 s**. Evidence: `docs/evidence/speed/sp08/live/`.
 
 ### After the deploy
@@ -2093,7 +2093,7 @@ Started in `jobs` at 01:08:47 UTC, `--scope all` (no bundle existed on the VPS),
 
 ## 2026-11-15 — Plan finished (owner)
 
-The owner tried the live site (release fd416ef0) and wrote: "It's really good. We can mark the
+The owner tried the live site (release caabff1c) and wrote: "It's really good. We can mark the
 entire plan finished." G1, SP07 and SP08 are ✅ owner, 2026-11-15; every block and gate of the
 plan is now ✅. The floors recorded at SP03, SP05, SP06 and SP08 stand as accepted.
 
@@ -2170,7 +2170,7 @@ server was not the cause: the Stats payload completed 59–75 ms after its reque
 ### Local A/B (`local-ab-cpu1.txt`, `local-ab-cpu4.txt`)
 
 Both builds served at once (`next build`, hosted-demo flags; before = `improve/site-polish` at
-30bae17a, after = this change) on one private API with the read cache on (:8191, the PC's database),
+74406a3e, after = this change) on one private API with the read cache on (:8191, the PC's database),
 journeys interleaved. `tools/painted.mjs`: ms from the action until the content is present, opaque
 and painted (the next frame after the DOM check; not before first contentful paint on a document
 load). No network latency: Chromium's emulation does not reach localhost documents, so live adds
@@ -2235,7 +2235,7 @@ dashboard suites ran.
 
 The owner, after the Stats change: "Apply it to all the pages you can (that would make the site feel
 snappy responsive)", and the Stats portraits "load as you scroll … I don't like this. The site
-should feel loaded/stable/responsive/snappy." Built on `improve/site-polish` (from 108656ab); not
+should feel loaded/stable/responsive/snappy." Built on `improve/site-polish` (from 273007f7); not
 deployed. Evidence: `docs/evidence/speed/snappy-pages/`.
 
 ### Route loaders
@@ -2296,7 +2296,7 @@ and found by instrumenting React's mismatch thrower in a sandbox copy.
   `<span class="account-header-control">`: the account read (`me`) had answered before the header
   hydrated. `useAccount` now reports the provider's initial state (loading, no user, no favourites)
   while its consumer hydrates.
-  - Commit 80a7a1ce has this bug on Stats: the new spec fails 4 of 6 runs on 108656ab. It is not
+  - Commit d914e196 has this bug on Stats: the new spec fails 4 of 6 runs on 273007f7. It is not
     deployed.
   - A happy-dom unit test could not reproduce the ordering (it passed without the fix), so it was
     dropped. `e2e/hydration-clean.spec.ts` guards it instead: seven pages at two widths, no page
@@ -2417,7 +2417,7 @@ the next restart. Nothing built the index at API start.
 - Memory: the index is 28.4 MiB with the new structures (12.8 MiB before): 21,372 distinct terms,
   8,155 bigram keys, appearances for 5,161 players. At most two are kept.
 
-### Live after the deploy (a1247476, 2026-11-18)
+### Live after the deploy (4c7fc0b7, 2026-11-18)
 
 - The API's warm start built the search index in **19.1 s** in the background (`lookup_index` in
   `GET /api/cache/status`), so no visitor waited for it.

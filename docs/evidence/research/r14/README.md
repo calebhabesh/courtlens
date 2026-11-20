@@ -6,11 +6,11 @@ Measured 2026-11-06 on branch `research-r14`. Parent: [Research progress](../../
 
 | Part | State |
 | --- | --- |
-| Data check | [`data-check.json`](data-check.json), committed with the code (`deb91c1`, 07:53 UTC) before either registration |
-| Registrations | `e533547` (model, 07:54 UTC) and `d57deb3` (backtest, 07:55 UTC), each in its own commit, after the code and before any fit |
-| Selection | `select` on 2021-22 and 2022-23 only; committed `47c9b95` (08:09 UTC) before the test read |
-| Test | One `test` read, a separate command; committed `b62abac`. `reproduce --part test` gives the same hash (as `--part selection` does for selection). The runner refuses a second `test` |
-| Game backtest | One read; committed `0f47941`; `reproduce` gives the same hash. R08's `courtlens-metric-backtest-v1` and its results are unchanged |
+| Data check | [`data-check.json`](data-check.json), committed with the code (`b760635`, 07:53 UTC) before either registration |
+| Registrations | `e75f957` (model, 07:54 UTC) and `aa9e201` (backtest, 07:55 UTC), each in its own commit, after the code and before any fit |
+| Selection | `select` on 2021-22 and 2022-23 only; committed `7d48ff4` (08:09 UTC) before the test read |
+| Test | One `test` read, a separate command; committed `74e319e`. `reproduce --part test` gives the same hash (as `--part selection` does for selection). The runner refuses a second `test` |
+| Game backtest | One read; committed `f8b2a65`; `reproduce` gives the same hash. R08's `courtlens-metric-backtest-v1` and its results are unchanged |
 | Serving | 2026-27 fit, map and 100 bootstrap refits. `reproduce --part serve` gives the same hash |
 | Page | `/research/lineup-model`, plain D13 build, verified on real data |
 

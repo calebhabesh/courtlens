@@ -410,7 +410,7 @@ next: handoff in [site-links-sl05-handoff.md](site-links-sl05-handoff.md).
 - **D10: the Live read has no season type**, so Live team links stay season-only (untouched).
   `/api/live?slate_date=…` games carry `status`, `teams`, `odds`, `prediction`; `calendar` is a
   list of dates; `domain/live.py` reads ESPN's season type only for team schedules.
-- **D11, half.** `player-bio-header.tsx` is committed (5ace395a) and clean: the header team (in the
+- **D11, half.** `player-bio-header.tsx` is committed (aa9be7ac) and clean: the header team (in the
   season it names: today's listing → the current season, "Last with" → the season he last played
   for it, observed → the current season) and the draft team (the season it drafted under) are now
   `TeamLink`s. `entity-link.css` exempts `.player-bio-facts` from the 40 px phone rule.

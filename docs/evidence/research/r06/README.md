@@ -14,7 +14,7 @@ and screenshots at 1440 and 390 on real data.
 
 1. **A fit ran before the Part A registration was committed.** A shell mistake (zsh did not split `$F`) made both commit
    commands fail, and the fit command ran anyway. That run printed only its results hash and timings; its output was
-   deleted unread. The code and registration were then committed unchanged (`5e26266`, `7b55a0c`) and the fit rerun. The
+   deleted unread. The code and registration were then committed unchanged (`444e25a`, `12e7fb5`) and the fit rerun. The
    reruns give the same hash the unread run printed, `e3bc1f28…`, so no result depends on the order, but the commit does
    not strictly precede the first run. Part B's run was chained to its commit.
 2. **The Part B registration has one wrong sentence.** It says free data has no closest-defender feed. NBA tracking's

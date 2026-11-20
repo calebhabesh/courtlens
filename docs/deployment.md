@@ -499,7 +499,7 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 Until 2026-11-18 each release was recorded here. Since then the Deploy workflow's runs and the
 `production` environment are the record; add an entry only for a deploy worth explaining.
 
-### 2026-11-18: release c495f520 (#125: logo beside the wordmark; filter bar fills when pinned)
+### 2026-11-18: release 4049b4e3 (#125: logo beside the wordmark; filter bar fills when pinned)
 
 - **What:** UI work made after #119 merged, until then only uncommitted changes in a local
   checkout. The logo now sits beside the wordmark on every branded card (`CourtLensLockup`). PNG
@@ -517,9 +517,9 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
   - `/api/health` ok;
   - `/` answers 307 to `/stats`;
   - Stats, Compare, Showcase and Team Compare serve the lockup in their HTML;
-  - `release.env` is c495f520 and `release.prev.env` is e6f582f5.
+  - `release.env` is 4049b4e3 and `release.prev.env` is 189322ac.
 
-### 2026-11-18: release e6f582f5 (#124: deploy safeguards; dnspython 2.9.2)
+### 2026-11-18: release 189322ac (#124: deploy safeguards; dnspython 2.9.2)
 
 - **What:** the safeguards above (VPS lock, staged files, Images runs named after their commit,
   workers stopped first). Dependabot alert 134 fixed (`dnspython` 2.9.1 to 2.9.2). No migration.
@@ -527,44 +527,44 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
 - **Deploy:** `deploy-vps.sh` took **128 s**, the first run of the new script, with no errors.
   All 8 services were healthy, `/api/health` was ok, and the API container runs dnspython 2.9.2.
 
-### 2026-11-18: release 8526bc02 (#120 faster CI, #123 README, #121 Open Graph image)
+### 2026-11-18: release 900311c2 (#120 faster CI, #123 README, #121 Open Graph image)
 
 - **What:** CI runs once per change, in parallel (#120, [CI](#ci)); new README screenshots and
   overview (#123); a new Open Graph image and site description (#121). No migration.
 - **CI:** #120's merge ran the new workflow in full (8 min); #123's merge reused its pull request's
   result (28 s); #121's ran in full after its branch was brought up to date (8 min). Images:
   2.5 min each.
-- **Deploy:** two deploys of 8526bc02 ran at once from the owner's PC.
+- **Deploy:** two deploys of 900311c2 ran at once from the owner's PC.
   - The first attempt failed after 42 s: the other deploy replaced the `jobs` container while it
     warmed the site, the old container was killed (exit 137), and `up --wait` aborted and rolled
     back. `jobs`, `demo-reset` and `win-probability-seal` were down for about a minute (1:37 AM
     Eastern, no games).
   - With those three stopped by hand, the retry took 91 s (171 Stats cohorts existing, 0 built).
   - The two deploys' last steps then collided on `release.env.next`, leaving no `release.env`. It
-    was restored at 06:41 UTC (`release.env` 8526bc02, `release.prev.env` 03b62cc7).
+    was restored at 06:41 UTC (`release.env` 900311c2, `release.prev.env` 1e01bf81).
   - The safeguards above came out of this.
-- **Also seen:** Images run 44251620872 was listed under 8526bc02 but built 448a018f (#122), which
+- **Also seen:** Images run 44251620872 was listed under 900311c2 but built 980d9c7d (#122), which
   the old gate would have accepted. The pull would still have failed safely, because the
-  `sha-8526bc02` tag didn't exist yet.
+  `sha-900311c2` tag didn't exist yet.
 - **Checked on the public URL:**
   - `/api/health` ok;
   - `/` answers 307 to `/stats`;
   - the page carries the new description and `og-image.png?v=2`, which is served (252 KB);
   - all 8 services are up on the new images.
 
-### 2026-11-18: release 03b62cc7 (#119: site polish; the project's last deploy)
+### 2026-11-18: release 1e01bf81 (#119: site polish; the project's last deploy)
 
-- **What:** the owner's site-polish pass. Stats shows as soon as it arrives (80a7a1ce), and pages
-  across the site do too (2af54f00): loaders only on player pages, Data Status, Methodology and live
+- **What:** the owner's site-polish pass. Stats shows as soon as it arrives (d914e196), and pages
+  across the site do too (ff4b45b4): loaders only on player pages, Data Status, Methodology and live
   games; `/` is a config redirect to `/stats`; no route fade; images start loading once the page is
   idle; header values hydrate as the server rendered them. Also the Deep Navy palette (design
   language v1.4), Stats trend views, Ask's New Chat flow and contract bracket fixes. No migration;
   nothing under `deploy/` changed.
 - **CI needed three passes on the PR.**
   - The warm crawl still listed `/` and checked readiness on it. It does not follow redirects, so
-    on the VPS it would have waited forever; both now use `/stats` (aac2cd78).
+    on the VPS it would have waited forever; both now use `/stats` (87108651).
   - The visual baselines now wait for idle image warming.
-  - The phone operation-gallery baseline was stale (palette and Shot Aftermath copy; b722a36c).
+  - The phone operation-gallery baseline was stale (palette and Shot Aftermath copy; f9727050).
 - **Deploy:** `deploy-vps.sh` took **118 s** (06:05:26 to 06:07:24 UTC), after CI and Images
   passed on the merge commit. The Stats cohort warm-up found 171 existing, built 0 and pruned 3.
   Disk: 136 GB free of 193.
@@ -577,7 +577,7 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
   so was the branch left from the merged #108. `research-r16` (R16, cut 2026-11-13) was saved to a
   local bundle and deleted.
 
-### 2026-11-16 (evening of 2026-11-15 Eastern): release fd416ef0 (#110: site improvements and the speed plan)
+### 2026-11-16 (evening of 2026-11-15 Eastern): release caabff1c (#110: site improvements and the speed plan)
 
 - **What:** search, provisional positions, season impact on the VPS, player-page contracts with
   Wikipedia terms, the player header, site links, loading skeletons, speed plan SP00–SP08 (read
@@ -613,7 +613,7 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
 - **Next deploy:** any green main commit from 9:00 AM to noon Eastern carries the same settings;
   nothing else changes on the site.
 
-### 2026-11-13: releases 6ad70cbd (#104) and c7d74e8a (#105), W7b on the VPS
+### 2026-11-13: releases 5a85f584 (#104) and b13feb46 (#105), W7b on the VPS
 
 - **What:** the own read leads (W-D16), the non-linear test (W-D17), the Win Probability page and Live cards (#101 to #103), the `jobs` service and deploys that no longer copy data (W7), grading right after each game, and the image fixes the jobs needed (the dbt project path, a writable dbt target, the sealed docs the fits check).
 - **Images** ran by themselves after CI on both merges; no hand dispatch.
@@ -621,13 +621,13 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
 - **After the deploy:** the PC's push, roster and daily timers removed; the VPS's daily refresh published a release equal to the PC's (counts in the v4 progress log, W7b entry).
 - **Checked on the public URL:** `/api/health` ok, `/research/win-probability` and `/stats` load, `/api/job-health` lists five jobs, `POST /api/win-probability` gets 403.
 
-### 2026-11-12: release ae2bbf12 (seals 5 minutes before tip, #95; legacy-brand test, #94)
+### 2026-11-12: release 22483da3 (seals 5 minutes before tip, #95; legacy-brand test, #94)
 
 - **What:** the seal service runs at :25 and :55 Eastern instead of :00 and :30, so each game's last seal is 5 minutes before its tip, not 30 (a protocol note records it).
 - **Why Images was started by hand:** the backend job is green again (#94), but the dashboard job failed on the same 2 R10 Wingspan Playwright tests as the morning run. The hand-started Images run (43272196653) passed.
 - **Deploy:** no Stats cohorts built (171 existing); 158 GB free. The seal service's first run (17:45:32Z) sealed nothing new and set its next run to 17:55:00Z; `/api/health` ok.
 
-### 2026-11-12: release 982953a7 (Win Probability v4 W2 part B, the cutover)
+### 2026-11-12: release 6b42b5b6 (Win Probability v4 W2 part B, the cutover)
 
 - **What:** the `win-probability-seal` service; seals and scoring now run on the VPS (#92). The PC only pushes inputs (`scripts/win-probability-push.sh`) and pulls the bundle back.
 - **Why Images was started by hand:** Images runs only when CI succeeds. CI failed on the known legacy-brand test (fixed in #94) and, on the first run, on 2 flaky R10 Wingspan Playwright tests that passed when re-run. The hand-started Images run (43244641923) passed.
@@ -638,7 +638,7 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
 - **The PC:** `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false` in `.env`; `courtlens-win-probability-push` installed. Its first run pushed the inputs and pulled the VPS's seal back.
 - **Checked on the public URL:** `/api/health` ok; `/api/win-probability` serves the Original with 63 prospective games through 2026-11-11; `/research/win-probability` loads; `POST /api/win-probability` gets Caddy's 403.
 
-### 2026-11-11: release e2d3f353 (finish plan F04 and F05)
+### 2026-11-11: release 657fd553 (finish plan F04 and F05)
 
 - **What:** accounts, the one-click demo account and favourite players (#87), and the published Win Probability upgrade result, not adopted (#88).
 - **Why Images was started by hand:** GitHub-hosted runners couldn't resolve Ubuntu's mirrors, so main's CI failed before running tests and Images was skipped. The owner chose to merge on local evidence. The hand-started Images run (43066801122) passed.
@@ -656,15 +656,15 @@ Until 2026-11-18 each release was recorded here. Since then the Deploy workflow'
   - Sign-out clears the session.
   - `/api/win-probability` returns `upgrade.adopted: false`.
 
-### 2026-11-11: releases 5ba841b5 and 20e2af41 (finish plan F00–F02)
+### 2026-11-11: releases d6659d89 and 5f5b1d1f (finish plan F00–F02)
 
-- **5ba841b5** (PR #83): pins `gemini-3.5-flash-lite` and a 45 s turn limit for public Ask. Deployed on the owner's instruction although main CI failed three times on URL-timing flakes in unrelated specs; Images had passed.
-- **20e2af41** (#84 prompt v3, #85 Shot Aftermath extras): CI and Images green. `deploy-vps.sh` stored no new Stats cohorts (171 existing); 158 GB free.
+- **d6659d89** (PR #83): pins `gemini-3.5-flash-lite` and a 45 s turn limit for public Ask. Deployed on the owner's instruction although main CI failed three times on URL-timing flakes in unrelated specs; Images had passed.
+- **5f5b1d1f** (#84 prompt v3, #85 Shot Aftermath extras): CI and Images green. `deploy-vps.sh` stored no new Stats cohorts (171 existing); 158 GB free.
 - **Public Ask check:** one real question answered in 12.7 s, the counter went 3 → 2, the asker lists their own thread and a stranger none, and deletes and cross-site writes get 403.
 
-### 2026-11-10: release 569062bf (RD16, PR #79)
+### 2026-11-10: release 84b1eadc (RD16, PR #79)
 
-Points Forecasts with the Evaluation Archive as its tab (research through the RD16 approval, c298ff6e),
+Points Forecasts with the Evaluation Archive as its tab (research through the RD16 approval, 8ab7f192),
 plus the e2e and frozen-identifier test fixes (#78, #79). Frontend only: same database, serving files
 and pins; `deploy-vps.sh` took 57 s and stored no new Stats cohorts (171 existing). Main CI and Images
 passed on the merge commit. The old 2026-10-13 database (`courtlens_prev`) was dropped on the owner's
@@ -676,7 +676,7 @@ endpoints are byte-identical to the local API; writes get Caddy's 403; Planner r
 API 2.0 GiB of 3 GiB (every page had been served since the earlier deploy), db 0.6 of 2 GiB,
 dashboard 124 MiB; disk 35 GB used of 193 GB.
 
-### 2026-11-10: release 060e8d4a (research merged, PR #77)
+### 2026-11-10: release e63dac97 (research merged, PR #77)
 
 Replaced 121bfa5d (2026-10-14). The demo database was replaced, not migrated: the 2026-10-13
 snapshot had 1 possession row (local 2.9M), games through 2026-06-13 (local 2026-11-09) and nothing
@@ -688,7 +688,7 @@ Cutover stopped the API and dashboard, renamed `courtlens` to `courtlens_prev` a
 `courtlens`, then ran `scripts/deploy-vps.sh` (105 s; Stats cohorts already stored: 171 existing, 0 built).
 The restored database is 17 GB.
 
-The Images run was dispatched by hand: main CI on 060e8d4a failed twice on a Wingspan e2e timing flake
+The Images run was dispatched by hand: main CI on e63dac97 failed twice on a Wingspan e2e timing flake
 (fixed in PR #78) while its tree (`bcc395cb`) was byte-identical to the PR merge tree that passed every CI
 job (run 42861543674).
 

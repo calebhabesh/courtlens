@@ -1,6 +1,6 @@
 # Design 18 — Six-Factor RAPM redesign (Research design phase, page 1)
 
-Measured 2026-11-06 on branch `design-18` from `research` (`b75c624`). Parents: [Research progress](../../../research-progress.md),
+Measured 2026-11-06 on branch `design-18` from `research` (`fe6886f`). Parents: [Research progress](../../../research-progress.md),
 [Research handoff](../../../research-plan.md) D13, [alignment catalog](../../../alignment-catalog.md) row 18. Page:
 `/research/rapm/six-factor`. **Awaiting the owner.** Only the owner marks ✅.
 

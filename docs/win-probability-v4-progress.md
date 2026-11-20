@@ -21,7 +21,7 @@ Facts measured for the plan, on the owner's PC:
 
 The owner approved the plan and the registration text ("approved, commit the plan and registration
 on a branch"). `courtlens-win-probability-v4` was committed alone, before any fit, on branch
-`feat/win-probability-v4`: commit `fa2fff346c9a689bba05cb1217bea25e435d6eeb`, content hash
+`feat/win-probability-v4`: commit `889cebfc362d7fd9269cd78a18571e82a7bd44bf`, content hash
 `654b26bab5ee149999f69934e7cdcf288dafd31985cb2d375a32754972225085`, `registered_on` 2026-11-11.
 
 Still owed for W0: push the branch before W1 starts, so the registration is dated publicly before
@@ -44,7 +44,7 @@ four `.gitkeep` files set skip-worktree). New files only: `evaluation/win_probab
   matched. Games without a line: 10, 1, 1, 0, 0, 0 (2020-21 to 2025-26).
 - **Stage S** (2023-24): w = 0.720 on 2022-23 (1,228 games; regression check line 0.740, own
   0.194). K1 0.3971, K2 0.3969, Original 0.4036. K2 against K1 +0.0002 (90% −0.0006 to +0.0009):
-  **K1 kept.** Selection log committed and pushed (38790e71) before stage C. 1 min 52 s, 2.4 GB.
+  **K1 kept.** Selection log committed and pushed (548864a7) before stage C. 1 min 52 s, 2.4 GB.
 - **Stage C** (2024-25 and 2025-26, read once; 19 s, 633 MB): w = 0.906 on 2022-23 and 2023-24
   (2,444 games; regression check line 0.905, own 0.102). Log loss 0.3938 against the Original's
   0.4028. **D1 passes**: +0.0090 (95% +0.0056 to +0.0126). **D2 passes**: squared error +12.39
@@ -106,7 +106,7 @@ setting; `deploy-vps.sh` no longer mirrors `derived/win-probability-serving` and
   so the service runs as `1001:1001`. Box files 2025 to 2027, ratings and the roster bundle are
   present; a dry-run push shows them current (only the roster heartbeat differed). No
   `raw/espn-wp` yet (the deploy creates it). 159 GB free of 193 GB; 20 GB of 24 GB memory
-  available; release e2d3f353.
+  available; release 657fd553.
 - **Schedule.** One run at container start, 09:00 Eastern, then every 30 minutes from noon while a
   run lands before the day's last scheduled tip (tested across the March clock change).
 - **Resilience.** A scoring failure (an odd ESPN summary, say) is reported as `score_error` and the
@@ -179,14 +179,14 @@ Nothing frozen, nothing marked ✅.
 
 - **Gate 0.** The PC's `refresh-daily` ran 08:35–08:46 ET and succeeded; it sealed today locally
   (v1, 13:46:34Z) as before.
-- **Merge.** #92 merged at 13:52Z as `982953a7`. CI's first run failed in the dashboard job as well
-  (2 Playwright tests in the R10 Wingspan calculator spec; the same job failed on `8401bba3` and
+- **Merge.** #92 merged at 13:52Z as `6b42b5b6`. CI's first run failed in the dashboard job as well
+  (2 Playwright tests in the R10 Wingspan calculator spec; the same job failed on `9b697444` and
   passed on the runs either side), so Images was skipped and the session stopped. With the owner
   present: the failed jobs were re-run (dashboard passed; backend again only
   `test_no_unexplained_legacy_brand_references`), and Images was dispatched by hand (run
-  43244641923, success), as for e2d3f353.
+  43244641923, success), as for 657fd553.
 - **Push and deploy.** The PC's serving bundle was pushed once (no `--delete`), then
-  `scripts/deploy-vps.sh` from the worktree at `origin/main` deployed release `982953a7` (10:25 ET).
+  `scripts/deploy-vps.sh` from the worktree at `origin/main` deployed release `6b42b5b6` (10:25 ET).
 - **The VPS seal.** The service's first run (15:25:07Z) sealed all 4 of today's games (v2, every
   game with a line): `pregame/2026-11-12.4fada14d….json`. Next run noon ET.
 - **Scoring check.** A one-off `docker compose run --rm` re-scored 2026-11-11's 10 games on copies
@@ -218,7 +218,7 @@ from the seals. Not marked ✅: only the owner does that.
 - **Freeze.** `evaluation/research/frozen/courtlens-win-probability-v4.json` (manifest sha
   `ac2c4701`), written by `evaluation/win_probability_v4_freeze.py` with the pin test
   `tests/unit/test_win_probability_v4_freeze.py` (PR #96). `frozen_at` 2026-11-12T17:00:42Z;
-  commit `4dac3553` pushed **2026-11-12T17:14:57Z**, the plan's freeze time. K1 at w = 1.0
+  commit `0f5a39db` pushed **2026-11-12T17:14:57Z**, the plan's freeze time. K1 at w = 1.0
   (unclipped 1.0115) on the Original's manifest `b2b0db82` and its three model files, unchanged.
   The manifest records the three freeze checks (ESPN-state parity, p95 21 ms, arm64 2.2e-16 over
   1,902 states, limit 1e-9) and the hashes of the five evidence files. The freeze refuses a failed
@@ -227,7 +227,7 @@ from the seals. Not marked ✅: only the owner does that.
 - **First slate that counts.** By the registration, 2026-27 regular-season games tipping after the
   freeze that have a seal: first 401909976 (TOR @ PHI) and 401909977 (DET @ WAS), tip
   2026-11-13T00:00Z. The VPS's noon run (17:00:03Z) was clean: 4 games sealed, each with a line.
-- **Seal times (owner's decision, PR #95, release `ae2bbf12`).** Runs moved from :00/:30 to
+- **Seal times (owner's decision, PR #95, release `22483da3`).** Runs moved from :00/:30 to
   :25/:55 Eastern. Tips are on the hour or half hour, so the run at a tip's own time had landed
   after it and each game's last seal was 30 minutes old, before most game-time decisions (the
   league's injury report updates every 15 minutes to tip-off). Now it is 5 minutes old. The rule
@@ -435,14 +435,14 @@ followed by B8 to B11.
 
 ## 2026-11-13 — W7b B1, B6–B11 on the VPS; grading moved to right after each game
 
-With the owner at the PC from about 11:15 ET. Releases `6ad70cbd` (#104) and `c7d74e8a` (#105)
+With the owner at the PC from about 11:15 ET. Releases `5a85f584` (#104) and `b13feb46` (#105)
 deployed. Nothing marked ✅.
 
 - **First grades (09:00 ET run, 14:00:03Z).** 2026-11-12's 4 games scored for both models, no
   error: the own read, the Market-informed model and the line each called 4 of 4.
 - **B6, deploys stop copying data.** Before and after each deploy, nothing under `data/` changed
   except the seal service's and the jobs' own files (`find data -newer <marker>`).
-- **B7, the `jobs` service** started with `6ad70cbd`. Each job recorded a first-seen baseline and
+- **B7, the `jobs` service** started with `5a85f584`. Each job recorded a first-seen baseline and
   waits for its next scheduled time; `GET /api/job-health` serves them.
 - **B1.** The PC's push unit removed at 16:19Z.
 - **B8, rosters.** The VPS (157 s) and the PC (154 s, 211 MB) ran at the same minute. Same 522
@@ -456,7 +456,7 @@ deployed. Nothing marked ✅.
   `/usr/local/lib/python3.12/warehouse`. Fixed in #105 (`warehouse_dir()`, plus
   `DBT_TARGET_PATH`/`DBT_LOG_PATH`, since uid 1001 can't write the image's `/app/warehouse`).
   The failed attempt had imported a dataset that was never published; the next publish retired
-  it. With `c7d74e8a`: 828 s, 1.1 GB peak, dbt 93 of 93, 171 Stats cohorts built. **Equal to the
+  it. With `b13feb46`: 828 s, 1.1 GB peak, dbt 93 of 93, 171 Stats cohorts built. **Equal to the
   PC's release:** 32,925 mart rows; 2026-27 regular season 531 rows, 39,416 points, 15,227
   rebounds, 9,100 assists, 83,898.8 minutes; 2,689,351 player games. Box-score CSVs identical by
   hash. DARKO: 528 players, ratings identical (only ids and timestamps differ). Wikipedia bundle
@@ -475,7 +475,7 @@ deployed. Nothing marked ✅.
 - **Grading right after each game** (the owner's decision, #105). The seal job scores today's date
   and keeps running at :25 and :55 Eastern after the last tip while a game that tipped within six
   hours is ungraded; 09:00 stays as a catch-up. Fifth protocol note `grading_time_moved`. The
-  first run in `c7d74e8a` (18:19:50Z) saw today's 9 games as not final and reported
+  first run in `b13feb46` (18:19:50Z) saw today's 9 games as not final and reported
   `awaiting_grade: []`.
 
 Still on the PC: the lineups, Metric Backtest and season impact timers (W7c C1) and the scratch

@@ -7,8 +7,8 @@ Measured 2026-11-06 on branch `research-r09`. Parent: [Research progress](../../
 | Part | State |
 | --- | --- |
 | Draft lists | Every class 1966–2026, pick numbers 1..N with no gap; 6,581 picks |
-| Data check | [`data-check.json`](data-check.json), committed with the code (`92ced6e`) before the registration |
-| Registration | Commit `b502849`, 2026-11-06 06:37 UTC, after the code commit (which cannot run without it) |
+| Data check | [`data-check.json`](data-check.json), committed with the code (`ed9283a`) before the registration |
+| Registration | Commit `76d6568`, 2026-11-06 06:37 UTC, after the code commit (which cannot run without it) |
 | Results | One `test` read right after the registration commit, as a separate command. Two `reproduce` runs give the same hash. The runner refuses a second `test` |
 | Rookie tracker | Served live by the API with the registered rule; checked on the published 2026-27 games through 2026-11-04 |
 | Page | `/draft`, plain D13 build, verified on real data |

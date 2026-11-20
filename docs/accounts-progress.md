@@ -38,12 +38,12 @@ link; not deployed.
 
 ## 2026-11-16: deployed
 
-- PR #114 (accounts + the Ask chat polish) merged as `7e32bfb4`; CI, Images and `deploy-vps.sh`
+- PR #114 (accounts + the Ask chat polish) merged as `dd9daa42`; CI, Images and `deploy-vps.sh`
   passed; migration applied; demo seeded. CI had first failed only on the read-cache route
-  classes for the two new auth GETs (fixed in `481fc211`).
+  classes for the two new auth GETs (fixed in `a7322c9b`).
 - Live check: pages 200, signed-out Ask write refused with the sign-in message. It also found
   Google redirects going to `https://courtlens.calebhabesh.com:3000/` (a port-less Host assigned
-  to the internal URL keeps its port). Fixed in PR #115 (`71b9eea4`), deployed; the redirect now
+  to the internal URL keeps its port). Fixed in PR #115 (`c9988134`), deployed; the redirect now
   lands on the public origin.
 - **Open:** the VPS `secrets.env` has no Google or SMTP values yet, so production offers the demo
   account only (`/api/account/options` reports `google: false, sign_up: false`).

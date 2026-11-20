@@ -7,9 +7,9 @@ Measured 2026-11-05 on branch `research-r08`. Parent: [Research progress](../../
 | Part | State |
 | --- | --- |
 | Data check | Done before registering: counts, dates and two recompute checks; no margin was read for any candidate |
-| Registration | Commit `b57a878`, 2026-11-05 22:51 UTC, after the code commit `92a53f1` (which cannot score anything without it) |
+| Registration | Commit `f45d814`, 2026-11-05 22:51 UTC, after the code commit `cb803a3` (which cannot score anything without it) |
 | Backtest | Read once, 22:51:31 UTC. Two `reproduce` runs give the same hash. The runner refuses a second `test` |
-| 2026-27 freeze | 2026-11-05 22:52:08 UTC, manifest `8692e886a1f13…`, committed in `b443a3c` |
+| 2026-27 freeze | 2026-11-05 22:52:08 UTC, manifest `8692e886a1f13…`, committed in `fa8dd66` |
 | Prospective score | **Unverified.** No game has tipped since the freeze. First tip 2026-11-06 02:00 UTC. The scorer is built and has scored 120 real 2026-27 games, all hindsight |
 | Timer | **Not installed or enabled.** Commands below |
 | Update, 2026-11-09 | **First prospective score:** 25 prospective and 121 hindsight games through Nov 8, 2026 (`refresh-metric-backtest --force`, on the owner's instruction). No player metric's RMSE gain over Team net excludes zero on those 25 games, and the backtest verdict never changes from them. The rows above stand as written on 2026-11-05. **Timer now installed:** `courtlens-metric-backtest`, in `scripts/install_data_refresh.sh`, firing daily and scoring when the last score is at least 7 days old. See [RD10](../design-RD10/README.md) |

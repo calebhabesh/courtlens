@@ -1,6 +1,6 @@
 # RD03 — zTS, round 1: the reference site's zTS explainer
 
-Measured 2026-11-07 on branch `research` from `20311ba`. Parents: [Research design catalog](../../../research-design-catalog.md)
+Measured 2026-11-07 on branch `research` from `263c397`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD03, [Research progress](../../../research-progress.md), R04 analysis in [r04](../r04/README.md). Page: `/research/zts`.
 **Awaiting the owner.** Only the owner marks ✅.
 

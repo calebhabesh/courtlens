@@ -8,7 +8,7 @@ The owner cut RD19 ("Yes cut it"), approved Stats follow-up 84 ("Approve this.")
 
 ## 2026-11-11 — F00 first live check
 
-Deployed 295226ce (PR #81 public Ask, PR #82 https origin behind TLS and Caddy restart on config change). Through the public site: the question was accepted, the counter went 3 → 2, the asker lists their own thread, a stranger lists none, a cross-site write gets 403, deletes are refused. The answer itself timed out: production used the agent's default `gemini-3.8-flash` (Google returned a 504 on its second call), and the first stats query took 15.5 s on a cold VPS cache. The 60 s turn limit also outlasted the proxy's 55 s, so the browser got an empty error rather than the partial answer. Fix: pin `gemini-3.5-flash-lite` and a 45 s turn limit in the production compose.
+Deployed 16140a7d (PR #81 public Ask, PR #82 https origin behind TLS and Caddy restart on config change). Through the public site: the question was accepted, the counter went 3 → 2, the asker lists their own thread, a stranger lists none, a cross-site write gets 403, deletes are refused. The answer itself timed out: production used the agent's default `gemini-3.8-flash` (Google returned a 504 on its second call), and the first stats query took 15.5 s on a cold VPS cache. The 60 s turn limit also outlasted the proxy's 55 s, so the browser got an empty error rather than the partial answer. Fix: pin `gemini-3.5-flash-lite` and a 45 s turn limit in the production compose.
 
 ## 2026-11-11 — F01 Ask answers history questions directly
 
@@ -42,9 +42,9 @@ Evidence: [`f02`](evidence/finish/f02/).
 ## 2026-11-11 — F00 deploy queue finished; public Ask checked live
 
 **Deploys.**
-- 5ba841b5 (PR #83: the finish plan, and the demo's pin to `gemini-3.5-flash-lite` with a 45 s turn limit). Main CI failed three times on the same URL-timing flakes (two Wingspan specs, then also a zTS Defense URL check; 630 passed). Images had passed. The owner chose "Deploy anyway", as for 060e8d4a.
+- d6659d89 (PR #83: the finish plan, and the demo's pin to `gemini-3.5-flash-lite` with a 45 s turn limit). Main CI failed three times on the same URL-timing flakes (two Wingspan specs, then also a zTS Defense URL check; 630 passed). Images had passed. The owner chose "Deploy anyway", as for e63dac97.
 - Then #84 (F01, prompt v3) and #85 (F02) were merged in that order.
-- 20e2af41: main CI and Images both green. Deployed in about 2 minutes; 171 Stats cohorts already stored; 158 GB free.
+- 5f5b1d1f: main CI and Images both green. Deployed in about 2 minutes; 171 Stats cohorts already stored; 158 GB free.
 
 **One real question** through `https://courtlens.calebhabesh.com/api/assistant-v2/turn` (browser User-Agent, the site's Origin, a cookie jar): "Who won the 2016 NBA Finals, and what made it historic?"
 - Answered correctly in 12.7 s: 2 provider calls on `gemini-3.5-flash-lite`, prompt v3, no tool errors.
@@ -124,7 +124,7 @@ Evidence: [`f04`](evidence/finish/f04/README.md). 👀 for the owner's look.
 
 **F04.** #86 and #87 merged on the owner's instruction ("merge them now on local evidence"). GitHub-hosted runners couldn't resolve Ubuntu's package mirrors from about 13:48 UTC (actions/runner-images #15296, #15297), so the jobs that install system packages failed before running tests on every attempt. Every check that ran had passed. The owner's checkout is on main and the local database is migrated to `3c4d9e1f0a21`. Not deployed: the VPS needs `COURTLENS_ACCOUNT_PROXY_TOKEN` first.
 
-**F05.** Owner decisions are recorded in the plan: the market stays a benchmark, and the gates read the same test games. [`courtlens-win-probability-v3`](../evaluation/research/registrations/courtlens-win-probability-v3.json) was committed and pushed (f25e25ee) before any fit.
+**F05.** Owner decisions are recorded in the plan: the market stays a benchmark, and the gates read the same test games. [`courtlens-win-probability-v3`](../evaluation/research/registrations/courtlens-win-probability-v3.json) was committed and pushed (b9c50f98) before any fit.
 
 - **Selection on 2023-24:**
   - B, the frozen recipe refitted on train through 2022-23, is level with the frozen model.

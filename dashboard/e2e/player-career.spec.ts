@@ -88,7 +88,7 @@ test("the header summarises the player and the summary card has no accent edge",
   await expect(facts).toContainText("BornFeb 10, 1998 (28)");
   await expect(facts).toContainText("6′8″ · 220 lb");
   await expect(facts).toContainText("7th season");
-  // The pick, then the drafting team by its full name (5ace395a), not its code.
+  // The pick, then the drafting team by its full name (aa9be7ac), not its code.
   await expect(facts).toContainText("2018 · R1 #9");
   await expect(facts).toContainText("Toronto Raptors");
   await expect(facts).toContainText("Fixtureland");

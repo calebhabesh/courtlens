@@ -4,11 +4,11 @@ Measured 2026-11-06 on branch `research-r10`. Parent: [Research progress](../../
 
 | Part | Registration | Results |
 | --- | --- | --- |
-| Wingspan beside DARKO D-DPM | [`courtlens-wingspan-ddpm-v1`](../../../../evaluation/research/registrations/courtlens-wingspan-ddpm-v1.json), `28ec598bd611b5b6…`, commit `7b13b2c` | [`61984cb09d874167…`](../../../../evaluation/research/frozen/courtlens-wingspan-ddpm-v1.json), commit `1b8771c` |
-| Four-factor inputs (v1, defective) | [`courtlens-four-factors-inputs-v1`](../../../../evaluation/research/registrations/courtlens-four-factors-inputs-v1.json), `50cc845ba87c456a…`, commit `7b13b2c` | [`d841d5647f28fcb8…`](../../../../evaluation/research/frozen/courtlens-four-factors-inputs-v1.json), commit `81e90b8`, kept as read |
-| Four-factor inputs (v2, served) | [`courtlens-four-factors-inputs-v2`](../../../../evaluation/research/registrations/courtlens-four-factors-inputs-v2.json), `4a4b1d00af516d2b…`, commit `f4defed` | [`283e6554ecfd3b01…`](../../../../evaluation/research/frozen/courtlens-four-factors-inputs-v2.json), commit `12e9ad8` |
+| Wingspan beside DARKO D-DPM | [`courtlens-wingspan-ddpm-v1`](../../../../evaluation/research/registrations/courtlens-wingspan-ddpm-v1.json), `28ec598bd611b5b6…`, commit `8f444bc` | [`61984cb09d874167…`](../../../../evaluation/research/frozen/courtlens-wingspan-ddpm-v1.json), commit `a167505` |
+| Four-factor inputs (v1, defective) | [`courtlens-four-factors-inputs-v1`](../../../../evaluation/research/registrations/courtlens-four-factors-inputs-v1.json), `50cc845ba87c456a…`, commit `8f444bc` | [`d841d5647f28fcb8…`](../../../../evaluation/research/frozen/courtlens-four-factors-inputs-v1.json), commit `54f0be7`, kept as read |
+| Four-factor inputs (v2, served) | [`courtlens-four-factors-inputs-v2`](../../../../evaluation/research/registrations/courtlens-four-factors-inputs-v2.json), `4a4b1d00af516d2b…`, commit `ea625af` | [`283e6554ecfd3b01…`](../../../../evaluation/research/frozen/courtlens-four-factors-inputs-v2.json), commit `5f85fd6` |
 
-Order: code and [`data-check.json`](data-check.json) (`9a1e498`) → both registrations (`7b13b2c`) → one `test` read each, as separate commands → results commits; then v2 code and [`four-factors-check-v2.json`](four-factors-check-v2.json) (`50ed5d1`) → v2 registration (`f4defed`) → one `test` read → results (`12e9ad8`). Each `reproduce` was run twice and gave the frozen hash every time.
+Order: code and [`data-check.json`](data-check.json) (`71a1290`) → both registrations (`8f444bc`) → one `test` read each, as separate commands → results commits; then v2 code and [`four-factors-check-v2.json`](four-factors-check-v2.json) (`55fee5f`) → v2 registration (`ea625af`) → one `test` read → results (`5f85fd6`). Each `reproduce` was run twice and gave the frozen hash every time.
 
 ## Content reference
 

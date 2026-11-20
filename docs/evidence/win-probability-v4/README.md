@@ -2,7 +2,7 @@
 
 Measured 2026-11-11 on branch `feat/win-probability-v4`. Registration:
 [`courtlens-win-probability-v4`](../../../evaluation/research/registrations/courtlens-win-probability-v4.json)
-(content hash `654b26bab5ee1499…`), committed (fa2fff34) and pushed before any fit. The reference
+(content hash `654b26bab5ee1499…`), committed (889cebfc) and pushed before any fit. The reference
 is the frozen served model `courtlens-win-probability-v2` (the page's Original model), frozen
 2026-11-04. It was not changed. Nothing was frozen or served; stage F is W3.
 
@@ -86,7 +86,7 @@ Check on K1's machinery: run with the own forecast in place of mu4, it reproduce
 saved 2023-24 probabilities to 5.6e-8 (they are stored as float32). On 2023-24 the pregame RMSE was
 13.887 for the own forecast, 13.555 for mu4 and 13.513 for the line.
 
-[`selection-log.json`](selection-log.json) was committed and pushed (38790e71) before stage C.
+[`selection-log.json`](selection-log.json) was committed and pushed (548864a7) before stage C.
 Stage C runs only when that log exists, its evidence copy is byte-identical to the stage S output,
 and the copy is committed. It refuses a second run: it writes its claim before reading any test
 season.

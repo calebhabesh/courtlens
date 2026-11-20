@@ -4,7 +4,7 @@ W7a's survey and the exact W7b and W7c steps, with how to go back. Written 2026-
 approves this before W7b.** Nothing live changed in W7a: the source test ran in a one-off
 container with no database and kept nothing.
 
-## 1. The jobs (from the code, 2026-11-12, main `dd170298`)
+## 1. The jobs (from the code, 2026-11-12, main `7c44c061`)
 
 Timers come from `scripts/install_data_refresh.sh` (times UTC) and
 `scripts/install_win_probability_push.sh`.

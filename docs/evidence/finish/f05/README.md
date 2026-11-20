@@ -2,7 +2,7 @@
 
 Measured 2026-11-11 on branch `feat/f05-win-probability-v3`. Registration:
 [`courtlens-win-probability-v3`](../../../../evaluation/research/registrations/courtlens-win-probability-v3.json)
-(content hash `c9f79a11454e6ca0…`), committed and pushed (f25e25ee) before any fit. The served
+(content hash `c9f79a11454e6ca0…`), committed and pushed (b9c50f98) before any fit. The served
 model is `courtlens-win-probability-v2`, frozen 2026-11-04, which the page calls v1. It was not
 changed.
 
@@ -51,7 +51,7 @@ By season: 2024-25 +0.0009 (−0.0011 to +0.0030); 2025-26 +0.0005 (−0.0018 to
 | P3: overtime specialist | Overtime states, 58 games | −0.0015 (−0.0089 to +0.0057) | Not kept |
 | P4: final fit through 2023-24 | Registered procedure, not selected | | Done |
 
-[`ladder-before-test.json`](ladder-before-test.json) was committed (1d914635) before the test read. The test stage refuses to run twice.
+[`ladder-before-test.json`](ladder-before-test.json) was committed (e0c0f0ae) before the test read. The test stage refuses to run twice.
 
 ## Inputs and checks
 

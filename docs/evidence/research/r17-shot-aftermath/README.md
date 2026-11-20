@@ -7,8 +7,8 @@ Files here: [registration-receipt.json](registration-receipt.json), [data-check.
 ## Order of work
 
 1. Content check, counts only (no points read): [`design-RD18/content-check.json`](../design-RD18/content-check.json).
-2. Owner approved the numbered method; registered and committed (`3ba98eaa`), content SHA-256 `6574f38e10b1f7baed91d22bf072bfc31ff160de2425f902613fc9d0bfc2b1e8`.
-3. Rules, runner and synthetic tests committed (`0acd7511`) before the first real run.
+2. Owner approved the numbered method; registered and committed (`5888036c`), content SHA-256 `6574f38e10b1f7baed91d22bf072bfc31ff160de2425f902613fc9d0bfc2b1e8`.
+3. Rules, runner and synthetic tests committed (`072d5cda`) before the first real run.
 4. Two real runs, byte-identical: results SHA-256 `2017bc0940f016644ff9a9059caf186e08ee7e1109d4ad331a9ecad5dbb900f4`, 17.8 s and 17.6 s, peak 689 MiB, one thread.
 5. Results read for the first time after both runs. Nothing changed after reading.
 

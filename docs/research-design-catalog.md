@@ -84,7 +84,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ## RD00 Six-Factor RAPM — ✅ approved by the owner (2026-11-07)
 
-Redesigned 2026-11-06 (design-18, `9e0bbab`); its nine instructions are in the alignment catalog, row 18.
+Redesigned 2026-11-06 (design-18, `161c513`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
 copied. Evidence: `docs/evidence/research/design-18/`, then `docs/evidence/research/design-RD00/`.
 
@@ -1109,7 +1109,7 @@ Instructions (owner, 2026-11-10, round 5; offered suggestions 3 and 6 as optiona
 
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).
 - **Waits for:** R16's results; then a page with accuracy, intervals, failure categories and per-tool errors.
-- **Cut (owner, 2026-11-10):** asked "WHat exactly is ask evaluation page? Should we even have this?", the owner chose to put Ask itself on the hosted demo with per-visitor and site-wide daily limits instead, then "Yes cut it". R16 stays unfinished on its branch (`research-r16`, dev 117/573, holdout unopened); its replay of the 214 recorded stats calls drove the stats-tool argument repair (1854a244).
+- **Cut (owner, 2026-11-10):** asked "WHat exactly is ask evaluation page? Should we even have this?", the owner chose to put Ask itself on the hosted demo with per-visitor and site-wide daily limits instead, then "Yes cut it". R16 stays unfinished on its branch (`research-r16`, dev 117/573, holdout unopened); its replay of the 214 recorded stats calls drove the stats-tool argument repair (781e5fa2).
 
 ## W4/W5 Win Probability v4 (Live cards, Pre-Game why, the page) — round 2 (2026-11-12)
 

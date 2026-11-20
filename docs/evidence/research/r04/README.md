@@ -20,7 +20,7 @@ The saved page is not committed.
 
 ## Registered first
 
-`courtlens-zts-validation-v1` (content `eaee785d…`) was committed on its own (`7de7b76`) before any zTS,
+`courtlens-zts-validation-v1` (content `eaee785d…`) was committed on its own (`532dc8c`) before any zTS,
 correlation or error existed. It fixes the FTA rule, the coverage and dropped-row rules, the minimums
 (200 TSA, 0.90 coverage), the weights, choice seasons (t = 2015-16 to 2017-18) and test seasons
 (predictive t = 2018-19 to 2024-25; tracking t = 2018-19 to 2025-26), the paired player-cluster bootstrap

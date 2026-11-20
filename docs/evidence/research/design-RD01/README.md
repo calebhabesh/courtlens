@@ -1,6 +1,6 @@
 # RD01 — Combine & Wingspan, round 1: one reference-style page
 
-Measured 2026-11-07 on branch `research` from `ec1fecc`. Parents: [Research design catalog](../../../research-design-catalog.md)
+Measured 2026-11-07 on branch `research` from `f366203`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD01, [Research progress](../../../research-progress.md), R10 data in [r10](../r10/README.md). Page: `/wingspan`.
 **Awaiting the owner.** Only the owner marks ✅.
 
@@ -92,7 +92,7 @@ sandbox deleted.
 
 ## Rounds 2 and 3 (owner, 2026-11-07)
 
-Measured 2026-11-07 on branch `research` from `3946a92`. Both rounds land in one commit: round 3's instructions arrived
+Measured 2026-11-07 on branch `research` from `b717e89`. Both rounds land in one commit: round 3's instructions arrived
 before round 2 was committed, and round 3 replaces most of round 2's table styling. **Awaiting the owner.**
 
 Instructions (verbatim in the [catalog](../../../research-design-catalog.md), RD01):
@@ -177,7 +177,7 @@ their own container), the owner's :8000 (auto-reloaded the API) and :3100 not re
 
 ## Round 4 — the tables' left edge and a centred search (owner, 2026-11-07)
 
-From `a1efb56`. Instructions: 15. the left-most columns of the static tables look broken ("what is this inset?"); 16. the
+From `17707d3`. Instructions: 15. the left-most columns of the static tables look broken ("what is this inset?"); 16. the
 graph's player search should be centred. Design only.
 
 | Before | After |

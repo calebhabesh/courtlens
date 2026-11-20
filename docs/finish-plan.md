@@ -24,7 +24,7 @@ Owner decisions, 2026-11-10:
 | F01 | Ask answers history questions directly | ✅ owner, 2026-11-13; merged (#84) and live 2026-11-11 |
 | F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | ✅ owner, 2026-11-13; merged (#85) and live 2026-11-11 |
 | F03 | Win Probability: uniform design pass (RD14) | ✅ owner, 2026-11-11 |
-| F04 | Simple accounts and a demo account; favourites saved per user | ✅ owner, 2026-11-13; merged (#87) 2026-11-11; deployed 2026-11-11 (e2d3f353) |
+| F04 | Simple accounts and a demo account; favourites saved per user | ✅ owner, 2026-11-13; merged (#87) 2026-11-11; deployed 2026-11-11 (657fd553) |
 | F05 | Win Probability model upgrade | ✅ owner, 2026-11-13; v3 measured 2026-11-11 and not adopted (A1 interval includes zero); superseded by the [Win Probability v4 plan](win-probability-v4-plan.md): v4 frozen 2026-11-12 and graded beside the Original after every game |
 
 ## F00 Public Ask live

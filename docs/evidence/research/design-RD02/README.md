@@ -1,6 +1,6 @@
 # RD02 — ORtg Calculator, round 1: the reference site's ORTG Lab
 
-Measured 2026-11-07 on branch `research` from `90e66ae`. Parents: [Research design catalog](../../../research-design-catalog.md)
+Measured 2026-11-07 on branch `research` from `5502d49`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD02, [Research progress](../../../research-progress.md), R10 data in [r10](../r10/README.md). Page: `/calculator`.
 **Awaiting the owner.** Only the owner marks ✅.
 

@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). SP08 built 2026-11-16: merged (#110), deployed (fd416ef0), final live table recorded. G1 ✅ owner 2026-11-15 after trying the live site; SP07 and SP08 ✅ owner 2026-11-15. The plan is finished.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). SP08 built 2026-11-16: merged (#110), deployed (caabff1c), final live table recorded. G1 ✅ owner 2026-11-15 after trying the live site; SP07 and SP08 ✅ owner 2026-11-15. The plan is finished.**
 
 **2026-11-18: reopened for search (SP09, SP10).** The owner found search slow on the live site. SP09 is the server side; SP10, moving search into the browser, waits until SP09 is live.
 
@@ -87,7 +87,7 @@ gate G2; any other may be overturned at gate G1.
   digits.
 - D1–D5 stand.
 - The stale `player-career.spec.ts:83` assertion (expects `2018 · R1 #9 · TOR`; the page has shown
-  the full team name since 5ace395a) is fixed in SP04's commit.
+  the full team name since aa9be7ac) is fixed in SP04's commit.
 
 ## Decided (owner, G2, 2026-11-15)
 
