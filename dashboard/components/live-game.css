@@ -363,3 +363,11 @@
   .live-shot-filter-photo { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--color-surface-3); object-fit: cover; }
   .live-court-logo { opacity: 0.85; }
 }
+
+/* The phone tap-target rule (`main a`, inline-flex in foundation) would show the banner's full team
+   name beside its code; the override lives in that layer so it wins. */
+@layer foundation {
+  @media (max-width: 640px) {
+    .live-banner-full { display: none; }
+  }
+}
