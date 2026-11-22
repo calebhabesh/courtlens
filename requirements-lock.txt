@@ -122,7 +122,7 @@ cryptography==50.0.2
 distro==1.9.0
 docstring-parser==0.18.0
 google-auth==2.62.0
-google-genai==2.34.0
+google-genai==3.6.1
 jiter==0.18.0
 openai==3.42.0
 pyasn1-modules==0.4.2
