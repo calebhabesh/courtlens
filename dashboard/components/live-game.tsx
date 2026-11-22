@@ -108,6 +108,7 @@ export function GameBanner({ game, index, backHref }: { game: LiveGame; index: n
     <div className="live-banner-board">
       {side(away)}
       <div className="live-banner-center">
+        {game.status === "scheduled" && <span className="live-banner-at" aria-hidden="true">at</span>}
         <p className="live-banner-status">{game.status === "in_progress" && <span className="live-dot" aria-hidden="true" />}{gameStatus(game)}</p>
         {played && <table className="live-banner-lines">
           <caption className="sr-only">Points by period</caption>

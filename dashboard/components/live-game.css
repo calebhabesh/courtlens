@@ -45,6 +45,10 @@
   .live-banner-win { width: 8px; height: 12px; background: var(--color-text); clip-path: polygon(0 0, 100% 50%, 0 100%); }
   .live-banner-team[data-side="away"] .live-banner-win { order: 2; transform: scaleX(-1); }
   .live-banner-center { display: grid; justify-items: center; gap: var(--space-1); }
+  /* Before tip-off the centre is free: a small "at" over the time, the pair centred and close together;
+     the heading says it to screen readers. */
+  .live-banner-center:has(> .live-banner-at) { gap: 0; }
+  .live-banner-at { color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 500; }
   .live-banner-status { display: inline-flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
   .live-banner-lines { border-collapse: collapse; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1.35; font-variant-numeric: tabular-nums; }
   .live-banner-lines th, .live-banner-lines td { padding: 0 var(--space-1); text-align: center; }
