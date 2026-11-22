@@ -14,6 +14,7 @@ import { PlayerPortrait } from "./player-portrait";
 import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { useFeed } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
+import { VenueTag } from "./venue-tag";
 import { Icon, type IconName } from "./ui/icon";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
 import { playerHref } from "@/lib/entity-links";
@@ -49,7 +50,7 @@ function Matchup({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
   const favoured = p >= 0.5 ? "home" : "away";
   const side = (team: LiveTeam, chance: number) => <span className="lp-side" data-side={team.side} data-favoured={team.side === favoured || undefined}>
     <TeamLogo team={logoTeam(team)} season={sides.season} size={72} />
-    <span className="lp-side-text"><span className="lp-side-name">{teamFullName(team, sides.season)}</span><strong className="lp-side-pct">{pct(chance)}</strong></span>
+    <span className="lp-side-text"><VenueTag side={team.side} /><span className="lp-side-name">{teamFullName(team, sides.season)}</span><strong className="lp-side-pct">{pct(chance)}</strong></span>
   </span>;
   return <div className="lp-matchup" data-favoured={favoured}>
     {side(sides.away, 1 - p)}
@@ -111,7 +112,7 @@ export function absence(cost: number | null, code: string): string {
 }
 
 function TeamHead({ team, sides, count }: { team: LiveTeam; sides: Sides; count?: ReactNode }) {
-  return <span className="lp-team-head" data-side={team.side}><TeamLogo team={logoTeam(team)} season={sides.season} size={32} /><strong>{teamFullName(team, sides.season)}</strong>{count != null && <span className="lp-count">{count}</span>}</span>;
+  return <span className="lp-team-head" data-side={team.side}><TeamLogo team={logoTeam(team)} season={sides.season} size={32} /><strong>{teamFullName(team, sides.season)}</strong><VenueTag side={team.side} />{count != null && <span className="lp-count">{count}</span>}</span>;
 }
 
 function OutList({ team, players, sides, scale }: { team: LiveTeam; players: WhyOutPlayer[] | undefined; sides: Sides; scale: number }) {

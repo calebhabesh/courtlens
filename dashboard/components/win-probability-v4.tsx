@@ -12,6 +12,7 @@ import { DateStrip } from "./live-board";
 import { teamColors } from "./live-game";
 import { logoTeam } from "./live-panel";
 import { TeamLogo } from "./team-logo";
+import { VenueTag } from "./venue-tag";
 import { Icon, type IconName } from "./ui/icon";
 import { PredictionBody } from "./live-prediction";
 import { ResearchSection } from "./research/research-page";
@@ -65,8 +66,9 @@ function TeamSide({ team, season, game, favoured }: { team: LiveTeam; season: st
   return <span className="wpc-team" data-side={team.side} data-favoured={favoured || undefined} data-lost={(game.status === "final" && team.winner === false) || undefined}>
     <TeamLogo team={logoTeam(team)} season={season} size={52} />
     <span className="wpc-team-text">
+      <VenueTag side={team.side} />
       <strong className="wpc-name" data-code={teamCode(team)}>{teamFullName(team, season)}</strong>
-      <span className="wpc-sub">{played ? <strong className="wpc-score">{team.score ?? "—"}</strong> : formatRecord(team.record) ?? (team.side === "home" ? "Home" : "Away")}</span>
+      {played ? <span className="wpc-sub"><strong className="wpc-score">{team.score ?? "—"}</strong></span> : formatRecord(team.record) && <span className="wpc-sub">{formatRecord(team.record)}</span>}
     </span>
   </span>;
 }

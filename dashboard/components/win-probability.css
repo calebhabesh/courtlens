@@ -162,6 +162,7 @@
   .wpc-team { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
   .wpc-team[data-side="home"] { flex-direction: row-reverse; text-align: end; }
   .wpc-team-text { display: grid; gap: var(--space-0-5); min-width: 0; }
+  .wpc-team[data-side="home"] .venue-tag { justify-self: end; }
   .wpc-name { font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; text-wrap: balance; }
   .wpc-sub { color: var(--color-text-tertiary); font: 500 var(--text-xs) / 1.3 var(--font-mono, ui-monospace, monospace); }
   .wpc-score { color: var(--color-text); font-size: var(--text-xl); line-height: 1.1; font-weight: 700; font-variant-numeric: tabular-nums; }

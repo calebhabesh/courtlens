@@ -13,6 +13,7 @@ import { logoTeam, Panel } from "./live-panel";
 import { DivisionStandings, GameFlow, Matchups, NewsPanel } from "./live-game-extras";
 import { HotkeyBadge } from "./live-board";
 import { TeamLogo } from "./team-logo";
+import { VenueTag } from "./venue-tag";
 import { Icon, type IconName } from "./ui/icon";
 import { PlayerPortrait } from "./player-portrait";
 import { teamRecord } from "./compare-player-slot";
@@ -80,17 +81,18 @@ export function GameBanner({ game, index, backHref }: { game: LiveGame; index: n
   const lost = (team: LiveTeam) => game.status === "final" && team.winner === false;
   const side = (team: LiveTeam) => {
     const venue = formatRecord(team.venue_record);
-    const label = team.side === "home" ? "Home" : "Away";
+    const where = team.side === "home" ? "at home" : "on the road";
     return <div className="live-banner-team" data-side={team.side} data-lost={lost(team) || undefined}>
       <span className="live-banner-logo"><TeamLogo team={logoTeam(team)} season={season} size={64} /></span>
       <span className="live-banner-name">
+        <VenueTag side={team.side} />
         <TeamLink team={team.canonical_id} scope={{ season }} className="live-banner-full">{team.name}</TeamLink>
         <TeamLink team={team.canonical_id} scope={{ season }} className="live-banner-code" title={team.name}>{teamCode(team)}</TeamLink>
-        <span className="live-banner-meta">
+        {(team.record || venue) && <span className="live-banner-meta">
           {team.record && <span className="live-banner-record"><span className="sr-only">Record </span>{formatRecord(team.record)}</span>}
-          {team.record && <span aria-hidden="true">, </span>}
-          {venue ? <span><span className="live-banner-record">{venue}</span> {label}</span> : <span>{label}</span>}
-        </span>
+          {team.record && venue && <span aria-hidden="true">, </span>}
+          {venue && <span><span className="live-banner-record">{venue}</span> {where}</span>}
+        </span>}
       </span>
       {played && <strong className="live-banner-score">
         {won(team) && <span className="live-banner-win" aria-hidden="true" />}
